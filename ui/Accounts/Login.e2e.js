@@ -1,4 +1,4 @@
-import { login, getPageUrl } from '../../../tests/helpers/e2e';
+import { login, getPageUrl } from '../../tests/helpers/e2e';
 
 fixture('/login').page('http://localhost:3000/login');
 

@@ -15,22 +15,22 @@ import Public from '../components/Public';
 
 import Index from '../pages/Index';
 
-import Documents from '../documents/Documents';
-import ViewDocument from '../documents/ViewDocument';
-import EditDocument from '../documents/EditDocument';
+import Documents from '../Documents/Documents';
+import ViewDocument from '../Documents/ViewDocument';
+import EditDocument from '../Documents/EditDocument';
 
-import Profile from '../users/Profile';
-import Signup from '../users/Signup';
-import Login from '../users/Login';
-import Logout from '../users/Logout';
+import Profile from '../Accounts/Profile';
+import Signup from '../Accounts/Signup';
+import Login from '../Accounts/Login';
+import Logout from '../Accounts/Logout';
 
-import VerifyEmail from '../users/VerifyEmail';
-import RecoverPassword from '../users/RecoverPassword';
-import ResetPassword from '../users/ResetPassword';
+import VerifyEmail from '../Accounts/VerifyEmail';
+import RecoverPassword from '../Accounts/RecoverPassword';
+import ResetPassword from '../Accounts/ResetPassword';
 
-import AdminUsers from '../admin/AdminUsers';
-import AdminUser from '../admin/AdminUser';
-import AdminUserSettings from '../admin/AdminUserSettings';
+import AdminUsers from '../Admin/AdminUsers';
+import AdminUser from '../Admin/AdminUser';
+import AdminUserSettings from '../Admin/AdminUserSettings';
 
 import NotFound from '../pages/NotFound';
 import Footer from '../components/Footer';
@@ -39,8 +39,8 @@ import Terms from '../pages/Terms';
 import Privacy from '../pages/Privacy';
 import ExamplePage from '../pages/ExamplePage';
 
-import VerifyEmailAlert from '../users/components/VerifyEmailAlert';
-import GDPRConsentModal from '../users/components/GDPRConsentModal';
+import VerifyEmailAlert from '../Accounts/components/VerifyEmailAlert';
+import GDPRConsentModal from '../Accounts/components/GDPRConsentModal';
 
 import withTrackerSsr from '../../modules/withTrackerSsr';
 import getUserName from '../../modules/getUserName';
@@ -137,7 +137,7 @@ class App extends React.Component {
             <Authorized
               exact
               allowedRoles={['admin']}
-              path="/admin/users/settings"
+              path="/admin/user/settings"
               pathAfterFailure="/"
               component={AdminUserSettings}
               setAfterLoginPath={setAfterLoginPath}

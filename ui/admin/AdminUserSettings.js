@@ -7,12 +7,12 @@ import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
 import AdminUserSettingsModal from './components/AdminUserSettingsModal';
 import BlankState from '../components/BlankState';
-import userSettingsQuery from '../users/queries/UserSettings.gql';
+import userSettingsQuery from '../Accounts/queries/UserSettings.gql';
 import {
   addUserSetting as addUserSettingMutation,
   updateUserSetting as updateUserSettingMutation,
   removeUserSetting as removeUserSettingMutation,
-} from '../users/mutations/UserSettings.gql';
+} from '../Accounts/mutations/UserSettings.gql';
 
 const Setting = styled(ListGroupItem)`
   display: flex;
