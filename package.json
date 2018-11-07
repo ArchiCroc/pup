@@ -5,6 +5,7 @@
     "dev": "meteor --settings settings-development.json",
     "staging": "DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy pup-staging.cleverbeagle.com --settings settings-staging.json",
     "production": "DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy pup.cleverbeagle.com --settings settings-production.json",
+    "profile": "meteor --extra-packages bundle-visualizer --production --settings settings-development.json",
     "lint": "eslint .",
     "lint:all": "eslint --fix .",
     "lint:file": "eslint --fix",
