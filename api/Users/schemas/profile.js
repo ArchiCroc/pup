@@ -40,7 +40,7 @@ const ProfileSchema = new SimpleSchema({
   },
   currentPassword: {
     type: String,
-    label: 'Current Password',
+    label: () => i18n.__('current_password'),
     optional: true,
     min: 8,
     max: 100,
@@ -52,7 +52,11 @@ const ProfileSchema = new SimpleSchema({
         console.log('Add error to new password');
         this.addValidationErrors([
           // @todo weird bug that type isn't being converted to the correct error message
-          { name: 'newPassword', type: 'missingNewPassword', message: 'Need your new password if changing.' },
+          {
+            name: 'newPassword',
+            type: 'missingNewPassword',
+            message: 'Need your new password if changing.',
+          },
         ]);
         return false;
       }
@@ -89,9 +93,9 @@ const ProfileSchema = new SimpleSchema({
 SimpleSchema.setDefaultMessages({
   messages: {
     en: {
-      alreadyRegistered: 'Email Address Already Exists', // this check could leak who is registered. hmmm
-      missingNewPassword: 'Need your new password if changing.', // this check could leak who is registered. hmmm
-      missingCurrentPassword: 'Need your current password if changing.', // this check could leak who is registered. hmmm
+      alreadyRegistered: 'Email Address Already Exists',
+      missingNewPassword: 'Need your new password if changing.',
+      missingCurrentPassword: 'Need your current password if changing.',
     },
   },
   //  noMatch: "Password Doesn't Match",

@@ -5,7 +5,7 @@ import i18n from 'meteor/universe:i18n';
 const UserChangePasswordSchema = new SimpleSchema({
   oldPassword: {
     type: String,
-    label: () => i18n.__('old_password'),
+    label: () => i18n.__('current_password'),
     optional: false,
     min: 8,
     max: 200,

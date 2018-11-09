@@ -13,7 +13,7 @@
   "password_help": "Use at least six characters.",
   "sign_up": "Sign Up",
   "confirm_password": "Confirm Password",
-  "old_password": "Old Password",
+  "current_password": "Current Password",
   "new_password": " New Password",
   "confirm_new_password": "Confirm New Password",
   "password_match_error": "Hmm, your passwords don't match. Try again?",

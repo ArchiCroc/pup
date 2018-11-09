@@ -45,8 +45,8 @@ class ResetPassword extends React.Component {
               showInlineError
               placeholder
             >
-              <AutoField name="newPassword" />
-              <AutoField name="repeatNewPassword" />
+              <AutoField name="newPassword" placeholder={i18n.__('new_password')} />
+              <AutoField name="repeatNewPassword" placeholder={i18n.__('confirm_new_password')} />
               <Button type="submit" bsStyle="success">
                 Reset Password &amp; Login
               </Button>
