@@ -16,11 +16,17 @@ const ProfileSchema = new SimpleSchema({
     type: String,
     label: () => i18n.__('first_name'),
     max: 100,
+    uniforms: {
+      placeholder: () => i18n.__('first_name'),
+    },
   },
   lastName: {
     type: String,
     label: () => i18n.__('last_name'),
     max: 100,
+    uniforms: {
+      placeholder: () => i18n.__('last_name'),
+    },
   },
   emailAddress: {
     type: String,
