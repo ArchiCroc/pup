@@ -4,7 +4,7 @@ import autoBind from 'react-autobind';
 import { Link } from 'react-router-dom';
 import { graphql } from 'react-apollo';
 import Loading from '../../components/Loading';
-import { users as usersQuery } from '../../Accounts/queries/Users.gql';
+import { users as usersQuery } from '../../users/queries/Users.gql';
 
 import { StyledListGroup, StyledListGroupItem } from './StyledAdminUsersList';
 

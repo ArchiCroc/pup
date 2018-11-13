@@ -5,12 +5,12 @@ import { Breadcrumb, Tab } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Bert } from 'meteor/themeteorchef:bert';
 import AdminUserProfile from './components/AdminUserProfile';
-import UserSettings from '../Accounts/components/UserSettings';
-import { user as userQuery, users as usersQuery } from '../Accounts/queries/Users.gql';
+import UserSettings from '../users/components/UserSettings';
+import { user as userQuery, users as usersQuery } from '../users/queries/Users.gql';
 import {
   updateUser as updateUserMutation,
   removeUser as removeUserMutation,
-} from '../Accounts/mutations/Users.gql';
+} from '../users/mutations/Users.gql';
 
 import Styles from './StyledAdminUser';
 

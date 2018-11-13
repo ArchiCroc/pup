@@ -11,6 +11,10 @@ const StyledSignup = styled.div`
     margin-top: 0;
   }
 
+  .help-block {
+    font-style: italic;
+  }
+
   > .row {
     margin: 0 !important;
   }
