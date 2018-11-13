@@ -1,13 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import AutoForm from 'uniforms/AutoForm';
+import AutoField from 'uniforms-bootstrap3/AutoField';
+import i18n from 'meteor/universe:i18n';
 import { compose, graphql, withApollo } from 'react-apollo';
 import FileSaver from 'file-saver';
 import base64ToBlob from 'b64-to-blob';
-import { Row, Col, FormGroup, ControlLabel, Button, Tabs, Tab } from 'react-bootstrap';
+import { Row, Col, Button, Tabs, Tab } from 'react-bootstrap';
 import { capitalize } from 'lodash';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Bert } from 'meteor/themeteorchef:bert';
+<<<<<<< HEAD:ui/users/Profile.js
 import Validation from '../components/Validation';
 import InputHint from '../components/InputHint';
 import AccountPageFooter from './components/AccountPageFooter';
@@ -18,6 +22,17 @@ import {
   removeUser as removeUserMutation,
 } from './mutations/Users.gql';
 import Styles from './StyledProfile';
+=======
+import AccountPageFooter from '../../components/AccountPageFooter';
+import UserSettings from '../../components/UserSettings';
+import { user as userQuery, exportUserData as exportUserDataQuery } from '../../queries/Users.gql';
+import {
+  updateUser as updateUserMutation,
+  removeUser as removeUserMutation,
+} from '../../mutations/Users.gql';
+import ProfileSchema from '../../../api/Users/schemas/profile';
+import Styles from './styles';
+>>>>>>> 84cb030a2463a3467bc126ac721ba4082b2dad1a:ui/pages/Profile/index.js
 
 class Profile extends React.Component {
   state = { activeTab: 'profile' };
@@ -40,27 +55,28 @@ class Profile extends React.Component {
   };
 
   handleSubmit = (form) => {
+    const cleanForm = ProfileSchema.clean(form);
     this.props.updateUser({
       variables: {
         user: {
-          email: form.emailAddress.value,
+          email: cleanForm.emailAddress,
           profile: {
             name: {
-              first: form.firstName.value,
-              last: form.lastName.value,
+              first: cleanForm.firstName,
+              last: cleanForm.lastName,
             },
           },
         },
       },
     });
 
-    if (form.newPassword.value) {
-      Accounts.changePassword(form.currentPassword.value, form.newPassword.value, (error) => {
+    if (cleanForm.newPassword) {
+      Accounts.changePassword(cleanForm.currentPassword, cleanForm.newPassword, (error) => {
         if (error) {
           Bert.alert(error.reason, 'danger');
         } else {
-          form.currentPassword.value = ''; // eslint-disable-line no-param-reassign
-          form.newPassword.value = ''; // eslint-disable-line no-param-reassign
+          cleanForm.currentPassword = ''; // eslint-disable-line no-param-reassign
+          cleanForm.newPassword = ''; // eslint-disable-line no-param-reassign
         }
       });
     }
@@ -96,48 +112,32 @@ class Profile extends React.Component {
     <div>
       <Row>
         <Col xs={6}>
-          <FormGroup>
-            <ControlLabel>First Name</ControlLabel>
-            <input
-              type="text"
-              name="firstName"
-              defaultValue={user.name.first}
-              className="form-control"
-            />
-          </FormGroup>
+          <AutoField name="firstName" placeholder={i18n.__('first_name')} />
         </Col>
         <Col xs={6}>
-          <FormGroup>
-            <ControlLabel>Last Name</ControlLabel>
-            <input
-              type="text"
-              name="lastName"
-              defaultValue={user.name.last}
-              className="form-control"
-            />
-          </FormGroup>
+          <AutoField name="lastName" placeholder={i18n.__('last_name')} />
         </Col>
       </Row>
-      <FormGroup>
-        <ControlLabel>Email Address</ControlLabel>
-        <input
-          type="email"
-          name="emailAddress"
-          defaultValue={user.emailAddress}
-          className="form-control"
-        />
-      </FormGroup>
-      <FormGroup>
-        <ControlLabel>Current Password</ControlLabel>
-        <input type="password" name="currentPassword" className="form-control" />
-      </FormGroup>
-      <FormGroup>
-        <ControlLabel>New Password</ControlLabel>
-        <input type="password" name="newPassword" className="form-control" />
-        <InputHint>Use at least six characters.</InputHint>
-      </FormGroup>
+
+      <AutoField name="emailAddress" placeholder={i18n.__('email_address')} />
+      <AutoField
+        name="currentPassword"
+        ref={(currentPassword) => {
+          this.currentPassword = currentPassword;
+        }}
+        placeholder={i18n.__('current_password')}
+      />
+      <AutoField
+        name="newPassword"
+        ref={(newPassword) => {
+          this.newPassword = newPassword;
+        }}
+        help="Use at least six characters."
+        placeholder={i18n.__('new_password')}
+      />
+
       <Button type="submit" bsStyle="success">
-        Save Profile
+        {i18n.__('save_profile')}
       </Button>
     </div>
   );
@@ -151,6 +151,17 @@ class Profile extends React.Component {
 
   render() {
     const { data, updateUser } = this.props;
+
+    console.log(this.props);
+
+    const model = data.user
+      ? {
+          firstName: data.user.name.first,
+          lastName: data.user.name.last,
+          emailAddress: data.user.emailAddress,
+        }
+      : {};
+
     return data.user ? (
       <Styles.Profile>
         <h4 className="page-header">
@@ -165,60 +176,16 @@ class Profile extends React.Component {
           <Tab eventKey="profile" title="Profile">
             <Row>
               <Col xs={12} sm={6} md={4}>
-                <Validation
-                  rules={{
-                    firstName: {
-                      required: true,
-                    },
-                    lastName: {
-                      required: true,
-                    },
-                    emailAddress: {
-                      required: true,
-                      email: true,
-                    },
-                    currentPassword: {
-                      required: (form, blah) => {
-                        console.log(form, blah);
-                        // Only required if newPassword field has a value.
-                        return document.querySelector('[name="newPassword"]').value.length > 0;
-                      },
-                    },
-                    newPassword: {
-                      required() {
-                        // Only required if currentPassword field has a value.
-                        return document.querySelector('[name="currentPassword"]').value.length > 0;
-                      },
-                      minlength: 6,
-                    },
-                  }}
-                  messages={{
-                    firstName: {
-                      required: "What's your first name?",
-                    },
-                    lastName: {
-                      required: "What's your last name?",
-                    },
-                    emailAddress: {
-                      required: 'Need an email address here.',
-                      email: 'Is this email address correct?',
-                    },
-                    currentPassword: {
-                      required: 'Need your current password if changing.',
-                    },
-                    newPassword: {
-                      required: 'Need your new password if changing.',
-                    },
-                  }}
-                  submitHandler={(form) => this.handleSubmit(form)}
+                <AutoForm
+                  schema={ProfileSchema}
+                  model={model}
+                  onSubmit={this.handleSubmit}
+                  showInlineError
+                  placeholder
                 >
-                  <form
-                    ref={(form) => (this.form = form)}
-                    onSubmit={(event) => event.preventDefault()}
-                  >
-                    {this.renderProfileForm(data.user)}
-                  </form>
-                </Validation>
+                  {this.renderProfileForm(data.user)}
+                </AutoForm>
+
                 <AccountPageFooter>
                   <p>
                     <Button bsStyle="link" className="btn-export" onClick={this.handleExportData}>

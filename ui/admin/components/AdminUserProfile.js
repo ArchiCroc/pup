@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import AutoForm from 'uniforms/AutoForm';
+import AutoField from 'uniforms-bootstrap3/AutoField';
+import i18n from 'meteor/universe:i18n';
 import {
   Row,
   Col,
@@ -8,22 +11,38 @@ import {
   ListGroup,
   ListGroupItem,
   Checkbox,
-  InputGroup,
+  //  InputGroup,
   Button,
 } from 'react-bootstrap';
 import { capitalize } from 'lodash';
+<<<<<<< HEAD:ui/admin/components/AdminUserProfile.js
 import { Random } from 'meteor/random';
 import InputHint from '../../components/InputHint';
 import Icon from '../../components/Icon';
 import Validation from '../../components/Validation';
+=======
+// import { Random } from 'meteor/random';
+// import InputHint from '../InputHint';
+// import Icon from '../Icon';
+// import Validation from '../Validation';
+import AdminPasswordField from '../AdminPasswordField';
+import AdminProfileSchema from '../../../api/Users/schemas/admin-profile';
+>>>>>>> 84cb030a2463a3467bc126ac721ba4082b2dad1a:ui/components/AdminUserProfile/index.js
 
 class AdminUserProfile extends React.Component {
-  state = { showPassword: false, password: '' };
+  constructor(props) {
+    super(props);
+    this.formRef = React.createRef();
+  }
 
   handleSubmit = (form) => {
     const existingUser = this.props.user;
     const isPasswordUser = existingUser && !existingUser.oAuthProvider;
-    const password = isPasswordUser ? form.password.value : null;
+
+    const cleanForm = AdminProfileSchema.clean(form);
+    console.log('sve form', cleanForm);
+
+    const password = isPasswordUser ? cleanForm.password : null;
     const roleCheckboxes = document.querySelectorAll('[name="role"]:checked');
     const roles = [];
     [].forEach.call(roleCheckboxes, (role) => {
@@ -34,12 +53,12 @@ class AdminUserProfile extends React.Component {
 
     if (isPasswordUser) {
       user = {
-        email: form.emailAddress.value,
+        email: cleanForm.emailAddress,
         password,
         profile: {
           name: {
-            first: form.firstName.value,
-            last: form.lastName.value,
+            first: cleanForm.firstName,
+            last: cleanForm.lastName,
           },
         },
         roles,
@@ -52,8 +71,13 @@ class AdminUserProfile extends React.Component {
       };
     }
 
-    if (existingUser) user._id = existingUser._id;
-    this.props.updateUser({ variables: { user } }, () => this.setState({ password: '' }));
+    if (existingUser) {
+      user._id = existingUser._id;
+    }
+
+    this.props.updateUser({ variables: { user } }, () =>
+      this.formRef.current.change('password', ''),
+    );
   };
 
   handleDeleteUser = () => {
@@ -66,183 +90,95 @@ class AdminUserProfile extends React.Component {
     }
   };
 
-  generatePassword = () => {
-    this.setState({ password: Random.hexString(20) });
-  };
-
   render() {
     const { user } = this.props;
+
+    const model = user
+      ? {
+          firstName: user.name.first,
+          lastName: user.name.last,
+          username: user.username,
+          emailAddress: user.emailAddress,
+        }
+      : {};
+
     return (
       <div className="AdminUserProfile">
-        <Validation
-          rules={{
-            firstName: {
-              required: true,
-            },
-            lastName: {
-              required: true,
-            },
-            emailAddress: {
-              required: true,
-              email: true,
-            },
-            password: {
-              minlength: 6,
-            },
-          }}
-          messages={{
-            firstName: {
-              required: "What's the user's first name?",
-            },
-            lastName: {
-              required: "What's the user's last name?",
-            },
-            emailAddress: {
-              required: 'Need an email address here.',
-              email: 'Is this email address correct?',
-            },
-            password: {
-              minlength: 'Please use at least six characters.',
-            },
-          }}
-          submitHandler={(form) => this.handleSubmit(form)}
+        <AutoForm
+          schema={AdminProfileSchema}
+          model={model}
+          onSubmit={this.handleSubmit}
+          ref={this.formRef}
+          showInlineError
+          placeholder
         >
-          <form ref={(form) => (this.form = form)} onSubmit={(event) => event.preventDefault()}>
-            {user && (
-              <Row>
-                <Col xs={12} md={6}>
-                  {user &&
-                    user.name && (
-                      <Row>
-                        <Col xs={6}>
-                          <FormGroup>
-                            <ControlLabel>First Name</ControlLabel>
-                            <input
-                              disabled={user && user.oAuthProvider}
-                              type="text"
-                              name="firstName"
-                              className="form-control"
-                              defaultValue={user && user.name && user.name.first}
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col xs={6}>
-                          <FormGroup>
-                            <ControlLabel>Last Name</ControlLabel>
-                            <input
-                              disabled={user && user.oAuthProvider}
-                              type="text"
-                              name="lastName"
-                              className="form-control"
-                              defaultValue={user && user.name && user.name.last}
-                            />
-                          </FormGroup>
-                        </Col>
-                      </Row>
-                    )}
-                  {user &&
-                    user.username && (
-                      <Row>
-                        <Col xs={12}>
-                          <FormGroup>
-                            <ControlLabel>Username</ControlLabel>
-                            <input
-                              disabled={user && user.oAuthProvider}
-                              type="text"
-                              name="username"
-                              className="form-control"
-                              defaultValue={user && user.username}
-                            />
-                          </FormGroup>
-                        </Col>
-                      </Row>
-                    )}
-                  <Row>
-                    <Col xs={12}>
-                      <FormGroup>
-                        <ControlLabel>Email Address</ControlLabel>
-                        <input
-                          disabled={user && user.oAuthProvider}
-                          type="text"
-                          name="emailAddress"
-                          autoComplete="off"
-                          className="form-control"
-                          defaultValue={user && user.emailAddress}
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col xs={12}>
-                      <FormGroup>
-                        <ControlLabel>Roles</ControlLabel>
-                        <ListGroup>
-                          {user.roles.map(({ _id, name, inRole }) => (
-                            <ListGroupItem key={_id}>
-                              <Checkbox name="role" value={name} defaultChecked={inRole} inline>
-                                {capitalize(name)}
-                              </Checkbox>
-                            </ListGroupItem>
-                          ))}
-                        </ListGroup>
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                  {user &&
-                    !user.oAuthProvider && (
-                      <Row>
-                        <Col xs={12}>
-                          <FormGroup>
-                            <ControlLabel>
-                              Password
-                              <Checkbox
-                                inline
-                                checked={this.state.showPassword}
-                                className="pull-right"
-                                onChange={() =>
-                                  this.setState({
-                                    showPassword: !this.state.showPassword,
-                                  })
-                                }
-                              >
-                                Show Password
-                              </Checkbox>
-                            </ControlLabel>
-                            <InputGroup>
-                              <input
-                                type={this.state.showPassword ? 'text' : 'password'}
-                                name="password"
-                                className="form-control"
-                                autoComplete="off"
-                                value={this.state.password}
-                                onChange={(event) => {
-                                  this.setState({ password: event.target.value });
-                                }}
-                              />
-                              <InputGroup.Button>
-                                <Button onClick={this.generatePassword}>
-                                  <Icon iconStyle="solid" icon="refresh" /> Generate
-                                </Button>
-                              </InputGroup.Button>
-                            </InputGroup>
-                            <InputHint>Use at least six characters.</InputHint>
-                          </FormGroup>
-                        </Col>
-                      </Row>
-                    )}
-                  <Button type="submit" bsStyle="success">
-                    {user ? 'Save Changes' : 'Create User'}
-                  </Button>
-                  {user && (
-                    <Button bsStyle="danger" className="pull-right" onClick={this.handleDeleteUser}>
-                      Delete User
-                    </Button>
+          {user && (
+            <Row>
+              <Col xs={12} md={6}>
+                {user &&
+                  user.name && (
+                    <Row>
+                      <Col xs={6}>
+                        <AutoField name="firstName" placeholder={i18n.__('first_name')} />
+                      </Col>
+                      <Col xs={6}>
+                        <AutoField name="lastName" placeholder={i18n.__('last_name')} />
+                      </Col>
+                    </Row>
                   )}
-                </Col>
-              </Row>
-            )}
-          </form>
-        </Validation>
+                {user &&
+                  user.username && (
+                    <Row>
+                      <Col xs={12}>
+                        <AutoField
+                          name="emailAddress"
+                          disabled={user && user.oAuthProvider}
+                          placeholder={i18n.__('email_address')}
+                        />
+                      </Col>
+                    </Row>
+                  )}
+                <Row>
+                  <Col xs={12}>
+                    <AutoField name="emailAddress" placeholder={i18n.__('email_address')} />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12}>
+                    <FormGroup>
+                      <ControlLabel>Roles</ControlLabel>
+                      <ListGroup>
+                        {user.roles.map(({ _id, name, inRole }) => (
+                          <ListGroupItem key={_id}>
+                            <Checkbox name="role" value={name} defaultChecked={inRole} inline>
+                              {capitalize(name)}
+                            </Checkbox>
+                          </ListGroupItem>
+                        ))}
+                      </ListGroup>
+                    </FormGroup>
+                  </Col>
+                </Row>
+                {user &&
+                  !user.oAuthProvider && (
+                    <Row>
+                      <Col xs={12}>
+                        <AdminPasswordField name="password" placeholder={i18n.__('password')} />
+                      </Col>
+                    </Row>
+                  )}
+                <Button type="submit" bsStyle="success">
+                  {user ? 'Save Changes' : 'Create User'}
+                </Button>
+                {user && (
+                  <Button bsStyle="danger" className="pull-right" onClick={this.handleDeleteUser}>
+                    Delete User
+                  </Button>
+                )}
+              </Col>
+            </Row>
+          )}
+        </AutoForm>
       </div>
     );
   }

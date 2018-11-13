@@ -1,16 +1,27 @@
 import React from 'react';
-import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';
+import AutoForm from 'uniforms/AutoForm';
+import AutoField from 'uniforms-bootstrap3/AutoField';
+import i18n from 'meteor/universe:i18n';
+import { Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
+<<<<<<< HEAD:ui/users/Login.js
 import Validation from '../components/Validation';
 import OAuthLoginButtons from './components/OAuthLoginButtons';
 import AccountPageFooter from './components/AccountPageFooter';
 import { StyledLogin, LoginPromo } from './StyledLogin';
+=======
+import OAuthLoginButtons from '../../components/OAuthLoginButtons';
+import AccountPageFooter from '../../components/AccountPageFooter';
+import { StyledLogin, LoginPromo } from './styles';
+import LoginSchema from '../../../api/Users/schemas/login';
+>>>>>>> 84cb030a2463a3467bc126ac721ba4082b2dad1a:ui/pages/Login/index.js
 
 class Login extends React.Component {
   handleSubmit = (form) => {
-    Meteor.loginWithPassword(form.emailAddress.value, form.password.value, (error) => {
+    const cleanForm = LoginSchema.clean(form);
+    Meteor.loginWithPassword(cleanForm.emailAddress, cleanForm.password, (error) => {
       if (error) {
         Bert.alert(error.reason, 'danger');
       } else {
@@ -46,65 +57,29 @@ class Login extends React.Component {
                 />
               </Col>
             </Row>
-            <Validation
-              rules={{
-                emailAddress: {
-                  required: true,
-                  email: true,
-                },
-                password: {
-                  required: true,
-                },
-              }}
-              messages={{
-                emailAddress: {
-                  required: 'Need an email address here.',
-                  email: 'Is this email address correct?',
-                },
-                password: {
-                  required: 'Need a password here.',
-                },
-              }}
-              submitHandler={(form) => {
-                this.handleSubmit(form);
-              }}
+            <AutoForm
+              name="login"
+              schema={LoginSchema}
+              onSubmit={this.handleSubmit}
+              showInlineError
+              placeholder
             >
-              <form ref={(form) => (this.form = form)} onSubmit={(event) => event.preventDefault()}>
-                <FormGroup>
-                  <ControlLabel>Email Address</ControlLabel>
-                  <input
-                    type="email"
-                    name="emailAddress"
-                    className="form-control"
-                    placeholder="Email Address"
-                    data-test="emailAddress"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <ControlLabel className="clearfix">
-                    <span className="pull-left">Password</span>
-                    <Link className="pull-right" to="/recover-password">
-                      Forgot password?
-                    </Link>
-                  </ControlLabel>
-                  <input
-                    type="password"
-                    name="password"
-                    className="form-control"
-                    placeholder="Password"
-                    data-test="password"
-                  />
-                </FormGroup>
-                <Button type="submit" bsStyle="success" block>
-                  Log In
-                </Button>
-                <AccountPageFooter>
-                  <p>
-                    {"Don't have an account?"} <Link to="/signup">Sign Up</Link>.
-                  </p>
-                </AccountPageFooter>
-              </form>
-            </Validation>
+              <AutoField name="emailAddress" placeholder={i18n.__('email_address')} />
+              <AutoField name="password" placeholder={i18n.__('password')} />
+
+              <Link className="pull-right" to="/recover-password">
+                {i18n.__('forgot_password')}
+              </Link>
+
+              <Button type="submit" bsStyle="success" block>
+                Log In
+              </Button>
+              <AccountPageFooter>
+                <p>
+                  {"Don't have an account?"} <Link to="/signup">Sign Up</Link>.
+                </p>
+              </AccountPageFooter>
+            </AutoForm>
           </Col>
         </Row>
       </StyledLogin>
