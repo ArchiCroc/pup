@@ -1,7 +1,7 @@
 import Uniforms from 'uniforms';
 import SimpleSchema from 'simpl-schema';
 import i18n from 'meteor/universe:i18n';
-import _ from 'lodash';
+import { isString } from 'lodash/isString';
 
 const ProfileSchema = new SimpleSchema({
   _id: {
@@ -34,7 +34,7 @@ const ProfileSchema = new SimpleSchema({
     max: 200,
     regEx: SimpleSchema.RegEx.Email,
     autoValue() {
-      if (this.value && _.isString(this.value)) {
+      if (this.value && isString(this.value)) {
         return this.value.toLowerCase();
       }
       return this.value;

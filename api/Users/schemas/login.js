@@ -1,7 +1,7 @@
 import Uniforms from 'uniforms';
 import SimpleSchema from 'simpl-schema';
 import i18n from 'meteor/universe:i18n';
-import { _ } from 'underscore';
+import { isString } from 'lodash/isString';
 
 const UserLoginSchema = new SimpleSchema({
   emailAddress: {
@@ -14,7 +14,7 @@ const UserLoginSchema = new SimpleSchema({
       placeholder: () => i18n.__('email_address'),
     },
     autoValue() {
-      if (this.value && _.isString(this.value)) {
+      if (this.value && isString(this.value)) {
         return this.value.toLowerCase();
       }
       return this.value;
