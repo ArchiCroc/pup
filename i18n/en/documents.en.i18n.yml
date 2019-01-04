@@ -1,0 +1,16 @@
+_namespace: Documents
+
+saving: Saving...
+last_edit_time: Last edit was {$timeago}
+view_document: View Document
+visibility: Visibility
+public: Public
+private: Private
+
+delete_document: Delete Document
+
+title: Title
+title_placeholder: Document Title
+body: Body
+body_placeholder: This is my document. There are many like it, but this one is mine.
+body_help: Markdown Supported

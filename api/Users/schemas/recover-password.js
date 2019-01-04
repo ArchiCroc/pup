@@ -1,7 +1,7 @@
 import Uniforms from 'uniforms';
 import SimpleSchema from 'simpl-schema';
 import i18n from 'meteor/universe:i18n';
-import { isString } from 'lodash/isString';
+import isString from 'lodash/isString';
 
 const RecoverPasswordSchema = new SimpleSchema({
   emailAddress: {

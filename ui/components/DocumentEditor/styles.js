@@ -42,6 +42,9 @@ export const StyledDocumentEditor = styled.div`
   form {
     height: 100%;
   }
+  .form-group {
+    margin: 0;
+  }
 
   @media screen and (min-width: 768px) {
     height: calc(100vh - 258px);

@@ -13,7 +13,7 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import App from '../../ui/layouts/App';
 import apolloClient from './apollo';
 import GlobalStyle from './GlobalStyle';
-import usersEnI18n from '../../i18n/en/users.en.i18n.json';
+import usersEnI18n from '../../i18n/en/users.en.i18n.yml';
 
 Bert.defaults.style = 'growl-bottom-right';
 

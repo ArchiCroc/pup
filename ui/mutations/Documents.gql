@@ -22,6 +22,18 @@ mutation updateDocument($_id: String!, $title: String, $body: String, $isPublic:
   }
 }
 
+mutation updateDocumentKey($_id: String!, $key: String!, $value: String!) {
+  updateDocumentKey(_id: $_id, key: $key, value: $value) {
+    _id
+    isPublic
+    title
+    body
+    createdAt
+    updatedAt
+    owner
+  }
+}
+
 mutation removeDocument($_id: String!) {
   removeDocument(_id: $_id) {
     _id
