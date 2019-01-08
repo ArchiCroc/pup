@@ -1,4 +1,5 @@
 import React from 'react';
+import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 import { Grid } from 'react-bootstrap';
 import { Meteor } from 'meteor/meteor';
@@ -17,19 +18,20 @@ const Footer = () => (
   <Styles.Footer>
     <Grid>
       <p className="pull-left">
-        &copy; {copyrightYear()} {productName}
+        {i18n.__('footer', { copyrightYear: copyrightYear(), productName })}
       </p>
       <ul className="pull-right">
         <li>
           <Link to="/terms">
-            Terms
-            <span className="hidden-xs"> of Service</span>
+            {i18n.__('terms_of_service')}
+            <span className="hidden-xs">{` ${i18n.__('terms_of_service_hidden')}`}</span>
           </Link>
         </li>
         <li>
           <Link to="/privacy">
-            Privacy
-            <span className="hidden-xs"> Policy</span>
+            {i18n.__('terms_of_service')}
+
+            <span className="hidden-xs">{` ${i18n.__('privacy_policy_hidden')}`}</span>
           </Link>
         </li>
       </ul>

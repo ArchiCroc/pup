@@ -22,6 +22,7 @@ class ResetPassword extends React.Component {
       if (error) {
         Bert.alert(error.reason, 'danger');
       } else {
+        Bert.alert(i18n.__('reset_password_succcess'), 'success');
         history.push('/documents');
       }
     });
@@ -32,11 +33,8 @@ class ResetPassword extends React.Component {
       <StyledResetPassword>
         <Row>
           <Col xs={12}>
-            <h4 className="page-header">Reset Password</h4>
-            <Alert bsStyle="info">
-              To reset your password, enter a new one below. You will be logged in with your new
-              password.
-            </Alert>
+            <h4 className="page-header">{i18n.__('reset_password_header')}</h4>
+            <Alert bsStyle="info">{i18n.__('reset_password_help')}</Alert>
             <AutoForm
               name="reset-password"
               schema={ResetPasswordSchema}
@@ -47,12 +45,13 @@ class ResetPassword extends React.Component {
               <AutoField name="newPassword" placeholder={i18n.__('new_password')} />
               <AutoField name="repeatNewPassword" placeholder={i18n.__('confirm_new_password')} />
               <Button type="submit" bsStyle="success">
-                Reset Password &amp; Login
+                {i18n.__('reset_password_submit')}
               </Button>
 
               <AccountPageFooter>
                 <p>
-                  {"Not sure why you're here?"} <Link to="/login">Log In</Link>.
+                  {i18n.__('reset_password_page_footer')}{' '}
+                  <Link to="/login">{i18n.__('log_in')}</Link>.
                 </p>
               </AccountPageFooter>
             </AutoForm>

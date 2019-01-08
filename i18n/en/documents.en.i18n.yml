@@ -1,5 +1,6 @@
 _namespace: Documents
 
+documents: Documents
 saving: Saving...
 last_edit_time: Last edit was {$timeago}
 view_document: View Document
@@ -14,3 +15,6 @@ title_placeholder: Document Title
 body: Body
 body_placeholder: This is my document. There are many like it, but this one is mine.
 body_help: Markdown Supported
+
+blank_state_title: No document here, friend!
+blank_state_subtitle: Make sure to double check the URL! If it's correct, this is probably a private document.

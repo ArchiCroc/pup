@@ -80,7 +80,9 @@ class DocumentEditor extends React.Component {
             {this.state.saving ? (
               <em>{i18n.__('Documents.saving')}</em>
             ) : (
-              <span>{i18n.__('Documents.last_edit_time', timeago(doc.updatedAt))}</span>
+              <span>
+                {i18n.__('Documents.last_edit_time', { timeago: timeago(doc.updatedAt) })}
+              </span>
             )}
           </p>
           <DropdownButton
@@ -109,7 +111,7 @@ class DocumentEditor extends React.Component {
             >
               {(mutate) => (
                 <React.Fragment>
-                  <MenuItem header>Visibility</MenuItem>
+                  <MenuItem header>{i18n.__('Documents.visibility')}</MenuItem>
 
                   <MenuItem
                     className={doc.isPublic && 'active'}

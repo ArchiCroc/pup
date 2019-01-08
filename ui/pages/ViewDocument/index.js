@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import i18n from 'meteor/universe:i18n';
 import { graphql } from 'react-apollo';
 import { Meteor } from 'meteor/meteor';
 import SEO from '../../components/SEO';
@@ -72,8 +73,8 @@ class ViewDocument extends React.Component {
       return (
         <BlankState
           icon={{ style: 'solid', symbol: 'file-alt' }}
-          title="No document here, friend!"
-          subtitle="Make sure to double check the URL! If it's correct, this is probably a private document."
+          title={i18n.__('blank_state_title')}
+          subtitle={i18n.__('blank_state_subtitle')}
         />
       );
     }

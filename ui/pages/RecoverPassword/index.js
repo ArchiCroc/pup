@@ -22,7 +22,7 @@ class RecoverPassword extends React.Component {
       if (error) {
         Bert.alert(error.reason, 'danger');
       } else {
-        Bert.alert(`Check ${email} for a reset link!`, 'success');
+        Bert.alert(i18n.__('recover_email_success', { email }), 'success');
         history.push('/login');
       }
     });
@@ -33,10 +33,8 @@ class RecoverPassword extends React.Component {
       <StyledRecoverPassword>
         <Row>
           <Col xs={12}>
-            <h4 className="page-header">Recover Password</h4>
-            <Alert bsStyle="info">
-              Enter your email address below to receive a link to reset your password.
-            </Alert>
+            <h4 className="page-header">{i18n.__('recover_password_header')}</h4>
+            <Alert bsStyle="info">{i18n.__('recover_password_help')}</Alert>
             <AutoForm
               name="recover-password"
               schema={RecoverPasswordSchema}
@@ -46,11 +44,11 @@ class RecoverPassword extends React.Component {
             >
               <AutoField name="emailAddress" placeholder={i18n.__('email_address')} />
               <Button type="submit" bsStyle="success">
-                Recover Password
+                {i18n.__('recover_password_submit')}
               </Button>
               <AccountPageFooter>
                 <p>
-                  Remember your password? <Link to="/login">Log In</Link>.
+                  {i18n.__('recover_password_footer')} <Link to="/login">Log In</Link>.
                 </p>
               </AccountPageFooter>
             </AutoForm>

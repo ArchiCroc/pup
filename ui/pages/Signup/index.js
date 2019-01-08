@@ -35,7 +35,7 @@ class Signup extends React.Component {
           Bert.alert(error.reason, 'danger');
         } else {
           Meteor.call('users.sendVerificationEmail');
-          Bert.alert('Welcome!', 'success');
+          Bert.alert(i18n.__('signup_success'), 'success');
           history.push('/documents');
         }
       },
@@ -47,14 +47,14 @@ class Signup extends React.Component {
       <StyledSignup>
         <Row>
           <Col xs={12}>
-            <h4 className="page-header">Sign Up</h4>
+            <h4 className="page-header">{i18n.__('sign_up_header')}</h4>
             <Row>
               <Col xs={12}>
                 <OAuthLoginButtons
                   services={['facebook', 'github', 'google']}
                   emailMessage={{
                     offset: 97,
-                    text: 'Sign Up with an Email Address',
+                    text: i18n.__('sign_up_with_email'),
                   }}
                 />
               </Col>
@@ -82,11 +82,11 @@ class Signup extends React.Component {
               />
 
               <Button type="submit" bsStyle="success" block>
-                {i18n.__('sign_up')}
+                {i18n.__('sign_up_submit')}
               </Button>
               <AccountPageFooter>
                 <p>
-                  Already have an account? <Link to="/login">Log In</Link>.
+                  {i18n.__('sign_up_page_footer')} <Link to="/login">{i18n.__('log_in')}</Link>.
                 </p>
               </AccountPageFooter>
             </AutoForm>

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import i18n from 'meteor/universe:i18n';
 import { graphql } from 'react-apollo';
 import { Alert } from 'react-bootstrap';
 import { Accounts } from 'meteor/accounts-base';
@@ -14,10 +15,10 @@ class VerifyEmail extends React.Component {
     Accounts.verifyEmail(match.params.token, (error) => {
       if (error) {
         Bert.alert(error.reason, 'danger');
-        this.setState({ error: `${error.reason}. Please try again.` });
+        this.setState({ error: i18n.__('verify_email_error', { error: error.reason }) });
       } else {
         setTimeout(() => {
-          Bert.alert('All set, thanks!', 'success');
+          Bert.alert(i18n.__('verify_email_success'), 'success');
           this.props.sendWelcomeEmail();
           history.push('/documents');
         }, 1500);
@@ -29,7 +30,7 @@ class VerifyEmail extends React.Component {
     return (
       <div className="VerifyEmail">
         <Alert bsStyle={!this.state.error ? 'info' : 'danger'}>
-          {!this.state.error ? 'Verifying...' : this.state.error}
+          {!this.state.error ? i18n.__('verifying') : this.state.error}
         </Alert>
       </div>
     );

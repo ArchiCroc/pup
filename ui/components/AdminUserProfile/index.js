@@ -139,7 +139,7 @@ class AdminUserProfile extends React.Component {
                 <Row>
                   <Col xs={12}>
                     <FormGroup>
-                      <ControlLabel>Roles</ControlLabel>
+                      <ControlLabel>{i18n.__('roles')}</ControlLabel>
                       <ListGroup>
                         {user.roles.map(({ _id, name, inRole }) => (
                           <ListGroupItem key={_id}>

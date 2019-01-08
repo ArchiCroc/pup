@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import i18n from 'meteor/universe:i18n';
 import {
   /*  Row,
   Col,
@@ -59,7 +60,7 @@ class AdminPasswordField extends React.Component {
           className="pull-right"
           onChange={this.toggleShowPassword}
         >
-          Show Password
+          {i18n.__('show_password')}
         </Checkbox>
       </React.Fragment>
     );
@@ -82,7 +83,7 @@ class AdminPasswordField extends React.Component {
         />
         <InputGroup.Button>
           <Button onClick={this.generatePassword}>
-            <Icon iconStyle="solid" icon="refresh" /> Generate
+            <Icon iconStyle="solid" icon="refresh" /> {i18n.__('generate')}
           </Button>
         </InputGroup.Button>
       </InputGroup>,

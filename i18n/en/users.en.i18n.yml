@@ -1,40 +1,68 @@
 
-  login_register: Staff Login/Register
-  login_title: Staff Login
-  invaild_login_error_title: Oh Snap!
-  invaild_login_error: There was an issue logging you in. Do you need to <a class=register>create an account</a> or <a class=forgot>reset your password</a>?
-  display_name: Full Name
-  first_name: First Name
-  last_name: Last Name
-  email_address: Email Address
-  password: Password
-  password_help: Use at least six characters.
-  sign_up: Sign Up
-  confirm_password: Confirm Password
-  current_password: Current Password
-  new_password:  New Password
-  confirm_new_password: Confirm New Password
-  password_match_error: Hmm, your passwords dont match. Try again?
-  forgot_password: Forgot Password?
-  forgot_password_complete: Please check your email for instructions on resetting your password.
-  reset_password: Reset Password
-  reset_password_complete: Your password was reset!
-  user_register: Create a New Account
-  user_pending_title: Thank-you for registering
-  user_pending_message: Your account is pending approval
-  continue: Continue
-  verify_email_subject: Please verify your account for Pup App
-  user_activated_title: Thank-you
-  user_activated_message: Your account is now activated
-  logout: Logout
-  complete_registration: Complete Registration
-  enrollment_complete: Enrollment Complete
-  change_password: Change Password
-  change_password_complete: Your password was successfully updated
-  password_didnt_match: Your current password didnt match what we have on record. Please try again.
-  verify_email_title: Email Verification
-  verify_email_success: Thank-you for verifying your email address.
-  verify_email_error: There was a problem verifying your email address. Please try again.
-  resend_email: Resend Email
-  verification_email_sent: An email to verify your account was sent to you. Please click the link in the email to continue.
+log_in: Log In.
+login_register: Staff Login/Register
+login_title: Staff Login
+invaild_login_error_title: Oh Snap!
+invaild_login_error: There was an issue logging you in. Do you need to <a class=register>create an account</a> or <a class=forgot>reset your password</a>?
+display_name: Full Name
 
+
+first_name: First Name
+last_name: Last Name
+email_address: Email Address
+password: Password
+password_help: Use at least six characters.
+sign_up: Sign Up
+confirm_password: Confirm Password
+current_password: Current Password
+new_password:  New Password
+confirm_new_password: Confirm New Password
+password_match_error: Hmm, your passwords dont match. Try again?
+forgot_password: Forgot Password?
+forgot_password_complete: Please check your email for instructions on resetting your password.
+reset_password: Reset Password
+
+reset_password_header: Reset Password
+reset_password_help: To reset your password, enter a new one below. You will be logged in with your new password.
+reset_password_submit: Reset Password &amp; Login
+reset_password_success: Your password was reset!
+user_register: Create a New Account
+user_pending_title: Thank-you for registering
+user_pending_message: Your account is pending approval
+continue: Continue
+verify_email_subject: Please verify your account for Pup App
+user_activated_title: Thank-you
+user_activated_message: Your account is now activated
+logout: Logout
+complete_registration: Complete Registration
+enrollment_complete: Enrollment Complete
+change_password: Change Password
+change_password_complete: Your password was successfully updated
+password_didnt_match: Your current password didnt match what we have on record. Please try again.
+verify_email_title: Email Verification
+#verify_email_success: Thank-you for verifying your email address.
+#verify_email_error: There was a problem verifying your email address. Please try again.
+resend_email: Resend Email
+verification_email_sent: An email to verify your account was sent to you. Please click the link in the email to continue.
+show_password: Show Password
+generate: Generate
+roles: Roles
+
+
+
+verifying: Verifying...
+verify_email_success: All set, thanks!
+verify_email_error: ${error} Please try again.
+
+sign_up_success: Welcome!
+sign_up_header: Sign Up
+sign_up_with_email: Sign Up with an Email Address
+sign_up_submit: Sign Up
+sign_up_page_footer: Already have an account?.&nbsp;
+
+reset_password_page_footer: Not sure why you're here?
+recover_email_success: Check ${email} for a reset link!
+recover_password_header: Recover Password
+recover_password_help: Enter your email address below to receive a link to reset your password.
+recover_password_submit: Recover Password
+recover_password_footer: Remember your password?
