@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import i18n from 'meteor/universe:i18n';
 import { ListGroup } from 'react-bootstrap';
 import ToggleSwitch from '../ToggleSwitch';
 import BlankState from '../BlankState';
@@ -77,10 +78,10 @@ class UserSettings extends React.Component {
           ) : (
             <BlankState
               icon={{ style: 'solid', symbol: 'cogs' }}
-              title={`No settings to manage ${this.props.isAdmin ? 'for this user' : 'yet'}.`}
-              subtitle={`${
-                this.props.isAdmin ? 'GDPR-specific settings intentionally excluded. ' : ''
-              } When there are settings to manage, they'll appear here.`}
+              title={i18n.__(`${this.props.isAdmin ? 'admin_' : ''}user_settings_blank_title`)}
+              subtitle={i18n.__(
+                `${this.props.isAdmin ? 'admin_' : ''}user_settings_blank_subtitle`,
+              )}
             />
           )}
         </ListGroup>

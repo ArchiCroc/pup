@@ -36,7 +36,7 @@ class Profile extends React.Component {
   };
 
   handleDeleteAccount = () => {
-    if (confirm('Are you sure? This will permanently delete your account and all of its data.')) {
+    if (confirm(i18n.__('confirm_delete_account'))) {
       this.props.removeUser();
     }
   };
@@ -74,9 +74,10 @@ class Profile extends React.Component {
       <div key={user.oAuthProvider} className={`LoggedInWith ${user.oAuthProvider}`}>
         <img src={`/${user.oAuthProvider}.svg`} alt={user.oAuthProvider} />
         <p>
-          {`You're logged in with ${capitalize(user.oAuthProvider)} using the email address ${
-            user.emailAddress
-          }.`}
+          {i18n.__('profile_oauth_user', {
+            provider: capitalize(user.oAuthProvider),
+            email: user.emailAddress,
+          })}
         </p>
         <Button
           className={`btn btn-${user.oAuthProvider}`}
@@ -90,6 +91,9 @@ class Profile extends React.Component {
           target="_blank"
         >
           Edit Profile on {capitalize(user.oAuthProvider)}
+          {i18n.__('profile_oauth_edit_profile', {
+            provider: capitalize(user.oAuthProvider),
+          })}
         </Button>
       </div>
     </div>
@@ -124,7 +128,7 @@ class Profile extends React.Component {
       />
 
       <Button type="submit" bsStyle="success">
-        {i18n.__('save_profile')}
+        {i18n.__('profile_submit')}
       </Button>
     </div>
   );
@@ -160,7 +164,7 @@ class Profile extends React.Component {
           onSelect={(activeTab) => this.setState({ activeTab })}
           id="admin-user-tabs"
         >
-          <Tab eventKey="profile" title="Profile">
+          <Tab eventKey="profile" title={i18n.__('profile')}>
             <Row>
               <Col xs={12} sm={6} md={4}>
                 <AutoForm
@@ -176,21 +180,20 @@ class Profile extends React.Component {
                 <AccountPageFooter>
                   <p>
                     <Button bsStyle="link" className="btn-export" onClick={this.handleExportData}>
-                      Export my data
-                    </Button>{' '}
-                    {'-'}
-                    Download all of your documents as .txt files in a .zip
+                      {i18n.__('export_user_data_button')}
+                    </Button>
+                    {i18n.__('export_user_data_help')}
                   </p>
                 </AccountPageFooter>
                 <AccountPageFooter>
                   <Button bsStyle="danger" onClick={this.handleDeleteAccount}>
-                    Delete My Account
+                    {i18n.__('delete_my_account_button')}
                   </Button>
                 </AccountPageFooter>
               </Col>
             </Row>
           </Tab>
-          <Tab eventKey="settings" title="Settings">
+          <Tab eventKey="settings" title={i18n.__('settings')}>
             <UserSettings settings={data.user.settings} updateUser={updateUser} />
           </Tab>
         </Tabs>
@@ -215,7 +218,7 @@ export default compose(
     options: () => ({
       refetchQueries: [{ query: userQuery }],
       onCompleted: () => {
-        Bert.alert('Profile updated!', 'success');
+        Bert.alert(i18n.__('profile_save_success'), 'success');
       },
       onError: (error) => {
         Bert.alert(error.message, 'danger');
@@ -226,7 +229,7 @@ export default compose(
     name: 'removeUser',
     options: () => ({
       onCompleted: () => {
-        Bert.alert('User removed!', 'success');
+        Bert.alert(i18n.__('user_delete_success'), 'success');
       },
       onError: (error) => {
         Bert.alert(error.message, 'danger');

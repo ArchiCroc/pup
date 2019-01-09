@@ -2,7 +2,7 @@ _namespace: Documents
 
 documents: Documents
 saving: Saving...
-last_edit_time: Last edit was {$timeago}
+last_edit_time: Last edit was ${timeago}
 view_document: View Document
 visibility: Visibility
 public: Public

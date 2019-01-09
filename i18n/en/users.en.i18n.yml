@@ -66,3 +66,24 @@ recover_password_header: Recover Password
 recover_password_help: Enter your email address below to receive a link to reset your password.
 recover_password_submit: Recover Password
 recover_password_footer: Remember your password?
+
+confirm_delete_account: Are you sure? This will permanently delete your account and all of its data.
+profile_oauth_user: You're logged in with ${provider} using the email address ${email}
+profile_oauth_edit_profile:  Edit Profile on ${provider}
+profile_submit: Save Profile
+export_user_data_button: Export my data
+export_user_data_help: " - Download all of your documents as .txt files in a .zip"
+
+profile: Profile
+settings: Settings
+
+delete_my_account_button: Delete My Account
+
+profile_save_success: Profile updated!
+user_delete_success: User removed!
+
+user_settings_blank_title: No settings to manage yet.
+admin_user_settings_blank_title: No settings to manage for this user.
+user_settings_blank_subtitle: When there are settings to manage, they'll appear here.
+admin_user_settings_blank_subtitle: GDPR-specific settings intentionally excluded. 
+
