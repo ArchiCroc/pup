@@ -1,59 +1,77 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { Mutation } from 'react-apollo';
 import { Button } from 'react-bootstrap';
-import { Meteor } from 'meteor/meteor';
+// import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
-import Validation from '../Validation';
+import i18n from 'meteor/universe:i18n';
+import AutoForm from 'uniforms/AutoForm';
+import LongTextField from 'uniforms-bootstrap3/LongTextField';
 import addCommentMutation from '../../mutations/Comments.gql';
 import StyledCommentComposer from './styles';
 
-const CommentComposer = ({ mutate, documentId }) => (
-  <StyledCommentComposer>
-    <header>Add a Comment</header>
-    <Validation
-      rules={{
-        comment: {
-          required: true,
-        },
-      }}
-      messages={{
-        comment: {
-          required: "What's your comment?",
-        },
-      }}
-      submitHandler={(form) => {
-        if (Meteor.userId()) {
-          mutate({
-            variables: {
-              documentId,
-              comment: form.comment.value.trim(),
-            },
-          });
+import CommentSchema from '../../../api/Comments/schemas/comment';
 
-          document.querySelector('[name="comment"]').value = '';
-        } else {
-          Bert.alert('Sorry, you need to be logged in to comment!', 'danger');
-        }
-      }}
-    >
-      <form ref={(form) => (this.form = form)} onSubmit={(event) => event.preventDefault()}>
-        <textarea
-          className="form-control"
-          name="comment"
-          placeholder="Have a comment about this?"
-        />
-        <Button type="submit" bsStyle="success">
-          Share
-        </Button>
-      </form>
-    </Validation>
-  </StyledCommentComposer>
-);
+class CommentComposer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { doc: { documentId: this.props.documentId } };
+  }
 
+  onSubmit = (mutate, form) => {
+    const cleanForm = CommentSchema.clean(form);
+    mutate({
+      variables: cleanForm,
+      // refetchQueries: [{ query: editDocumentQuery }],
+    });
+    this.setState({ doc: { documentId: this.props.documentId, comment: undefined } });
+  };
+
+  render() {
+    return (
+      <StyledCommentComposer>
+        <header>Add a Comment</header>
+        <Mutation
+          ignoreResults
+          mutation={addCommentMutation}
+          onCompleted={() => {
+            // @todo this doesn't seem to be called, is it being dismounted?
+            console.log('mutation is complete');
+            Bert.alert(i18n.__('Documents.comment_success'), 'success');
+            // reset the form
+            this.setState({ doc: { documentId: this.props.documentId, comment: undefined } });
+          }}
+          onError={(error) => {
+            Bert.alert(i18n.__('Documents.comment_error'), 'danger');
+          }}
+        >
+          {(mutate) => (
+            <AutoForm
+              name="comment"
+              model={this.state.doc}
+              schema={CommentSchema}
+              onSubmit={(form) => this.onSubmit(mutate, form)}
+              showInlineError
+              placeholder
+            >
+              <LongTextField
+                name="comment"
+                label={false}
+                placeholder={i18n.__('Documents.comment_placeholder')}
+              />
+
+              <Button type="submit" bsStyle="success">
+                {i18n.__('Documents.comment_submit')}
+              </Button>
+            </AutoForm>
+          )}
+        </Mutation>
+      </StyledCommentComposer>
+    );
+  }
+}
 CommentComposer.propTypes = {
   documentId: PropTypes.string.isRequired,
-  mutate: PropTypes.func.isRequired,
 };
 
-export default graphql(addCommentMutation)(CommentComposer);
+export default CommentComposer;

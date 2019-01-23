@@ -18,3 +18,10 @@ body_help: Markdown Supported
 
 blank_state_title: No document here, friend!
 blank_state_subtitle: Make sure to double check the URL! If it's correct, this is probably a private document.
+
+comment_placeholder: Have a comment about this?
+comment_error: Sorry, you need to be logged in to comment!
+comment_success: Your comment was posted!
+comment_required: What's your comment?
+comment_submit: Share
+

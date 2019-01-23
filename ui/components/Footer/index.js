@@ -19,7 +19,6 @@ const Footer = () => (
     <Grid>
       <p className="pull-left">
         {i18n.__('footer', { copyrightYear: copyrightYear(), productName })}
-        {console.log({ copyrightYear: copyrightYear(), productName })}
       </p>
       <ul className="pull-right">
         <li>

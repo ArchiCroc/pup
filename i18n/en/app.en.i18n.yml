@@ -1,5 +1,4 @@
-
-footer: '&copy; ${copyrightYear} ${productName}'
+footer: '© ${copyrightYear} ${productName}'
 terms_of_service: Terms
 terms_of_service_hidden: ' of Service'
 privacy_policy: Privacy
