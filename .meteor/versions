@@ -110,7 +110,11 @@ themeteorchef:bert@2.2.0
 tmeasday:check-npm-versions@0.3.2
 tracker@1.2.0
 underscore@1.0.10
+<<<<<<< HEAD
 universe:i18n@1.20.1
+=======
+universe:i18n@1.17.0
+>>>>>>> a936134e9a65750e8afa972cacbc538c8cc31f68
 url@1.2.0
 webapp@1.7.2
 webapp-hashing@1.0.9
