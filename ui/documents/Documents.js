@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import Button from 'antd/lib/button';
 import { Link } from 'react-router-dom';
 import { compose, graphql } from 'react-apollo';
 import { timeago } from '../../modules/dates';

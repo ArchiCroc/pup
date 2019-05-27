@@ -19,10 +19,10 @@ import { Random } from 'meteor/random';
 import classnames from 'classnames';
 
 import connectField from 'uniforms/connectField';
-// import ErrorField from 'uniforms-bootstrap3/ErrorField';
-import wrapField from 'uniforms-bootstrap3/wrapField';
+// import ErrorField from 'uniforms-antd/ErrorField';
+import wrapField from 'uniforms-antd/wrapField';
 
-import Icon from '../Icon';
+import Icon from './Icon';
 
 class AdminPasswordField extends React.Component {
   /* constructor(props) {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { compose, graphql } from 'react-apollo';
 import { Breadcrumb, Tab } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { Bert } from 'meteor/themeteorchef:bert';
+import message from 'antd/lib/message';
 import AdminUserProfile from './components/AdminUserProfile';
 import UserSettings from '../users/components/UserSettings';
 import { user as userQuery, users as usersQuery } from '../users/queries/Users.gql';
@@ -96,7 +96,7 @@ export default compose(
     options: ({ match }) => ({
       refetchQueries: [{ query: userQuery, variables: { _id: match.params._id } }],
       onCompleted: () => {
-        Bert.alert('User updated!', 'success');
+        message.success('User updated!');
       },
     }),
   }),
@@ -105,7 +105,7 @@ export default compose(
     options: ({ history }) => ({
       refetchQueries: [{ query: usersQuery }],
       onCompleted: () => {
-        Bert.alert('User deleted!', 'success');
+        message.success('User deleted!');
         history.push('/admin/users');
       },
     }),

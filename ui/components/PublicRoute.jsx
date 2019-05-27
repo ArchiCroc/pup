@@ -2,7 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 
-const Public = ({ loggingIn, authenticated, afterLoginPath, component, path, exact, ...rest }) => (
+const PublicRoute = ({
+  loggingIn,
+  authenticated,
+  afterLoginPath,
+  component,
+  path,
+  exact,
+  ...rest
+}) => (
   <Route
     path={path}
     exact={exact}
@@ -21,14 +29,14 @@ const Public = ({ loggingIn, authenticated, afterLoginPath, component, path, exa
   />
 );
 
-Public.defaultProps = {
+PublicRoute.defaultProps = {
   loggingIn: false,
   path: '',
   exact: false,
   afterLoginPath: null,
 };
 
-Public.propTypes = {
+PublicRoute.propTypes = {
   loggingIn: PropTypes.bool,
   authenticated: PropTypes.bool.isRequired,
   component: PropTypes.func.isRequired,
@@ -37,4 +45,4 @@ Public.propTypes = {
   exact: PropTypes.bool,
 };
 
-export default Public;
+export default PublicRoute;

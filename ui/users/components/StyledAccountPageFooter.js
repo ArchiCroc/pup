@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const AccountPageFooter = styled.div`
+const StyledAccountPageFooter = styled.div`
   margin: 25px 0 0;
   padding-top: 20px;
   border-top: 1px solid var(--gray-lighter);
@@ -10,6 +10,4 @@ const AccountPageFooter = styled.div`
   }
 `;
 
-export default {
-  AccountPageFooter,
-};
+export default StyledAccountPageFooter;

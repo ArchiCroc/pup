@@ -3,22 +3,13 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { graphql } from 'react-apollo';
 import { Meteor } from 'meteor/meteor';
-<<<<<<< HEAD:ui/pages/ViewDocument/index.js
-import SEO from '../../components/SEO';
-import BlankState from '../../components/BlankState';
-import Comments from '../../components/Comments';
-import { document as documentQuery } from '../../queries/Documents.gql';
-import commentAdded from '../../subscriptions/Comments.gql';
-import parseMarkdown from '../../../modules/parseMarkdown';
-import CommentComposer from '../../components/CommentComposer';
-=======
 import SEO from '../components/SEO';
 import BlankState from '../components/BlankState';
 import Comments from './components/Comments';
 import { document as documentQuery } from './queries/Documents.gql';
 import commentAdded from './subscriptions/Comments.gql';
 import parseMarkdown from '../../modules/parseMarkdown';
->>>>>>> a936134e9a65750e8afa972cacbc538c8cc31f68:ui/documents/ViewDocument.js
+import CommentComposer from './components/CommentComposer';
 
 import { StyledViewDocument, DocumentBody } from './StyledViewDocument';
 

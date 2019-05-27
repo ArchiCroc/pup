@@ -1,11 +1,7 @@
 import Uniforms from 'uniforms';
 import SimpleSchema from 'simpl-schema';
 import i18n from 'meteor/universe:i18n';
-<<<<<<< HEAD
 import isString from 'lodash/isString';
-=======
-import { isString } from 'underscore';
->>>>>>> a936134e9a65750e8afa972cacbc538c8cc31f68
 
 const AdminProfileSchema = new SimpleSchema({
   _id: {
@@ -18,23 +14,23 @@ const AdminProfileSchema = new SimpleSchema({
   },
   firstName: {
     type: String,
-    label: () => i18n.__('first_name'),
+    label: () => i18n.__('Users.first_name'),
     max: 100,
     uniforms: {
-      placeholder: () => i18n.__('first_name'),
+      placeholder: () => i18n.__('Users.first_name'),
     },
   },
   lastName: {
     type: String,
-    label: () => i18n.__('last_name'),
+    label: () => i18n.__('Users.last_name'),
     max: 100,
     uniforms: {
-      placeholder: () => i18n.__('last_name'),
+      placeholder: () => i18n.__('Users.last_name'),
     },
   },
   emailAddress: {
     type: String,
-    label: () => i18n.__('email_address'),
+    label: () => i18n.__('Users.email_address'),
     max: 200,
     regEx: SimpleSchema.RegEx.Email,
     autoValue() {
@@ -44,7 +40,7 @@ const AdminProfileSchema = new SimpleSchema({
       return this.value;
     },
     uniforms: {
-      placeholder: () => i18n.__('email_address'),
+      placeholder: () => i18n.__('Users.email_address'),
       type: 'email',
     },
   },
@@ -77,13 +73,13 @@ const AdminProfileSchema = new SimpleSchema({
   */
   password: {
     type: String,
-    label: () => i18n.__('password'),
+    label: () => i18n.__('Users.password'),
     optional: true,
     min: 8,
     max: 100,
     uniforms: {
       type: 'password',
-      placeholder: () => i18n.__('password'),
+      placeholder: () => i18n.__('Users.password'),
     },
   },
 });

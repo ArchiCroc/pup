@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import Button from 'antd/lib/button';
 import Icon from './Icon';
 import Styles from './StyledBlankState';
 

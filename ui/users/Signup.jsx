@@ -1,18 +1,19 @@
 import React from 'react';
 import AutoForm from 'uniforms/AutoForm';
-import AutoField from 'uniforms-bootstrap3/AutoField';
+import AutoField from 'uniforms-antd/AutoField';
 import i18n from 'meteor/universe:i18n';
-import { Row, Col, Button } from 'react-bootstrap';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
+import Button from 'antd/lib/button';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { Bert } from 'meteor/themeteorchef:bert';
-
-import OAuthLoginButtons from '../../components/OAuthLoginButtons';
-import AccountPageFooter from '../../components/AccountPageFooter';
-import StyledSignup from './styles';
-import SignupSchema from '../../../api/Users/schemas/signup';
+import message from 'antd/lib/message';
+import OAuthLoginButtons from './components/OAuthLoginButtons';
+import AccountPageFooter from './components/AccountPageFooter';
+import StyledSignup from './StyledSignup';
+import SignupSchema from '../../api/Users/schemas/signup';
 
 class Signup extends React.Component {
   handleSubmit = (form) => {
@@ -32,11 +33,11 @@ class Signup extends React.Component {
       },
       (error) => {
         if (error) {
-          Bert.alert(error.reason, 'danger');
+          message.danger(error.reason);
         } else {
           Meteor.call('users.sendVerificationEmail');
-          Bert.alert(i18n.__('signup_success'), 'success');
-          history.push('/documents');
+          message.success(i18n.__('Users.sign_up_success'));
+          history.push('/');
         }
       },
     );
@@ -47,14 +48,14 @@ class Signup extends React.Component {
       <StyledSignup>
         <Row>
           <Col xs={12}>
-            <h4 className="page-header">{i18n.__('sign_up_header')}</h4>
+            <h4 className="page-header">{i18n.__('Users.sign_up_header')}</h4>
             <Row>
               <Col xs={12}>
                 <OAuthLoginButtons
                   services={['facebook', 'github', 'google']}
                   emailMessage={{
                     offset: 97,
-                    text: i18n.__('sign_up_with_email'),
+                    text: i18n.__('Users.sign_up_with_email'),
                   }}
                 />
               </Col>
@@ -68,25 +69,26 @@ class Signup extends React.Component {
             >
               <Row>
                 <Col xs={6}>
-                  <AutoField name="firstName" placeholder={i18n.__('first_name')} />
+                  <AutoField name="firstName" placeholder={i18n.__('Users.first_name')} />
                 </Col>
                 <Col xs={6}>
-                  <AutoField name="lastName" placeholder={i18n.__('last_name')} />
+                  <AutoField name="lastName" placeholder={i18n.__('Users.last_name')} />
                 </Col>
               </Row>
-              <AutoField name="emailAddress" placeholder={i18n.__('email_address')} />
+              <AutoField name="emailAddress" placeholder={i18n.__('Users.email_address')} />
               <AutoField
                 name="password"
-                placeholder={i18n.__('password')}
-                help={i18n.__('password_help')}
+                placeholder={i18n.__('Users.password')}
+                help={i18n.__('Users.password_help')}
               />
 
               <Button type="submit" bsStyle="success" block>
-                {i18n.__('sign_up_submit')}
+                {i18n.__('Users.sign_up')}
               </Button>
               <AccountPageFooter>
                 <p>
-                  {i18n.__('sign_up_page_footer')} <Link to="/login">{i18n.__('log_in')}</Link>.
+                  {i18n.__('Users.sign_up_page_footer')}{' '}
+                  <Link to="/login">{i18n.__('Users.log_in')}</Link>.
                 </p>
               </AccountPageFooter>
             </AutoForm>

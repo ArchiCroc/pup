@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const App = styled.div`
+const StyledApp = styled.div`
   visibility: ${(props) => (props.ready && !props.loading ? 'visible' : 'hidden')};
 
   > .container {
@@ -27,6 +27,4 @@ const App = styled.div`
   }
 `;
 
-export default {
-  App,
-};
+export default StyledApp;

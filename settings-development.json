@@ -5,10 +5,10 @@
       "wsUri": "ws://localhost:4001/graphql"
     },
     "productName": "Product Name",
-    "copyrightStartYear": "2018",
+    "copyrightStartYear": "2019",
     "twitterUsername": "product",
     "facebookUsername": "product",
-    "productAddress": "1658 N. Milwaukee Ave., #393, Chicago, IL 60647"
+    "productAddress": "Chicago, IL"
   },
   "private": {
     "MAIL_URL": "",

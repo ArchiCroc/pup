@@ -3,15 +3,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route } from 'react-router-dom';
-import { Grid } from 'react-bootstrap';
+import Grid from '../components/Grid';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
 import Navigation from '../components/Navigation';
 
-import Authenticated from '../components/Authenticated';
-import Authorized from '../components/Authorized';
-import Public from '../components/Public';
+import AuthenticatedRoute from '../components/AuthenticatedRoute';
+import AuthorizedRoute from '../components/AuthorizedRoute';
+import PublicRoute from '../components/PublicRoute';
 
 import Index from '../pages/Index';
 
@@ -45,7 +45,7 @@ import GDPRConsentModal from '../users/components/GDPRConsentModal';
 import withTrackerSsr from '../../modules/withTrackerSsr';
 import getUserName from '../../modules/getUserName';
 
-import Styles from './StyledApp';
+import StyledApp from './StyledApp';
 
 class App extends React.Component {
   state = { ready: false, afterLoginPath: null };
@@ -65,7 +65,7 @@ class App extends React.Component {
   render() {
     const { props, state, setAfterLoginPath } = this;
     return (
-      <Styles.App ready={this.state.ready} loading={props.loading}>
+      <StyledApp ready={this.state.ready} loading={props.loading}>
         {props.authenticated && (
           <VerifyEmailAlert
             userId={props.userId}
@@ -79,7 +79,7 @@ class App extends React.Component {
           <Switch>
             <Route exact name="index" path="/" component={Index} />
 
-            <Authenticated
+            <AuthenticatedRoute
               exact
               path="/documents"
               component={Documents}
@@ -88,7 +88,7 @@ class App extends React.Component {
               {...state}
             />
             <Route exact path="/documents/:_id" component={ViewDocument} />
-            <Authenticated
+            <AuthenticatedRoute
               exact
               path="/documents/:_id/edit"
               component={EditDocument}
@@ -97,7 +97,7 @@ class App extends React.Component {
               {...state}
             />
 
-            <Authenticated
+            <AuthenticatedRoute
               exact
               path="/profile"
               component={Profile}
@@ -105,8 +105,8 @@ class App extends React.Component {
               {...props}
               {...state}
             />
-            <Public path="/signup" component={Signup} {...props} {...state} />
-            <Public path="/login" component={Login} {...props} {...state} />
+            <PublicRoute path="/signup" component={Signup} {...props} {...state} />
+            <PublicRoute path="/login" component={Login} {...props} {...state} />
             <Route
               path="/logout"
               render={(routeProps) => (
@@ -124,7 +124,7 @@ class App extends React.Component {
             <Route name="privacy" path="/privacy" component={Privacy} />
             <Route name="examplePage" path="/example-page" component={ExamplePage} />
 
-            <Authorized
+            <AuthorizedRoute
               exact
               allowedRoles={['admin']}
               path="/admin/users"
@@ -134,7 +134,7 @@ class App extends React.Component {
               {...props}
               {...state}
             />
-            <Authorized
+            <AuthorizedRoute
               exact
               allowedRoles={['admin']}
               path="/admin/user/settings"
@@ -144,7 +144,7 @@ class App extends React.Component {
               {...props}
               {...state}
             />
-            <Authorized
+            <AuthorizedRoute
               exact
               allowedRoles={['admin']}
               path="/admin/users/:_id"
@@ -159,7 +159,7 @@ class App extends React.Component {
           </Switch>
         </Grid>
         <Footer />
-      </Styles.App>
+      </StyledApp>
     );
   }
 }

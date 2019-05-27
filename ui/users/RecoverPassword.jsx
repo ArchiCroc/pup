@@ -1,12 +1,15 @@
 import React from 'react';
 import i18n from 'meteor/universe:i18n';
 import AutoForm from 'uniforms/AutoForm';
-import AutoField from 'uniforms-bootstrap3/AutoField';
-import { Row, Col, Alert, Button } from 'react-bootstrap';
+import AutoField from 'uniforms-antd/AutoField';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
+import Alert from 'antd/lib/alert';
+import Button from 'antd/lib/button';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Accounts } from 'meteor/accounts-base';
-import { Bert } from 'meteor/themeteorchef:bert';
+import message from 'antd/lib/message';
 import AccountPageFooter from './components/AccountPageFooter';
 import StyledRecoverPassword from './StyledRecoverPassword';
 import RecoverPasswordSchema from '../../api/Users/schemas/recover-password';
@@ -20,9 +23,9 @@ class RecoverPassword extends React.Component {
 
     Accounts.forgotPassword({ email }, (error) => {
       if (error) {
-        Bert.alert(error.reason, 'danger');
+        message.danger(error.reason);
       } else {
-        Bert.alert(`Check ${email} for a reset link!`, 'success');
+        message.success(i18n.__('Users.recover_email_success', { email }));
         history.push('/login');
       }
     });
@@ -33,10 +36,8 @@ class RecoverPassword extends React.Component {
       <StyledRecoverPassword>
         <Row>
           <Col xs={12}>
-            <h4 className="page-header">Recover Password</h4>
-            <Alert bsStyle="info">
-              Enter your email address below to receive a link to reset your password.
-            </Alert>
+            <h4 className="page-header">{i18n.__('Users.recover_password_header')}</h4>
+            <Alert type="info" message={i18n.__('Users.recover_password_help')} />
             <AutoForm
               name="recover-password"
               schema={RecoverPasswordSchema}
@@ -44,13 +45,14 @@ class RecoverPassword extends React.Component {
               showInlineError
               placeholder
             >
-              <AutoField name="emailAddress" placeholder={i18n.__('email_address')} />
-              <Button type="submit" bsStyle="success">
-                Recover Password
+              <AutoField name="emailAddress" placeholder={i18n.__('Users.email_address')} />
+              <Button type="submit" type="primary">
+                {i18n.__('Users.recover_password_submit')}
               </Button>
               <AccountPageFooter>
                 <p>
-                  Remember your password? <Link to="/login">Log In</Link>.
+                  {i18n.__('Users.recover_password_footer')}{' '}
+                  <Link to="/login">{i18n.__('Users.log_in')}</Link>.
                 </p>
               </AccountPageFooter>
             </AutoForm>

@@ -4,19 +4,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ControlLabel, DropdownButton, MenuItem } from 'react-bootstrap';
 import AutoForm from 'uniforms/AutoForm';
-import AutoField from 'uniforms-bootstrap3/AutoField';
-import LongTextField from 'uniforms-bootstrap3/LongTextField';
+import AutoField from 'uniforms-antd/AutoField';
+import LongTextField from 'uniforms-antd/LongTextField';
 import i18n from 'meteor/universe:i18n';
 import { Mutation } from 'react-apollo';
-import { Bert } from 'meteor/themeteorchef:bert';
+import message from 'antd/lib/message';
 import Icon from '../../components/Icon';
-<<<<<<< HEAD:ui/components/DocumentEditor/index.js
-import { editDocument as editDocumentQuery, documents } from '../../queries/Documents.gql';
-import { updateDocument, removeDocument, updateDocumentKey } from '../../mutations/Documents.gql';
-=======
 import { editDocument as editDocumentQuery, documents } from '../queries/Documents.gql';
-import { updateDocument, removeDocument } from '../mutations/Documents.gql';
->>>>>>> a936134e9a65750e8afa972cacbc538c8cc31f68:ui/documents/components/DocumentEditor.js
+import { updateDocument, removeDocument, updateDocumentKey } from '../mutations/Documents.gql';
 import delay from '../../../modules/delay';
 import { timeago } from '../../../modules/dates';
 import DocumentSchema from '../../../api/Documents/schemas/document';
@@ -111,7 +106,7 @@ class DocumentEditor extends React.Component {
                 setTimeout(() => this.setState({ saving: false }), 1000);
               }}
               onError={(error) => {
-                Bert.alert(error.message, 'danger');
+                message.danger(error.message);
               }}
             >
               {(mutate) => (
@@ -145,10 +140,10 @@ class DocumentEditor extends React.Component {
               awaitRefetchQueries
               onCompleted={() => {
                 history.push('/documents');
-                Bert.alert('Document removed!', 'success');
+                message.success('Document removed!');
               }}
               onError={(error) => {
-                Bert.alert(error.message, 'danger');
+                message.danger(error.message);
               }}
             >
               {(mutate) => (
@@ -167,7 +162,7 @@ class DocumentEditor extends React.Component {
               setTimeout(() => this.setState({ saving: false }), 1000);
             }}
             onError={(error) => {
-              Bert.alert(error.message, 'danger');
+              message.danger(error.message);
             }}
           >
             {(mutate) => (

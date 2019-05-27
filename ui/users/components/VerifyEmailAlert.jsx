@@ -1,32 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Button } from 'react-bootstrap';
+import Alert from '../../components/Alert';
+import Button from 'antd/lib/button';
 import { graphql } from 'react-apollo';
-import { Bert } from 'meteor/themeteorchef:bert';
+import message from 'antd/lib/message';
 import { sendVerificationEmail as sendVerificationEmailMutation } from '../mutations/Users.gql';
-import Styles from './StyledVerifyEmail';
+import SyledVerifyEmail from './StyledVerifyEmail';
 
 const handleResendVerificationEmail = (emailAddress, sendVerificationEmail) => {
   sendVerificationEmail();
-  Bert.alert(`Check ${emailAddress} for a verification link!`, 'success');
+  message.success(`Check ${emailAddress} for a verification link!`);
 };
 
 const VerifyEmailAlert = ({ userId, emailVerified, emailAddress, sendVerificationEmail }) =>
   userId && !emailVerified ? (
-    <Styles.VerifyEmailAlert>
-      <Alert className="verify-email text-center">
-        <p>
-          Hey friend! Can you <strong>verify your email address</strong> ({emailAddress}) for us?
-          <Button
-            bsStyle="link"
-            onClick={() => handleResendVerificationEmail(emailAddress, sendVerificationEmail)}
-            href="#"
-          >
-            Re-send verification email
-          </Button>
-        </p>
-      </Alert>
-    </Styles.VerifyEmailAlert>
+    <Alert className="verify-email text-center" showIcon banner>
+      Hey friend! Can you <strong>verify your email address</strong> ({emailAddress}) for us?
+      <Button
+        type="default"
+        onClick={() => handleResendVerificationEmail(emailAddress, sendVerificationEmail)}
+        href="#"
+      >
+        Re-send verification email
+      </Button>
+    </Alert>
   ) : null;
 
 VerifyEmailAlert.propTypes = {

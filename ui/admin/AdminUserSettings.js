@@ -4,7 +4,7 @@ import { Button, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { compose, graphql } from 'react-apollo';
 import styled from 'styled-components';
 import { Meteor } from 'meteor/meteor';
-import { Bert } from 'meteor/themeteorchef:bert';
+import message from 'antd/lib/message';
 import AdminUserSettingsModal from './components/AdminUserSettingsModal';
 import BlankState from '../components/BlankState';
 import userSettingsQuery from '../users/queries/UserSettings.gql';
@@ -121,7 +121,7 @@ export default compose(
     options: () => ({
       refetchQueries: [{ query: userSettingsQuery }],
       onCompleted: () => {
-        Bert.alert('Setting added!', 'success');
+        message.success('Setting added!');
       },
     }),
   }),
@@ -130,7 +130,7 @@ export default compose(
     options: () => ({
       refetchQueries: [{ query: userSettingsQuery }],
       onCompleted: () => {
-        Bert.alert('Setting updated!', 'success');
+        message.success('Setting updated!');
       },
     }),
   }),
@@ -139,7 +139,7 @@ export default compose(
     options: () => ({
       refetchQueries: [{ query: userSettingsQuery }],
       onCompleted: () => {
-        Bert.alert('Setting removed!', 'success');
+        message.success('Setting removed!');
       },
     }),
   }),

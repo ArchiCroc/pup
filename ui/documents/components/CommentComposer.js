@@ -1,20 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
-import { Button } from 'react-bootstrap';
+import Button from 'antd/lib/button';
 // import { Meteor } from 'meteor/meteor';
-import { Bert } from 'meteor/themeteorchef:bert';
-<<<<<<< HEAD:ui/components/CommentComposer/index.js
+import message from 'antd/lib/message';
 import i18n from 'meteor/universe:i18n';
 import AutoForm from 'uniforms/AutoForm';
-import LongTextField from 'uniforms-bootstrap3/LongTextField';
-import addCommentMutation from '../../mutations/Comments.gql';
-import StyledCommentComposer from './styles';
-=======
-import Validation from '../../components/Validation';
+import LongTextField from 'uniforms-antd/LongTextField';
 import addCommentMutation from '../mutations/Comments.gql';
 import StyledCommentComposer from './StyledCommentComposer';
->>>>>>> a936134e9a65750e8afa972cacbc538c8cc31f68:ui/documents/components/CommentComposer.js
 
 import CommentSchema from '../../../api/Comments/schemas/comment';
 
@@ -43,12 +37,12 @@ class CommentComposer extends React.Component {
           onCompleted={() => {
             // @todo this doesn't seem to be called, is it being dismounted?
             console.log('mutation is complete');
-            Bert.alert(i18n.__('Documents.comment_success'), 'success');
+            message.success(i18n.__('Documents.comment_success'));
             // reset the form
             this.setState({ doc: { documentId: this.props.documentId, comment: undefined } });
           }}
           onError={(error) => {
-            Bert.alert(i18n.__('Documents.comment_error'), 'danger');
+            message.danger(i18n.__('Documents.comment_error'));
           }}
         >
           {(mutate) => (

@@ -1,11 +1,13 @@
 import React from 'react';
 import AutoForm from 'uniforms/AutoForm';
-import AutoField from 'uniforms-bootstrap3/AutoField';
+import AutoField from 'uniforms-antd/AutoField';
 import i18n from 'meteor/universe:i18n';
-import { Row, Col, Button } from 'react-bootstrap';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
+import Button from 'antd/lib/button';
 import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
-import { Bert } from 'meteor/themeteorchef:bert';
+import message from 'antd/lib/message';
 import OAuthLoginButtons from './components/OAuthLoginButtons';
 import AccountPageFooter from './components/AccountPageFooter';
 import { StyledLogin, LoginPromo } from './StyledLogin';
@@ -16,9 +18,9 @@ class Login extends React.Component {
     const cleanForm = LoginSchema.clean(form);
     Meteor.loginWithPassword(cleanForm.emailAddress, cleanForm.password, (error) => {
       if (error) {
-        Bert.alert(error.reason, 'danger');
+        message.danger(error.reason);
       } else {
-        Bert.alert('Welcome back!', 'success');
+        message.success('Welcome back!');
       }
     });
   };

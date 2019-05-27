@@ -6,7 +6,7 @@ import { Roles } from 'meteor/alanning:roles';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
-class Authorized extends React.Component {
+class AuthorizedRoute extends React.Component {
   state = { authorized: false };
 
   componentDidMount() {
@@ -48,7 +48,7 @@ class Authorized extends React.Component {
   }
 }
 
-Authorized.defaultProps = {
+AuthorizedRoute.defaultProps = {
   allowedGroup: null,
   userId: null,
   exact: false,
@@ -57,7 +57,7 @@ Authorized.defaultProps = {
   pathAfterFailure: '/login',
 };
 
-Authorized.propTypes = {
+AuthorizedRoute.propTypes = {
   loading: PropTypes.bool.isRequired,
   allowedRoles: PropTypes.array.isRequired,
   allowedGroup: PropTypes.string,
@@ -83,5 +83,5 @@ export default withRouter(
             userIsInRoles: Roles.userIsInRole(Meteor.userId(), allowedRoles, allowedGroup),
           }
         : {},
-  )(Authorized),
+  )(AuthorizedRoute),
 );

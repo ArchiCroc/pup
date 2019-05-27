@@ -1,11 +1,7 @@
 import Uniforms from 'uniforms';
 import SimpleSchema from 'simpl-schema';
 import i18n from 'meteor/universe:i18n';
-<<<<<<< HEAD
 import isString from 'lodash/isString';
-=======
-import _ from 'lodash';
->>>>>>> a936134e9a65750e8afa972cacbc538c8cc31f68
 
 const ProfileSchema = new SimpleSchema({
   _id: {
@@ -18,43 +14,39 @@ const ProfileSchema = new SimpleSchema({
   },
   firstName: {
     type: String,
-    label: () => i18n.__('first_name'),
+    label: () => i18n.__('Users.first_name'),
     max: 100,
     uniforms: {
-      placeholder: () => i18n.__('first_name'),
+      placeholder: () => i18n.__('Users.first_name'),
     },
   },
   lastName: {
     type: String,
-    label: () => i18n.__('last_name'),
+    label: () => i18n.__('Users.last_name'),
     max: 100,
     uniforms: {
-      placeholder: () => i18n.__('last_name'),
+      placeholder: () => i18n.__('Users.last_name'),
     },
   },
   emailAddress: {
     type: String,
-    label: () => i18n.__('email_address'),
+    label: () => i18n.__('Users.email_address'),
     max: 200,
     regEx: SimpleSchema.RegEx.Email,
     autoValue() {
-<<<<<<< HEAD
       if (this.value && isString(this.value)) {
-=======
-      if (this.value && _.isString(this.value)) {
->>>>>>> a936134e9a65750e8afa972cacbc538c8cc31f68
         return this.value.toLowerCase();
       }
       return this.value;
     },
     uniforms: {
-      placeholder: () => i18n.__('email_address'),
+      placeholder: () => i18n.__('Users.email_address'),
       type: 'email',
     },
   },
   currentPassword: {
     type: String,
-    label: () => i18n.__('current_password'),
+    label: () => i18n.__('Users.current_password'),
     optional: true,
     min: 8,
     max: 100,
@@ -79,7 +71,7 @@ const ProfileSchema = new SimpleSchema({
   },
   newPassword: {
     type: String,
-    label: () => i18n.__('new_password'),
+    label: () => i18n.__('Users.new_password'),
     optional: true,
     uniforms: {
       type: 'password',
@@ -107,9 +99,9 @@ const ProfileSchema = new SimpleSchema({
 SimpleSchema.setDefaultMessages({
   messages: {
     en: {
-      alreadyRegistered: 'Email Address Already Exists',
-      missingNewPassword: 'Need your new password if changing.',
-      missingCurrentPassword: 'Need your current password if changing.',
+      alreadyRegistered: i18n.__('email_address_already_exists'),
+      missingNewPassword: i18n.__('missing_new_password'),
+      missingCurrentPassword: i18n.__('missing_current_password'),
     },
   },
   //  noMatch: "Password Doesn't Match",

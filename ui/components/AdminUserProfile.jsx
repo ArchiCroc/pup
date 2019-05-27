@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import AutoForm from 'uniforms/AutoForm';
-import AutoField from 'uniforms-bootstrap3/AutoField';
+import AutoField from 'uniforms-antd/AutoField';
 import i18n from 'meteor/universe:i18n';
 import {
   Row,
@@ -19,8 +19,8 @@ import { capitalize } from 'lodash';
 // import InputHint from '../InputHint';
 // import Icon from '../Icon';
 // import Validation from '../Validation';
-import AdminPasswordField from '../AdminPasswordField';
-import AdminProfileSchema from '../../../api/Users/schemas/admin-profile';
+import AdminPasswordField from './AdminPasswordField';
+import AdminProfileSchema from '../../api/Users/schemas/admin-profile';
 
 class AdminUserProfile extends React.Component {
   constructor(props) {

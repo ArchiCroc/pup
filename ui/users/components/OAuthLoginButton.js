@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
-import { Bert } from 'meteor/themeteorchef:bert';
+import message from 'antd/lib/message';
 import Icon from '../../components/Icon';
 import Styles from './StyledOAuthLoginButton';
 
@@ -59,7 +59,7 @@ const OAuthLoginButton = ({ service, callback }) => (
 
 OAuthLoginButton.defaultProps = {
   callback: (error) => {
-    if (error) Bert.alert(error.message, 'danger');
+    if (error) message.danger(error.message);
   },
 };
 

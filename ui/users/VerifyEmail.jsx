@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { graphql } from 'react-apollo';
-import { Alert } from 'react-bootstrap';
+import Alert from 'antd/lib/alert';
 import { Accounts } from 'meteor/accounts-base';
-import { Bert } from 'meteor/themeteorchef:bert';
+import message from 'antd/lib/message';
 import { sendWelcomeEmail as sendWelcomeEmailMutation } from './mutations/Users.gql';
 
 class VerifyEmail extends React.Component {
@@ -14,13 +14,13 @@ class VerifyEmail extends React.Component {
     const { match, history } = this.props;
     Accounts.verifyEmail(match.params.token, (error) => {
       if (error) {
-        Bert.alert(error.reason, 'danger');
-        this.setState({ error: i18n.__('verify_email_error', { error: error.reason }) });
+        message.danger(error.reason);
+        this.setState({ error: i18n.__('Users.verify_email_error', { error: error.reason }) });
       } else {
         setTimeout(() => {
-          Bert.alert(i18n.__('verify_email_success'), 'success');
+          message.success(i18n.__('Users.verify_email_success'));
           this.props.sendWelcomeEmail();
-          history.push('/documents');
+          history.push('/');
         }, 1500);
       }
     });
@@ -29,8 +29,8 @@ class VerifyEmail extends React.Component {
   render() {
     return (
       <div className="VerifyEmail">
-        <Alert bsStyle={!this.state.error ? 'info' : 'danger'}>
-          {!this.state.error ? i18n.__('verifying') : this.state.error}
+        <Alert type={!this.state.error ? 'info' : 'danger'}>
+          {!this.state.error ? i18n.__('Users.verifying') : this.state.error}
         </Alert>
       </div>
     );

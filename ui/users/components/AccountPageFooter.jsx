@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Styles from './StyledAccountPageFooter';
+import StyledAccountPageFooter from './StyledAccountPageFooter';
 
 const AccountPageFooter = ({ children }) => (
-  <Styles.AccountPageFooter>{children}</Styles.AccountPageFooter>
+  <StyledAccountPageFooter>{children}</StyledAccountPageFooter>
 );
 
 AccountPageFooter.propTypes = {

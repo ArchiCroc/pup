@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from './Icon';
-import Styles from './StyledSearchInput';
+import StyledSearchInput from './StyledSearchInput';
 
 const SearchInput = ({ placeholder, value, onChange }) => (
-  <Styles.SearchInput className="SearchInput">
+  <StyledSearchInput className="SearchInput">
     <Icon iconStyle="solid" icon="search" />
     <input
       type="text"
@@ -14,7 +14,7 @@ const SearchInput = ({ placeholder, value, onChange }) => (
       value={value}
       onChange={onChange}
     />
-  </Styles.SearchInput>
+  </StyledSearchInput>
 );
 
 SearchInput.defaultProps = {

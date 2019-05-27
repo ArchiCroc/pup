@@ -1,3 +1,4 @@
+_namespace: Users
 
 log_in: Log In.
 login_register: Staff Login/Register
@@ -5,7 +6,6 @@ login_title: Staff Login
 invaild_login_error_title: Oh Snap!
 invaild_login_error: There was an issue logging you in. Do you need to <a class=register>create an account</a> or <a class=forgot>reset your password</a>?
 display_name: Full Name
-
 
 first_name: First Name
 last_name: Last Name
@@ -15,17 +15,19 @@ password_help: Use at least six characters.
 sign_up: Sign Up
 confirm_password: Confirm Password
 current_password: Current Password
-new_password:  New Password
+new_password: New Password
 confirm_new_password: Confirm New Password
 password_match_error: Hmm, your passwords dont match. Try again?
 forgot_password: Forgot Password?
 forgot_password_complete: Please check your email for instructions on resetting your password.
-reset_password: Reset Password
 
+reset_password: Reset Password
 reset_password_header: Reset Password
 reset_password_help: To reset your password, enter a new one below. You will be logged in with your new password.
 reset_password_submit: Reset Password &amp; Login
 reset_password_success: Your password was reset!
+reset_password_footer: Not sure why you're here?
+
 user_register: Create a New Account
 user_pending_title: Thank-you for registering
 user_pending_message: Your account is pending approval
@@ -48,8 +50,6 @@ show_password: Show Password
 generate: Generate
 roles: Roles
 
-
-
 verifying: Verifying...
 verify_email_success: All set, thanks!
 verify_email_error: ${error} Please try again.
@@ -60,7 +60,10 @@ sign_up_with_email: Sign Up with an Email Address
 sign_up_submit: Sign Up
 sign_up_page_footer: Already have an account?.&nbsp;
 
-reset_password_page_footer: Not sure why you're here?
+email_address_already_exists: Email Address Already Exists
+missing_new_password: Need your new password if changing.
+missing_current_password: Need your current password if changing.
+
 recover_email_success: Check ${email} for a reset link!
 recover_password_header: Recover Password
 recover_password_help: Enter your email address below to receive a link to reset your password.
@@ -69,7 +72,7 @@ recover_password_footer: Remember your password?
 
 confirm_delete_account: Are you sure? This will permanently delete your account and all of its data.
 profile_oauth_user: You're logged in with ${provider} using the email address ${email}
-profile_oauth_edit_profile:  Edit Profile on ${provider}
+profile_oauth_edit_profile: Edit Profile on ${provider}
 profile_submit: Save Profile
 export_user_data_button: Export my data
 export_user_data_help: " - Download all of your documents as .txt files in a .zip"
@@ -85,4 +88,4 @@ user_delete_success: User removed!
 user_settings_blank_title: No settings to manage yet.
 admin_user_settings_blank_title: No settings to manage for this user.
 user_settings_blank_subtitle: When there are settings to manage, they'll appear here.
-admin_user_settings_blank_subtitle: GDPR-specific settings intentionally excluded. 
+admin_user_settings_blank_subtitle: GDPR-specific settings intentionally excluded.

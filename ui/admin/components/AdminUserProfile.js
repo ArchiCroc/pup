@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import AutoForm from 'uniforms/AutoForm';
-import AutoField from 'uniforms-bootstrap3/AutoField';
+import AutoField from 'uniforms-antd/AutoField';
 import i18n from 'meteor/universe:i18n';
 import {
   Row,

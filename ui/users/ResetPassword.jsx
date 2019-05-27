@@ -2,11 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import AutoForm from 'uniforms/AutoForm';
-import AutoField from 'uniforms-bootstrap3/AutoField';
-import { Row, Col, Alert, Button } from 'react-bootstrap';
+import AutoField from 'uniforms-antd/AutoField';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
+import Alert from 'antd/lib/alert';
+import Button from 'antd/lib/button';
 import { Link } from 'react-router-dom';
 import { Accounts } from 'meteor/accounts-base';
-import { Bert } from 'meteor/themeteorchef:bert';
+import message from 'antd/lib/message';
 import AccountPageFooter from './components/AccountPageFooter';
 import StyledResetPassword from './StyledResetPassword';
 import ResetPasswordSchema from '../../api/Users/schemas/reset-password';
@@ -20,9 +23,9 @@ class ResetPassword extends React.Component {
 
     Accounts.resetPassword(token, cleanForm.newPassword, (error) => {
       if (error) {
-        Bert.alert(error.reason, 'danger');
+        message.danger(error.reason);
       } else {
-        history.push('/documents');
+        history.push('/');
       }
     });
   };
@@ -32,11 +35,8 @@ class ResetPassword extends React.Component {
       <StyledResetPassword>
         <Row>
           <Col xs={12}>
-            <h4 className="page-header">Reset Password</h4>
-            <Alert bsStyle="info">
-              To reset your password, enter a new one below. You will be logged in with your new
-              password.
-            </Alert>
+            <h4 className="page-header">{i18n.__('Users.reset_password_header')}</h4>
+            <Alert type="info" message={i18n.__('Users.reset_password_help')} />
             <AutoForm
               name="reset-password"
               schema={ResetPasswordSchema}
@@ -44,15 +44,19 @@ class ResetPassword extends React.Component {
               showInlineError
               placeholder
             >
-              <AutoField name="newPassword" placeholder={i18n.__('new_password')} />
-              <AutoField name="repeatNewPassword" placeholder={i18n.__('confirm_new_password')} />
-              <Button type="submit" bsStyle="success">
-                Reset Password &amp; Login
+              <AutoField name="newPassword" placeholder={i18n.__('Users.new_password')} />
+              <AutoField
+                name="repeatNewPassword"
+                placeholder={i18n.__('Users.confirm_new_password')}
+              />
+              <Button htmlType="submit" type="primary">
+                {i18n.__('Users.reset_password_submit')}
               </Button>
 
               <AccountPageFooter>
                 <p>
-                  {"Not sure why you're here?"} <Link to="/login">Log In</Link>.
+                  {i18n.__('Users.reset_password_footer')}{' '}
+                  <Link to="/login">{i18n.__('Users.log_in')}</Link>.
                 </p>
               </AccountPageFooter>
             </AutoForm>

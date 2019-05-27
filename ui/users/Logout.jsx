@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import Icon from '../components/Icon';
-import Styles from './StyledLogout';
+import StyledLogout from './StyledLogout';
 
 const { productName, twitterUsername, facebookUsername } = Meteor.settings.public;
 
@@ -13,7 +13,7 @@ class Logout extends React.Component {
 
   render() {
     return (
-      <Styles.Logout>
+      <StyledLogout>
         <img
           src="https://s3-us-west-2.amazonaws.com/cleverbeagle-assets/graphics/email-icon.png"
           alt="Clever Beagle"
@@ -36,7 +36,7 @@ class Logout extends React.Component {
             </a>
           </li>
         </ul>
-      </Styles.Logout>
+      </StyledLogout>
     );
   }
 }
