@@ -9,6 +9,7 @@ import Comments from '../../components/Comments';
 import { document as documentQuery } from '../../queries/Documents.gql';
 import commentAdded from '../../subscriptions/Comments.gql';
 import parseMarkdown from '../../../modules/parseMarkdown';
+import CommentComposer from '../../components/CommentComposer';
 
 import { StyledViewDocument, DocumentBody } from './styles';
 
@@ -43,6 +44,7 @@ class ViewDocument extends React.Component {
               />
             </React.Fragment>
           </StyledViewDocument>
+          {/* <CommentComposer documentId={data.document && data.document._id} /> */}
           <Comments
             subscribeToNewComments={() =>
               data.subscribeToMore({
