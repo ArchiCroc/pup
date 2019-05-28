@@ -24,7 +24,7 @@ onPageLoad(async (sink) => {
   const app = stylesheet.collectStyles(
     <ApolloProvider client={apolloClient}>
       <StaticRouter location={sink.request.url} context={{}}>
-        <App />
+        <App location={sink.request.url} />
       </StaticRouter>
     </ApolloProvider>,
   );

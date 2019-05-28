@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
 const StyledFooter = styled.div`
-  position: absolute;
+  /* position: absolute;
   bottom: 0;
   width: 100%;
   height: 60px;
   background-color: #fff;
   border-top: 1px solid var(--gray-lighter);
-  padding: 20px 0;
+  padding: 20px 0; */
 
   p {
     color: var(--gray-light);

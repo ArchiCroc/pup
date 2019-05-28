@@ -131,7 +131,7 @@ class Profile extends React.Component {
         placeholder={i18n.__('Users.new_password')}
       />
 
-      <Button type="submit" bsStyle="success">
+      <Button type="submit" type="primary">
         {i18n.__('Users.profile_submit')}
       </Button>
     </div>
@@ -183,14 +183,14 @@ class Profile extends React.Component {
 
                 <AccountPageFooter>
                   <p>
-                    <Button bsStyle="link" className="btn-export" onClick={this.handleExportData}>
+                    <Button type="link" className="btn-export" onClick={this.handleExportData}>
                       {i18n.__('Users.export_user_data_button')}
                     </Button>
                     {i18n.__('Users.export_user_data_help')}
                   </p>
                 </AccountPageFooter>
                 <AccountPageFooter>
-                  <Button bsStyle="danger" onClick={this.handleDeleteAccount}>
+                  <Button type="danger" onClick={this.handleDeleteAccount}>
                     {i18n.__('Users.delete_my_account_button')}
                   </Button>
                 </AccountPageFooter>

@@ -86,7 +86,7 @@ class DocumentEditor extends React.Component {
             )}
           </p>
           <DropdownButton
-            bsStyle="default"
+            type="default"
             title={
               <span>
                 <Icon iconStyle="solid" icon="gear" />

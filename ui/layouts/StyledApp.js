@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 const StyledApp = styled.div`
   visibility: ${(props) => (props.ready && !props.loading ? 'visible' : 'hidden')};
+  padding-bottom: 60px;
 
   > .container {
     margin-bottom: 80px;
@@ -24,6 +25,23 @@ const StyledApp = styled.div`
     .btn {
       padding: 0;
     }
+  }
+  .layout {
+    height: 100%;
+  }
+
+  .content {
+    padding: 10px 0;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #000;
+    border-top: 1px solid var(--gray-lighter);
+    /* padding: 20px 0; */
   }
 `;
 

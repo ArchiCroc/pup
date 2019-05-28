@@ -46,7 +46,7 @@ class RecoverPassword extends React.Component {
               placeholder
             >
               <AutoField name="emailAddress" placeholder={i18n.__('Users.email_address')} />
-              <Button type="submit" type="primary">
+              <Button htmlType="submit" type="primary">
                 {i18n.__('Users.recover_password_submit')}
               </Button>
               <AccountPageFooter>

@@ -27,6 +27,7 @@ const GlobalStyle = createGlobalStyle`
   html {
     position: relative;
     min-height: 100%;
+    height: auto;
   }
 
   body {

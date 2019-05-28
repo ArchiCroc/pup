@@ -188,7 +188,7 @@ class AdminUserSettingsModal extends React.Component {
               </Row>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="submit" bsStyle="success">
+              <Button type="submit" type="primary">
                 {setting ? 'Save' : 'Add'} Setting
               </Button>
             </Modal.Footer>

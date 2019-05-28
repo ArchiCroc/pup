@@ -160,11 +160,11 @@ class AdminUserProfile extends React.Component {
                       </Col>
                     </Row>
                   )}
-                <Button type="submit" bsStyle="success">
+                <Button type="submit" type="primary">
                   {user ? 'Save Changes' : 'Create User'}
                 </Button>
                 {user && (
-                  <Button bsStyle="danger" className="pull-right" onClick={this.handleDeleteUser}>
+                  <Button type="danger" className="pull-right" onClick={this.handleDeleteUser}>
                     Delete User
                   </Button>
                 )}

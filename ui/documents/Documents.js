@@ -12,7 +12,7 @@ import { addDocument } from './mutations/Documents.gql';
 const Documents = ({ data, mutate }) => (
   <StyledDocuments>
     <header className="clearfix">
-      <Button bsStyle="success" onClick={mutate}>
+      <Button type="primary" onClick={mutate}>
         New Document
       </Button>
     </header>

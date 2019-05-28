@@ -53,9 +53,10 @@ const OAuthLoginButton = styled.button`
     outline: 0;
   }
 
-  &:not(:last-child) {
-    margin-top: 10px;
-  }
+  /* &:not(:last-child) {
+    
+  } */
+  margin-top: 10px;
 `;
 
 export default {

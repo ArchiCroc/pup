@@ -69,7 +69,7 @@ class GDPRConsentModal extends React.Component {
           </Modal.Body>
           <Modal.Footer>
             <Button
-              bsStyle="success"
+              type="primary"
               onClick={() => {
                 this.handleSaveSettings();
                 this.setState({ show: false });

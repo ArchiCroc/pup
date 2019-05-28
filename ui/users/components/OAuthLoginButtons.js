@@ -3,25 +3,21 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import OAuthLoginButton from './OAuthLoginButton';
 import oAuthServicesQuery from '../queries/OAuth.gql';
-import Styles from './StyledOAuthLoginButtons';
+import StyledOAuthLoginButtons from './StyledOAuthLoginButtons';
 
-const OAuthLoginButtons = ({ services, emailMessage }) =>
+const OAuthLoginButtons = ({ services }) =>
   services.length ? (
-    <Styles.OAuthLoginButtons emailMessage={emailMessage}>
+    <StyledOAuthLoginButtons>
       {services.map((service) => (
         <OAuthLoginButton key={service} service={service} />
       ))}
-      {emailMessage && (
-        <Styles.EmailMessage offset={emailMessage.offset}>{emailMessage.text}</Styles.EmailMessage>
-      )}
-    </Styles.OAuthLoginButtons>
+    </StyledOAuthLoginButtons>
   ) : (
     <div />
   );
 
 OAuthLoginButtons.propTypes = {
   services: PropTypes.array.isRequired,
-  emailMessage: PropTypes.object.isRequired,
 };
 
 export default graphql(oAuthServicesQuery, {

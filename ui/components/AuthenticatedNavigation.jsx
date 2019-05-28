@@ -1,53 +1,64 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import i18n from 'meteor/universe:i18n';
+import { withRouter, Link } from 'react-router-dom';
+// import { LinkContainer } from 'react-router-bootstrap';
+import Menu from 'antd/lib/menu';
 import { Roles } from 'meteor/alanning:roles';
 
-const AuthenticatedNavigation = ({ name, history, userId }) => (
-  <div>
-    <Nav>
-      <LinkContainer to="/documents">
-        <NavItem eventKey={1} href="/documents">
-          Documents
-        </NavItem>
-      </LinkContainer>
+const AuthenticatedNavigation = ({ name, history, userId, location = { pathname: '' } }) => (
+  <React.Fragment>
+    <Menu
+      theme="dark"
+      mode="horizontal"
+      defaultSelectedKeys={[location.pathname]}
+      style={{ float: 'left', lineHeight: '64px' }}
+    >
+      <Menu.Item key="/documents">
+        {i18n.__('Documents.document_plural')}
+        <Link to="/project-requests" />
+      </Menu.Item>
+
       {Roles.userIsInRole(userId, 'admin') && (
-        <NavDropdown eventKey={2} title="Admin" id="admin-nav-dropdown">
-          <LinkContainer exact to="/admin/users">
-            <NavItem eventKey={2.1} href="/admin/users">
-              Users
-            </NavItem>
-          </LinkContainer>
-          <LinkContainer exact to="/admin/users/settings">
-            <NavItem eventKey={2.2} href="/admin/users/settings">
-              User Settings
-            </NavItem>
-          </LinkContainer>
-        </NavDropdown>
+        <Menu.SubMenu title={i18n.__('admin')}>
+          <Menu.Item key="/admin/users">
+            {i18n.__('user_plural')}
+
+            <Link to="/admin/users" />
+          </Menu.Item>
+          <Menu.Item key="/admin/users/settings">
+            {i18n.__('user_settings')}
+            <Link to="/admin/users/settings" />
+          </Menu.Item>
+        </Menu.SubMenu>
       )}
-    </Nav>
-    <Nav pullRight>
-      <NavDropdown eventKey={2} title={name} data-test="user-nav-dropdown" id="user-nav-dropdown">
-        <LinkContainer to="/profile">
-          <NavItem eventKey={2.1} href="/profile">
-            Profile
-          </NavItem>
-        </LinkContainer>
-        <MenuItem divider />
-        <MenuItem eventKey={2.2} onClick={() => history.push('/logout')}>
-          Logout
-        </MenuItem>
-      </NavDropdown>
-    </Nav>
-  </div>
+    </Menu>
+
+    <Menu
+      theme="dark"
+      mode="horizontal"
+      defaultSelectedKeys={[location.pathname]}
+      style={{ float: 'right', lineHeight: '64px' }}
+    >
+      <Menu.SubMenu title={name}>
+        <Menu.Item key="/profile">
+          {i18n.__('profile')}
+          <Link to="/profile" />
+        </Menu.Item>
+        <Menu.Item key="/logout">
+          {i18n.__('logout')}
+          <Link to="/logout" />
+        </Menu.Item>
+      </Menu.SubMenu>
+    </Menu>
+  </React.Fragment>
 );
 
 AuthenticatedNavigation.propTypes = {
   name: PropTypes.string.isRequired,
   history: PropTypes.object.isRequired,
   userId: PropTypes.string.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 export default withRouter(AuthenticatedNavigation);

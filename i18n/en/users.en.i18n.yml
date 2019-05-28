@@ -1,8 +1,10 @@
 _namespace: Users
 
-log_in: Log In.
+log_in: Log In
 login_register: Staff Login/Register
 login_title: Staff Login
+login_with_email: Log In with an Email Address 
+login_footer: Don't have an account?
 invaild_login_error_title: Oh Snap!
 invaild_login_error: There was an issue logging you in. Do you need to <a class=register>create an account</a> or <a class=forgot>reset your password</a>?
 display_name: Full Name

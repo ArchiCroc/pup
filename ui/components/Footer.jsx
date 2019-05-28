@@ -1,8 +1,9 @@
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
-import { Grid } from 'react-bootstrap';
-import { Meteor } from 'meteor/meteor';
+import Grid from './Grid';
+
 import { year } from '../../modules/dates';
 import StyledFooter from './StyledFooter';
 

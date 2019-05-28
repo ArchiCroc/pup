@@ -5,6 +5,7 @@ import i18n from 'meteor/universe:i18n';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Button from 'antd/lib/button';
+import Divider from 'antd/lib/divider';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
@@ -47,19 +48,10 @@ class Signup extends React.Component {
     return (
       <StyledSignup>
         <Row>
-          <Col xs={12}>
+          <Col xs={24}>
             <h4 className="page-header">{i18n.__('Users.sign_up_header')}</h4>
-            <Row>
-              <Col xs={12}>
-                <OAuthLoginButtons
-                  services={['facebook', 'github', 'google']}
-                  emailMessage={{
-                    offset: 97,
-                    text: i18n.__('Users.sign_up_with_email'),
-                  }}
-                />
-              </Col>
-            </Row>
+            <OAuthLoginButtons services={['facebook', 'github', 'google']} />
+            <Divider>{i18n.__('Users.sign_up_with_email')}</Divider>
             <AutoForm
               name="signup"
               schema={SignupSchema}
@@ -67,11 +59,11 @@ class Signup extends React.Component {
               showInlineError
               placeholder
             >
-              <Row>
-                <Col xs={6}>
+              <Row gutter={16}>
+                <Col xs={12}>
                   <AutoField name="firstName" placeholder={i18n.__('Users.first_name')} />
                 </Col>
-                <Col xs={6}>
+                <Col xs={12}>
                   <AutoField name="lastName" placeholder={i18n.__('Users.last_name')} />
                 </Col>
               </Row>
@@ -82,7 +74,7 @@ class Signup extends React.Component {
                 help={i18n.__('Users.password_help')}
               />
 
-              <Button type="submit" bsStyle="success" block>
+              <Button htmlType="submit" type="primary" block>
                 {i18n.__('Users.sign_up')}
               </Button>
               <AccountPageFooter>

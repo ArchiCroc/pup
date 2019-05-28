@@ -60,7 +60,7 @@ class CommentComposer extends React.Component {
                 placeholder={i18n.__('Documents.comment_placeholder')}
               />
 
-              <Button type="submit" bsStyle="success">
+              <Button type="submit" type="primary">
                 {i18n.__('Documents.comment_submit')}
               </Button>
             </AutoForm>
