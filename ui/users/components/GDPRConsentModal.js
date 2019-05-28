@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
+import i18n from 'meteor/universe:i18n';
+import modal from 'antd/lib/modal';
+import Button from 'antd/lib/button';
 import { compose, graphql } from 'react-apollo';
 import UserSettings from './UserSettings';
 import { userSettings as userSettingsQuery } from '../queries/Users.gql';
@@ -44,43 +47,38 @@ class GDPRConsentModal extends React.Component {
     }
   };
 
-  render() {
+  componentDidMount() {
+    if (this.state.show) {
+      modal.info({
+        title: i18n.__('gdpr_consent_header'),
+        content: this.renderModal(),
+        onOk: () => {
+          this.handleSaveSettings();
+          this.setState({ show: false });
+        },
+      });
+    }
+  }
+
+  renderModal() {
     const { data, updateUser } = this.props;
     return (
-      <div className="GDPRConsentModal">
-        <Styles.GDPRConsentModal
-          backdrop="static"
-          show={this.state.show}
-          onHide={() => this.setState({ show: false })}
-        >
-          <Modal.Header>
-            <h4>GDPR Consent</h4>
-          </Modal.Header>
-          <Modal.Body>
-            <p>
-              In cooperation with the European Union&apos;s (EU){' '}
-              <a href="https://www.eugdpr.org/" target="_blank" rel="noopener noreferrer">
-                General Data Protection Regulation
-              </a>{' '}
-              (GDPR), we need to obtain your consent for how we make use of your data. Please review
-              each of the settings below to customize your experience.
-            </p>
-            <UserSettings settings={data.user && data.user.settings} updateUser={updateUser} />
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              type="primary"
-              onClick={() => {
-                this.handleSaveSettings();
-                this.setState({ show: false });
-              }}
-            >
-              Save Settings
-            </Button>
-          </Modal.Footer>
-        </Styles.GDPRConsentModal>
-      </div>
+      <React.Fragment>
+        <p>
+          In cooperation with the European Union&apos;s (EU){' '}
+          <a href="https://www.eugdpr.org/" target="_blank" rel="noopener noreferrer">
+            General Data Protection Regulation
+          </a>{' '}
+          (GDPR), we need to obtain your consent for how we make use of your data. Please review
+          each of the settings below to customize your experience.
+        </p>
+        <UserSettings settings={data.user && data.user.settings} updateUser={updateUser} />
+      </React.Fragment>
     );
+  }
+
+  render() {
+    return <div className="GDPRConsentModal" />;
   }
 }
 

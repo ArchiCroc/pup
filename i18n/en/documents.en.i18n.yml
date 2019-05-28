@@ -1,5 +1,7 @@
 _namespace: Documents
 
+document: Document
+document_plural: Documents
 documents: Documents
 saving: Saving...
 last_edit_time: Last edit was ${timeago}

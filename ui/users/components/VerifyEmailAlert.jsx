@@ -17,9 +17,8 @@ const VerifyEmailAlert = ({ userId, emailVerified, emailAddress, sendVerificatio
     <Alert className="verify-email text-center" showIcon banner>
       Hey friend! Can you <strong>verify your email address</strong> ({emailAddress}) for us?
       <Button
-        type="default"
+        type="link"
         onClick={() => handleResendVerificationEmail(emailAddress, sendVerificationEmail)}
-        href="#"
       >
         Re-send verification email
       </Button>

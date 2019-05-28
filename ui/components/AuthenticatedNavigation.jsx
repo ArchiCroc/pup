@@ -22,12 +22,12 @@ const AuthenticatedNavigation = ({ name, history, userId, location = { pathname:
       {Roles.userIsInRole(userId, 'admin') && (
         <Menu.SubMenu title={i18n.__('admin')}>
           <Menu.Item key="/admin/users">
-            {i18n.__('user_plural')}
+            {i18n.__('Users.user_plural')}
 
             <Link to="/admin/users" />
           </Menu.Item>
           <Menu.Item key="/admin/users/settings">
-            {i18n.__('user_settings')}
+            {i18n.__('Users.user_settings')}
             <Link to="/admin/users/settings" />
           </Menu.Item>
         </Menu.SubMenu>

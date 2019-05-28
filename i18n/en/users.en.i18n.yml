@@ -1,12 +1,20 @@
 _namespace: Users
 
+user: User
+user_plural: Users
+
 log_in: Log In
 login_register: Staff Login/Register
-login_title: Staff Login
+login_header: Log in
 login_with_email: Log In with an Email Address 
 login_footer: Don't have an account?
 invaild_login_error_title: Oh Snap!
 invaild_login_error: There was an issue logging you in. Do you need to <a class=register>create an account</a> or <a class=forgot>reset your password</a>?
+login_success: Welcome back!
+login_promo_header: Introducing the Sample Application
+login_promo_body: Test out how it works
+
+
 display_name: Full Name
 
 first_name: First Name
@@ -81,6 +89,7 @@ export_user_data_help: " - Download all of your documents as .txt files in a .zi
 
 profile: Profile
 settings: Settings
+user_settings: User Settings
 
 delete_my_account_button: Delete My Account
 
@@ -91,3 +100,5 @@ user_settings_blank_title: No settings to manage yet.
 admin_user_settings_blank_title: No settings to manage for this user.
 user_settings_blank_subtitle: When there are settings to manage, they'll appear here.
 admin_user_settings_blank_subtitle: GDPR-specific settings intentionally excluded.
+
+gdpr_consent_header: GDPR Consent

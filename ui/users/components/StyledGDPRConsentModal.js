@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Modal } from 'react-bootstrap';
+// import { Modal } from 'react-bootstrap';
 
-const GDPRConsentModal = styled(Modal)`
+const StyledGDPRConsentModal = styled.div`
   .modal-body > p {
     margin-bottom: 15px;
   }
@@ -11,6 +11,4 @@ const GDPRConsentModal = styled(Modal)`
   }
 `;
 
-export default {
-  GDPRConsentModal,
-};
+export default StyledGDPRConsentModal;
