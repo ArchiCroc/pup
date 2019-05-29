@@ -3,19 +3,34 @@ import queryUser from './actions/queryUser';
 import exportUserData from './actions/exportUserData';
 
 export default {
-  users: (parent, args, context) =>
-    queryUsers({
+  users: (parent, args, context) => {
+    // console.log('args', args);
+    const { search, pageSize = 10, currentPage = 1, sort = 'name', order = 'ascend' } = args;
+
+    const query = {
       currentUser: context.user,
-      search: args.search ? new RegExp(args.search, 'i') : null,
-      limit: args.perPage,
-      skip: args.currentPage * args.perPage - args.perPage,
-      sort: {
-        'profile.name.last': 1,
-        'services.facebook.first_name': 1,
-        'services.google.name': 1,
-        'services.github.username': 1,
-      },
-    }),
+      search: search ? new RegExp(search, 'i') : null,
+      limit: pageSize,
+      skip: currentPage * pageSize - pageSize,
+    };
+
+    const orderDirection = order === 'descend' ? -1 : 1;
+
+    if (sort === 'name') {
+      query.sort = {
+        'profile.name.last': orderDirection,
+        'services.facebook.first_name': orderDirection,
+        'services.google.name': orderDirection,
+        'services.github.username': orderDirection,
+      };
+    } else if (sort === 'emailAddress') {
+      query.sort = {
+        'emails.0.address': orderDirection,
+      };
+    }
+
+    return queryUsers(query);
+  },
   user: (parent, args, context) => {
     const userIdFromParentQuery = parent && parent.userId;
     return queryUser({

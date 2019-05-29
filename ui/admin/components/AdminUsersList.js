@@ -1,93 +1,124 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import autoBind from 'react-autobind';
 import { Link } from 'react-router-dom';
-import { graphql } from 'react-apollo';
-import Loading from '../../components/Loading';
+import Table from 'antd/lib/table';
+import { Query } from 'react-apollo';
+import i18n from 'meteor/universe:i18n';
+// import Loading from '../../components/Loading';
 import { users as usersQuery } from '../../users/queries/Users.gql';
 
-import { StyledListGroup, StyledListGroupItem } from './StyledAdminUsersList';
+// import { StyledListGroup, StyledListGroupItem } from './StyledAdminUsersList';
+
+// @todo filter these
+// @ todo add status and account creation date
+
+const columns = [
+  {
+    title: i18n.__('Users.name'),
+    dataIndex: 'name',
+    sorter: true,
+    // sortOrder: 'ascend',
+    render: (name) => `${name.first} ${name.last}`,
+    // {name ? `${name.first} ${name.last}` : username}
+  },
+  {
+    title: i18n.__('Users.email_address'),
+    dataIndex: 'emailAddress',
+    sorter: true,
+  },
+  {
+    title: 'Users.source',
+    dataIndex: 'oAuthProvider',
+  },
+];
 
 class AdminUsersList extends React.Component {
-  constructor(props) {
-    super(props);
-    autoBind(this);
-  }
+  state = {
+    currentPage: 1, // currentPage
+    search: null,
+    sort: 'name',
+    order: 'descend',
+  };
 
-  renderPagination = () => {
-    const { data, perPage, currentPage, onChangePage } = this.props;
-    const pages = [];
-    const pagesToGenerate = Math.ceil(data.users.total / perPage);
+  // pageSize = 10;
 
-    for (let pageNumber = 1; pageNumber <= pagesToGenerate; pageNumber += 1) {
-      pages.push(
-        <li
-          role="button"
-          key={`pagination_${pageNumber}`}
-          className={pageNumber === currentPage ? 'active' : ''}
-          onClick={() => onChangePage(pageNumber)}
-          onKeyDown={() => onChangePage(pageNumber)}
-        >
-          <a href="#" role="button" onClick={(event) => event.preventDefault()}>
-            {pageNumber}
-          </a>
-        </li>,
-      );
-    }
+  onPageChange = (page) => {
+    this.setState({ currentPage: page });
+  };
 
-    return <ul className="pagination pagination-md">{pages}</ul>;
+  onRowClick = (row) => {
+    console.log('onRowClick', row);
+    this.props.history.push(`/admin/users/${row._id}`);
+  };
+
+  onTableChange = (pagination, filters, sorter) => {
+    console.log(pagination, filters, sorter);
+    this.setState({
+      currentPage: pagination.current,
+      order: sorter.order,
+      sort: sorter.field,
+    });
+  };
+
+  pagination = {
+    pageSize: 10,
+    //  onChange: this.onPageChange,
   };
 
   render() {
-    const { data, search, perPage } = this.props;
+    const { search, currentPage, sort, order } = this.state;
 
-    if (data.loading) return <Loading />;
     return (
       <React.Fragment>
-        <StyledListGroup>
-          {data.users &&
-            data.users.users &&
-            data.users.users.map(({ _id, emailAddress, name, username, oAuthProvider }) => (
-              <StyledListGroupItem key={_id}>
-                <Link to={`/admin/users/${_id}`} />
-                <p>
-                  {name ? `${name.first} ${name.last}` : username}
-                  <span>{emailAddress}</span>
-                  {oAuthProvider && (
-                    <span className={`label label-${oAuthProvider}`}>{oAuthProvider}</span>
-                  )}
-                </p>
-              </StyledListGroupItem>
-            ))}
-        </StyledListGroup>
-        {data.users &&
-          data.users.total &&
-          search.trim() === '' &&
-          data.users.total > perPage &&
-          this.renderPagination()}
+        <Query
+          query={usersQuery}
+          variables={{
+            pageSize: this.pagination.pageSize,
+            currentPage,
+            search,
+            sort,
+            order,
+          }}
+        >
+          {({ loading, error, data }) => {
+            if (error) return `Error! ${error.message}`;
+
+            if (data.users && data.users.users) {
+              this.pagination.total = data.users.total;
+              this.pagination.current = currentPage;
+              return (
+                <Table
+                  dataSource={data.users.users}
+                  columns={columns}
+                  rowKey="_id"
+                  pagination={this.pagination}
+                  loading={loading}
+                  onChange={this.onTableChange}
+                  rowClassName="clickable"
+                  onRow={(record) => ({
+                    onClick: () => this.onRowClick(record),
+                  })}
+                />
+              );
+            }
+            return null; // @ todo could be blank
+          }}
+        </Query>
       </React.Fragment>
     );
   }
 }
 
-AdminUsersList.defaultProps = {
-  search: '',
-};
+// AdminUsersList.defaultProps = {
+//   search: '',
+// };
 
 AdminUsersList.propTypes = {
-  data: PropTypes.object.isRequired,
-  search: PropTypes.string,
-  perPage: PropTypes.number.isRequired,
-  currentPage: PropTypes.number.isRequired,
-  onChangePage: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+  // search: PropTypes.string,
+  // pageSize: PropTypes.number.isRequired,
+  // currentPage: PropTypes.number.isRequired,
+  // onChangePage: PropTypes.func.isRequired,
 };
 
-export default graphql(usersQuery, {
-  options: ({ perPage, currentPage, search }) => ({
-    variables: {
-      perPage,
-      currentPage,
-      search,
-    },
-  }),
-})(AdminUsersList);
+export default AdminUsersList;

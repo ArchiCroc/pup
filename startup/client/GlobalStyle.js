@@ -53,6 +53,10 @@ const GlobalStyle = createGlobalStyle`
     border-top: none;
   }
 
+.clickable {
+  cursor: pointer
+}
+
   form label {
     display: block;
   }

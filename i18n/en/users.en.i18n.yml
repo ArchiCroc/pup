@@ -102,3 +102,7 @@ user_settings_blank_subtitle: When there are settings to manage, they'll appear 
 admin_user_settings_blank_subtitle: GDPR-specific settings intentionally excluded.
 
 gdpr_consent_header: GDPR Consent
+
+#admin list users
+name: Name
+source: User Database

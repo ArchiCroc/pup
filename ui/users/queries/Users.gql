@@ -1,7 +1,7 @@
 #import "../fragments/Users.gql"
 
-query users($currentPage: Int, $perPage: Int, $search: String) {
-  users(currentPage: $currentPage, perPage: $perPage, search: $search) {
+query users($currentPage: Int, $pageSize: Int, $search: String, $sort: String, $order: String) {
+  users(currentPage: $currentPage, pageSize: $pageSize, search: $search, sort: $sort, order: $order) {
     total
     users {
       _id

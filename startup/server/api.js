@@ -33,7 +33,7 @@ const schema = {
       documents: [Document]
       document(_id: String): Document
       user(_id: String): User
-      users(currentPage: Int, perPage: Int, search: String): Users
+      users(currentPage: Int, pageSize: Int, search: String, sort: String, order: String): Users
       userSettings: [UserSetting]
       exportUserData: UserDataExport
       oAuthServices(services: [String]): [String]

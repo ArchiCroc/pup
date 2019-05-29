@@ -7,27 +7,18 @@ import AdminUsersList from './components/AdminUsersList';
 import { AdminUsersHeader } from './StyledAdminUsers';
 
 class AdminUsers extends React.Component {
-  state = {
-    currentPage: 1,
-  };
-
   render() {
     return (
       <div className="AdminUsers">
         <AdminUsersHeader className="page-header clearfix">
           <h4 className="pull-left">Users</h4>
-          <SearchInput
+          {/* <SearchInput
             placeholder="Search users..."
             value={this.state.search}
             onChange={(event) => this.setState({ search: event.target.value })}
-          />
+          /> */}
         </AdminUsersHeader>
-        <AdminUsersList
-          search={this.state.search}
-          currentPage={this.state.currentPage}
-          perPage={10}
-          onChangePage={(currentPage) => this.setState({ currentPage })}
-        />
+        <AdminUsersList {...this.props} />
       </div>
     );
   }
