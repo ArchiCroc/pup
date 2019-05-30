@@ -4,7 +4,7 @@ import { Modal, Button, Row, Col, FormGroup, ControlLabel } from 'react-bootstra
 import { camelCase } from 'lodash';
 import Validation from '../../components/Validation';
 import InputHint from '../../components/InputHint';
-import ToggleSwitch from '../../components/ToggleSwitch';
+import Switch from 'antd/lib/switch';
 import delay from '../../../modules/delay';
 
 const defaultState = {
@@ -115,10 +115,10 @@ class AdminUserSettingsModal extends React.Component {
                 <Col xs={12} sm={6}>
                   <FormGroup>
                     <ControlLabel>Is this a GDPR setting?</ControlLabel>
-                    <ToggleSwitch
+                    <Switch
                       ref={(isGDPR) => (this.isGDPR = isGDPR)}
-                      toggled={this.state.isGDPR}
-                      onToggle={(id, toggled) => this.setState({ isGDPR: toggled })}
+                      checked={this.state.isGDPR}
+                      onChange={(id, toggled) => this.setState({ isGDPR: toggled })}
                     />
                   </FormGroup>
                 </Col>

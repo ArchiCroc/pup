@@ -56,9 +56,7 @@ verify_email_title: Email Verification
 #verify_email_error: There was a problem verifying your email address. Please try again.
 resend_email: Resend Email
 verification_email_sent: An email to verify your account was sent to you. Please click the link in the email to continue.
-show_password: Show Password
-generate: Generate
-roles: Roles
+
 
 verifying: Verifying...
 verify_email_success: All set, thanks!
@@ -106,3 +104,12 @@ gdpr_consent_header: GDPR Consent
 #admin list users
 name: Name
 source: User Database
+
+#admin edit profile
+show_password: Show Password
+generate: Generate
+roles: Roles
+save: Save
+
+create_user: Create User
+delete_user: Delete User

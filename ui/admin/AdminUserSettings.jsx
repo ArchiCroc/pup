@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, ListGroup, ListGroupItem } from 'react-bootstrap';
-import { compose, graphql } from 'react-apollo';
-import styled from 'styled-components';
 import { Meteor } from 'meteor/meteor';
+import List from 'antd/lib/list';
+import Button from 'antd/lib/button';
+
+import { compose, graphql } from 'react-apollo';
+
 import message from 'antd/lib/message';
 import AdminUserSettingsModal from './components/AdminUserSettingsModal';
 import BlankState from '../components/BlankState';
@@ -14,21 +16,21 @@ import {
   removeUserSetting as removeUserSettingMutation,
 } from '../users/mutations/UserSettings.gql';
 
-const Setting = styled(ListGroupItem)`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+// const Setting = styled(ListGroupItem)`
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
 
-  p {
-    margin: 0;
-    word-break: break-word;
-  }
+//   p {
+//     margin: 0;
+//     word-break: break-word;
+//   }
 
-  .btn:last-child {
-    margin-left: 10px;
-    margin-right: -5px;
-  }
-`;
+//   .btn:last-child {
+//     margin-left: 10px;
+//     margin-right: -5px;
+//   }
+// `;
 
 class AdminUserSettings extends React.Component {
   state = { showSettingsModal: false, currentSetting: null };
@@ -47,6 +49,24 @@ class AdminUserSettings extends React.Component {
       });
     }
   };
+  renderSetting(setting) {
+    return (
+      <List.Item key={setting._id}>
+        <p>{setting.key}</p>
+        <div>
+          <Button
+            type="default"
+            onClick={() => this.setState({ showSettingsModal: true, currentSetting: setting })}
+          >
+            Edit
+          </Button>
+          <Button type="danger" onClick={() => this.handleDeleteSetting(setting._id)}>
+            Delete
+          </Button>
+        </div>
+      </List.Item>
+    );
+  }
 
   render() {
     const { data, addUserSetting, updateUserSetting } = this.props;
@@ -63,26 +83,7 @@ class AdminUserSettings extends React.Component {
           </Button>
         </div>
         {data.userSettings && data.userSettings.length > 0 ? (
-          <ListGroup>
-            {data.userSettings.map((setting) => (
-              <Setting key={setting._id}>
-                <p>{setting.key}</p>
-                <div>
-                  <Button
-                    type="default"
-                    onClick={() =>
-                      this.setState({ showSettingsModal: true, currentSetting: setting })
-                    }
-                  >
-                    Edit
-                  </Button>
-                  <Button type="danger" onClick={() => this.handleDeleteSetting(setting._id)}>
-                    Delete
-                  </Button>
-                </div>
-              </Setting>
-            ))}
-          </ListGroup>
+          <List dataSource={data.userSettings} renderItem={this.renderSetting} />
         ) : (
           <BlankState
             icon={{ style: 'solid', symbol: 'gear' }}

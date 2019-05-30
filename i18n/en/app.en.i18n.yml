@@ -7,3 +7,6 @@ privacy_policy: Privacy
 privacy_policy_hidden: ' Policy'
 
 admin: Admin
+
+page_error: Oops
+page_error_message: This page had a problem rendering. Please contact the site's Admin.

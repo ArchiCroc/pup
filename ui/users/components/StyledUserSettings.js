@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import { ListGroupItem as BListGroupItem } from 'react-bootstrap';
 
-const Setting = styled(BListGroupItem)`
-  display: flexbox;
+const StyledUserSettings = styled.div`
+  /* display: flexbox;
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -14,9 +13,7 @@ const Setting = styled(BListGroupItem)`
 
   > div {
     flex-grow: 0;
-  }
+  } */
 `;
 
-export default {
-  Setting,
-};
+export default StyledUserSettings;

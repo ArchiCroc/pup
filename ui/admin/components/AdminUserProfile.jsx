@@ -2,21 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AutoForm from 'uniforms/AutoForm';
 import AutoField from 'uniforms-antd/AutoField';
+import SelectField from 'uniforms-antd/SelectField';
+
 import i18n from 'meteor/universe:i18n';
-import {
-  Row,
-  Col,
-  ControlLabel,
-  FormGroup,
-  ListGroup,
-  ListGroupItem,
-  Checkbox,
-  //  InputGroup,
-  Button,
-} from 'react-bootstrap';
-import { capitalize } from 'lodash';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
+import Button from 'antd/lib/button';
+
+// import { capitalize } from 'lodash';
 import AdminPasswordField from './AdminPasswordField';
-import AdminProfileSchema from '../../../api/Users/schemas/admin-profile';
+import AdminUserProfileSchema from '../../../api/Users/schemas/admin-profile';
 
 class AdminUserProfile extends React.Component {
   constructor(props) {
@@ -28,7 +23,7 @@ class AdminUserProfile extends React.Component {
     const existingUser = this.props.user;
     const isPasswordUser = existingUser && !existingUser.oAuthProvider;
 
-    const cleanForm = AdminProfileSchema.clean(form);
+    const cleanForm = AdminUserProfileSchema.clean(form);
     console.log('sve form', cleanForm);
 
     const password = isPasswordUser ? cleanForm.password : null;
@@ -94,7 +89,7 @@ class AdminUserProfile extends React.Component {
     return (
       <div className="AdminUserProfile">
         <AutoForm
-          schema={AdminProfileSchema}
+          schema={AdminUserProfileSchema}
           model={model}
           onSubmit={this.handleSubmit}
           ref={this.formRef}
@@ -103,38 +98,47 @@ class AdminUserProfile extends React.Component {
         >
           {user && (
             <Row>
-              <Col xs={12} md={6}>
+              <Col xs={24} md={16} lg={12}>
                 {user &&
                   user.name && (
-                    <Row>
-                      <Col xs={6}>
-                        <AutoField name="firstName" placeholder={i18n.__('first_name')} />
+                    <Row gutter={25}>
+                      <Col xs={12}>
+                        <AutoField name="firstName" placeholder={i18n.__('Users.first_name')} />
                       </Col>
-                      <Col xs={6}>
-                        <AutoField name="lastName" placeholder={i18n.__('last_name')} />
+                      <Col xs={12}>
+                        <AutoField name="lastName" placeholder={i18n.__('Users.last_name')} />
                       </Col>
                     </Row>
                   )}
                 {user &&
                   user.username && (
                     <Row>
-                      <Col xs={12}>
+                      <Col xs={24}>
                         <AutoField
                           name="emailAddress"
                           disabled={user && user.oAuthProvider}
-                          placeholder={i18n.__('email_address')}
+                          placeholder={i18n.__('Users.email_address')}
                         />
                       </Col>
                     </Row>
                   )}
                 <Row>
-                  <Col xs={12}>
-                    <AutoField name="emailAddress" placeholder={i18n.__('email_address')} />
+                  <Col xs={24}>
+                    <AutoField name="emailAddress" placeholder={i18n.__('Users.email_address')} />
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs={12}>
-                    <FormGroup>
+                  <Col xs={24}>
+                    <SelectField
+                      transform={(value) => value}
+                      name="roles"
+                      options={[
+                        { label: 'User', value: 'user' },
+                        { label: 'Admin', value: 'admin' },
+                      ]}
+                      checkboxes
+                    />
+                    {/* <FormGroup>
                       <ControlLabel>Roles</ControlLabel>
                       <ListGroup>
                         {user.roles.map(({ _id, name, inRole }) => (
@@ -145,23 +149,26 @@ class AdminUserProfile extends React.Component {
                           </ListGroupItem>
                         ))}
                       </ListGroup>
-                    </FormGroup>
+                    </FormGroup> */}
                   </Col>
                 </Row>
                 {user &&
                   !user.oAuthProvider && (
                     <Row>
-                      <Col xs={12}>
-                        <AdminPasswordField name="password" placeholder={i18n.__('password')} />
+                      <Col xs={24}>
+                        <AdminPasswordField
+                          name="password"
+                          placeholder={i18n.__('Users.password')}
+                        />
                       </Col>
                     </Row>
                   )}
-                <Button type="submit" type="primary">
-                  {user ? 'Save Changes' : 'Create User'}
+                <Button htmlType="submit" type="primary">
+                  {i18n.__(user ? 'Users.save' : 'Users.create_user')}
                 </Button>
                 {user && (
                   <Button type="danger" className="pull-right" onClick={this.handleDeleteUser}>
-                    Delete User
+                    {i18n.__('Users.delete_user')}
                   </Button>
                 )}
               </Col>

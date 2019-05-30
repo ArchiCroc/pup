@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
-import { ListGroup } from 'react-bootstrap';
-import ToggleSwitch from '../../components/ToggleSwitch';
+import List from 'antd/lib/list';
+import Switch from 'antd/lib/switch';
 import BlankState from '../../components/BlankState';
 import unfreezeApolloCacheValue from '../../../modules/unfreezeApolloCacheValue';
 import delay from '../../../modules/delay';
-import Styles from './StyledUserSettings';
+import StyledUserSettings from './StyledUserSettings';
 
 class UserSettings extends React.Component {
   state = { settings: unfreezeApolloCacheValue([...this.props.settings]) };
@@ -35,10 +35,10 @@ class UserSettings extends React.Component {
   renderSettingValue = (type, key, value, onChange) =>
     ({
       boolean: () => (
-        <ToggleSwitch
+        <Switch
           id={key}
-          toggled={value === 'true'}
-          onToggle={(id, toggled) => onChange({ key, value: `${toggled}` })}
+          checked={value === 'true'}
+          onChange={(toggled) => onChange({ key, value: `${toggled}` })}
         />
       ),
       number: () => (
@@ -59,33 +59,33 @@ class UserSettings extends React.Component {
       ),
     }[type]());
 
+  renderItem = ({ _id, key, label, type, value }) => (
+    <List.Item key={key} className="user-settings-item">
+      <p>{label}</p>
+      <div style={{ float: 'right' }}>
+        {this.renderSettingValue(type, key, value, (update) =>
+          this.handleUpdateSetting({ ...update, _id }),
+        )}
+      </div>
+    </List.Item>
+  );
+
   render() {
     const { settings } = this.state;
     return (
-      <div className="UserSettings">
-        <ListGroup>
-          {settings.length > 0 ? (
-            settings.map(({ _id, key, label, type, value }) => (
-              <Styles.Setting key={key} className="clearfix">
-                <p>{label}</p>
-                <div>
-                  {this.renderSettingValue(type, key, value, (update) =>
-                    this.handleUpdateSetting({ ...update, _id }),
-                  )}
-                </div>
-              </Styles.Setting>
-            ))
-          ) : (
-            <BlankState
-              icon={{ style: 'solid', symbol: 'cogs' }}
-              title={i18n.__(`${this.props.isAdmin ? 'admin_' : ''}user_settings_blank_title`)}
-              subtitle={i18n.__(
-                `${this.props.isAdmin ? 'admin_' : ''}user_settings_blank_subtitle`,
-              )}
-            />
-          )}
-        </ListGroup>
-      </div>
+      <StyledUserSettings className="UserSettings">
+        {settings.length > 0 ? (
+          <List bordered dataSource={settings} renderItem={this.renderItem} />
+        ) : (
+          <BlankState
+            icon={{ style: 'solid', symbol: 'cogs' }}
+            title={i18n.__(`Users.${this.props.isAdmin ? 'admin_' : ''}user_settings_blank_title`)}
+            subtitle={i18n.__(
+              `Users.${this.props.isAdmin ? 'admin_' : ''}user_settings_blank_subtitle`,
+            )}
+          />
+        )}
+      </StyledUserSettings>
     );
   }
 }

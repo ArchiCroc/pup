@@ -82,6 +82,16 @@ const GlobalStyle = createGlobalStyle`
     vertical-align: middle !important;
   }
 
+  .admin-password-field .ant-input-group-addon {
+    border: 0;
+  }
+
+  .ant-input-group-addon > button{
+    margin: 0 -11px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
   /* Removes unnecessary bottom padding on .container */
   body > #react-root > div > .container {
     padding-bottom: 0;

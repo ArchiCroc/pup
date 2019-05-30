@@ -4,8 +4,6 @@ import { compose, graphql } from 'react-apollo';
 
 import Tabs from 'antd/lib/tabs';
 import Breadcrumb from 'antd/lib/breadcrumb';
-
-// import { Breadcrumb, Tab } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import message from 'antd/lib/message';
 import AdminUserProfile from './components/AdminUserProfile';

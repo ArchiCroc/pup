@@ -10,7 +10,6 @@ import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 // import Alert from 'antd/lib/alert';
 import Button from 'antd/lib/button';
-// import { Row, Col, Button, Tabs, Tab } from 'react-bootstrap';
 import { capitalize } from 'lodash';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';

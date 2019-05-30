@@ -6,7 +6,7 @@ import { Meteor } from 'meteor/meteor';
 const PageTitle = ({ title }) => (
   <Helmet>
     <title>
-      {title} | {Meteor.settings.public.title}
+      {title} | {Meteor.settings.public.productName}
     </title>
   </Helmet>
 );

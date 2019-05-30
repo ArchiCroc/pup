@@ -63,14 +63,18 @@ const AdminProfileSchema = new SimpleSchema({
         { label: 'Enabled', value: 1 },
       ],
     },
-  },
+  },  */
   roles: {
-    type: String,
-    label: 'permissions',
-    optional: false,
+    type: Array,
+    label: () => i18n.__('Users.roles'),
+    optional: true,
     allowedValues: ['user', 'staff', 'admin'],
   },
-  */
+  'roles.$': {
+    type: String,
+    label: 'permissions',
+  },
+
   password: {
     type: String,
     label: () => i18n.__('Users.password'),
