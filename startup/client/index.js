@@ -12,7 +12,7 @@ import { Meteor } from 'meteor/meteor';
 import LocaleProvider from 'antd/lib/locale-provider';
 import enUS from 'antd/lib/locale-provider/en_US';
 
-import 'antd/dist/antd.min.css';
+// import 'antd/dist/antd.min.css'; // pulling it from the cdn instead
 
 import '../../i18n/startup';
 import App from '../../ui/layouts/App';
