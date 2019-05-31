@@ -15,23 +15,23 @@ const DocumentSchema = new SimpleSchema({
   },
   isPublic: {
     type: Boolean,
-    label: () => i18n.__('is_public'),
+    label: () => i18n.__('Documents.is_public'),
     defaultValue: false,
   },
   title: {
     type: String,
-    label: () => i18n.__('title'),
+    label: () => i18n.__('Documents.title'),
     max: 100,
     uniforms: {
-      placeholder: () => i18n.__('title'),
+      placeholder: () => i18n.__('Documents.title'),
     },
   },
   body: {
     type: String,
     optional: true,
-    label: () => i18n.__('body'),
+    label: () => i18n.__('Documents.body'),
     uniforms: {
-      placeholder: () => i18n.__('body_placeholder'),
+      placeholder: () => i18n.__('Documents.body_placeholder'),
     },
     autoValue() {
       if (this.value && isString(this.value)) {

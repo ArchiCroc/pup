@@ -6,8 +6,11 @@ export const DocumentEditorHeader = styled.div`
     margin-top: 6px;
     color: var(--gray-light);
   }
+  .active {
+    font-weight: bold;
+  }
 
-  .dropdown {
+  /* .dropdown {
     float: left;
   }
 
@@ -20,11 +23,11 @@ export const DocumentEditorHeader = styled.div`
 
   .dropdown-menu > li.active > a > i {
     color: #fff;
-  }
+  } */
 `;
 
 export const StyledDocumentEditor = styled.div`
-  border: 1px solid var(--gray-lighter);
+  /* border: 1px solid var(--gray-lighter); */
   height: calc(100vh - 207px);
   border-radius: 3px;
   margin-top: 20px;

@@ -7,12 +7,12 @@ import Breadcrumb from 'antd/lib/breadcrumb';
 import { Link } from 'react-router-dom';
 import message from 'antd/lib/message';
 import AdminUserProfile from './components/AdminUserProfile';
-import UserSettings from '../users/components/UserSettings';
-import { user as userQuery, users as usersQuery } from '../users/queries/Users.gql';
+import UserSettings from '../components/UserSettings';
+import { user as userQuery, users as usersQuery } from '../queries/Users.gql';
 import {
   updateUser as updateUserMutation,
   removeUser as removeUserMutation,
-} from '../users/mutations/Users.gql';
+} from '../mutations/Users.gql';
 
 import Styles from './StyledAdminUser';
 

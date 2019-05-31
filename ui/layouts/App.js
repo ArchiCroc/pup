@@ -33,9 +33,9 @@ import VerifyEmail from '../users/VerifyEmail';
 import RecoverPassword from '../users/RecoverPassword';
 import ResetPassword from '../users/ResetPassword';
 
-import AdminUsers from '../admin/AdminUsers';
-import AdminUser from '../admin/AdminUser';
-import AdminUserSettings from '../admin/AdminUserSettings';
+import AdminUsers from '../users/admin/AdminUsers';
+import AdminUser from '../users/admin/AdminUser';
+import AdminUserSettings from '../users/admin/AdminUserSettings';
 
 import NotFound from '../pages/NotFound';
 import Footer from '../components/Footer';
@@ -152,12 +152,13 @@ class App extends React.Component {
                     {...props}
                     {...state}
                   />
+
                   <AuthorizedRoute
                     exact
                     allowedRoles={['admin']}
-                    path="/admin/user/settings"
+                    path="/admin/users/:_id"
                     pathAfterFailure="/"
-                    component={AdminUserSettings}
+                    component={AdminUser}
                     setAfterLoginPath={setAfterLoginPath}
                     {...props}
                     {...state}
@@ -165,9 +166,9 @@ class App extends React.Component {
                   <AuthorizedRoute
                     exact
                     allowedRoles={['admin']}
-                    path="/admin/users/:_id"
+                    path="/admin/user-settings"
                     pathAfterFailure="/"
-                    component={AdminUser}
+                    component={AdminUserSettings}
                     setAfterLoginPath={setAfterLoginPath}
                     {...props}
                     {...state}

@@ -65,7 +65,6 @@
     "react": "^16.8.6",
     "react-apollo": "^2.5.6",
     "react-autobind": "^1.0.6",
-    "react-bootstrap": "^0.32.4",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
     "react-markdown": "^3.6.0",

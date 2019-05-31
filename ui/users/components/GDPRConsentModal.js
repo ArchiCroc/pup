@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'react-bootstrap';
+// import { Modal } from 'react-bootstrap';
 import i18n from 'meteor/universe:i18n';
 import modal from 'antd/lib/modal';
-import Button from 'antd/lib/button';
+// import Button from 'antd/lib/button';
 import { compose, graphql } from 'react-apollo';
 import UserSettings from './UserSettings';
 import { userSettings as userSettingsQuery } from '../queries/Users.gql';
 import { updateUser as updateUserMutation } from '../mutations/Users.gql';
 import unfreezeApolloCacheValue from '../../../modules/unfreezeApolloCacheValue';
-import Styles from './StyledGDPRConsentModal';
+// import Styles from './StyledGDPRConsentModal';
 
 class GDPRConsentModal extends React.Component {
   state = { show: false };

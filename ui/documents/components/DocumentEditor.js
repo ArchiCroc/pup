@@ -2,14 +2,17 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ControlLabel, DropdownButton, MenuItem } from 'react-bootstrap';
+
 import AutoForm from 'uniforms/AutoForm';
 import AutoField from 'uniforms-antd/AutoField';
 import LongTextField from 'uniforms-antd/LongTextField';
 import i18n from 'meteor/universe:i18n';
 import { Mutation } from 'react-apollo';
 import message from 'antd/lib/message';
-import Icon from '../../components/Icon';
+import Icon from 'antd/lib/icon';
+import Menu from 'antd/lib/menu';
+import Dropdown from '../../components/Dropdown';
+
 import { editDocument as editDocumentQuery, documents } from '../queries/Documents.gql';
 import { updateDocument, removeDocument, updateDocumentKey } from '../mutations/Documents.gql';
 import delay from '../../../modules/delay';
@@ -85,74 +88,72 @@ class DocumentEditor extends React.Component {
               </span>
             )}
           </p>
-          <DropdownButton
-            type="default"
-            title={
-              <span>
-                <Icon iconStyle="solid" icon="gear" />
-              </span>
-            }
-            id="set-document-public"
+          <Mutation
+            ignoreResults
+            mutation={removeDocument}
+            refetchQueries={[{ query: documents }]}
+            awaitRefetchQueries
+            onCompleted={() => {
+              history.push('/documents');
+              message.success('Document removed!');
+            }}
+            onError={(error) => {
+              message.danger(error.message);
+            }}
           >
-            <MenuItem onClick={() => history.push(`/documents/${doc._id}`)}>
-              <Icon iconStyle="solid" icon="external-link-alt" />
-              {i18n.__('Documents.view_document')}
-            </MenuItem>
-            <MenuItem divider />
-            <Mutation
-              ignoreResults
-              mutation={updateDocumentKey}
-              onCompleted={() => {
-                setTimeout(() => this.setState({ saving: false }), 1000);
-              }}
-              onError={(error) => {
-                message.danger(error.message);
-              }}
-            >
-              {(mutate) => (
-                <React.Fragment>
-                  <MenuItem header>{i18n.__('Documents.visibility')}</MenuItem>
+            {(deleteMutate) => (
+              <Mutation
+                ignoreResults
+                mutation={updateDocumentKey}
+                onCompleted={() => {
+                  setTimeout(() => this.setState({ saving: false }), 1000);
+                }}
+                onError={(error) => {
+                  message.danger(error.message);
+                }}
+              >
+                {(editMutate) => (
+                  <Dropdown title={<Icon type="setting" />} id="set-document-public">
+                    <Menu>
+                      <Menu.Item key="view" onClick={() => history.push(`/documents/${doc._id}`)}>
+                        <Icon type="file" />
+                        {i18n.__('Documents.view_document')}
+                      </Menu.Item>
+                      <Menu.Divider />
 
-                  <MenuItem
-                    className={doc.isPublic && 'active'}
-                    eventKey="1"
-                    onClick={() => this.handleSetVisibility(mutate, 'public')}
-                  >
-                    <Icon iconStyle="solid" icon="unlock" />
-                    {i18n.__('Documents.public')}
-                  </MenuItem>
-                  <MenuItem
-                    className={!doc.isPublic && 'active'}
-                    eventKey="2"
-                    onClick={() => this.handleSetVisibility(mutate, 'private')}
-                  >
-                    <Icon iconStyle="solid" icon="lock" />
-                    {i18n.__('Documents.private')}
-                  </MenuItem>
-                </React.Fragment>
-              )}
-            </Mutation>
-            <MenuItem divider />
-            <Mutation
-              ignoreResults
-              mutation={removeDocument}
-              refetchQueries={[{ query: documents }]}
-              awaitRefetchQueries
-              onCompleted={() => {
-                history.push('/documents');
-                message.success('Document removed!');
-              }}
-              onError={(error) => {
-                message.danger(error.message);
-              }}
-            >
-              {(mutate) => (
-                <MenuItem onClick={() => this.handleRemoveDocument(mutate)}>
-                  <span className="text-danger">{i18n.__('Documents.delete_document')}</span>
-                </MenuItem>
-              )}
-            </Mutation>
-          </DropdownButton>
+                      <Menu.ItemGroup title={i18n.__('Documents.visibility')}>
+                        <Menu.Item
+                          className={doc.isPublic && 'active'}
+                          key="public"
+                          onClick={() => this.handleSetVisibility(editMutate, 'public')}
+                        >
+                          <Icon type="unlock" />
+                          {i18n.__('Documents.public')}
+                        </Menu.Item>
+                        <Menu.Item
+                          className={!doc.isPublic && 'active'}
+                          key="private"
+                          onClick={() => this.handleSetVisibility(editMutate, 'private')}
+                        >
+                          <Icon type="lock" />
+                          {i18n.__('Documents.private')}
+                        </Menu.Item>
+                      </Menu.ItemGroup>
+
+                      <Menu.Divider />
+
+                      <Menu.Item
+                        key="delete"
+                        onClick={() => this.handleRemoveDocument(deleteMutate)}
+                      >
+                        <div className="text-danger">{i18n.__('Documents.delete_document')}</div>
+                      </Menu.Item>
+                    </Menu>
+                  </Dropdown>
+                )}
+              </Mutation>
+            )}
+          </Mutation>
         </DocumentEditorHeader>
         <StyledDocumentEditor>
           <Mutation

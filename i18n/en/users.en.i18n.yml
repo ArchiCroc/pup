@@ -113,3 +113,22 @@ save: Save
 
 create_user: Create User
 delete_user: Delete User
+
+
+#admin user settings
+key_name: Key Name
+key_name_placeholder: canWeSendYouMarketingEmails
+
+is_gdpr: Is this a GDPR setting?
+
+label: Label
+label_placeholder: Can we send you marketing emails?
+label_help: This is what users will see in their settings panel.
+
+type: Type
+type_boolean: Boolean (true/false)
+type_number: Number
+type_string: String
+
+value: Default Value
+value_placeholder: Squirrel?!

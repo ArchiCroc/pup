@@ -8,7 +8,7 @@ import FileSaver from 'file-saver';
 import base64ToBlob from 'b64-to-blob';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
-// import Alert from 'antd/lib/alert';
+import Tabs from 'antd/lib/tabs';
 import Button from 'antd/lib/button';
 import { capitalize } from 'lodash';
 import { Meteor } from 'meteor/meteor';
@@ -104,11 +104,11 @@ class Profile extends React.Component {
 
   renderPasswordUser = (user) => (
     <div>
-      <Row>
-        <Col xs={6}>
+      <Row gutter={50}>
+        <Col xs={12}>
           <AutoField name="firstName" placeholder={i18n.__('Users.first_name')} />
         </Col>
-        <Col xs={6}>
+        <Col xs={12}>
           <AutoField name="lastName" placeholder={i18n.__('Users.last_name')} />
         </Col>
       </Row>
@@ -130,7 +130,7 @@ class Profile extends React.Component {
         placeholder={i18n.__('Users.new_password')}
       />
 
-      <Button type="submit" type="primary">
+      <Button htmlType="submit" type="primary">
         {i18n.__('Users.profile_submit')}
       </Button>
     </div>
@@ -146,7 +146,7 @@ class Profile extends React.Component {
   render() {
     const { data, updateUser } = this.props;
 
-    console.log(this.props);
+    // console.log(this.props);
 
     const model = data.user
       ? {
@@ -157,19 +157,19 @@ class Profile extends React.Component {
       : {};
 
     return data.user ? (
-      <Styles.Profile>
+      <StyledProfile>
         <h4 className="page-header">
           {data.user.name ? `${data.user.name.first} ${data.user.name.last}` : data.user.username}
         </h4>
         <Tabs
-          animation={false}
+          // animation={false}
           activeKey={this.state.activeTab}
-          onSelect={(activeTab) => this.setState({ activeTab })}
+          onChange={(activeTab) => this.setState({ activeTab })}
           id="admin-user-tabs"
         >
-          <Tab eventKey="profile" title={i18n.__('Users.profile')}>
+          <Tabs.TabPane key="profile" tab={i18n.__('Users.profile')}>
             <Row>
-              <Col xs={12} sm={6} md={4}>
+              <Col xs={24} sm={12} md={8}>
                 <AutoForm
                   schema={ProfileSchema}
                   model={model}
@@ -195,12 +195,12 @@ class Profile extends React.Component {
                 </AccountPageFooter>
               </Col>
             </Row>
-          </Tab>
-          <Tab eventKey="settings" title={i18n.__('Users.settings')}>
+          </Tabs.TabPane>
+          <Tabs.TabPane key="settings" tab={i18n.__('Users.settings')}>
             <UserSettings settings={data.user.settings} updateUser={updateUser} />
-          </Tab>
+          </Tabs.TabPane>
         </Tabs>
-      </Styles.Profile>
+      </StyledProfile>
     ) : (
       <div />
     );

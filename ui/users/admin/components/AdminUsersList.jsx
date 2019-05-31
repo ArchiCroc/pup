@@ -5,7 +5,7 @@ import Table from 'antd/lib/table';
 import { Query } from 'react-apollo';
 import i18n from 'meteor/universe:i18n';
 // import Loading from '../../components/Loading';
-import { users as usersQuery } from '../../users/queries/Users.gql';
+import { users as usersQuery } from '../../queries/Users.gql';
 
 // import { StyledListGroup, StyledListGroupItem } from './StyledAdminUsersList';
 

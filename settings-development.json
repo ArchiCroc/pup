@@ -9,6 +9,7 @@
     "twitterUsername": "product",
     "facebookUsername": "product",
     "productAddress": "Chicago, IL"
+    
   },
   "private": {
     "MAIL_URL": "",

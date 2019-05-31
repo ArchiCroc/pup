@@ -11,7 +11,7 @@ import Button from 'antd/lib/button';
 
 // import { capitalize } from 'lodash';
 import AdminPasswordField from './AdminPasswordField';
-import AdminUserProfileSchema from '../../../api/Users/schemas/admin-profile';
+import AdminUserProfileSchema from '../../../../api/Users/schemas/admin-profile';
 
 class AdminUserProfile extends React.Component {
   constructor(props) {

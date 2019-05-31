@@ -16,7 +16,7 @@ const AuthenticatedNavigation = ({ name, history, userId, location = { pathname:
     >
       <Menu.Item key="/documents">
         {i18n.__('Documents.document_plural')}
-        <Link to="/project-requests" />
+        <Link to="/documents" />
       </Menu.Item>
 
       {Roles.userIsInRole(userId, 'admin') && (
@@ -26,9 +26,9 @@ const AuthenticatedNavigation = ({ name, history, userId, location = { pathname:
 
             <Link to="/admin/users" />
           </Menu.Item>
-          <Menu.Item key="/admin/users/settings">
+          <Menu.Item key="/admin/user-settings">
             {i18n.__('Users.user_settings')}
-            <Link to="/admin/users/settings" />
+            <Link to="/admin/user-settings" />
           </Menu.Item>
         </Menu.SubMenu>
       )}
@@ -42,11 +42,11 @@ const AuthenticatedNavigation = ({ name, history, userId, location = { pathname:
     >
       <Menu.SubMenu title={name}>
         <Menu.Item key="/profile">
-          {i18n.__('profile')}
+          {i18n.__('Users.profile')}
           <Link to="/profile" />
         </Menu.Item>
         <Menu.Item key="/logout">
-          {i18n.__('logout')}
+          {i18n.__('Users.logout')}
           <Link to="/logout" />
         </Menu.Item>
       </Menu.SubMenu>

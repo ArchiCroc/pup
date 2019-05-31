@@ -8,13 +8,13 @@ import { compose, graphql } from 'react-apollo';
 
 import message from 'antd/lib/message';
 import AdminUserSettingsModal from './components/AdminUserSettingsModal';
-import BlankState from '../components/BlankState';
-import userSettingsQuery from '../users/queries/UserSettings.gql';
+import BlankState from '../../components/BlankState';
+import userSettingsQuery from '../queries/UserSettings.gql';
 import {
   addUserSetting as addUserSettingMutation,
   updateUserSetting as updateUserSettingMutation,
   removeUserSetting as removeUserSettingMutation,
-} from '../users/mutations/UserSettings.gql';
+} from '../mutations/UserSettings.gql';
 
 // const Setting = styled(ListGroupItem)`
 //   display: flex;
@@ -53,7 +53,7 @@ class AdminUserSettings extends React.Component {
     return (
       <List.Item key={setting._id}>
         <p>{setting.key}</p>
-        <div>
+        <div className="pull-right">
           <Button
             type="default"
             onClick={() => this.setState({ showSettingsModal: true, currentSetting: setting })}
@@ -70,6 +70,7 @@ class AdminUserSettings extends React.Component {
 
   render() {
     const { data, addUserSetting, updateUserSetting } = this.props;
+
     return (
       <div className="AdminUserSettings">
         <div className="page-header clearfix">
@@ -83,7 +84,7 @@ class AdminUserSettings extends React.Component {
           </Button>
         </div>
         {data.userSettings && data.userSettings.length > 0 ? (
-          <List dataSource={data.userSettings} renderItem={this.renderSetting} />
+          <List dataSource={data.userSettings} renderItem={this.renderSetting} bordered />
         ) : (
           <BlankState
             icon={{ style: 'solid', symbol: 'gear' }}
