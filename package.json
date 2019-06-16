@@ -207,9 +207,8 @@
     "bracketSpacing": true,
     "jsxBracketSameLine": false,
     "arrowParens": "always",
-    "rangeStart": 0,
-    "rangeEnd": "Infinity",
-    "parser": "babylon",
+    "range": "Infinity",
+    "parser": "babel",
     "proseWrap": "preserve"
   }
 }

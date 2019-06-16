@@ -31,4 +31,43 @@ describe('unfreezeApolloCacheValue.js', () => {
 
     expect(unfrozenCacheValue.__typename).toBe(undefined); //eslint-disable-line
   });
+
+  test('it removes __typename field from objects in array', () => {
+    const frozenArray = Object.freeze(
+      documents.map((doc) => {
+        return {
+          ...doc,
+          __typename: 'Document',
+        };
+      }),
+    );
+
+    const unfrozenCacheValue = unfreezeApolloCacheValue(frozenArray);
+
+    unfrozenCacheValue.forEach((cacheValue) => {
+      expect(cacheValue.__typename).toBe(undefined); //eslint-disable-line
+    });
+  });
+
+  test('it removes __typename field from nested objects in array', () => {
+    const frozenArray = Object.freeze(
+      documents.map((doc) => {
+        return {
+          ...doc,
+          nested: {
+            ...doc,
+            __typename: 'Document',
+          },
+          __typename: 'Document',
+        };
+      }),
+    );
+
+    const unfrozenCacheValue = unfreezeApolloCacheValue(frozenArray);
+
+    unfrozenCacheValue.forEach((cacheValue) => {
+      expect(cacheValue.__typename).toBe(undefined); //eslint-disable-line
+      expect(cacheValue.nested.__typename).toBe(undefined); //eslint-disable-line
+    });
+  });
 });
