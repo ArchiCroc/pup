@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Alert from '../../components/Alert';
 import Button from 'antd/lib/button';
 import { graphql } from 'react-apollo';
 import message from 'antd/lib/message';
+import Alert from '../../components/Alert';
 import { sendVerificationEmail as sendVerificationEmailMutation } from '../mutations/Users.gql';
-import SyledVerifyEmail from './StyledVerifyEmail';
+// import SyledVerifyEmail from './StyledVerifyEmail';
 
 const handleResendVerificationEmail = (emailAddress, sendVerificationEmail) => {
   sendVerificationEmail();

@@ -14,11 +14,11 @@ import AccountPageFooter from './components/AccountPageFooter';
 import StyledRecoverPassword from './StyledRecoverPassword';
 import RecoverPasswordSchema from '../../api/Users/schemas/recover-password';
 
-class RecoverPassword extends React.Component {
-  handleSubmit = (form) => {
+function RecoverPassword(props) {
+  const handleSubmit = (form) => {
     const cleanForm = RecoverPasswordSchema.clean(form);
 
-    const { history } = this.props;
+    const { history } = props;
     const email = cleanForm.emailAddress;
 
     Accounts.forgotPassword({ email }, (error) => {
@@ -31,36 +31,34 @@ class RecoverPassword extends React.Component {
     });
   };
 
-  render() {
-    return (
-      <StyledRecoverPassword>
-        <Row>
-          <Col xs={12}>
-            <h4 className="page-header">{i18n.__('Users.recover_password_header')}</h4>
-            <Alert type="info" message={i18n.__('Users.recover_password_help')} />
-            <AutoForm
-              name="recover-password"
-              schema={RecoverPasswordSchema}
-              onSubmit={this.handleSubmit}
-              showInlineError
-              placeholder
-            >
-              <AutoField name="emailAddress" placeholder={i18n.__('Users.email_address')} />
-              <Button htmlType="submit" type="primary">
-                {i18n.__('Users.recover_password_submit')}
-              </Button>
-              <AccountPageFooter>
-                <p>
-                  {i18n.__('Users.recover_password_footer')}{' '}
-                  <Link to="/login">{i18n.__('Users.log_in')}</Link>.
-                </p>
-              </AccountPageFooter>
-            </AutoForm>
-          </Col>
-        </Row>
-      </StyledRecoverPassword>
-    );
-  }
+  return (
+    <StyledRecoverPassword>
+      <Row>
+        <Col xs={12}>
+          <h4 className="page-header">{i18n.__('Users.recover_password_header')}</h4>
+          <Alert type="info" message={i18n.__('Users.recover_password_help')} />
+          <AutoForm
+            name="recover-password"
+            schema={RecoverPasswordSchema}
+            onSubmit={handleSubmit}
+            showInlineError
+            placeholder
+          >
+            <AutoField name="emailAddress" placeholder={i18n.__('Users.email_address')} />
+            <Button htmlType="submit" type="primary">
+              {i18n.__('Users.recover_password_submit')}
+            </Button>
+            <AccountPageFooter>
+              <p>
+                {i18n.__('Users.recover_password_footer')}{' '}
+                <Link to="/login">{i18n.__('Users.log_in')}</Link>.
+              </p>
+            </AccountPageFooter>
+          </AutoForm>
+        </Col>
+      </Row>
+    </StyledRecoverPassword>
+  );
 }
 
 RecoverPassword.propTypes = {

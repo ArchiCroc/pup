@@ -1,7 +1,7 @@
 import { BrowserPolicy } from 'meteor/browser-policy-common';
 
-// Bootstrap
-BrowserPolicy.content.allowOriginForAll('*.bootstrapcdn.com');
+// AntD
+BrowserPolicy.content.allowOriginForAll('cdnjs.cloudflare.com');
 
 // FontAwesome
 BrowserPolicy.content.allowOriginForAll('use.fontawesome.com');

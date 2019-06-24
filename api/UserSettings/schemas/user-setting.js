@@ -22,7 +22,7 @@ const UserSettingsSchema = new SimpleSchema({
     label: () => i18n.__('Users.label'),
     uniforms: {
       placeholder: () => i18n.__('Users.label_placeholder'),
-      help: () => i18n.__('Users.label_help'),
+      //help: () => i18n.__('Users.label_help'),
     },
   },
   type: {

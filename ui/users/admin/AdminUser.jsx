@@ -16,7 +16,7 @@ import {
 
 import Styles from './StyledAdminUser';
 
-const AdminUser = (props) => {
+function AdminUser(props) {
   const { data, updateUser, removeUser } = props;
   const name = data.user && data.user.name;
   const username = data.user && data.user.username;
@@ -69,7 +69,7 @@ const AdminUser = (props) => {
   ) : (
     <div />
   );
-};
+}
 
 AdminUser.propTypes = {
   data: PropTypes.object.isRequired,

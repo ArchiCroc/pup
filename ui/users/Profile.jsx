@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import AutoForm from 'uniforms/AutoForm';
 import AutoField from 'uniforms-antd/AutoField';
@@ -24,29 +24,29 @@ import {
 import ProfileSchema from '../../api/Users/schemas/profile';
 import StyledProfile from './StyledProfile';
 
-class Profile extends React.Component {
-  state = { activeTab: 'profile' };
+function Profile(props) {
+  const [activeTab, setActiveTab] = useState('profile');
 
-  getUserType = (user) => (user.oAuthProvider ? 'oauth' : 'password');
+  const getUserType = (user) => (user.oAuthProvider ? 'oauth' : 'password');
 
-  handleExportData = async (event) => {
+  const handleExportData = async (event) => {
     event.preventDefault();
-    const { data } = await this.props.client.query({
+    const { data } = await props.client.query({
       query: exportUserDataQuery,
     });
 
     FileSaver.saveAs(base64ToBlob(data.exportUserData.zip), `${Meteor.userId()}.zip`);
   };
 
-  handleDeleteAccount = () => {
+  const handleDeleteAccount = () => {
     if (confirm(i18n.__('Users.confirm_delete_account'))) {
-      this.props.removeUser();
+      props.removeUser();
     }
   };
 
-  handleSubmit = (form) => {
+  const handleSubmit = (form) => {
     const cleanForm = ProfileSchema.clean(form);
-    this.props.updateUser({
+    props.updateUser({
       variables: {
         user: {
           email: cleanForm.emailAddress,
@@ -72,7 +72,7 @@ class Profile extends React.Component {
     }
   };
 
-  renderOAuthUser = (user) => (
+  const renderOAuthUser = (user) => (
     <div className="OAuthProfile">
       <div key={user.oAuthProvider} className={`LoggedInWith ${user.oAuthProvider}`}>
         <img src={`/${user.oAuthProvider}.svg`} alt={user.oAuthProvider} />
@@ -102,7 +102,7 @@ class Profile extends React.Component {
     </div>
   );
 
-  renderPasswordUser = (user) => (
+  const renderPasswordUser = (user) => (
     <div>
       <Row gutter={50}>
         <Col xs={12}>
@@ -136,75 +136,73 @@ class Profile extends React.Component {
     </div>
   );
 
-  renderProfileForm = (user) =>
+  const renderProfileForm = (user) =>
     user &&
     {
-      password: this.renderPasswordUser,
-      oauth: this.renderOAuthUser,
-    }[this.getUserType(user)](user);
+      password: renderPasswordUser,
+      oauth: renderOAuthUser,
+    }[getUserType(user)](user);
 
-  render() {
-    const { data, updateUser } = this.props;
+  const { data, updateUser } = props;
 
-    // console.log(this.props);
+  // console.log(this.props);
 
-    const model = data.user
-      ? {
-          firstName: data.user.name.first,
-          lastName: data.user.name.last,
-          emailAddress: data.user.emailAddress,
-        }
-      : {};
+  const model = data.user
+    ? {
+        firstName: data.user.name.first,
+        lastName: data.user.name.last,
+        emailAddress: data.user.emailAddress,
+      }
+    : {};
 
-    return data.user ? (
-      <StyledProfile>
-        <h4 className="page-header">
-          {data.user.name ? `${data.user.name.first} ${data.user.name.last}` : data.user.username}
-        </h4>
-        <Tabs
-          // animation={false}
-          activeKey={this.state.activeTab}
-          onChange={(activeTab) => this.setState({ activeTab })}
-          id="admin-user-tabs"
-        >
-          <Tabs.TabPane key="profile" tab={i18n.__('Users.profile')}>
-            <Row>
-              <Col xs={24} sm={12} md={8}>
-                <AutoForm
-                  schema={ProfileSchema}
-                  model={model}
-                  onSubmit={this.handleSubmit}
-                  showInlineError
-                  placeholder
-                >
-                  {this.renderProfileForm(data.user)}
-                </AutoForm>
+  return data.user ? (
+    <StyledProfile>
+      <h4 className="page-header">
+        {data.user.name ? `${data.user.name.first} ${data.user.name.last}` : data.user.username}
+      </h4>
+      <Tabs
+        // animation={false}
+        activeKey={activeTab}
+        onChange={setActiveTab}
+        id="admin-user-tabs"
+      >
+        <Tabs.TabPane key="profile" tab={i18n.__('Users.profile')}>
+          <Row>
+            <Col xs={24} sm={12} md={8}>
+              <AutoForm
+                schema={ProfileSchema}
+                model={model}
+                onSubmit={handleSubmit}
+                showInlineError
+                placeholder
+              >
+                {renderProfileForm(data.user)}
+              </AutoForm>
 
-                <AccountPageFooter>
-                  <p>
-                    <Button type="link" className="btn-export" onClick={this.handleExportData}>
-                      {i18n.__('Users.export_user_data_button')}
-                    </Button>
-                    {i18n.__('Users.export_user_data_help')}
-                  </p>
-                </AccountPageFooter>
-                <AccountPageFooter>
-                  <Button type="danger" onClick={this.handleDeleteAccount}>
-                    {i18n.__('Users.delete_my_account_button')}
+              <AccountPageFooter>
+                <p>
+                  <Button type="link" className="btn-export" onClick={handleExportData}>
+                    {i18n.__('Users.export_user_data_button')}
                   </Button>
-                </AccountPageFooter>
-              </Col>
-            </Row>
-          </Tabs.TabPane>
-          <Tabs.TabPane key="settings" tab={i18n.__('Users.settings')}>
-            <UserSettings settings={data.user.settings} updateUser={updateUser} />
-          </Tabs.TabPane>
-        </Tabs>
-      </StyledProfile>
-    ) : (
-      <div />
-    );
-  }
+                  {i18n.__('Users.export_user_data_help')}
+                </p>
+              </AccountPageFooter>
+              <AccountPageFooter>
+                <Button type="danger" onClick={handleDeleteAccount}>
+                  {i18n.__('Users.delete_my_account_button')}
+                </Button>
+              </AccountPageFooter>
+            </Col>
+          </Row>
+        </Tabs.TabPane>
+        <Tabs.TabPane key="settings" tab={i18n.__('Users.settings')}>
+          <UserSettings settings={data.user.settings} updateUser={updateUser} />
+        </Tabs.TabPane>
+      </Tabs>
+    </StyledProfile>
+  ) : (
+    <div />
+  );
 }
 
 Profile.propTypes = {

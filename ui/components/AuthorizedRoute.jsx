@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 import { withRouter } from 'react-router';
@@ -6,46 +6,40 @@ import { Roles } from 'meteor/alanning:roles';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
-class AuthorizedRoute extends React.Component {
-  state = { authorized: false };
+function AuthorizedRoute(props) {
+  const [authorized, setAuthorized] = useState(false);
 
-  componentDidMount() {
-    this.checkIfAuthorized();
-  }
+  const checkIfAuthorized = () => {
+    const { loading, userId, userRoles, userIsInRoles, pathAfterFailure } = props;
 
-  componentDidUpdate() {
-    this.checkIfAuthorized();
-  }
-
-  checkIfAuthorized = () => {
-    const { loading, userId, userRoles, userIsInRoles, pathAfterFailure } = this.props;
-
-    if (!userId) this.props.history.push(pathAfterFailure || '/');
+    if (!userId) props.history.push(pathAfterFailure || '/');
 
     if (!loading && userRoles.length > 0) {
       if (!userIsInRoles) {
-        this.props.history.push(pathAfterFailure || '/');
+        props.history.push(pathAfterFailure || '/');
       } else {
         // Check to see if authorized is still false before setting. This prevents an infinite loop
         // when this is used within componentDidUpdate.
-        if (!this.state.authorized) this.setState({ authorized: true }); // eslint-disable-line
+        if (!authorized) setAuthorized(true); // eslint-disable-line
       }
     }
   };
 
-  render() {
-    const { component, path, exact, ...rest } = this.props;
+  useEffect(() => {
+    checkIfAuthorized();
+  });
 
-    return this.state.authorized ? (
-      <Route
-        path={path}
-        exact={exact}
-        render={(props) => React.createElement(component, { ...rest, ...props })}
-      />
-    ) : (
-      <div />
-    );
-  }
+  const { component, path, exact, ...rest } = props;
+
+  return authorized ? (
+    <Route
+      path={path}
+      exact={exact}
+      render={(renderProps) => React.createElement(component, { ...rest, ...renderProps })}
+    />
+  ) : (
+    <div />
+  );
 }
 
 AuthorizedRoute.defaultProps = {
@@ -74,7 +68,7 @@ AuthorizedRoute.propTypes = {
 export default withRouter(
   withTracker(
     ({ allowedRoles, allowedGroup }) =>
-    // eslint-disable-line
+      // eslint-disable-line
       Meteor.isClient
         ? {
             loading: Meteor.isClient ? !Roles.subscription.ready() : true,

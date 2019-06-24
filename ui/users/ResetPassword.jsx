@@ -14,9 +14,9 @@ import AccountPageFooter from './components/AccountPageFooter';
 import StyledResetPassword from './StyledResetPassword';
 import ResetPasswordSchema from '../../api/Users/schemas/reset-password';
 
-class ResetPassword extends React.Component {
-  handleSubmit = (form) => {
-    const { match, history } = this.props;
+function ResetPassword(props) {
+  const handleSubmit = (form) => {
+    const { match, history } = props;
     const { token } = match.params;
 
     const cleanForm = ResetPasswordSchema.clean(form);
@@ -30,41 +30,39 @@ class ResetPassword extends React.Component {
     });
   };
 
-  render() {
-    return (
-      <StyledResetPassword>
-        <Row>
-          <Col xs={12}>
-            <h4 className="page-header">{i18n.__('Users.reset_password_header')}</h4>
-            <Alert type="info" message={i18n.__('Users.reset_password_help')} />
-            <AutoForm
-              name="reset-password"
-              schema={ResetPasswordSchema}
-              onSubmit={this.handleSubmit}
-              showInlineError
-              placeholder
-            >
-              <AutoField name="newPassword" placeholder={i18n.__('Users.new_password')} />
-              <AutoField
-                name="repeatNewPassword"
-                placeholder={i18n.__('Users.confirm_new_password')}
-              />
-              <Button htmlType="submit" type="primary">
-                {i18n.__('Users.reset_password_submit')}
-              </Button>
+  return (
+    <StyledResetPassword>
+      <Row>
+        <Col xs={12}>
+          <h4 className="page-header">{i18n.__('Users.reset_password_header')}</h4>
+          <Alert type="info" message={i18n.__('Users.reset_password_help')} />
+          <AutoForm
+            name="reset-password"
+            schema={ResetPasswordSchema}
+            onSubmit={handleSubmit}
+            showInlineError
+            placeholder
+          >
+            <AutoField name="newPassword" placeholder={i18n.__('Users.new_password')} />
+            <AutoField
+              name="repeatNewPassword"
+              placeholder={i18n.__('Users.confirm_new_password')}
+            />
+            <Button htmlType="submit" type="primary">
+              {i18n.__('Users.reset_password_submit')}
+            </Button>
 
-              <AccountPageFooter>
-                <p>
-                  {i18n.__('Users.reset_password_footer')}{' '}
-                  <Link to="/login">{i18n.__('Users.log_in')}</Link>.
-                </p>
-              </AccountPageFooter>
-            </AutoForm>
-          </Col>
-        </Row>
-      </StyledResetPassword>
-    );
-  }
+            <AccountPageFooter>
+              <p>
+                {i18n.__('Users.reset_password_footer')}{' '}
+                <Link to="/login">{i18n.__('Users.log_in')}</Link>.
+              </p>
+            </AccountPageFooter>
+          </AutoForm>
+        </Col>
+      </Row>
+    </StyledResetPassword>
+  );
 }
 
 ResetPassword.propTypes = {
