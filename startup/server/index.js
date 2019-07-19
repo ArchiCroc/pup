@@ -1,3 +1,5 @@
+import Uniforms from 'uniforms';
+import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import '../../i18n/startup';
 import './accounts';
 import './api';

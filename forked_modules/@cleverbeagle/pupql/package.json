@@ -1,0 +1,54 @@
+{
+  "author": {
+    "name": "cleverbeagle"
+  },
+  "bugs": {
+    "url": "https://github.com/cleverbeagle/pupql/issues"
+  },
+  "dependencies": {
+    "apollo-server": "^2.5.0",
+    "apollo-server-express": "^2.5.0",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "graphql": "^14.3.0",
+    "graphql-subscriptions": "^1.1.0",
+    "graphql-tools": "^4.0.4",
+    "http": "0.0.0",
+    "mongodb": "^3.1.3",
+    "parse-mongo-url": "^1.1.1",
+    "subscriptions-transport-ws": "^0.9.14"
+  },
+  "description": "The Ultimate GraphQL Server for Products.",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^23.5.0"
+  },
+  "homepage": "https://github.com/cleverbeagle/pupql#readme",
+  "keywords": [
+    "graphql",
+    "server",
+    "express",
+    "apollo",
+    "schema",
+    "database",
+    "adapters",
+    "subscriptions"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "@cleverbeagle/pupql",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cleverbeagle/pupql.git"
+  },
+  "scripts": {
+    "build": "babel --presets env --plugins transform-runtime,transform-object-rest-spread src -d ./ --ignore src/index.test.js",
+    "dev": "babel --presets env --plugins transform-runtime,transform-object-rest-spread src -d ./ --watch --ignore src/index.test.js",
+    "test": "jest --watch"
+  },
+  "version": "0.0.5"
+}

@@ -1,6 +1,8 @@
 /* eslint-disable no-underscore-dangle, no-unused-expressions */
 
 import React from 'react';
+import Uniforms from 'uniforms';
+import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 // import i18n from 'meteor/universe:i18n';
 import { hydrate } from 'react-dom';
 import { BrowserRouter, Switch } from 'react-router-dom';
