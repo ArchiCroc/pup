@@ -11,7 +11,7 @@ export default {
     args2.title =
       args2.title ||
       `Untitled Document #${Documents.find({ owner: context.user._id }).count() + 1}`;
-
+    args2.body = sanitizeHtml(args.body);
     const cleanDoc = DocumentSchema.clean(args2);
     DocumentSchema.validate(cleanDoc);
 
