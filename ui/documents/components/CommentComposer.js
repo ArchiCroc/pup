@@ -10,6 +10,8 @@ import LongTextField from 'uniforms-antd/LongTextField';
 import addCommentMutation from '../mutations/Comments.gql';
 import StyledCommentComposer from './StyledCommentComposer';
 
+import { document as documentQuery } from '../queries/Documents.gql';
+
 import CommentSchema from '../../../api/Comments/schemas/comment';
 
 const CommentComposer = ({ documentId }) => {
@@ -17,6 +19,12 @@ const CommentComposer = ({ documentId }) => {
   const [doc, setDoc] = useState();
   const [addComment] = useMutation(addCommentMutation, {
     ignoreResults: true,
+    refetchQueries: [
+      {
+        query: documentQuery,
+        variables: { _id: documentId },
+      },
+    ],
     onCompleted: () => {
       // @todo this doesn't seem to be called, is it being dismounted?
       console.log('mutation is complete');
