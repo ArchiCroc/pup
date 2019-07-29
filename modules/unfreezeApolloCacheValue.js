@@ -1,3 +1,14 @@
+const clearTypenameProperties = (unfrozenValue) => {
+  if (unfrozenValue && unfrozenValue.__typename) delete unfrozenValue.__typename; // eslint-disable-line
+  if (typeof unfrozenValue === 'object') {
+    Object.entries(unfrozenValue).forEach(([key]) => {
+      if (unfrozenValue[key] && typeof unfrozenValue[key] === 'object') {
+        clearTypenameProperties(unfrozenValue[key]);
+      }
+    });
+  }
+};
+
 export default (value) => {
   let unfrozenValue = JSON.parse(JSON.stringify(value));
 
@@ -6,7 +17,7 @@ export default (value) => {
   }
 
   if (unfrozenValue instanceof Object) {
-    delete unfrozenValue.__typename; // eslint-disable-line
+    clearTypenameProperties(unfrozenValue);
   }
 
   return unfrozenValue;
