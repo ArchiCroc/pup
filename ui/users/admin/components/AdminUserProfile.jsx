@@ -3,13 +3,10 @@ import PropTypes from 'prop-types';
 import AutoForm from 'uniforms/AutoForm';
 import AutoField from 'uniforms-antd/AutoField';
 import SelectField from 'uniforms-antd/SelectField';
-
 import i18n from 'meteor/universe:i18n';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Button from 'antd/lib/button';
-
-// import { capitalize } from 'lodash';
 import AdminPasswordField from './AdminPasswordField';
 import AdminUserProfileSchema from '../../../../api/Users/schemas/admin-profile';
 

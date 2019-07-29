@@ -2,7 +2,10 @@ import Uniforms from 'uniforms';
 import SimpleSchema from 'simpl-schema';
 import i18n from 'meteor/universe:i18n';
 import isString from 'lodash/isString';
-import sanitizeHtml from 'sanitize-html';
+import { Meteor } from 'meteor/meteor';
+// if (Meteor.isServer) {
+//   import sanitizeHtml from 'sanitize-html'; // eslint-disable-line
+// }
 
 const CommentSchema = new SimpleSchema({
   _id: {
@@ -30,7 +33,12 @@ const CommentSchema = new SimpleSchema({
     },
     autoValue() {
       if (this.value && isString(this.value)) {
-        return sanitizeHtml(this.value);
+        // if (Meteor.isServer) {
+        //   return sanitizeHtml(this.value);
+        // } else {
+
+        return this.value;
+        // }
       } // else
       return null;
     },

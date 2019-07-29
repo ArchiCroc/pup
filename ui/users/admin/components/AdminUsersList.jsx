@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Table from 'antd/lib/table';
-import { Query } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 import i18n from 'meteor/universe:i18n';
 // import Loading from '../../components/Loading';
 import { users as usersQuery } from '../../queries/Users.gql';
@@ -14,7 +14,7 @@ import { users as usersQuery } from '../../queries/Users.gql';
 
 const columns = [
   {
-    title: i18n.__('Users.name'),
+    title: () => i18n.__('Users.name'),
     dataIndex: 'name',
     sorter: true,
     // sortOrder: 'ascend',
@@ -22,7 +22,7 @@ const columns = [
     // {name ? `${name.first} ${name.last}` : username}
   },
   {
-    title: i18n.__('Users.email_address'),
+    title: () => i18n.__('Users.email_address'),
     dataIndex: 'emailAddress',
     sorter: true,
   },
@@ -32,82 +32,63 @@ const columns = [
   },
 ];
 
-class AdminUsersList extends React.Component {
-  state = {
-    currentPage: 1, // currentPage
-    search: null,
-    sort: 'name',
-    order: 'descend',
-  };
-
-  // pageSize = 10;
-
-  onPageChange = (page) => {
-    this.setState({ currentPage: page });
-  };
-
-  onRowClick = (row) => {
-    console.log('onRowClick', row);
-    this.props.history.push(`/admin/users/${row._id}`);
-  };
-
-  onTableChange = (pagination, filters, sorter) => {
-    console.log(pagination, filters, sorter);
-    this.setState({
-      currentPage: pagination.current,
-      order: sorter.order,
-      sort: sorter.field,
-    });
-  };
-
-  pagination = {
+const AdminUsersList = ({ history }) => {
+  const paginationObject = {
     pageSize: 10,
     //  onChange: this.onPageChange,
   };
 
-  render() {
-    const { search, currentPage, sort, order } = this.state;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentSearch, setCurrentSearch] = useState(null);
+  const [currentSort, setCurrentSort] = useState('name');
+  const [currentOrder, setCurrentOrder] = useState('descend');
 
-    return (
-      <React.Fragment>
-        <Query
-          query={usersQuery}
-          variables={{
-            pageSize: this.pagination.pageSize,
-            currentPage,
-            search,
-            sort,
-            order,
-          }}
-        >
-          {({ loading, error, data }) => {
-            if (error) return `Error! ${error.message}`;
+  const { loading, data, error } = useQuery(usersQuery, {
+    variables: {
+      pageSize: paginationObject.pageSize,
+      page: currentPage,
+      search: currentSearch,
+      sort: currentSort,
+      order: currentOrder,
+    },
+  });
 
-            if (data.users && data.users.users) {
-              this.pagination.total = data.users.total;
-              this.pagination.current = currentPage;
-              return (
-                <Table
-                  dataSource={data.users.users}
-                  columns={columns}
-                  rowKey="_id"
-                  pagination={this.pagination}
-                  loading={loading}
-                  onChange={this.onTableChange}
-                  rowClassName="clickable"
-                  onRow={(record) => ({
-                    onClick: () => this.onRowClick(record),
-                  })}
-                />
-              );
-            }
-            return null; // @ todo could be blank
-          }}
-        </Query>
-      </React.Fragment>
-    );
+  // complete paginationObject
+  if (data.users && data.users.users) {
+    paginationObject.total = data.users.total;
+    paginationObject.current = currentPage;
   }
-}
+
+  const onRowClick = (row) => {
+    console.log('onRowClick', row);
+    history.push(`/admin/users/${row._id}`);
+  };
+
+  const onTableChange = (pagination, filters, sorter) => {
+    console.log(pagination, filters, sorter);
+    setCurrentPage(pagination.current);
+    setCurrentOrder(sorter.order);
+    setCurrentSort(sorter.field);
+  };
+
+  return (
+    <React.Fragment>
+      {error && `Error! ${error.message}`}
+      <Table
+        dataSource={data.users && data.users.users && data.users.users}
+        columns={columns}
+        rowKey="_id"
+        pagination={paginationObject}
+        loading={loading}
+        onChange={onTableChange}
+        rowClassName="clickable"
+        onRow={(record) => ({
+          onClick: () => onRowClick(record),
+        })}
+      />
+    </React.Fragment>
+  );
+};
 
 // AdminUsersList.defaultProps = {
 //   search: '',

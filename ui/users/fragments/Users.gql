@@ -13,10 +13,6 @@ fragment UserAttributes on User {
     inRole
   }
   settings {
-    _id
-    key
-    label
-    type
-    value 
+    gdprCanSendMarketingEmails
   }
 }

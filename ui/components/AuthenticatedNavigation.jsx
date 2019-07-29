@@ -26,10 +26,6 @@ const AuthenticatedNavigation = ({ name, history, userId, location = { pathname:
 
             <Link to="/admin/users" />
           </Menu.Item>
-          <Menu.Item key="/admin/user-settings">
-            {i18n.__('Users.user_settings')}
-            <Link to="/admin/user-settings" />
-          </Menu.Item>
         </Menu.SubMenu>
       )}
     </Menu>
@@ -41,9 +37,9 @@ const AuthenticatedNavigation = ({ name, history, userId, location = { pathname:
       style={{ float: 'right', lineHeight: '64px' }}
     >
       <Menu.SubMenu title={name}>
-        <Menu.Item key="/profile">
+        <Menu.Item key="/user/profile">
           {i18n.__('Users.profile')}
-          <Link to="/profile" />
+          <Link to="/user/profile" />
         </Menu.Item>
         <Menu.Item key="/logout">
           {i18n.__('Users.logout')}

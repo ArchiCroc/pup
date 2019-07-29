@@ -92,6 +92,15 @@ const GlobalStyle = createGlobalStyle`
     border-bottom-left-radius: 0;
   }
 
+ ul ul.ant-dropdown-menu-item-group-list {
+  list-style-type: none;
+  padding-left: 0;
+ }
+ .ant-dropdown-menu-item.active {
+   font-weight: bold;
+ }
+  
+
   /* Removes unnecessary bottom padding on .container */
   body > #react-root > div > .container {
     padding-bottom: 0;

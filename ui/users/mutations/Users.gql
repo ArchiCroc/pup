@@ -23,3 +23,9 @@ mutation sendWelcomeEmail {
     _id
   }
 }
+
+mutation updateUserSettings($_id: String, $settings: UserSettingsInput) {
+  updateUserSettings(_id: $_id, settings: $settings) {
+    ...UserAttributes
+  }
+}

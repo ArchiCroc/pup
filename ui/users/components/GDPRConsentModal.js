@@ -82,14 +82,16 @@ class GDPRConsentModal extends React.Component {
   }
 }
 
-GDPRConsentModal.propTypes = {
-  data: PropTypes.object.isRequired,
-  updateUser: PropTypes.func.isRequired,
-};
+// GDPRConsentModal.propTypes = {
+//   data: PropTypes.object.isRequired,
+//   updateUser: PropTypes.func.isRequired,
+// };
 
-export default compose(
-  graphql(userSettingsQuery),
-  graphql(updateUserMutation, {
-    name: 'updateUser',
-  }),
-)(GDPRConsentModal);
+export default GDPRConsentModal;
+
+// export default compose(
+//   graphql(userSettingsQuery),
+//   graphql(updateUserMutation, {
+//     name: 'updateUser',
+//   }),
+// )(GDPRConsentModal);

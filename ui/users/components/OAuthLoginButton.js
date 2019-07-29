@@ -59,7 +59,7 @@ const OAuthLoginButton = ({ service, callback }) => (
 
 OAuthLoginButton.defaultProps = {
   callback: (error) => {
-    if (error) message.danger(error.message);
+    if (error) message.error(error.message);
   },
 };
 

@@ -16,10 +16,10 @@ import AccountPageFooter from './components/AccountPageFooter';
 import StyledSignup from './StyledSignup';
 import SignupSchema from '../../api/Users/schemas/signup';
 
-class Signup extends React.Component {
-  handleSubmit = (form) => {
+const Signup = ({ history }) => {
+
+  function handleSubmit(form) {
     const cleanForm = SignupSchema.clean(form);
-    const { history } = this.props;
 
     Accounts.createUser(
       {
@@ -34,62 +34,59 @@ class Signup extends React.Component {
       },
       (error) => {
         if (error) {
-          message.danger(error.reason);
+          message.error(error.reason);
         } else {
-          Meteor.call('users.sendVerificationEmail');
           message.success(i18n.__('Users.sign_up_success'));
           history.push('/');
         }
       },
     );
-  };
-
-  render() {
-    return (
-      <StyledSignup>
-        <Row>
-          <Col xs={24}>
-            <h4 className="page-header">{i18n.__('Users.sign_up_header')}</h4>
-            <OAuthLoginButtons services={['facebook', 'github', 'google']} />
-            <Divider>{i18n.__('Users.sign_up_with_email')}</Divider>
-            <AutoForm
-              name="signup"
-              schema={SignupSchema}
-              onSubmit={this.handleSubmit}
-              showInlineError
-              placeholder
-            >
-              <Row gutter={16}>
-                <Col xs={12}>
-                  <AutoField name="firstName" placeholder={i18n.__('Users.first_name')} />
-                </Col>
-                <Col xs={12}>
-                  <AutoField name="lastName" placeholder={i18n.__('Users.last_name')} />
-                </Col>
-              </Row>
-              <AutoField name="emailAddress" placeholder={i18n.__('Users.email_address')} />
-              <AutoField
-                name="password"
-                placeholder={i18n.__('Users.password')}
-                help={i18n.__('Users.password_help')}
-              />
-
-              <Button htmlType="submit" type="primary" block>
-                {i18n.__('Users.sign_up')}
-              </Button>
-              <AccountPageFooter>
-                <p>
-                  {i18n.__('Users.sign_up_page_footer')}{' '}
-                  <Link to="/login">{i18n.__('Users.log_in')}</Link>.
-                </p>
-              </AccountPageFooter>
-            </AutoForm>
-          </Col>
-        </Row>
-      </StyledSignup>
-    );
   }
-}
+
+  return (
+    <StyledSignup>
+      <Row>
+        <Col xs={24}>
+          <h2 className="page-header">{i18n.__('Users.sign_up_header')}</h2>
+          <OAuthLoginButtons services={['facebook', 'github', 'google']} />
+          <Divider>{i18n.__('Users.sign_up_with_email')}</Divider>
+          <AutoForm
+            name="signup"
+            schema={SignupSchema}
+            onSubmit={handleSubmit}
+            showInlineError
+            placeholder
+          >
+            <Row gutter={16}>
+              <Col xs={12}>
+                <AutoField name="firstName" placeholder={i18n.__('Users.first_name')} />
+              </Col>
+              <Col xs={12}>
+                <AutoField name="lastName" placeholder={i18n.__('Users.last_name')} />
+              </Col>
+            </Row>
+            <AutoField name="emailAddress" placeholder={i18n.__('Users.email_address')} />
+            <AutoField
+              name="password"
+              placeholder={i18n.__('Users.password')}
+              help={i18n.__('Users.password_help')}
+            />
+
+            <Button htmlType="submit" type="primary" block>
+              {i18n.__('Users.sign_up')}
+            </Button>
+            <AccountPageFooter>
+              <p>
+                {i18n.__('Users.sign_up_page_footer')}{' '}
+                <Link to="/login">{i18n.__('Users.log_in')}</Link>.
+              </p>
+            </AccountPageFooter>
+          </AutoForm>
+        </Col>
+      </Row>
+    </StyledSignup>
+  );
+};
 
 Signup.propTypes = {
   history: PropTypes.object.isRequired,

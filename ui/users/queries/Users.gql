@@ -24,13 +24,7 @@ query user($_id: String) {
 query userSettings {
   user {
     settings {
-      _id
-      isGDPR
-      key
-      label
-      type
-      value
-      lastUpdatedByUser
+      gdpr_wavier
     }
   }
 }

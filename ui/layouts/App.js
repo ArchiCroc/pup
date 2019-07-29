@@ -35,7 +35,6 @@ import ResetPassword from '../users/ResetPassword';
 
 import AdminUsers from '../users/admin/AdminUsers';
 import AdminUser from '../users/admin/AdminUser';
-import AdminUserSettings from '../users/admin/AdminUserSettings';
 
 import NotFound from '../pages/NotFound';
 import Footer from '../components/Footer';
@@ -109,7 +108,7 @@ class App extends React.Component {
 
                   <AuthenticatedRoute
                     exact
-                    path="/profile"
+                    path="/user/:tab?"
                     component={Profile}
                     setAfterLoginPath={setAfterLoginPath}
                     {...props}
@@ -156,24 +155,13 @@ class App extends React.Component {
                   <AuthorizedRoute
                     exact
                     allowedRoles={['admin']}
-                    path="/admin/users/:_id"
+                    path="/admin/users/:_id/:tab?"
                     pathAfterFailure="/"
                     component={AdminUser}
                     setAfterLoginPath={setAfterLoginPath}
                     {...props}
                     {...state}
                   />
-                  <AuthorizedRoute
-                    exact
-                    allowedRoles={['admin']}
-                    path="/admin/user-settings"
-                    pathAfterFailure="/"
-                    component={AdminUserSettings}
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
-
                   <Route component={NotFound} />
                 </Switch>
               </PageErrorBoundary>

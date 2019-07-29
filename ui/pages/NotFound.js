@@ -7,7 +7,7 @@ const NotFound = () => (
     <Alert
       type="danger"
       message="Error [404]"
-      description={`${Meteor.isClient ? window.location.pathname : ''}does not exist.`}
+      description={`${Meteor.isClient ? window.location.pathname : ''} does not exist.`}
     />
   </div>
 );

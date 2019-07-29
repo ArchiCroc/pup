@@ -18,6 +18,15 @@ export default `
   input ProfileInput {
     name: NameInput
   }
+
+  input UserSettingsInput {
+    gdprCanSendMarketingEmails: Boolean
+  }
+
+  type UserSettings {
+    gdprCanSendMarketingEmails: Boolean
+  }
+
   
   input UserInput {
     _id: String,
@@ -25,7 +34,7 @@ export default `
     password: String,
     profile: ProfileInput,
     roles: [String],
-    settings: [UserSettingInput] # From /api/UserSettings/types.js
+    settings:  UserSettingsInput 
   }
 
   type User {
@@ -35,8 +44,10 @@ export default `
     emailAddress: String
     oAuthProvider: String
     roles: [Role]
-    settings: [UserSetting] # From /api/UserSettings/types.js
+    settings: UserSettings 
   }
+
+
 
   type Users {
     total: Int

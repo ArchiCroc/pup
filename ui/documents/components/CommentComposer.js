@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Mutation } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 import Button from 'antd/lib/button';
 // import { Meteor } from 'meteor/meteor';
 import message from 'antd/lib/message';
@@ -12,64 +12,57 @@ import StyledCommentComposer from './StyledCommentComposer';
 
 import CommentSchema from '../../../api/Comments/schemas/comment';
 
-class CommentComposer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { doc: { documentId: this.props.documentId } };
-  }
+const CommentComposer = ({ documentId }) => {
+  const defaultDoc = { documentId, comment: undefined };
+  const [doc, setDoc] = useState();
+  const [addComment] = useMutation(addCommentMutation, {
+    ignoreResults: true,
+    onCompleted: () => {
+      // @todo this doesn't seem to be called, is it being dismounted?
+      console.log('mutation is complete');
+      message.success(i18n.__('Documents.comment_success'));
+      // reset the form
+      setDoc(defaultDoc);
+    },
+    onError: (error) => {
+      message.error(i18n.__('Documents.comment_error', { error: error.message }));
+    },
+  });
 
-  onSubmit = (mutate, form) => {
+  const handleSubmit = (form) => {
     const cleanForm = CommentSchema.clean(form);
-    mutate({
+    addComment({
       variables: cleanForm,
       // refetchQueries: [{ query: editDocumentQuery }],
     });
-    this.setState({ doc: { documentId: this.props.documentId, comment: undefined } });
+    setDoc(defaultDoc);
   };
 
-  render() {
-    return (
-      <StyledCommentComposer>
-        <header>Add a Comment</header>
-        <Mutation
-          ignoreResults
-          mutation={addCommentMutation}
-          onCompleted={() => {
-            // @todo this doesn't seem to be called, is it being dismounted?
-            console.log('mutation is complete');
-            message.success(i18n.__('Documents.comment_success'));
-            // reset the form
-            this.setState({ doc: { documentId: this.props.documentId, comment: undefined } });
-          }}
-          onError={(error) => {
-            message.danger(i18n.__('Documents.comment_error'));
-          }}
-        >
-          {(mutate) => (
-            <AutoForm
-              name="comment"
-              model={this.state.doc}
-              schema={CommentSchema}
-              onSubmit={(form) => this.onSubmit(mutate, form)}
-              showInlineError
-              placeholder
-            >
-              <LongTextField
-                name="comment"
-                label={false}
-                placeholder={i18n.__('Documents.comment_placeholder')}
-              />
+  return (
+    <StyledCommentComposer>
+      <header>{i18n.__('Documents.add_comment_header')}</header>
+      <AutoForm
+        name="comment"
+        model={doc}
+        schema={CommentSchema}
+        onSubmit={handleSubmit}
+        showInlineError
+        placeholder
+      >
+        <LongTextField
+          name="comment"
+          label={false}
+          placeholder={i18n.__('Documents.comment_placeholder')}
+        />
 
-              <Button type="submit" type="primary">
-                {i18n.__('Documents.comment_submit')}
-              </Button>
-            </AutoForm>
-          )}
-        </Mutation>
-      </StyledCommentComposer>
-    );
-  }
-}
+        <Button htmlType="submit" type="primary">
+          {i18n.__('Documents.comment_submit')}
+        </Button>
+      </AutoForm>
+    </StyledCommentComposer>
+  );
+};
+
 CommentComposer.propTypes = {
   documentId: PropTypes.string.isRequired,
 };

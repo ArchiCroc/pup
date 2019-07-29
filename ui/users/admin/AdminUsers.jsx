@@ -6,7 +6,7 @@ import AdminUsersList from './components/AdminUsersList';
 
 import { AdminUsersHeader } from './StyledAdminUsers';
 
-function AdminUsers() {
+function AdminUsers(props) {
   return (
     <div className="AdminUsers">
       <AdminUsersHeader className="page-header clearfix">
@@ -17,7 +17,7 @@ function AdminUsers() {
             onChange={(event) => this.setState({ search: event.target.value })}
           /> */}
       </AdminUsersHeader>
-      <AdminUsersList {...this.props} />
+      <AdminUsersList {...props} />
     </div>
   );
 }

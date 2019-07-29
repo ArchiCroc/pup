@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compose, graphql } from 'react-apollo';
-
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import { generatePath } from 'react-router';
+import i18n from 'meteor/universe:i18n';
 import Tabs from 'antd/lib/tabs';
 import Breadcrumb from 'antd/lib/breadcrumb';
 import { Link } from 'react-router-dom';
@@ -16,8 +17,34 @@ import {
 
 import Styles from './StyledAdminUser';
 
-function AdminUser(props) {
-  const { data, updateUser, removeUser } = props;
+function AdminUser({ match, history }) {
+  const { loading, data } = useQuery(userQuery, {
+    fetchPolicy: 'no-cache',
+    variables: {
+      _id: match.params._id,
+    },
+  });
+
+  const [updateUser] = useMutation(updateUserMutation, {
+    onCompleted: () => {
+      message.success(i18n.__('Documents.admin_user_updated'));
+    },
+    refetchQueries: [{ query: userQuery, variables: { _id: match.params._id } }],
+  });
+  const [removeUser] = useMutation(removeUserMutation, {
+    onCompleted: () => {
+      message.success(i18n.__('Documents.admin_user_removed'));
+      history.push('/admin/users');
+    },
+    refetchQueries: [{ query: usersQuery }],
+  });
+
+  function handleTabClick(key) {
+    const path = generatePath(match.path, { _id: match.params._id, tab: key });
+
+    history.push(path);
+  }
+
   const name = data.user && data.user.name;
   const username = data.user && data.user.username;
 
@@ -43,7 +70,7 @@ function AdminUser(props) {
           onSelect={(activeTab) => this.setState({ activeTab })}
           id="admin-user-tabs"
         > */}
-      <Tabs>
+      <Tabs activeKey={match.params.tab || 'profile'} onTabClick={handleTabClick}>
         <Tabs.TabPane key="profile" tab="Profile">
           <AdminUserProfile
             user={data.user}
@@ -57,12 +84,7 @@ function AdminUser(props) {
           />
         </Tabs.TabPane>
         <Tabs.TabPane key="settings" tab="Settings">
-          <UserSettings
-            isAdmin
-            userId={data.user._id}
-            settings={data.user.settings}
-            updateUser={updateUser}
-          />
+          <UserSettings isAdmin userId={data.user._id} settings={data.user.settings} />
         </Tabs.TabPane>
       </Tabs>
     </div>
@@ -72,41 +94,8 @@ function AdminUser(props) {
 }
 
 AdminUser.propTypes = {
-  data: PropTypes.object.isRequired,
-  updateUser: PropTypes.func.isRequired,
-  removeUser: PropTypes.func.isRequired,
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
-export default compose(
-  graphql(userQuery, {
-    options: ({ match }) => ({
-      // NOTE: This ensures cache isn't too aggressive when moving between users.
-      // Forces Apollo to perform userQuery as a user is loaded instead of falling
-      // back to the cache. Users share similar data which gets cached and ends up
-      // breaking the UI.
-      fetchPolicy: 'no-cache',
-      variables: {
-        _id: match.params._id,
-      },
-    }),
-  }),
-  graphql(updateUserMutation, {
-    name: 'updateUser',
-    options: ({ match }) => ({
-      refetchQueries: [{ query: userQuery, variables: { _id: match.params._id } }],
-      onCompleted: () => {
-        message.success('User updated!');
-      },
-    }),
-  }),
-  graphql(removeUserMutation, {
-    name: 'removeUser',
-    options: ({ history }) => ({
-      refetchQueries: [{ query: usersQuery }],
-      onCompleted: () => {
-        message.success('User deleted!');
-        history.push('/admin/users');
-      },
-    }),
-  }),
-)(AdminUser);
+export default AdminUser;

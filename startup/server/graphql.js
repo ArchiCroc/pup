@@ -1,7 +1,7 @@
 import pupql from '@cleverbeagle/pupql';
 import { WebApp } from 'meteor/webapp';
 import { getUser } from 'meteor/apollo';
-import schema from './api';
+import schema from './graphql-api';
 
 pupql({
   schema,

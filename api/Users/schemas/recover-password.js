@@ -6,7 +6,7 @@ import isString from 'lodash/isString';
 const RecoverPasswordSchema = new SimpleSchema({
   emailAddress: {
     type: String,
-    label: () => i18n.__('email_address'),
+    label: () => i18n.__('Users.email_address'),
     max: 200,
     optional: false,
     regEx: SimpleSchema.RegEx.Email,
@@ -18,7 +18,7 @@ const RecoverPasswordSchema = new SimpleSchema({
     },
     uniforms: {
       type: 'email',
-      placeholder: () => i18n.__('email_address'),
+      placeholder: () => i18n.__('Users.email_address_placeholder'),
     },
   },
 });

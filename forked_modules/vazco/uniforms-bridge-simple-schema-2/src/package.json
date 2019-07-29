@@ -1,0 +1,27 @@
+{
+  "name": "uniforms-bridge-simple-schema-2",
+  "version": "2.2.0",
+  "license": "MIT",
+  "main": "index.js",
+  "description": "SimpleSchema 2 bridge for uniforms.",
+  "repository": "https://github.com/vazco/uniforms/tree/master/packages/uniforms-bridge-simple-schema-2",
+  "bugs": "https://github.com/vazco/uniforms/issues",
+  "keywords": [
+    "form",
+    "forms",
+    "react",
+    "schema",
+    "simpl-schema",
+    "validation"
+  ],
+  "files": [
+    "*.js"
+  ],
+  "dependencies": {
+    "@babel/runtime": "^7.0.0",
+    "invariant": "^2.0.0",
+    "lodash": "^4.0.0",
+    "simpl-schema": "^1.0.0 || ^0.0.4",
+    "uniforms": "^2.2.0"
+  }
+}

@@ -1,37 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'antd/lib/button';
-import { graphql } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 import message from 'antd/lib/message';
+import i18n from 'meteor/universe:i18n';
 import Alert from '../../components/Alert';
 import { sendVerificationEmail as sendVerificationEmailMutation } from '../mutations/Users.gql';
 // import SyledVerifyEmail from './StyledVerifyEmail';
 
-const handleResendVerificationEmail = (emailAddress, sendVerificationEmail) => {
-  sendVerificationEmail();
-  message.success(`Check ${emailAddress} for a verification link!`);
-};
+const VerifyEmailAlert = ({ userId, emailVerified, emailAddress: email }) => {
+  const [sendVerificationEmail] = useMutation(sendVerificationEmailMutation);
 
-const VerifyEmailAlert = ({ userId, emailVerified, emailAddress, sendVerificationEmail }) =>
-  userId && !emailVerified ? (
-    <Alert className="verify-email text-center" showIcon banner>
-      Hey friend! Can you <strong>verify your email address</strong> ({emailAddress}) for us?
-      <Button
-        type="link"
-        onClick={() => handleResendVerificationEmail(emailAddress, sendVerificationEmail)}
-      >
-        Re-send verification email
-      </Button>
-    </Alert>
-  ) : null;
+  function handleResendVerificationEmail() {
+    sendVerificationEmail();
+    message.success(i18n.__('Users.send_verification_email_success', { email }));
+  }
+
+  if (userId && !emailVerified) {
+    return (
+      <Alert showIcon banner description>
+        {i18n.__('Users.please_verify_email_address', { email })}
+        <Button type="link" onClick={handleResendVerificationEmail}>
+          {i18n.__('Users.resend_verification_email')}
+        </Button>
+      </Alert>
+    );
+  }
+  return null;
+};
 
 VerifyEmailAlert.propTypes = {
   userId: PropTypes.string.isRequired,
   emailVerified: PropTypes.bool.isRequired,
   emailAddress: PropTypes.string.isRequired,
-  sendVerificationEmail: PropTypes.func.isRequired,
 };
 
-export default graphql(sendVerificationEmailMutation, {
-  name: 'sendVerificationEmail',
-})(VerifyEmailAlert);
+export default VerifyEmailAlert;

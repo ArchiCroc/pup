@@ -2,7 +2,6 @@ _namespace: Users
 
 user: User
 user_plural: Users
-
 log_in: Log In
 login_register: Staff Login/Register
 login_header: Log in
@@ -20,6 +19,7 @@ display_name: Full Name
 first_name: First Name
 last_name: Last Name
 email_address: Email Address
+email_address_placeholder: email@domain.com
 password: Password
 password_help: Use at least six characters.
 sign_up: Sign Up
@@ -51,11 +51,11 @@ enrollment_complete: Enrollment Complete
 change_password: Change Password
 change_password_complete: Your password was successfully updated
 password_didnt_match: Your current password didnt match what we have on record. Please try again.
-verify_email_title: Email Verification
+#verify_email_title: Email Verification
 #verify_email_success: Thank-you for verifying your email address.
 #verify_email_error: There was a problem verifying your email address. Please try again.
-resend_email: Resend Email
-verification_email_sent: An email to verify your account was sent to you. Please click the link in the email to continue.
+#resend_email: Resend Email
+#verification_email_sent: An email to verify your account was sent to you. Please click the link in the email to continue.
 
 
 verifying: Verifying...
@@ -66,19 +66,29 @@ sign_up_success: Welcome!
 sign_up_header: Sign Up
 sign_up_with_email: Sign Up with an Email Address
 sign_up_submit: Sign Up
-sign_up_page_footer: Already have an account?.&nbsp;
+sign_up_page_footer: 'Already have an account? '
 
 email_address_already_exists: Email Address Already Exists
 missing_new_password: Need your new password if changing.
 missing_current_password: Need your current password if changing.
 
+# VerifyEmailAlert
+please_verify_email_address: Hey friend! Can you verify your email address ${email} for us?
+resend_verification_email: Re-send verification email
+send_verification_email_success: Check your inbox for ${email} for a verification link!
+
+# RecoverPassword
 recover_email_success: Check ${email} for a reset link!
 recover_password_header: Recover Password
 recover_password_help: Enter your email address below to receive a link to reset your password.
 recover_password_submit: Recover Password
 recover_password_footer: Remember your password?
 
-confirm_delete_account: Are you sure? This will permanently delete your account and all of its data.
+
+# User Profile
+confirm_delete_account_title: Are you sure you want to delete your account?
+confirm_delete_account_content: This will permanently delete your account and all of its data. Consider exporting it first for safe keeping.
+
 profile_oauth_user: You're logged in with ${provider} using the email address ${email}
 profile_oauth_edit_profile: Edit Profile on ${provider}
 profile_submit: Save Profile
@@ -88,22 +98,26 @@ export_user_data_help: " - Download all of your documents as .txt files in a .zi
 profile: Profile
 settings: Settings
 user_settings: User Settings
+edit_profile_on_o_auth_provider: Edit Profile on ${oAuthProvider}
 
 delete_my_account_button: Delete My Account
 
 profile_save_success: Profile updated!
 user_delete_success: User removed!
 
-user_settings_blank_title: No settings to manage yet.
-admin_user_settings_blank_title: No settings to manage for this user.
-user_settings_blank_subtitle: When there are settings to manage, they'll appear here.
-admin_user_settings_blank_subtitle: GDPR-specific settings intentionally excluded.
+# User Settings
+gdpr_can_send_marketing_emails: Can we send you marketing emails?
+user_settings_submit: Save Settings
+user_settings_save_success: Settings Updated!
 
+# GDPR Modal
 gdpr_consent_header: GDPR Consent
 
 #admin list users
 name: Name
 source: User Database
+admin_user_updated: User Updated!
+admin_user_removed: User Deleted!
 
 #admin edit profile
 show_password: Show Password
@@ -114,21 +128,6 @@ save: Save
 create_user: Create User
 delete_user: Delete User
 
-
-#admin user settings
-key_name: Key Name
-key_name_placeholder: canWeSendYouMarketingEmails
-
-is_gdpr: Is this a GDPR setting?
-
-label: Label
-label_placeholder: Can we send you marketing emails?
-label_help: This is what users will see in their settings panel.
-
-type: Type
-type_boolean: Boolean (true/false)
-type_number: Number
-type_string: String
-
-value: Default Value
-value_placeholder: Squirrel?!
+# generic controls
+delete_my_account: 'Yes, Delete My Account'
+cancel: 'Cancel'

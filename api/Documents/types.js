@@ -3,8 +3,8 @@ export default `
     _id: String
     isPublic: Boolean
     title: String
-    createdAt: String
-    updatedAt: String
+    createdAt: DateTime
+    updatedAt: DateTime
     body: String
     owner: String
     comments: [Comment]

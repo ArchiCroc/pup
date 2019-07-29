@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 import { withRouter } from 'react-router';
@@ -7,7 +7,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
 function AuthorizedRoute(props) {
-  const [authorized, setAuthorized] = useState(false);
+  const [authorized, setAuthorized] = useState(undefined);
 
   const checkIfAuthorized = () => {
     const { loading, userId, userRoles, userIsInRoles, pathAfterFailure } = props;
@@ -25,9 +25,9 @@ function AuthorizedRoute(props) {
     }
   };
 
-  useEffect(() => {
+  if (authorized === undefined) {
     checkIfAuthorized();
-  });
+  }
 
   const { component, path, exact, ...rest } = props;
 

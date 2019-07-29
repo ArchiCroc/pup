@@ -1,7 +1,7 @@
 import { Accounts } from 'meteor/accounts-base';
 import sendWelcomeEmail from '../../../api/Users/actions/sendWelcomeEmail';
-import UserSettings from '../../../api/UserSettings/UserSettings';
 import isOAuthUser from '../../../api/Users/actions/isOAuthUser';
+import UserSettingsSchema from '../../../api/Users/schemas/user-settings';
 
 Accounts.onCreateUser((options, user) => {
   const userToCreate = user;
@@ -10,8 +10,8 @@ Accounts.onCreateUser((options, user) => {
 
   userToCreate.roles = ['user'];
 
-  const settings = UserSettings.find().fetch();
-  userToCreate.settings = settings;
+  const defaultSettings = UserSettingsSchema.clean({});
+  userToCreate.settings = defaultSettings;
 
   return userToCreate;
 });

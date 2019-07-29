@@ -40,10 +40,10 @@ function Login() {
           </LoginPromo>
         </Col>
         <Col sm={24} md={12} lg={12} className="login-form">
-          <h4 className="page-header">{i18n.__('Users.login_header')}</h4>
-
+          <h2 className="page-header">{i18n.__('Users.login_header')}</h2>
+            {/* @todo add check to hide diver if not using oauth */}
           <OAuthLoginButtons services={['facebook', 'github', 'google']} />
-          <Divider>{i18n.__('Users.sign_up_with_email')}</Divider>
+          <Divider>{i18n.__('Users.login_with_email')}</Divider>
           <AutoForm
             name="login"
             schema={LoginSchema}

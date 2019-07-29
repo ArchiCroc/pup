@@ -23,7 +23,7 @@ function ResetPassword(props) {
 
     Accounts.resetPassword(token, cleanForm.newPassword, (error) => {
       if (error) {
-        message.danger(error.reason);
+        message.error(error.reason);
       } else {
         history.push('/');
       }

@@ -23,7 +23,7 @@ function RecoverPassword(props) {
 
     Accounts.forgotPassword({ email }, (error) => {
       if (error) {
-        message.danger(error.reason);
+        message.error(error.reason);
       } else {
         message.success(i18n.__('Users.recover_email_success', { email }));
         history.push('/login');
@@ -34,7 +34,7 @@ function RecoverPassword(props) {
   return (
     <StyledRecoverPassword>
       <Row>
-        <Col xs={12}>
+        <Col xs={24}>
           <h4 className="page-header">{i18n.__('Users.recover_password_header')}</h4>
           <Alert type="info" message={i18n.__('Users.recover_password_help')} />
           <AutoForm
@@ -44,7 +44,7 @@ function RecoverPassword(props) {
             showInlineError
             placeholder
           >
-            <AutoField name="emailAddress" placeholder={i18n.__('Users.email_address')} />
+            <AutoField name="emailAddress" placeholder={i18n.__('Users.email_address_placeholder')} />
             <Button htmlType="submit" type="primary">
               {i18n.__('Users.recover_password_submit')}
             </Button>

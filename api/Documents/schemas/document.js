@@ -2,7 +2,9 @@ import Uniforms from 'uniforms';
 import SimpleSchema from 'simpl-schema';
 import i18n from 'meteor/universe:i18n';
 import isString from 'lodash/isString';
-import sanitizeHtml from 'sanitize-html';
+// if (Meteor.isServer) {
+//   import sanitizeHtml from 'sanitize-html'; // eslint-disable-line
+// }
 
 const DocumentSchema = new SimpleSchema({
   _id: {
@@ -35,7 +37,11 @@ const DocumentSchema = new SimpleSchema({
     },
     autoValue() {
       if (this.value && isString(this.value)) {
-        return sanitizeHtml(this.value);
+        // if (Meteor.isServer) {
+        //   return sanitizeHtml(this.value);
+        // } else {
+          return this.value;
+        //}
       } // else
       return 'This is my document. There are many like it, but this one is mine.';
     },

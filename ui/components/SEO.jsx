@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { Meteor } from 'meteor/meteor';
-import { sample } from 'lodash';
+import sample from 'lodash/sample';
 
 const seoImages = {
   facebook: ['open-graph-facebook.png'],
