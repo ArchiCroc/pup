@@ -8,7 +8,7 @@ import Button from 'antd/lib/button';
 import Divider from 'antd/lib/divider';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Meteor } from 'meteor/meteor';
+// import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import message from 'antd/lib/message';
 import OAuthLoginButtons from './components/OAuthLoginButtons';
@@ -26,10 +26,8 @@ const Signup = ({ history }) => {
         email: cleanForm.emailAddress,
         password: cleanForm.password,
         profile: {
-          name: {
-            first: cleanForm.firstName,
-            last: cleanForm.lastName,
-          },
+          firstName: cleanForm.firstName,
+          lastName: cleanForm.lastName,
         },
       },
       (error) => {

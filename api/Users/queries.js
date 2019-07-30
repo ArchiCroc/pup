@@ -5,20 +5,20 @@ import exportUserData from './actions/exportUserData';
 export default {
   users: (parent, args, context) => {
     // console.log('args', args);
-    const { search, pageSize = 10, currentPage = 1, sort = 'name', order = 'ascend' } = args;
+    const { search, pageSize = 10, page = 1, sort = 'name', order = 'ascend' } = args;
 
     const query = {
       currentUser: context.user,
       search: search ? new RegExp(search, 'i') : null,
       limit: pageSize,
-      skip: currentPage * pageSize - pageSize,
+      skip: page * pageSize - pageSize,
     };
 
     const orderDirection = order === 'descend' ? -1 : 1;
 
-    if (sort === 'name') {
+    if (sort === 'profile') {
       query.sort = {
-        'profile.name.last': orderDirection,
+        'profile.firstName': orderDirection,
         'services.facebook.first_name': orderDirection,
         'services.google.name': orderDirection,
         'services.github.username': orderDirection,

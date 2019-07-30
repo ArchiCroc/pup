@@ -6,10 +6,8 @@ const normalizeGoogleData = (service) => {
       service: 'google',
       emails: [{ address: service.email }],
       profile: {
-        name: {
-          first: service.given_name,
-          last: service.family_name,
-        },
+        firstName: service.given_name,
+        lastName: service.family_name,
       },
     };
   } catch (exception) {
@@ -35,10 +33,8 @@ const normalizeFacebookData = (service) => {
       service: 'facebook',
       emails: [{ address: service.email }],
       profile: {
-        name: {
-          first: service.first_name,
-          last: service.last_name,
-        },
+        firstName: service.first_name,
+        lastName: service.last_name,
       },
     };
   } catch (exception) {

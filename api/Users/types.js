@@ -1,14 +1,4 @@
 export default `
-  type Name {
-    first: String
-    last: String
-  }
-
-  input NameInput {
-    first: String
-    last: String
-  }
-
   type Role {
     _id: String
     name: String
@@ -16,8 +6,11 @@ export default `
   }
 
   input ProfileInput {
-    name: NameInput
+    firstName: String
+    lastName: String
   }
+
+
 
   input UserSettingsInput {
     gdprCanSendMarketingEmails: Boolean
@@ -27,7 +20,11 @@ export default `
     gdprCanSendMarketingEmails: Boolean
   }
 
-  
+  type Profile {
+    firstName: String
+    lastName: String
+  }
+
   input UserInput {
     _id: String,
     email: String,
@@ -39,15 +36,13 @@ export default `
 
   type User {
     _id: String
-    name: Name
+    profile: Profile
     username: String
     emailAddress: String
     oAuthProvider: String
     roles: [Role]
     settings: UserSettings 
   }
-
-
 
   type Users {
     total: Int

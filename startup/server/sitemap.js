@@ -1,6 +1,6 @@
 import xml from 'xml';
 import { Meteor } from 'meteor/meteor';
-import { Picker } from 'meteor/meteorhacks:picker';
+import { JsonRoutes } from 'meteor/simple:json-routes';
 import Documents from '../../api/Documents/Documents';
 import { iso } from '../../modules/dates.js';
 
@@ -17,7 +17,6 @@ const routes = [
 
   { base: 'terms' },
   { base: 'privacy' },
-  { base: 'example-page' },
 
   {
     base: 'documents',
@@ -55,7 +54,7 @@ routes.forEach(({ base, collection, query, projection }) => {
   }
 });
 
-Picker.route('/sitemap.xml', (params, request, response) => {
+JsonRoutes.add('GET', '/sitemap.xml', (request, response) => {
   response.writeHead(200, { 'Content-Type': 'application/xml' });
   response.end(xml(sitemap, { declaration: { standalone: 'yes', encoding: 'utf-8' } }));
 });

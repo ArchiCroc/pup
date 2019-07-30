@@ -12,31 +12,32 @@ import { users as usersQuery } from '../../queries/Users.gql';
 // @todo filter these
 // @ todo add status and account creation date
 
-const columns = [
-  {
-    title: () => i18n.__('Users.name'),
-    dataIndex: 'name',
-    sorter: true,
-    // sortOrder: 'ascend',
-    render: (name) => `${name.first} ${name.last}`,
-    // {name ? `${name.first} ${name.last}` : username}
-  },
-  {
-    title: () => i18n.__('Users.email_address'),
-    dataIndex: 'emailAddress',
-    sorter: true,
-  },
-  {
-    title: 'Users.source',
-    dataIndex: 'oAuthProvider',
-  },
-];
-
 const AdminUsersList = ({ history }) => {
   const paginationObject = {
     pageSize: 10,
     //  onChange: this.onPageChange,
   };
+
+  const columns = [
+    {
+      title: () => i18n.__('Users.name'),
+      dataIndex: 'profile',
+      key: 'name',
+      sorter: true,
+      // sortOrder: 'ascend',
+      render: (profile) => `${profile.firstName} ${profile.lastName}`,
+      // {name ? `${firstName} ${lastName}` : username}
+    },
+    {
+      title: () => i18n.__('Users.email_address'),
+      dataIndex: 'emailAddress',
+      sorter: true,
+    },
+    {
+      title: 'Users.source',
+      dataIndex: 'oAuthProvider',
+    },
+  ];
 
   const [currentPage, setCurrentPage] = useState(1);
   const [currentSearch, setCurrentSearch] = useState(null);
@@ -44,6 +45,7 @@ const AdminUsersList = ({ history }) => {
   const [currentOrder, setCurrentOrder] = useState('descend');
 
   const { loading, data, error } = useQuery(usersQuery, {
+    fetchPolicy: 'no-cache',
     variables: {
       pageSize: paginationObject.pageSize,
       page: currentPage,

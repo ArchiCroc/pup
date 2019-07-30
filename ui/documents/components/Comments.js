@@ -16,7 +16,7 @@ const Comments = ({ documentId, comments }) => (
             <header>
               <p>
                 <strong>
-                  {user.name.first} {user.name.last}
+                  {user.profile.firstName} {user.profile.lastName}
                 </strong>
                 <span>{timeago(createdAt)}</span>
               </p>

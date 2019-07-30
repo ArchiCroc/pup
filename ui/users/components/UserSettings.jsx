@@ -15,7 +15,7 @@ function renderSubmitButton() {
   return <SubmitField value={i18n.__('Users.user_settings_submit')} />;
 }
 
-const UserSettings = ({ settings, userId }) => {
+const UserSettings = ({ user }) => {
   const [updateUserSettings] = useMutation(updateUserSettingsMutation, {
     onCompleted: () => {
       message.success(i18n.__('Users.user_settings_save_success'));
@@ -23,14 +23,14 @@ const UserSettings = ({ settings, userId }) => {
     onError: (error) => {
       message.error(error.message);
     },
-    refetchQueries: [{ query: userQuery, variables: { _id: userId } }],
+    refetchQueries: [{ query: userQuery, variables: { _id: user._id } }],
   });
 
   function handleSubmit(doc) {
     const cleanDoc = UserSettingsSchema.clean(doc);
     updateUserSettings({
       variables: {
-        _id: userId,
+        _id: user._id,
         settings: cleanDoc,
       },
     });
@@ -39,7 +39,7 @@ const UserSettings = ({ settings, userId }) => {
   return (
     <StyledUserSettings className="UserSettings">
       <AutoForm
-        model={settings}
+        model={user.settings}
         schema={UserSettingsSchema}
         onSubmit={handleSubmit}
         autosave
@@ -53,16 +53,12 @@ const UserSettings = ({ settings, userId }) => {
 };
 
 UserSettings.defaultProps = {
-  userId: null,
   isAdmin: false,
-  settings: {},
-  // updateUser: null,
 };
 
 UserSettings.propTypes = {
-  userId: PropTypes.string,
   isAdmin: PropTypes.bool,
-  settings: PropTypes.object,
+  user: PropTypes.object.isRequired,
   // updateUser: PropTypes.func,
 };
 

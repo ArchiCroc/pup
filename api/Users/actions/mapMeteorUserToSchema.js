@@ -22,7 +22,7 @@ export default (options) => {
 
     return {
       _id: normalizedMeteorUserData._id,
-      name: normalizedMeteorUserData.profile.name,
+      profile: normalizedMeteorUserData.profile,
       emailAddress: normalizedMeteorUserData.emails[0].address,
       roles: getActiveRoles(normalizedMeteorUserData._id),
       oAuthProvider:

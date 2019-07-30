@@ -30,8 +30,8 @@ ddp-rate-limiter@1.0.7
 dynamic-import@0.5.1
 static-html
 server-render@0.3.1
-meteorhacks:picker
 apollo
 swydo:graphql
 browser-policy@1.1.0
 universe:i18n
+simple:json-routes

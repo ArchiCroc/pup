@@ -30,8 +30,8 @@ const getQuery = (options) => {
       ? {
           _id: { $ne: options.currentUser._id },
           $or: [
-            { 'profile.name.first': options.search },
-            { 'profile.name.last': options.search },
+            { 'profile.firstName': options.search },
+            { 'profile.lastName': options.search },
             { 'emails.address': options.search },
             { 'services.facebook.first_name': options.search },
             { 'services.facebook.last_name': options.search },

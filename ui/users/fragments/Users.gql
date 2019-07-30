@@ -1,8 +1,8 @@
 fragment UserAttributes on User {
   _id
-  name {
-    first
-    last
+  profile {
+    firstName
+    lastName
   }
   username
   emailAddress

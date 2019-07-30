@@ -1,13 +1,13 @@
 #import "../fragments/Users.gql"
 
-query users($currentPage: Int, $pageSize: Int, $search: String, $sort: String, $order: String) {
-  users(currentPage: $currentPage, pageSize: $pageSize, search: $search, sort: $sort, order: $order) {
+query users($page: Int, $pageSize: Int, $search: String, $sort: String, $order: String) {
+  users(page: $page, pageSize: $pageSize, search: $search, sort: $sort, order: $order) {
     total
     users {
       _id
-      name {
-        first
-        last
+      profile {
+        firstName
+        lastName
       }
       emailAddress
       oAuthProvider
@@ -24,7 +24,7 @@ query user($_id: String) {
 query userSettings {
   user {
     settings {
-      gdpr_wavier
+      gdprCanSendMarketingEmails
     }
   }
 }

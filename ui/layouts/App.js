@@ -198,7 +198,7 @@ export default withTrackerSsr(() => {
   const user = Meteor.user();
   const userId = Meteor.userId();
   const loading = !app.ready() && !Roles.subscription.ready();
-  const name = user && user.profile && user.profile.name && getUserName(user.profile.name);
+  const name = user && user.profile && getUserName(user.profile);
   const emailAddress = user && user.emails && user.emails[0].address;
 
   return {

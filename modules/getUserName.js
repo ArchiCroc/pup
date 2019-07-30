@@ -1,7 +1,7 @@
-const getUserName = (name) =>
+const getUserName = (profile) =>
   ({
-    string: name,
-    object: `${name.first} ${name.last}`,
-  }[typeof name]);
+    string: profile,
+    object: `${profile.firstName} ${profile.lastName}`,
+  }[typeof profile]);
 
 export default getUserName;

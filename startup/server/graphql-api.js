@@ -19,9 +19,6 @@ import CommentMutations from '../../api/Comments/mutations';
 
 import OAuthQueries from '../../api/OAuth/queries';
 
-import '../../api/Documents/server/indexes';
-import '../../api/webhooks';
-
 const schema = {
   typeDefs: gql`
     ${UserTypes}
@@ -35,7 +32,7 @@ const schema = {
       documents: [Document]
       document(_id: String): Document
       user(_id: String): User
-      users(currentPage: Int, pageSize: Int, search: String, sort: String, order: String): Users
+      users(page: Int, pageSize: Int, search: String, sort: String, order: String): Users
       exportUserData: UserDataExport
       oAuthServices(services: [String]): [String]
     }

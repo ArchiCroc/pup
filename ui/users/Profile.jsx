@@ -94,10 +94,8 @@ function Profile({ match, history }) {
         user: {
           email: cleanForm.emailAddress,
           profile: {
-            name: {
-              first: cleanForm.firstName,
-              last: cleanForm.lastName,
-            },
+            firstName: cleanForm.firstName,
+            lastName: cleanForm.lastName,
           },
         },
       },
@@ -197,8 +195,8 @@ function Profile({ match, history }) {
   // convert graphql into flat data for form
   const model = data.user
     ? {
-        firstName: data.user.name.first,
-        lastName: data.user.name.last,
+        firstName: data.user.profile.firstName,
+        lastName: data.user.profile.lastName,
         emailAddress: data.user.emailAddress,
       }
     : {};
@@ -206,7 +204,9 @@ function Profile({ match, history }) {
   return data.user ? (
     <StyledProfile>
       <h4 className="page-header">
-        {data.user.name ? `${data.user.name.first} ${data.user.name.last}` : data.user.username}
+        {data.user.profile
+          ? `${data.user.profile.firstName} ${data.user.profile.lastName}`
+          : data.user.username}
       </h4>
       <Tabs
         // animation={false}
@@ -245,7 +245,7 @@ function Profile({ match, history }) {
           </Row>
         </Tabs.TabPane>
         <Tabs.TabPane key="settings" tab={i18n.__('Users.settings')}>
-          <UserSettings settings={data.user.settings} userId={match.params._id} />
+          <UserSettings user={data.user} />
         </Tabs.TabPane>
       </Tabs>
     </StyledProfile>
