@@ -1,5 +1,6 @@
-import React, { useRef, useMutation } from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
+import { useMutation } from '@apollo/react-hooks';
 import AutoForm from 'uniforms/AutoForm';
 import AutoField from 'uniforms-antd/AutoField';
 import SelectField from 'uniforms-antd/SelectField';
@@ -107,7 +108,7 @@ const AdminUserProfile = ({ user }) => {
         {user && (
           <Row>
             <Col xs={24} md={16} lg={12}>
-              {user && user.name && (
+              {user && user.profile && (
                 <Row gutter={25}>
                   <Col xs={12}>
                     <AutoField name="firstName" placeholder={i18n.__('Users.first_name')} />

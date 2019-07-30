@@ -26,12 +26,7 @@ function AdminUser({ match, history }) {
     history.push(path);
   }
 
-  const {
-    user: {
-      profile: { firstName, lastName },
-      username,
-    },
-  } = data;
+  const { user: { profile: { firstName, lastName }, username } = { profile: {} } } = data;
 
   return data.user ? (
     <div className="AdminUser">
