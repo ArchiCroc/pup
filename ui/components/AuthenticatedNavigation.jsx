@@ -35,6 +35,7 @@ const AuthenticatedNavigation = ({ name, history, userId, location = { pathname:
       mode="horizontal"
       defaultSelectedKeys={[location.pathname]}
       style={{ float: 'right', lineHeight: '64px' }}
+      data-test="user-nav-dropdown"
     >
       <Menu.SubMenu title={name}>
         <Menu.Item key="/user/profile">
