@@ -4,10 +4,8 @@ module.exports = {
       _id: 'abc123',
       emails: [{ verified: true, address: 'admin@admin.com' }],
       profile: {
-        name: {
-          first: 'Andy',
-          last: 'Warhol',
-        },
+        firstName: 'Andy',
+        lastName: 'Warhol',
       },
       roles: ['admin'],
     },
@@ -15,10 +13,8 @@ module.exports = {
       _id: 'def123',
       emails: [{ verified: true, address: 'user+1@test.com' }],
       profile: {
-        name: {
-          first: 'Hieronymus',
-          last: 'Bosch',
-        },
+        firstName: 'Hieronymus',
+        lastName: 'Bosch',
       },
       roles: ['user'],
     },
@@ -26,10 +22,8 @@ module.exports = {
       _id: 'ghi123',
       emails: [{ verified: true, address: 'user+2@test.com' }],
       profile: {
-        name: {
-          first: 'Jean-Michel',
-          last: 'Basquiat',
-        },
+        firstName: 'Jean-Michel',
+        lastName: 'Basquiat',
       },
       roles: ['user'],
     },
