@@ -188,3 +188,7 @@ When code has been tested and confirmed ready for production, it's important to 
 This pushed the code to the `master` branch while also creating a tag locally and remotely, all simultaneously.
 
 For more information on Semantic Versioning, [visit the official documentation site](https://semver.org/).
+
+#### Migration
+$rename : { "profile.name.first": "profile.firstName","profile.name.last": "profile.lastName", "profile.name.middle": "profile.middleName"},
+$unset : {"profile.name"}
