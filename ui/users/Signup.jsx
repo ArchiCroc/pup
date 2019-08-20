@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import AutoForm from 'uniforms/AutoForm';
 import AutoField from 'uniforms-antd/AutoField';
 import i18n from 'meteor/universe:i18n';
@@ -6,7 +7,7 @@ import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Button from 'antd/lib/button';
 import Divider from 'antd/lib/divider';
-import PropTypes from 'prop-types';
+
 import { Link } from 'react-router-dom';
 // import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
