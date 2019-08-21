@@ -27,27 +27,27 @@ module.exports = {
     {
       type: 'add',
       path: 'ui/{{dashCase module}}/components/{{pascalCase name}}.js',
-      templateFile: 'generators/Component/Component.js.hbs',
+      templateFile: 'tools/plop/generators/Component/Component.js.hbs',
     },
     {
       type: 'add',
       path: 'ui/{{dashCase module}}/components/{{pascalCase name}}.test.js',
-      templateFile: 'generators/Component/Component.test.js.hbs',
+      templateFile: 'tools/plop/generators/Component/Component.test.js.hbs',
     },
     // {
     //   type: 'add',
     //   path: 'ui/{{dashCase module}}/components/Styled{{pascalCase name}}.js',
-    //   templateFile: 'generators/Component/StyledComponent.js.hbs',
+    //   templateFile: 'tools/plop/generators/Component/StyledComponent.js.hbs',
     // },
     // {
     //   type: 'add',
     //   path: 'src/components/{{pascalCase name}}/index.js',
-    //   templateFile: 'generators/Component/index.js.hbs',
+    //   templateFile: 'tools/plop/generators/Component/index.js.hbs',
     // },
     // {
     //   type: 'add',
     //   path: 'src/components/index.js',
-    //   templateFile: 'generators/Component/injectable-index.js.hbs',
+    //   templateFile: 'tools/plop/template/injectable-index.js.hbs',
     //   skipIfExists: true,
     // },
     // {

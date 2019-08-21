@@ -1,0 +1,49 @@
+{
+  "_id": {
+    "type": "String",
+    "input": "Hidden",
+    "validate" : {
+      "max": 50,
+      "optional": true
+    }
+    
+  },
+  "isPublic": {
+    "type": "Boolean",
+    "input": "Checkbox",
+    "defaultValue": false
+  },
+  "title": {
+    "type": "String",
+    "input": "Text",
+    "validate" : {
+        "max": 100
+    }
+  },
+  "body": {
+    "type": "String",
+    "input": "LongText",
+    "optional": true
+  },
+  "createdAtUTC": {
+    "type": "DateTime"
+  },
+  "createdById": {
+    "type": "String"
+  },
+  "createdBy": {
+    "type": "User"
+  },
+  "updatedAtUTC": {
+    "type": "DateTime"
+  },
+  "updatedById": {
+    "type": "String"
+  },
+  "updatedBy": {
+    "type": "User"
+  },
+  "comments": {
+    "type": "[comments]"
+  }
+}

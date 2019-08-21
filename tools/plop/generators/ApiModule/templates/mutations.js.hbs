@@ -1,0 +1,42 @@
+import sanitizeHtml from 'sanitize-html';
+import {{ pascalCase name }} from './{{ pascalCase name }}';
+import {{ pascalCase (singular name) }}Schema from './schemas/{{ dashCase (singular name) }}';
+
+export default {
+  save{{ pascalCase (singular name) }}: (root, args, context) => {
+    if (!context.user) throw new Error('Sorry, you must be logged in to add a new {{ pascalCase (singular name) }}.');
+
+    const cleanDoc = {{ pascalCase (singular name) }}Schema.clean(args);
+    {{ pascalCase (singular name) }}Schema.validate(cleanDoc);
+
+    const userId = context.user._id;
+    const timestamp = new Date();
+
+    cleanDoc.updatedBy = userId;
+    cleanDoc.updatedAtUTC = timestamp;
+
+    if( cleanDoc._id ) {
+      cleanDoc.updatedBy = context.user._id;
+      cleanDoc.updatedAt = new Date();
+
+      const { _id } = cleanDoc;
+      delete cleanDoc._id;
+
+      {{ pascalCase name }}.update({ _id }, { $set: cleanDoc });
+    }
+
+    cleanDoc.createdById = userId;
+    cleanDoc.createdAtUTC = timestamp;
+
+    const {{ pascalCase (singular name) }}Id = {{ pascalCase name }}.insert(cleanDoc);
+    const doc = {{ pascalCase name }}.findOne({{ pascalCase (singular name) }}Id);
+    return doc;
+  },
+  remove{{ pascalCase (singular name) }}: (root, args, context) => {
+    if (!context.user) throw new Error('Sorry, you must be logged in to remove a {{ pascalCase (singular name) }}.');
+    if (!{{ pascalCase name }}.findOne({ _id: args._id, createdById: context.user._id }))
+      throw new Error('Sorry, you need to be the owner of this {{ pascalCase (singular name) }} to remove it.');
+    {{ pascalCase name }}.remove(args);
+    return args;
+  },
+};

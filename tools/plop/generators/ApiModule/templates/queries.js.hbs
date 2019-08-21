@@ -1,0 +1,15 @@
+import {{ pascalCase name }} from './{{ pascalCase name }}';
+
+export default {
+  {{ camelCase name }}: (parent, args, context) =>
+    context.user && context.user._id ? {{ pascalCase name }}.find().fetch() : [],
+  my{{ pascalCase name }}: (parent, args, context) =>
+    context.user && context.user._id ? {{ pascalCase name }}.find({ createdById: context.user._id }).fetch() : [],
+  {{ camelCase (singular name) }}: (parent, args, context) =>
+    {{ pascalCase name }}.findOne({
+      $or: [
+        { _id: args._id, createdById: context.user && context.user._id ? context.user._id : null },
+      //  { _id: args._id, isPublic: true },
+      ],
+    }),
+};

@@ -21,12 +21,12 @@ module.exports = {
     {
       type: 'add',
       path: 'src/hooks/{{camelCase name}}.js',
-      templateFile: 'plop-templates/hook.js.hbs',
+      templateFile: 'tools/plop/generators/Hook/hook.js.hbs',
     },
     {
       type: 'add',
       path: 'src/hooks/index.js',
-      templateFile: 'plop-templates/injectable-index.js.hbs',
+      templateFile: 'tools/plop/templates/injectable-index.js.hbs',
       skipIfExists: true,
     },
     {
