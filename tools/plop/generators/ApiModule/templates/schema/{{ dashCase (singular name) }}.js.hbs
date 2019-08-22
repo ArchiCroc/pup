@@ -7,18 +7,19 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
   {{#compare this.type '&&' this.input}}
   {{@key}}: {
     type: {{this.type}},
-    {{#compare this.input '!=' 'Hidden'}}label: () => i18n.__('{{ pascalCase name }}.{{snakeCase @key}}_label'),{{/compare}}
-    {{#if this.defaultValue}}defaultValue: {{this.defaultValue}},{{/if}}
-    {{#if this.validate.optional}}optional: true,{{/if}}
-    {{#if this.validate.max}}max: {{this.validate.max}},{{/if}}
-    {{#if this.validate.min}}min: {{this.validate.min}},{{/if}}
+{{#compare this.input '!=' 'Hidden'}}    label: () => i18n.__('{{ pascalCase name }}.{{snakeCase @key}}_label'),{{/compare}}
+{{#if this.defaultValue}}    defaultValue: {{this.defaultValue}},{{/if}}
+{{#if this.validate.optional}}    optional: true,{{/if}}
+{{#if this.validate.max}}    max: {{this.validate.max}},{{/if}}
+{{#if this.validate.min}}    min: {{this.validate.min}},{{/if}}
     uniforms: {
-      {{#compare this.input '==' 'Hidden'}}
+{{#compare this.input '==' 'Hidden'}}
       type: 'hidden',
-      {{#else}}
+{{else}}
       placeholder: () => i18n.__('{{ pascalCase name }}.{{snakeCase @key}}_placeholder'),
-      {{/compare}}
+{{/compare}}
     },
+  },
   {{/compare}}
   {{/each}}
 });

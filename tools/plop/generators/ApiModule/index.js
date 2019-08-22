@@ -27,19 +27,15 @@ module.exports = {
       name: 'schema',
       message: 'Select a Schema to guide the module fields',
       basePath: './tools/plop/schemas',
-      filter(value) {
-        const file = fs.readFileSync(`${value}`); // ./tools/plop/schemas/
-        const output = JSON.parse(file);
-        console.log(output);
-        return output;
-      },
     },
   ],
   actions: [
     {
-      type: 'add',
-      path: 'api/{{pascalCase name}}/types.js',
-      templateFile: 'tools/plop/generators/ApiModule/templates/types.js.hbs',
+      type: 'addMany',
+      destination: 'api/{{ pascalCase name }}/',
+      base: 'tools/plop/generators/ApiModule/templates/',
+      templateFiles: 'tools/plop/generators/ApiModule/templates/**',
+      verbose: true,
     },
     // {
     //   type: 'add',

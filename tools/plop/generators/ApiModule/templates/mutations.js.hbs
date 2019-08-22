@@ -15,7 +15,7 @@ export default {
     cleanDoc.updatedBy = userId;
     cleanDoc.updatedAtUTC = timestamp;
 
-    if( cleanDoc._id ) {
+    if (cleanDoc._id) {
       cleanDoc.updatedBy = context.user._id;
       cleanDoc.updatedAt = new Date();
 

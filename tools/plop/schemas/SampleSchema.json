@@ -23,7 +23,9 @@
   "body": {
     "type": "String",
     "input": "LongText",
-    "optional": true
+    "validate": {
+      "optional": true
+    }
   },
   "createdAtUTC": {
     "type": "DateTime"

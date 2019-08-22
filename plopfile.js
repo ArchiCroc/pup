@@ -6,7 +6,8 @@ const componentGenerator = require('./tools/plop/generators/Component');
 const pageGenerator = require('./tools/plop/generators/Page');
 const hookGenerator = require('./tools/plop/generators/Hook');
 
-function compare(v1, o1, v2, mainOperator, v3, o2, v4, options) {
+function compare(v1, o1, v2, mainOperator, v3, o2, v4, opts) {
+  let options = opts;
   const operators = {
     '==': (a, b) => a == b,
     '===': (a, b) => a === b,
@@ -20,8 +21,14 @@ function compare(v1, o1, v2, mainOperator, v3, o2, v4, options) {
     '||': (a, b) => a || b,
   };
   const a1 = operators[o1](v1, v2);
-  const a2 = operators[o2](v3, v4);
-  const isTrue = operators[mainOperator](a1, a2);
+  let isTrue;
+  if (o2) {
+    const a2 = operators[o2](v3, v4);
+    isTrue = operators[mainOperator](a1, a2);
+  } else {
+    isTrue = a1;
+    options = mainOperator;
+  }
   return isTrue ? options.fn(this) : options.inverse(this);
 }
 
@@ -30,6 +37,7 @@ module.exports = (plop) => {
   plop.setHelper('pluralize', (txt) => pluralize(txt));
   plop.setHelper('singular', (txt) => pluralize.singular(txt));
   plop.setHelper('compare', compare);
+  plop.setHelper('log', console.log);
 
   plop.setGenerator('API Module', apiModuleGenerator);
   plop.setGenerator('Component', componentGenerator);
