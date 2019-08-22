@@ -23,7 +23,7 @@ module.exports = {
       },
     },
     {
-      type: 'filePath',
+      type: 'jsonFile',
       name: 'schema',
       message: 'Select a Schema to guide the module fields',
       basePath: './tools/plop/schemas',

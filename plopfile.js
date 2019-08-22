@@ -1,5 +1,5 @@
 const pluralize = require('pluralize');
-const filePath = require('inquirer-file-path'); // require('inquirer-file-tree-selection-prompt'); //
+const filePath = require('inquirer-parse-json-file'); // require('inquirer-file-tree-selection-prompt'); //
 
 const apiModuleGenerator = require('./tools/plop/generators/ApiModule');
 const componentGenerator = require('./tools/plop/generators/Component');
@@ -26,7 +26,7 @@ function compare(v1, o1, v2, mainOperator, v3, o2, v4, options) {
 }
 
 module.exports = (plop) => {
-  plop.setPrompt('filePath', filePath);
+  plop.setPrompt('jsonFile', filePath);
   plop.setHelper('pluralize', (txt) => pluralize(txt));
   plop.setHelper('singular', (txt) => pluralize.singular(txt));
   plop.setHelper('compare', compare);
