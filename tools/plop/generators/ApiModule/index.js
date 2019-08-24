@@ -31,13 +31,13 @@ module.exports = {
     },
   ],
   actions: [
-    // {
-    //   type: 'addMany',
-    //   destination: 'api/{{ pascalCase name }}/',
-    //   base: 'tools/plop/generators/ApiModule/templates/api/',
-    //   templateFiles: 'tools/plop/generators/ApiModule/templates/api/**',
-    //   verbose: true,
-    // },
+    {
+      type: 'addMany',
+      destination: 'api/{{ pascalCase name }}/',
+      base: 'tools/plop/generators/ApiModule/templates/api/',
+      templateFiles: 'tools/plop/generators/ApiModule/templates/api/**',
+      verbose: true,
+    },
     {
       type: 'append',
       path: 'startup/server/graphql-api.js',
@@ -48,18 +48,18 @@ module.exports = {
       type: 'append',
       path: 'startup/server/graphql-api.js',
       pattern: '#### PLOP_TYPES_START ####',
-      template: '    ${{{ pascalCase (singular name) }}Types}',
+      template: '    ${ {{~ pascalCase (singular name) }}Types}',
     },
     {
       type: 'append',
       path: 'startup/server/graphql-api.js',
-      pattern: '#### PLOP_QUERIES_SCHEMA_START ####',
+      pattern: '#### PLOP_QUERY_TYPE_START ####',
       templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-queries.js.hbs',
     },
     {
       type: 'append',
       path: 'startup/server/graphql-api.js',
-      pattern: '#### PLOP_QUERIES_MUTATIONS_START ####',
+      pattern: '#### PLOP_MUTATION_TYPE_START ####',
       templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-mutations.js.hbs',
     },
     {
