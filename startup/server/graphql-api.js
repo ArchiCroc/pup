@@ -19,22 +19,37 @@ import CommentMutations from '../../api/Comments/mutations';
 
 import OAuthQueries from '../../api/OAuth/queries';
 
+/* #### PLOP_IMPORTS_START #### */
+/* #### PLOP_IMPORTS_END #### */
+
 const schema = {
   typeDefs: gql`
     ${UserTypes}
     ${DocumentTypes}
     ${CommentTypes}
 
+    #### PLOP_TYPES_START ####
+    #### PLOP_TYPES_END ####
+
     scalar DateTime
     scalar Date
 
+    #### PLOP_SCALAR_START ####
+    #### PLOP_SCALAR_END ####
+
     type Query {
+      widgets: [Widget]
+      myWidgets: [Widget]
+      widget(_id: String): Widget
+
       documents: [Document]
       document(_id: String): Document
       user(_id: String): User
       users(page: Int, pageSize: Int, search: String, sort: String, order: String): Users
       exportUserData: UserDataExport
       oAuthServices(services: [String]): [String]
+      #### PLOP_QUERIES_SCHEMA_START ####
+      #### PLOP_QUERIES_SCHEMA_END ####
     }
 
     type Mutation {
@@ -49,6 +64,8 @@ const schema = {
       removeUser(_id: String): User
       sendVerificationEmail: User
       sendWelcomeEmail: User
+      #### PLOP_MUTATIONS_SCHEMA_START ####
+      #### PLOP_MUTATIONS_SCHEMA_END ####
     }
   `,
   resolvers: {
@@ -59,12 +76,16 @@ const schema = {
       ...UserQueries,
       //  ...UserSettingsQueries,
       ...OAuthQueries,
+      /* #### PLOP_QUERY_RESOLVERS_START #### */
+      /* #### PLOP_QUERY_RESOLVERS_END #### */
     },
     Mutation: {
       ...DocumentMutations,
       ...CommentMutations,
       ...UserMutations,
       // ...UserSettingsMutations,
+      /* #### PLOP_MUTATION_RESOLVERS_START #### */
+      /* #### PLOP_MUTATION_RESOLVERS_END #### */
     },
     Document: {
       comments: CommentQueries.comments,
@@ -72,6 +93,8 @@ const schema = {
     Comment: {
       user: UserQueries.user,
     },
+    /* #### PLOP_RESOLVERS_START #### */
+    /* #### PLOP_RESOLVERS_END #### */
   },
 };
 

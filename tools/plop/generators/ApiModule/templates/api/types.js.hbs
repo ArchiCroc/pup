@@ -1,17 +1,17 @@
 export default `
 type {{ pascalCase (singular name) }} {
-{{#each schema }}
-{{#if this.type}}
+{{#each schema ~}}
+  {{~#if this.type}}
   {{@key}}: {{this.type}}
-{{/if}}
-{{/each}}
+  {{/if~}}
+{{~/each}}
 }
 
 input {{ pascalCase (singular name) }}Input {
 {{#each schema }}
-{{#compare this.type '&&' this.input}}
+  {{~#compare this.type '&&' this.input}}
   {{@key}}: {{this.type}}{{#compare this.validate.optional '==' undefined '||' this.validate.optional '==' false}}{{#compare this.defaultValue '==' undefined}}!{{/compare}}{{/compare}}
-{{/compare}}
-{{/each}}
+  {{/compare~}}
+{{/each~}}
 }
 `;
