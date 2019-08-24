@@ -1,0 +1,29 @@
+_namespace: {{ pascalCase name }}
+
+{{ snakeCase (singular name) }}: {{ titleCase (singular name) }}
+{{ snakeCase (singular name) }}_plural: {{ titleCase name }}
+view_{{ snakeCase (singular name) }}: View {{ titleCase (singular name) }}
+new_{{ snakeCase (singular name) }}: New {{ titleCase (singular name) }}
+confirm_remove_{{ snakeCase (singular name) }}: 'Are you sure? This is permanent!'
+{{ snakeCase (singular name) }}_removed_success: {{ titleCase (singular name) }} removed!
+
+delete_{{ snakeCase (singular name) }}: Delete {{ titleCase (singular name) }}
+
+blank_state_title: No {{ lowerCase name }} here, friend!
+blank_state_subtitle: ""
+
+{{#each schema}}
+  {{#compare this.type '&&' this.input}}
+    {{#compare this.input '!=' 'Hidden'}}
+{{snakeCase @key}}_label: {{titleCase @key}}
+      {{#compare this.type '!=' 'boolean'  }}
+        {{#compare this.type '==' 'array'  }}
+{{snakeCase @key}}_placeholder: Select {{titleCase @key}}
+        {{else}}
+{{snakeCase @key}}_placeholder: {{titleCase @key}}
+        {{/compare}}
+      {{/compare}}
+    {{/compare}}
+  {{/compare}}
+{{/each}}
+
