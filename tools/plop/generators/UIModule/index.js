@@ -43,12 +43,26 @@ module.exports = {
     },
   ],
   actions: (data) => {
-    data.fieldImports = _.uniq(data.schema.filter((field) => field.input)).map((field) => ({
+    const schemaKeys = Object.keys(data.schema);
+    const schemaValues = Object.values(data.schema);
+
+    data.fieldImports = _.uniq(
+      schemaValues.filter((field) => field.input).map((field) => field.input),
+    ).map((field) => ({
       variable: `${field}Field`,
       path: uniformsFields.includes(field)
         ? `uniforms-antd/${field}Field`
         : `../components/${field}Field`,
     }));
+
+    let primaryKeyIndex = schemaValues.findIndex((field) => field.primaryKey);
+    // if primary key isn't found, set it to the first key
+    if (primaryKeyIndex === -1) {
+      primaryKeyIndex = 0;
+    }
+    data.primaryKeyField = schemaKeys[primaryKeyIndex];
+
+    console.log('[data.primaryKeyField]', data.primaryKeyField);
 
     return [
       {

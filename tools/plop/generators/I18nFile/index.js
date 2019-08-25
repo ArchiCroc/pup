@@ -29,5 +29,11 @@ module.exports = {
       path: 'i18n/en/{{camelCase name}}.en.i18n.yml',
       templateFile: 'tools/plop/generators/I18nFile/en.i18n.yml.hbs',
     },
+    {
+      type: 'append',
+      path: 'i18n/index.js',
+      pattern: '/* #### PLOP_IMPORTS_START #### */',
+      template: `import {{camelCase name}}EnI18n from './en/{{camelCase name}}.en.i18n.yml';`,
+    },
   ],
 };

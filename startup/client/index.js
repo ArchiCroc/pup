@@ -16,7 +16,7 @@ import enUS from 'antd/lib/locale-provider/en_US';
 
 // import 'antd/dist/antd.min.css'; // pulling it from the cdn instead
 
-import '../../i18n/startup';
+import '../../i18n';
 import App from '../../ui/layouts/App';
 import apolloClient from './apollo';
 import GlobalStyle from './GlobalStyle';

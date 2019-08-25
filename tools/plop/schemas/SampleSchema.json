@@ -1,17 +1,20 @@
 {
   "_id": {
-    "primaryKey": true,
     "type": "String",
     "input": "Hidden",
     "validate" : {
       "max": 50,
       "optional": true
     }
-    
+  },
+  "slug": {
+    "primaryKey": true,
+    "type": "String",
+    "input": "Text"
   },
   "isPublic": {
     "type": "Boolean",
-    "input": "Checkbox",
+    "input": "Bool",
     "defaultValue": false
   },
   "title": {
@@ -29,7 +32,8 @@
     }
   },
   "createdAtUTC": {
-    "type": "DateTime"
+    "type": "DateTime",
+    "table": "Created At"
   },
   "createdById": {
     "type": "String"

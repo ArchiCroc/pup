@@ -9,20 +9,23 @@ confirm_remove_{{ snakeCase (singular name) }}: 'Are you sure? This is permanent
 
 delete_{{ snakeCase (singular name) }}: Delete {{ titleCase (singular name) }}
 
-blank_state_title: No {{ lowerCase name }} here, friend!
+blank_state_title: No {{ titleCase name }} here, friend!
 blank_state_subtitle: ""
 
 {{#each schema}}
-  {{#compare this.type '&&' this.input}}
+  {{#compare this.table '||' this.input}}
     {{#compare this.input '!=' 'Hidden'}}
+{{snakeCase @key}}: {{#compare this.table 'typeof' 'string'}}{{this.table}}{{else}}{{ titleCase @key}}{{/compare}}
+    {{#if this.input}}
 {{snakeCase @key}}_label: {{titleCase @key}}
-      {{#compare this.type '!=' 'boolean'  }}
-        {{#compare this.type '==' 'array'  }}
+      {{#compare this.type '!=' 'Boolean'  }}
+        {{#compare this.input 'includes' 'Array|Select|Options|Dropdown'  }}
 {{snakeCase @key}}_placeholder: Select {{titleCase @key}}
         {{else}}
 {{snakeCase @key}}_placeholder: {{titleCase @key}}
         {{/compare}}
       {{/compare}}
+    {{/if}}
     {{/compare}}
   {{/compare}}
 {{/each}}

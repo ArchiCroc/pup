@@ -9,10 +9,6 @@ import AutoForm from 'uniforms/AutoForm';
 {{#each fieldImports}}
 import {{this.variable}} from '{{this.path}}';
 {{/each}}
-import TextField from 'uniforms-antd/TextField';
-import BoolField from 'uniforms-antd/BoolField';
-import ListField from 'uniforms-antd/ListField';
-import ListItemField from 'uniforms-antd/ListItemField';
 import Divider from 'antd/lib/divider';
 import message from 'antd/lib/message';
 import Remove{{ pascalCase (singular name) }}Button from './Remove{{ pascalCase (singular name) }}Button';
@@ -54,7 +50,7 @@ const {{ pascalCase (singular name) }}Editor = ({ doc, history }) => {
     <Styled{{ pascalCase (singular name) }}Editor>
       <AutoForm
         name="{{ camelCase (singular name) }}"
-        schema={{{ pascalCase (singular name) }}Schema}
+        schema={ {{~ pascalCase (singular name) }}Schema}
         onSubmit={handleSubmit}
         model={doc || {}}
         showInlineError
@@ -63,11 +59,11 @@ const {{ pascalCase (singular name) }}Editor = ({ doc, history }) => {
 {{#each schema ~}}
   {{~#compare this.type '&&' this.input}}
     {{#compare this.type '===' 'object'}}
-        <ListField name="{{ camelCase name }}">
+        <ListField name="{{ camelCase @key }}">
           <ListItemField name="$" />
         </ListField>
     {{else}}
-    <{{ pascalCase this.input }}Field name="{{ camelCase name }}" />
+    <{{ pascalCase this.input }}Field name="{{ camelCase @key }}" /> 
     {{/compare}}
   {{/compare~}}
 {{~/each}}

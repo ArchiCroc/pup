@@ -9,7 +9,7 @@ import message from 'antd/lib/message';
 import { {{ camelCase (singular name) }} as {{ camelCase (singular name) }}Query } from '../queries/{{ pascalCase name }}.gql';
 import { remove{{ pascalCase (singular name) }} as remove{{ pascalCase (singular name) }}Mutation } from '../mutations/{{ pascalCase name }}.gql';
 
-const Remove{{ pascalCase (singular name) }}Button = ({ _id, name, className, disabled }) => {
+const Remove{{ pascalCase (singular name) }}Button = ({ {{ primaryKeyField }}, name, className, disabled }) => {
   const [remove{{ pascalCase (singular name) }}] = useMutation(remove{{ pascalCase (singular name) }}Mutation, {
     ignoreResults: true,
     onCompleted: () => {
@@ -20,7 +20,7 @@ const Remove{{ pascalCase (singular name) }}Button = ({ _id, name, className, di
       message.error(error.message);
     },
     refetchQueries: [{ query: {{ camelCase (singular name) }}Query }],
-    variables: { _id },
+    variables: { {{ primaryKeyField }} },
   });
 
   function showConfirmModal() {
@@ -35,7 +35,7 @@ const Remove{{ pascalCase (singular name) }}Button = ({ _id, name, className, di
 
   return (
     <Button
-      key={_id}
+      key={ {{~ primaryKeyField ~}} }
       className={className}
       type="danger"
       disabled={disabled}
@@ -54,7 +54,7 @@ Remove{{ pascalCase (singular name) }}Button.defaultProps = {
 Remove{{ pascalCase (singular name) }}Button.propTypes = {
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  _id: PropTypes.string.isRequired,
+  {{ primaryKeyField }}: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 };
 

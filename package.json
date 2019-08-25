@@ -176,6 +176,7 @@
         {
           "allow": [
             "__",
+            "___",
             "_id",
             "_ensureIndex",
             "_verifyEmailToken",

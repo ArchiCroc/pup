@@ -24,6 +24,9 @@ import Documents from '../documents/Documents';
 import ViewDocument from '../documents/ViewDocument';
 import EditDocument from '../documents/EditDocument';
 
+/* #### PLOP_IMPORTS_START #### */
+/* #### PLOP_IMPORTS_END #### */
+
 import Profile from '../users/Profile';
 import Signup from '../users/Signup';
 import Login from '../users/Login';
@@ -105,6 +108,9 @@ class App extends React.Component {
                     {...props}
                     {...state}
                   />
+
+                  {/* #### PLOP_ROUTES_START #### */}
+                  {/* #### PLOP_ROUTES_END #### */}
 
                   <AuthenticatedRoute
                     exact

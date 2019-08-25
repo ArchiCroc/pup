@@ -2,6 +2,7 @@ const pluralize = require('pluralize');
 const filePath = require('inquirer-parse-json-file'); // require('inquirer-file-tree-selection-prompt'); //
 
 const apiModuleGenerator = require('./tools/plop/generators/ApiModule');
+const uiModuleGenerator = require('./tools/plop/generators/UIModule');
 const componentGenerator = require('./tools/plop/generators/Component');
 const pageGenerator = require('./tools/plop/generators/Page');
 const hookGenerator = require('./tools/plop/generators/Hook');
@@ -20,8 +21,9 @@ function compare(v1, o1, v2, mainOperator, v3, o2, v4, opts) {
     '>=': (a, b) => a >= b,
     '&&': (a, b) => a && b,
     '||': (a, b) => a || b,
-    includes: (a, b) => b.explode('|').includes(a),
-    '!includes': (a, b) => !b.explode('|').includes(a),
+    includes: (a, b) => b.split('|').includes(a),
+    '!includes': (a, b) => !b.split('|').includes(a),
+    typeof: (a, b) => typeof a === b,
   };
   const a1 = operators[o1](v1, v2);
   let isTrue;
@@ -43,6 +45,7 @@ module.exports = (plop) => {
   plop.setHelper('log', console.log);
 
   plop.setGenerator('API Module', apiModuleGenerator);
+  plop.setGenerator('UI Module', uiModuleGenerator);
   plop.setGenerator('Component', componentGenerator);
   plop.setGenerator('Page', pageGenerator);
   plop.setGenerator('Hook', hookGenerator);

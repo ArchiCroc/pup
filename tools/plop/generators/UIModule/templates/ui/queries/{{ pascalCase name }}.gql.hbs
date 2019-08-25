@@ -6,14 +6,14 @@ query {{ camelCase (singular name) }} {
   }
 }
 
-query edit{{ pascalCase (singular name) }}($_id: String) {
-  {{ camelCase (singular name) }}(_id: $_id) {
+query edit{{ pascalCase (singular name) }}(${{ primaryKeyField }}: String) {
+  {{ camelCase (singular name) }}({{ primaryKeyField }}: ${{ primaryKeyField }}) {
     ...{{ pascalCase (singular name) }}Attributes
   }
 }
 
-query {{ camelCase (singular name) }}($_id: String) {
-  {{ camelCase (singular name) }}(_id: $_id) {
+query {{ camelCase (singular name) }}(${{ primaryKeyField }}: String) {
+  {{ camelCase (singular name) }}({{ primaryKeyField }}: ${{ primaryKeyField }}) {
     ...{{ pascalCase (singular name) }}Attributes
   }
 }

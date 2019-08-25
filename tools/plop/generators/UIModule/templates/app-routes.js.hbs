@@ -1,0 +1,34 @@
+                  {/* #### {{ constantCase name }} #### */
+                  <AuthenticatedRoute
+                    exact
+                    path="/{{ dashCase name }}"
+                    component={ {{~ pascalCase name ~}} }
+                    setAfterLoginPath={setAfterLoginPath}
+                    {...props}
+                    {...state}
+                  />
+                  <AuthenticatedRoute
+                    exact
+                    path="/{{ dashCase name }}/:{{primaryKeyField}}"
+                    component={View{{ pascalCase (singular name) ~}}}
+                    setAfterLoginPath={setAfterLoginPath}
+                    {...props}
+                    {...state}
+                  />
+                   <AuthenticatedRoute
+                    exact
+                    path="/{{ dashCase name }}/:{{primaryKeyField}}/new"
+                    component={New{{ pascalCase (singular name) ~}} }
+                    setAfterLoginPath={setAfterLoginPath}
+                    {...props}
+                    {...state}
+                  />
+                  <AuthenticatedRoute
+                    exact
+                    path="/{{ dashCase name }}/:{{primaryKeyField}}/edit"
+                    component={Edit{{ pascalCase (singular name) ~}}}
+                    setAfterLoginPath={setAfterLoginPath}
+                    {...props}
+                    {...state}
+                  />
+
