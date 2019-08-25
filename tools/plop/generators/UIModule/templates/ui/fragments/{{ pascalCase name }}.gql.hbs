@@ -1,0 +1,9 @@
+fragment {{ pascalCase (singular name) }}Attributes on {{ pascalCase (singular name) }} {
+  {{#each schema ~}}
+    {{~#compare this.type '&&' this.input}}
+    {{@key}}
+    {{/compare~}}
+  {{~/each}}
+}
+
+

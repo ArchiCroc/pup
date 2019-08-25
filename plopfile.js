@@ -20,6 +20,8 @@ function compare(v1, o1, v2, mainOperator, v3, o2, v4, opts) {
     '>=': (a, b) => a >= b,
     '&&': (a, b) => a && b,
     '||': (a, b) => a || b,
+    includes: (a, b) => b.explode('|').includes(a),
+    '!includes': (a, b) => !b.explode('|').includes(a),
   };
   const a1 = operators[o1](v1, v2);
   let isTrue;

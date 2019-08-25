@@ -1,5 +1,6 @@
 {
   "_id": {
+    "primaryKey": true,
     "type": "String",
     "input": "Hidden",
     "validate" : {

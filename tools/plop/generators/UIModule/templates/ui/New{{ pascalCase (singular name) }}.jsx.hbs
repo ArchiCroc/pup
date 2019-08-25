@@ -1,0 +1,24 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import i18n from 'meteor/universe:i18n';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
+import PageHeader from '../components/PageHeader';
+import {{ pascalCase (singular name) }}Editor from './components/{{ pascalCase (singular name) }}Editor';
+
+const New{{ pascalCase (singular name) }} = ({ history }) => (
+  <>
+    <PageHeader title={i18n.__('{{ pascalCase name }}.new_{{ snakeCase (singular name) }}')} />
+    <Row>
+      <Col xs={24} sm={16} md={12} lg={8}>
+        <{{ pascalCase (singular name) }}Editor history={history} />
+      </Col>
+    </Row>
+  </>
+);
+
+New{{ pascalCase (singular name) }}.propTypes = {
+  history: PropTypes.object.isRequired,
+};
+
+export default New{{ pascalCase (singular name) }};

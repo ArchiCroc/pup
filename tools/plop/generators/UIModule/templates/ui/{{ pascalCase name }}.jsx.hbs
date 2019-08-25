@@ -1,0 +1,74 @@
+import React from 'react';
+// import PropTypes from 'prop-types';
+import i18n from 'meteor/universe:i18n';
+import { useQuery /* , useMutation */ } from '@apollo/react-hooks';
+import Button from 'antd/lib/button';
+import Table from 'antd/lib/table';
+import { Link } from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap';
+
+import PageHeader from '../components/PageHeader';
+
+import New{{ pascalCase (singular name) }}Button from './components/New{{ pascalCase (singular name) }}Button';
+
+import Styled{{ pascalCase name }} from './{{ pascalCase name }}';
+
+import { {{ camelCase (singular name) }} as {{ camelCase (singular name) }}Query } from './queries/{{ pascalCase name }}.gql';
+
+const {{ pascalCase name }} = (props) => {
+  const {
+    loading,
+    data: { {{ camelCase (singular name) }} },
+  } = useQuery({{ camelCase (singular name) }}Query);
+
+  const columns = [
+    {
+      title: i18n.__('{{ pascalCase name }}.name'),
+      dataIndex: 'name',
+      key: 'name',
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      defaultSortOrder: 'ascend',
+      render: (value, record) => <Link to={`/{{ camelCase (singular name) }}/${record._id}/edit`}>{value}</Link>, // eslint-disable-line
+    },
+    {
+      title: i18n.__('{{ pascalCase name }}.slug'),
+      dataIndex: 'slug',
+      key: 'slug',
+      sorter: (a, b) => a.slug.localeCompare(b.slug),
+      defaultSortOrder: 'ascend',
+    },
+    {
+      title: i18n.__('{{ pascalCase name }}.folder_name'),
+      dataIndex: 'folderName',
+      key: 'folderName',
+      sorter: (a, b) => a.folderName.localeCompare(b.folderName),
+      defaultSortOrder: 'ascend',
+    },
+    {
+      title: i18n.__('{{ pascalCase name }}.active'),
+      dataIndex: 'isActive',
+      key: 'isActive',
+      render: (value, record, index) => (value ? i18n.__('{{ pascalCase name }}.yes') : ''),
+    },
+  ];
+
+  return (
+    <Styled{{ pascalCase name }}>
+      <PageHeader title={i18n.__('{{ pascalCase name }}.{{ snakeCase (singular name) }}_plural')} />
+      <New{{ pascalCase (singular name) }}Button />
+      <Table
+        dataSource={{{ camelCase (singular name) }}}
+        columns={columns}
+        rowKey="_id"
+        pagination={false}
+        loading={loading}
+      />
+    </Styled{{ pascalCase name }}>
+  );
+};
+
+// {{ pascalCase name }}.propTypes = {
+//   userId: PropTypes.string.isRequired,
+// };
+
+export default {{ pascalCase name }};

@@ -1,0 +1,41 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import i18n from 'meteor/universe:i18n';
+import { useQuery /* , useMutation */ } from '@apollo/react-hooks';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
+import PageHeader from '../components/PageHeader';
+import {{ pascalCase (singular name) }}Editor from './components/{{ pascalCase (singular name) }}Editor';
+import Loading from '../components/Loading';
+import NotFound from '../pages/NotFound';
+
+import { edit{{ pascalCase (singular name) }} as {{ camelCase (singular name) }}Query } from './queries/{{ pascalCase name }}.gql';
+
+const Edit{{ pascalCase (singular name) }} = ({ history, match }) => {
+  const {
+    loading,
+    data: { {{ camelCase (singular name) }} },
+  } = useQuery({{ camelCase (singular name) }}Query, { variables: { _id: match.params._id } });
+
+  return (
+    <>
+      <PageHeader title={i18n.__('{{ pascalCase name }}.edit_{{ snakeCase (singular name) }}')} />
+      <Row>
+        <Col xs={24} sm={16} md={12} lg={8}>
+          {loading ? (
+            <Loading />
+          ) : (
+            <>{{{ camelCase (singular name) }} ? <{{ pascalCase (singular name) }}Editor doc={{{ camelCase (singular name) }}} history={history} /> : <NotFound />}</>
+          )}
+        </Col>
+      </Row>
+    </>
+  );
+};
+
+Edit{{ pascalCase (singular name) }}.propTypes = {
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+};
+
+export default Edit{{ pascalCase (singular name) }};

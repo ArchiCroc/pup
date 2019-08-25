@@ -1,0 +1,73 @@
+/*
+import React from 'react';
+import PropTypes from 'prop-types';
+import { graphql } from 'react-apollo';
+import { Meteor } from 'meteor/meteor';
+import SEO from '../components/SEO';
+import BlankState from '../components/BlankState';
+import { {{ camelCase (singular name) }} as {{ camelCase (singular name) }}Query } from './queries/{{ pascalCase name }}.gql';
+import parseMarkdown from '../../modules/parseMarkdown';
+
+import { StyledView{{ pascalCase (singular name) }}, {{ pascalCase (singular name) }}Body } from './StyledView{{ pascalCase (singular name) }}';
+
+class View{{ pascalCase (singular name) }} extends React.Component {
+  componentWillMount() {
+    const { data } = this.props;
+    if (Meteor.isClient && Meteor.userId()) data.refetch();
+  }
+
+  render() {
+    const { data } = this.props;
+
+    if (!data.loading && data.{{ camelCase (singular name) }}) {
+      return (
+        <React.Fragment>
+          <StyledView{{ pascalCase (singular name) }}>
+            <SEO
+              title={data.{{ camelCase (singular name) }} && data.{{ camelCase (singular name) }}.title}
+              description={data.{{ camelCase (singular name) }} && data.{{ camelCase (singular name) }}.body}
+              url={`documents/${data.{{ camelCase (singular name) }} && data.{{ camelCase (singular name) }}._id}`}
+              contentType="article"
+              published={data.{{ camelCase (singular name) }} && data.{{ camelCase (singular name) }}.createdAt}
+              updated={data.{{ camelCase (singular name) }} && data.{{ camelCase (singular name) }}.updatedAt}
+              twitter="clvrbgl"
+            />
+            <React.Fragment>
+              <h1>{data.{{ camelCase (singular name) }} && data.{{ camelCase (singular name) }}.title}</h1>
+              <{{ pascalCase (singular name) }}Body
+                dangerouslySetInnerHTML={{
+                  __html: parseMarkdown(data.{{ camelCase (singular name) }} && data.{{ camelCase (singular name) }}.body),
+                }}
+              />
+            </React.Fragment>
+          </StyledView{{ pascalCase (singular name) }}>
+        </React.Fragment>
+      );
+    }
+
+    if (!data.loading && !data.{{ camelCase (singular name) }}) {
+      return (
+        <BlankState
+          icon={{ style: 'solid', symbol: 'file-alt' }}
+          title="No document here, friend!"
+          subtitle="Make sure to double check the URL! If it's correct, this is probably a private document."
+        />
+      );
+    }
+
+    return null;
+  }
+}
+
+View{{ pascalCase (singular name) }}.propTypes = {
+  data: PropTypes.object.isRequired,
+};
+
+export default graphql({{ camelCase (singular name) }}Query, {
+  options: ({ match }) => ({
+    variables: {
+      _id: match.params._id,
+    },
+  }),
+})(View{{ pascalCase (singular name) }});
+*/

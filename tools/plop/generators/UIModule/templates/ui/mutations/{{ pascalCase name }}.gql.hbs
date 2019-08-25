@@ -1,0 +1,13 @@
+#import "../fragments/{{ pascalCase name }}.gql"
+
+mutation save{{ pascalCase (singular name) }}(${{ camelCase (singular name) }}: {{ pascalCase (singular name) }}Input!) {
+  save{{ pascalCase (singular name) }}({{ camelCase (singular name) }}: ${{ camelCase (singular name) }}) {
+    ...{{ pascalCase (singular name) }}Attributes
+  }
+}
+
+mutation remove{{ pascalCase (singular name) }}($_id: String!) {
+  remove{{ pascalCase (singular name) }}(_id: $_id) {
+    _id
+  }
+}

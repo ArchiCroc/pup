@@ -1,0 +1,93 @@
+/* eslint-disable max-len, no-return-assign */
+
+import React from 'react';
+import PropTypes from 'prop-types';
+import { useMutation } from '@apollo/react-hooks';
+import i18n from 'meteor/universe:i18n';
+import Button from 'antd/lib/button';
+import AutoForm from 'uniforms/AutoForm';
+{{#each fieldImports}}
+import {{this.variable}} from '{{this.path}}';
+{{/each}}
+import TextField from 'uniforms-antd/TextField';
+import BoolField from 'uniforms-antd/BoolField';
+import ListField from 'uniforms-antd/ListField';
+import ListItemField from 'uniforms-antd/ListItemField';
+import Divider from 'antd/lib/divider';
+import message from 'antd/lib/message';
+import Remove{{ pascalCase (singular name) }}Button from './Remove{{ pascalCase (singular name) }}Button';
+
+import { {{ camelCase (singular name) }} as {{ camelCase (singular name) }}Query } from '../queries/{{ pascalCase name }}.gql';
+import { save{{ pascalCase (singular name) }} as save{{ pascalCase (singular name) }}Mutation } from '../mutations/{{ pascalCase name }}.gql';
+
+import {{ pascalCase (singular name) }}Schema from '../../../api/{{ pascalCase name }}/schemas/{{ camelCase (singular name) }}';
+
+import Styled{{ pascalCase (singular name) }}Editor from './Styled{{ pascalCase (singular name) }}Editor';
+
+const {{ pascalCase (singular name) }}Editor = ({ doc, history }) => {
+  const [save{{ pascalCase (singular name) }}] = useMutation(save{{ pascalCase (singular name) }}Mutation, {
+    ignoreResults: true,
+    onCompleted: () => {
+      message.success(i18n.__('{{ pascalCase name }}.{{ snakeCase (singular name) }}_saved'));
+      history.push('/{{ camelCase (singular name) }}');
+    },
+    onError: (error) => {
+      message.error(error.message);
+    },
+    refetchQueries: [{ query: {{ camelCase (singular name) }}Query }],
+  });
+
+  function handleSubmit(form) {
+    const cleanForm = {{ pascalCase (singular name) }}Schema.clean(form);
+    // console.log('cleanForm', cleanForm);
+    save{{ pascalCase (singular name) }}({
+      variables: { {{ camelCase (singular name) }}: cleanForm },
+    });
+  }
+
+  // fix issue with uniforms getting a null for visionNames
+  if (doc && !doc.visionNames) {
+    doc.visionNames = []; //eslint-disable-line
+  }
+
+  return (
+    <Styled{{ pascalCase (singular name) }}Editor>
+      <AutoForm
+        name="{{ camelCase (singular name) }}"
+        schema={{{ pascalCase (singular name) }}Schema}
+        onSubmit={handleSubmit}
+        model={doc || {}}
+        showInlineError
+        placeholder
+      >
+{{#each schema ~}}
+  {{~#compare this.type '&&' this.input}}
+    {{#compare this.type '===' 'object'}}
+        <ListField name="{{ camelCase name }}">
+          <ListItemField name="$" />
+        </ListField>
+    {{else}}
+    <{{ pascalCase this.input }}Field name="{{ camelCase name }}" />
+    {{/compare}}
+  {{/compare~}}
+{{~/each}}
+        <Button htmlType="submit" type="primary" block>
+          {i18n.__('{{ pascalCase name }}.save')}
+        </Button>
+      </AutoForm>
+      <Divider />
+      {doc && <Remove{{ pascalCase (singular name) }}Button {...doc} />}
+    </Styled{{ pascalCase (singular name) }}Editor>
+  );
+};
+
+{{ pascalCase (singular name) }}Editor.defaultProps = {
+  doc: null,
+};
+
+{{ pascalCase (singular name) }}Editor.propTypes = {
+  doc: PropTypes.object,
+  history: PropTypes.object.isRequired,
+};
+
+export default {{ pascalCase (singular name) }}Editor;

@@ -1,0 +1,15 @@
+import React from 'react';
+// import PropTypes from 'prop-types';
+import i18n from 'meteor/universe:i18n';
+import Button from 'antd/lib/button';
+import { LinkContainer } from 'react-router-bootstrap';
+
+const New{{ pascalCase (singular name) }}Button = () => (
+  <LinkContainer to="/{{ dashCase (singular name) }}/new">
+    <Button type="primary" icon="plus">
+      {i18n.__('{{ pascalCase name }}.new_{{ snakeCase (singular name) }}')}
+    </Button>
+  </LinkContainer>
+);
+
+export default New{{ pascalCase (singular name) }}Button;
