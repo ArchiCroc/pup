@@ -63,6 +63,14 @@ module.exports = {
     data.primaryKeyField = schemaKeys[primaryKeyIndex];
     data.primaryKeyType = data.schema[data.primaryKeyField].type || 'String';
 
+    let primaryLabelIndex = schemaValues.findIndex((field) => field.primaryLabel);
+    // if primary key isn't found, set it to the first field that is a string
+    if (primaryLabelIndex === -1) {
+      primaryLabelIndex = schemaValues.findIndex((field) => field.type === 'String');
+    }
+    data.primaryLabelField = schemaKeys[primaryLabelIndex];
+    data.primaryLabelType = data.schema[data.primaryLabelField].type || 'String';
+
     return [
       {
         type: 'addMany',

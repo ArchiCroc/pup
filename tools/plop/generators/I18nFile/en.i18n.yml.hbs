@@ -4,10 +4,15 @@ _namespace: {{ pascalCase name }}
 {{ snakeCase (singular name) }}_plural: {{ titleCase name }}
 view_{{ snakeCase (singular name) }}: View {{ titleCase (singular name) }}
 new_{{ snakeCase (singular name) }}: New {{ titleCase (singular name) }}
+edit_{{ snakeCase (singular name) }}: Edit {{ titleCase (singular name) }}
+remove_{{ snakeCase (singular name) }}: Remove {{ titleCase (singular name) }}
 confirm_remove_{{ snakeCase (singular name) }}: 'Are you sure? This is permanent!'
 {{ snakeCase (singular name) }}_removed_success: {{ titleCase (singular name) }} removed!
+{{ snakeCase (singular name) }}_saved: {{ titleCase (singular name) }} saved!
 
 save: Save
+yes: 'Yes'
+no: 'No'
 
 delete_{{ snakeCase (singular name) }}: Delete {{ titleCase (singular name) }}
 

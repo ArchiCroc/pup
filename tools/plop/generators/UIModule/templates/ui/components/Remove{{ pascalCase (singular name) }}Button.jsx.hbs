@@ -25,7 +25,7 @@ const Remove{{ pascalCase (singular name) }}Button = ({ {{ primaryKeyField }}, n
 
   function showConfirmModal() {
     modal.confirm({
-      title: i18n.___('{{ pascalCase name }}.remove_confirmation', { name }),
+      title: i18n.___('{{ pascalCase name }}.remove_confirmation', { label }),
       onOk: remove{{ pascalCase (singular name) }},
       okText: i18n.__('{{ pascalCase name }}.remove'),
       okType: 'danger',
@@ -55,7 +55,7 @@ Remove{{ pascalCase (singular name) }}Button.propTypes = {
   className: PropTypes.string,
   disabled: PropTypes.bool,
   {{ primaryKeyField }}: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
 };
 
 export default Remove{{ pascalCase (singular name) }}Button;

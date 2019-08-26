@@ -10,9 +10,9 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
     {{#compare this.input '!=' 'Hidden'}}
     label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_label'),
     {{/compare}}
-    {{#if this.defaultValue}}
+    {{#compare this.defaultValue '!==' undefined}}
     defaultValue: {{this.defaultValue}},
-    {{/if}}
+    {{/compare}}
     {{~#if this.validate.optional}}
     optional: true,
     {{/if}}

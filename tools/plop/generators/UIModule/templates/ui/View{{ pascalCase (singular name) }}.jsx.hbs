@@ -38,8 +38,8 @@ View{{ pascalCase (singular name) }}.propTypes = {
 const View{{ pascalCase (singular name) }}Fields = ({ {{ camelCase (singular name) }} }) => {
   return (
     <>
-      {Object.entries({{ camelCase (singular name) }}).map(([key, value]) => (
-        <View{{ pascalCase (singular name) }}Field key={key} value={value} />
+      {Object.entries({{ camelCase (singular name) }}).map(([label, value]) => (
+        <View{{ pascalCase (singular name) }}Field key={label} label={label} value={value} />
       ))}
     </>
   );
@@ -49,21 +49,17 @@ View{{ pascalCase (singular name) }}Fields.propTypes = {
   {{ camelCase (singular name) }}: PropTypes.object.isRequired,
 };
 
-const View{{ pascalCase (singular name) }}Field = ({ key, value }) => {
+const View{{ pascalCase (singular name) }}Field = ({ label, value }) => {
   return (
-    <Row key={key}>
-      <Col xs={12} sm={8} md={6} lg={4}>
-        {key}
-      </Col>
-      <Col xs={12} sm={8} md={6} lg={4}>
-        {value}
-      </Col>
+    <Row>
+      <Col xs={12}>{label}</Col>
+      <Col xs={12} >{value.toString()}</Col>
     </Row>
   );
 };
 
 View{{ pascalCase (singular name) }}Field.propTypes = {
-  key: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   value: PropTypes.any.isRequired,
 };
 

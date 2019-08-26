@@ -20,6 +20,7 @@
   "title": {
     "type": "String",
     "input": "Text",
+    "primaryLabel": true,
     "validate" : {
         "max": 100
     }

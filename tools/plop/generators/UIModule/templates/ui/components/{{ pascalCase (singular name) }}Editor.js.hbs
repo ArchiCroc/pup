@@ -13,7 +13,7 @@ import Divider from 'antd/lib/divider';
 import message from 'antd/lib/message';
 import Remove{{ pascalCase (singular name) }}Button from './Remove{{ pascalCase (singular name) }}Button';
 
-import { {{ camelCase (singular name) }} as {{ camelCase (singular name) }}Query } from '../queries/{{ pascalCase name }}.gql';
+import { {{ camelCase name }} as {{ camelCase name}}Query } from '../queries/{{ pascalCase name }}.gql';
 import { save{{ pascalCase (singular name) }} as save{{ pascalCase (singular name) }}Mutation } from '../mutations/{{ pascalCase name }}.gql';
 
 import {{ pascalCase (singular name) }}Schema from '../../../api/{{ pascalCase name }}/schemas/{{ dashCase (singular name) }}';
@@ -30,7 +30,7 @@ const {{ pascalCase (singular name) }}Editor = ({ doc, history }) => {
     onError: (error) => {
       message.error(error.message);
     },
-    refetchQueries: [{ query: {{ camelCase (singular name) }}Query }],
+    refetchQueries: [{ query: {{ camelCase name }}Query }],
   });
 
   function handleSubmit(form) {
@@ -71,8 +71,6 @@ const {{ pascalCase (singular name) }}Editor = ({ doc, history }) => {
           {i18n.__('{{ pascalCase name }}.save')}
         </Button>
       </AutoForm>
-      <Divider />
-      {doc && <Remove{{ pascalCase (singular name) }}Button {...doc} />}
     </Styled{{ pascalCase (singular name) }}Editor>
   );
 };

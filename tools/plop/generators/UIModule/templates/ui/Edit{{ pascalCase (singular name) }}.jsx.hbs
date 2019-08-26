@@ -27,6 +27,8 @@ const Edit{{ pascalCase (singular name) }} = ({ history, match }) => {
           ) : (
             <>{ {{~ camelCase (singular name) }} ? <{{ pascalCase (singular name) }}Editor doc={ {{~ camelCase (singular name) ~}} } history={history} /> : <NotFound />}</>
           )}
+                <Divider />
+      { {{~ camelCase (singular name) }} && <Remove{{ pascalCase (singular name) }}Button label={ {{~ camelCase (singular name) ~}}.{{primaryLabelField}} } />}
         </Col>
       </Row>
     </>
