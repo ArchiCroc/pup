@@ -25,7 +25,7 @@ const View{{ pascalCase (singular name) }} = ({ history, match }) => {
           {loading ? (
             <Loading />
           ) : (
-            <>{{{ camelCase (singular name) }} ? <View{{ pascalCase (singular name) }}Fields {{ camelCase (singular name) }}={{{ camelCase (singular name) }}} /> : <NotFound />}</>
+            <>{ {{~ camelCase (singular name) }} ? <View{{ pascalCase (singular name) }}Fields {{ camelCase (singular name) }}={ {{~ camelCase (singular name) ~} }} /> : <NotFound />}</>
           )}
         </Col>
       </Row>

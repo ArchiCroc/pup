@@ -14,7 +14,7 @@ import { edit{{ pascalCase (singular name) }} as {{ camelCase (singular name) }}
 const Edit{{ pascalCase (singular name) }} = ({ history, match }) => {
   const {
     loading,
-    data: { {{ camelCase (singular name) }} },
+    data: { {{ camelCase (singular name) = undefined }} = {} },
   } = useQuery({{ camelCase (singular name) }}Query, { variables: { {{ primaryKeyField }}: match.params.{{ primaryKeyField }} } });
 
   return (
