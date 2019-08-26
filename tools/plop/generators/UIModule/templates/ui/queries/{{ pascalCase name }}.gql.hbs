@@ -6,13 +6,13 @@ query {{ camelCase name }} {
   }
 }
 
-query edit{{ pascalCase (singular name) }}(${{ primaryKeyField }}: String) {
+query edit{{ pascalCase (singular name) }}(${{ primaryKeyField }}: {{ primaryKeyType }}) {
   {{ camelCase (singular name) }}({{ primaryKeyField }}: ${{ primaryKeyField }}) {
     ...{{ pascalCase (singular name) }}Attributes
   }
 }
 
-query {{ camelCase (singular name) }}(${{ primaryKeyField }}: String) {
+query {{ camelCase (singular name) }}(${{ primaryKeyField }}: {{ primaryKeyType }}) {
   {{ camelCase (singular name) }}({{ primaryKeyField }}: ${{ primaryKeyField }}) {
     ...{{ pascalCase (singular name) }}Attributes
   }

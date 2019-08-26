@@ -32,6 +32,7 @@ module.exports = {
   ],
   actions: (data) => {
     const schemaKeys = Object.keys(data.schema);
+    const schemaValues = Object.values(data.schema);
 
     let primaryKeyIndex = schemaValues.findIndex((field) => field.primaryKey);
     // if primary key isn't found, set it to the first key
@@ -39,6 +40,8 @@ module.exports = {
       primaryKeyIndex = 0;
     }
     data.primaryKeyField = schemaKeys[primaryKeyIndex];
+    data.primaryKeyType = data.schema[data.primaryKeyField].type || 'String';
+
     return [
       {
         type: 'addMany',

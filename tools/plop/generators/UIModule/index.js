@@ -61,8 +61,7 @@ module.exports = {
       primaryKeyIndex = 0;
     }
     data.primaryKeyField = schemaKeys[primaryKeyIndex];
-
-    console.log('[data.primaryKeyField]', data.primaryKeyField);
+    data.primaryKeyType = data.schema[data.primaryKeyField].type || 'String';
 
     return [
       {

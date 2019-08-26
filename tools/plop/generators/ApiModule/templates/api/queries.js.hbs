@@ -8,8 +8,8 @@ export default {
   {{ camelCase (singular name) }}: (parent, args, context) =>
     {{ pascalCase name }}.findOne({
       $or: [
-        { {{ primaryKeyIndex }}: args.{{ primaryKeyIndex }}, createdById: context.user && context.user._id ? context.user._id : null },
-      //  { {{ primaryKeyIndex }}: args.{{ primaryKeyIndex }}, isPublic: true },
+        { {{ primaryKeyField }}: args.{{ primaryKeyField }}, createdById: context.user && context.user._id ? context.user._id : null },
+      //  { {{ primaryKeyField }}: args.{{ primaryKeyField }}, isPublic: true },
       ],
     }),
 };

@@ -6,7 +6,7 @@ mutation save{{ pascalCase (singular name) }}(${{ camelCase (singular name) }}: 
   }
 }
 
-mutation remove{{ pascalCase (singular name) }}(${{ primaryKeyField }}: String!) {
+mutation remove{{ pascalCase (singular name) }}(${{ primaryKeyField }}: {{ primaryKeyType }}!) {
   remove{{ pascalCase (singular name) }}({{ primaryKeyField }}: ${{ primaryKeyField }}) {
     {{ primaryKeyField }}
   }
