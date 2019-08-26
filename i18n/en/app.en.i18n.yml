@@ -8,5 +8,16 @@ privacy_policy_hidden: ' Policy'
 
 admin: Admin
 
+# Not Found Page
 page_error: Oops
 page_error_message: This page had a problem rendering. Please contact the site's Admin.
+
+index_title: Pup
+index_subtitle: The Ultimate Boilerplate for Products.
+index_docs_button: Read the Docs
+index_star_button: Star on GitHub
+index_footer: >
+  Want to build your product with an experienced buddy? 
+  <a href="https://cleverbeagle.com/together?utm_source=pup&utm_medium=app&utm_campaign=oss">
+  Check out Together by Clever Beagle
+  </a>.

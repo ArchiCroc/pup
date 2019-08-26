@@ -16,11 +16,6 @@ import CommentMutations from '../../api/Comments/mutations';
 import OAuthQueries from '../../api/OAuth/queries';
 
 /* #### PLOP_IMPORTS_START #### */
-/* ####TEST4#### */
-import Test4Types from '../../api/Test4/types';
-import Test4Queries from '../../api/Test4/queries';
-import Test4Mutations from '../../api/Test4/mutations';
-
 /* #### PLOP_IMPORTS_END #### */
 
 const schema = {
@@ -30,7 +25,6 @@ const schema = {
     ${CommentTypes}
 
     #### PLOP_TYPES_START ####
-    ${Test4Types}
     #### PLOP_TYPES_END ####
 
     scalar DateTime
@@ -46,13 +40,8 @@ const schema = {
       users(page: Int, pageSize: Int, search: String, sort: String, order: String): Users
       exportUserData: UserDataExport
       oAuthServices(services: [String]): [String]
-      #### PLOP_QUERY_TYPE_START ####
-      ####TEST4####
-      test4: [Test4]
-      myTest4: [Test4]
-      test4(_id: String): Test4
-
-      #### PLOP_QUERY_TYPE_END ####
+      #### PLOP_QUERY_TYPES_START ####
+      #### PLOP_QUERY_TYPES_END ####
     }
 
     type Mutation {
@@ -67,12 +56,8 @@ const schema = {
       removeUser(_id: String): User
       sendVerificationEmail: User
       sendWelcomeEmail: User
-      #### PLOP_MUTATION_TYPE_START ####
-      ####TEST4####
-      saveTest4(test4: Test4Input ): Test4
-      removeTest4(_id: String!): Test4
-
-      #### PLOP_MUTATION_TYPE_END ####
+      #### PLOP_MUTATION_TYPES_START ####
+      #### PLOP_MUTATION_TYPES_END ####
     }
   `,
   resolvers: {
@@ -84,7 +69,6 @@ const schema = {
       //  ...UserSettingsQueries,
       ...OAuthQueries,
       /* #### PLOP_QUERY_RESOLVERS_START #### */
-      ...Test4Queries,
       /* #### PLOP_QUERY_RESOLVERS_END #### */
     },
     Mutation: {
@@ -93,7 +77,6 @@ const schema = {
       ...UserMutations,
       // ...UserSettingsMutations,
       /* #### PLOP_MUTATION_RESOLVERS_START #### */
-      ...Test4Mutations,
       /* #### PLOP_MUTATION_RESOLVERS_END #### */
     },
     Document: {

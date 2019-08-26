@@ -1,3 +1,4 @@
+import React from 'react';
 import i18n from 'meteor/universe:i18n';
 
 import appEnI18n from './en/app.en.i18n.yml';

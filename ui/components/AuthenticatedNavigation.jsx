@@ -18,9 +18,13 @@ const AuthenticatedNavigation = ({ name, history, userId, location = { pathname:
         {i18n.__('Documents.document_plural')}
         <Link to="/documents" />
       </Menu.Item>
+      {/* #### PLOP_USER_MENU_ITEMS_START #### */}
+      {/* #### PLOP_USER_MENU_ITEMS_END #### */}
 
       {Roles.userIsInRole(userId, 'admin') && (
         <Menu.SubMenu title={i18n.__('admin')}>
+          {/* #### PLOP_ADMIN_MENU_ITEMS_START #### */}
+          {/* #### PLOP_ADMIN_MENU_ITEMS_END #### */}
           <Menu.Item key="/admin/users">
             {i18n.__('Users.user_plural')}
 
