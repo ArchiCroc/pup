@@ -28,7 +28,7 @@ export default class SimpleSchema2Bridge extends Bridge {
       (error &&
         error.details &&
         error.details.find &&
-        error.details.find(error => error.name === name)) ||
+        error.details.find((error) => error.name === name)) ||
       null
     );
   }
@@ -41,7 +41,7 @@ export default class SimpleSchema2Bridge extends Bridge {
   getErrorMessages(error) {
     if (error) {
       if (Array.isArray(error.details)) {
-        return error.details.map(error => this.schema.messageForError(error));
+        return error.details.map((error) => this.schema.messageForError(error));
       }
 
       if (error.message) {
@@ -63,7 +63,7 @@ export default class SimpleSchema2Bridge extends Bridge {
 
     const merged = {
       ...definition,
-      ...definition.type[0]
+      ...definition.type[0],
     };
 
     // aldeed/node-simple-schema#27
@@ -113,6 +113,16 @@ export default class SimpleSchema2Bridge extends Bridge {
       } else {
         field = { ...field, ...uniforms };
       }
+
+      if (field.placeholder && typeof field.placeholder === 'function') {
+        field.placeholder = field.placeholder();
+      }
+      if (field.help && typeof field.help === 'function') {
+        field.help = field.help();
+      }
+      if (field.extra && typeof field.extra === 'function') {
+        field.extra = field.extra();
+      }
     }
 
     if (type === Array) {
@@ -141,15 +151,14 @@ export default class SimpleSchema2Bridge extends Bridge {
       if (!Array.isArray(options)) {
         field = {
           ...field,
-          transform: value => options[value],
-          allowedValues: Object.keys(options)
+          transform: (value) => options[value],
+          allowedValues: Object.keys(options),
         };
       } else {
         field = {
           ...field,
-          transform: value =>
-            options.find(option => option.value === value).label,
-          allowedValues: options.map(option => option.value)
+          transform: (value) => options.find((option) => option.value === value).label,
+          allowedValues: options.map((option) => option.value),
         };
       }
     }
@@ -162,7 +171,7 @@ export default class SimpleSchema2Bridge extends Bridge {
   }
 
   getType(name) {
-    const type = this.getField(name).type;
+    const { type } = this.getField(name);
 
     if (type === SimpleSchema.Integer) {
       return Number;
@@ -180,7 +189,7 @@ export default class SimpleSchema2Bridge extends Bridge {
 
     // Clean mutate its argument, even if mutate is false.
     if (options.clean) {
-      return model => validator(cloneDeep({ ...model }));
+      return (model) => validator(cloneDeep({ ...model }));
     }
 
     return validator;

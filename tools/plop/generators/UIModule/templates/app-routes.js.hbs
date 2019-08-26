@@ -9,16 +9,16 @@
                   />
                   <AuthenticatedRoute
                     exact
-                    path="/{{ dashCase name }}/:{{primaryKeyField}}"
-                    component={View{{ pascalCase (singular name) ~}}}
+                    path="/{{ dashCase name }}/new"
+                    component={New{{ pascalCase (singular name) ~}} }
                     setAfterLoginPath={setAfterLoginPath}
                     {...props}
                     {...state}
                   />
-                   <AuthenticatedRoute
+                  <AuthenticatedRoute
                     exact
-                    path="/{{ dashCase name }}/new"
-                    component={New{{ pascalCase (singular name) ~}} }
+                    path="/{{ dashCase name }}/:{{primaryKeyField}}"
+                    component={View{{ pascalCase (singular name) ~}}}
                     setAfterLoginPath={setAfterLoginPath}
                     {...props}
                     {...state}

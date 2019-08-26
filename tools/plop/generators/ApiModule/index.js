@@ -30,49 +30,60 @@ module.exports = {
       basePath: './tools/plop/schemas',
     },
   ],
-  actions: [
-    {
-      type: 'addMany',
-      destination: 'api/{{ pascalCase name }}/',
-      base: 'tools/plop/generators/ApiModule/templates/api/',
-      templateFiles: 'tools/plop/generators/ApiModule/templates/api/**',
-      verbose: true,
-    },
-    {
-      type: 'append',
-      path: 'startup/server/graphql-api.js',
-      pattern: '/* #### PLOP_IMPORTS_START #### */',
-      templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-imports.js.hbs',
-    },
-    {
-      type: 'append',
-      path: 'startup/server/graphql-api.js',
-      pattern: '#### PLOP_TYPES_START ####',
-      template: '    ${ {{~ pascalCase (singular name) }}Types}',
-    },
-    {
-      type: 'append',
-      path: 'startup/server/graphql-api.js',
-      pattern: '#### PLOP_QUERY_TYPES_START ####',
-      templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-queries.js.hbs',
-    },
-    {
-      type: 'append',
-      path: 'startup/server/graphql-api.js',
-      pattern: '#### PLOP_MUTATION_TYPES_START ####',
-      templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-mutations.js.hbs',
-    },
-    {
-      type: 'append',
-      path: 'startup/server/graphql-api.js',
-      pattern: '/* #### PLOP_QUERY_RESOLVERS_START #### */',
-      template: '      ...{{ pascalCase (singular name) }}Queries,',
-    },
-    {
-      type: 'append',
-      path: 'startup/server/graphql-api.js',
-      pattern: '/* #### PLOP_MUTATION_RESOLVERS_START #### */',
-      template: '      ...{{ pascalCase (singular name) }}Mutations,',
-    },
-  ],
+  actions: (data) => {
+    const schemaKeys = Object.keys(data.schema);
+
+    let primaryKeyIndex = schemaValues.findIndex((field) => field.primaryKey);
+    // if primary key isn't found, set it to the first key
+    if (primaryKeyIndex === -1) {
+      primaryKeyIndex = 0;
+    }
+    data.primaryKeyField = schemaKeys[primaryKeyIndex];
+    return [
+      {
+        type: 'addMany',
+        destination: 'api/{{ pascalCase name }}/',
+        base: 'tools/plop/generators/ApiModule/templates/api/',
+        templateFiles: 'tools/plop/generators/ApiModule/templates/api/**',
+        verbose: true,
+        data,
+      },
+      {
+        type: 'append',
+        path: 'startup/server/graphql-api.js',
+        pattern: '/* #### PLOP_IMPORTS_START #### */',
+        templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-imports.js.hbs',
+      },
+      {
+        type: 'append',
+        path: 'startup/server/graphql-api.js',
+        pattern: '#### PLOP_TYPES_START ####',
+        template: '    ${ {{~ pascalCase (singular name) }}Types}',
+      },
+      {
+        type: 'append',
+        path: 'startup/server/graphql-api.js',
+        pattern: '#### PLOP_QUERY_TYPES_START ####',
+        templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-queries.js.hbs',
+      },
+      {
+        type: 'append',
+        path: 'startup/server/graphql-api.js',
+        pattern: '#### PLOP_MUTATION_TYPES_START ####',
+        templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-mutations.js.hbs',
+      },
+      {
+        type: 'append',
+        path: 'startup/server/graphql-api.js',
+        pattern: '/* #### PLOP_QUERY_RESOLVERS_START #### */',
+        template: '      ...{{ pascalCase (singular name) }}Queries,',
+      },
+      {
+        type: 'append',
+        path: 'startup/server/graphql-api.js',
+        pattern: '/* #### PLOP_MUTATION_RESOLVERS_START #### */',
+        template: '      ...{{ pascalCase (singular name) }}Mutations,',
+      },
+    ];
+  },
 };

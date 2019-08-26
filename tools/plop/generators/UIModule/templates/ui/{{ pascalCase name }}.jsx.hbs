@@ -10,19 +10,18 @@ import New{{ pascalCase (singular name) }}Button from './components/New{{ pascal
 
 import Styled{{ pascalCase name }} from './Styled{{ pascalCase name }}';
 
-import { {{ camelCase (singular name) }} as {{ camelCase (singular name) }}Query } from './queries/{{ pascalCase name }}.gql';
+import { {{ camelCase name }} as {{ camelCase name }}Query } from './queries/{{ pascalCase name }}.gql';
 
 const {{ pascalCase name }} = (props) => {
   const {
-    loading,
-    data: { {{ camelCase (singular name) }} },
-  } = useQuery({{ camelCase (singular name) }}Query);
+    loading, data: { {{ camelCase (singular name) }} }  = {} } = useQuery({{ camelCase name }}Query);
 
   const columns = [
 {{#each schema ~}}
-  {{~#compare this.input '||' this.table }}
+  {{#compare this.input '!==' 'Hidden'}}
+    {{~#compare this.input '||' this.table }}
     {
-      title: i18n.__(' {{~ pascalCase @root.name ~}} .{{#compare this.table 'typeof' 'string'}}{{this.table}}{{else}}{{ @key }}{{/compare}}'),
+      title: i18n.__(' {{~ pascalCase @root.name ~}} .{{#compare this.table 'typeof' 'string'}}{{ snakeCase @key }}'),
       dataIndex: '{{ @key }}',
       {{#compare this.type '===' 'String'}}
       sorter: (a, b) => a.{{ @key }}.localeCompare(b.{{ @key }}),
@@ -45,6 +44,7 @@ const {{ pascalCase name }} = (props) => {
       render: (value, record) => value, // eslint-disable-line
       {{/compare}}
     },
+    {{/compare}}
   {{/compare}}
 {{/each}}
   ];

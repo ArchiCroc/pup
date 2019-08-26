@@ -25,7 +25,7 @@ const {{ pascalCase (singular name) }}Editor = ({ doc, history }) => {
     ignoreResults: true,
     onCompleted: () => {
       message.success(i18n.__('{{ pascalCase name }}.{{ snakeCase (singular name) }}_saved'));
-      history.push('/{{ camelCase (singular name) }}');
+      history.push('/{{ dashCase name }}');
     },
     onError: (error) => {
       message.error(error.message);
@@ -63,7 +63,7 @@ const {{ pascalCase (singular name) }}Editor = ({ doc, history }) => {
           <ListItemField name="$" />
         </ListField>
     {{else}}
-    <{{ pascalCase this.input }}Field name="{{ camelCase @key }}" /> 
+    <{{ pascalCase this.input }}Field name="{{ @key }}" />
     {{/compare}}
   {{/compare~}}
 {{~/each}}

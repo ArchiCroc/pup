@@ -14,7 +14,7 @@ const Remove{{ pascalCase (singular name) }}Button = ({ {{ primaryKeyField }}, n
     ignoreResults: true,
     onCompleted: () => {
       message.success(i18n.__('{{ pascalCase name }}.{{ snakeCase (singular name) }}_saved'));
-      history.push('/{{ camelCase (singular name) }}');
+      history.push('/{{ dashCase name }}');
     },
     onError: (error) => {
       message.error(error.message);

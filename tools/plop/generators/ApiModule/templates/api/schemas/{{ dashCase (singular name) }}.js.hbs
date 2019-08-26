@@ -8,7 +8,7 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
   {{@key}}: {
     type: {{this.type}},
     {{#compare this.input '!=' 'Hidden'}}
-    label: () => i18n.__('{{ pascalCase name }}.{{snakeCase @key}}_label'),
+    label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_label'),
     {{/compare}}
     {{#if this.defaultValue}}
     defaultValue: {{this.defaultValue}},
@@ -26,8 +26,8 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
       {{#compare this.input '==' 'Hidden'  }}
       type: 'hidden',
       {{else}}
-      {{#compare this.type '!=' 'boolean'  }}
-      placeholder: () => i18n.__('{{ pascalCase name }}.{{snakeCase @key}}_placeholder'),
+      {{#compare this.type '!=' 'Boolean'  }}
+      placeholder: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_placeholder'),
       {{/compare}}
       {{/compare}}
     },

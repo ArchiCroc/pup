@@ -15,14 +15,14 @@ export default {
     cleanDoc.updatedBy = userId;
     cleanDoc.updatedAtUTC = timestamp;
 
-    if (cleanDoc._id) {
+    if (cleanDoc.{{ primaryKeyIndex }}) {
       cleanDoc.updatedBy = context.user._id;
       cleanDoc.updatedAt = new Date();
 
-      const { _id } = cleanDoc;
-      delete cleanDoc._id;
+      const { {{ primaryKeyIndex }} } = cleanDoc;
+      delete cleanDoc.{{ primaryKeyIndex }};
 
-      {{ pascalCase name }}.update({ _id }, { $set: cleanDoc });
+      {{ pascalCase name }}.update({ {{ primaryKeyIndex }} }, { $set: cleanDoc });
     }
 
     cleanDoc.createdById = userId;
@@ -34,7 +34,7 @@ export default {
   },
   remove{{ pascalCase (singular name) }}: (root, args, context) => {
     if (!context.user) throw new Error('Sorry, you must be logged in to remove a {{ pascalCase (singular name) }}.');
-    if (!{{ pascalCase name }}.findOne({ _id: args._id, createdById: context.user._id }))
+    if (!{{ pascalCase name }}.findOne({ {{ primaryKeyIndex }}: args.{{ primaryKeyIndex }}, createdById: context.user._id }))
       throw new Error('Sorry, you need to be the owner of this {{ pascalCase (singular name) }} to remove it.');
     {{ pascalCase name }}.remove(args);
     return args;
