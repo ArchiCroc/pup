@@ -53,13 +53,13 @@ module.exports = {
     {
       type: 'append',
       path: 'startup/server/graphql-api.js',
-      pattern: '#### PLOP_QUERY_TYPE_START ####',
+      pattern: '#### PLOP_QUERY_TYPES_START ####',
       templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-queries.js.hbs',
     },
     {
       type: 'append',
       path: 'startup/server/graphql-api.js',
-      pattern: '#### PLOP_MUTATION_TYPE_START ####',
+      pattern: '#### PLOP_MUTATION_TYPES_START ####',
       templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-mutations.js.hbs',
     },
     {

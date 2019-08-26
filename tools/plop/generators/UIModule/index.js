@@ -73,42 +73,35 @@ module.exports = {
         verbose: true,
         data,
       },
-      // {
-      //   type: 'append',
-      //   path: 'startup/server/graphql-api.js',
-      //   pattern: '/* #### PLOP_IMPORTS_START #### */',
-      //   templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-imports.js.hbs',
-      // },
-      // {
-      //   type: 'append',
-      //   path: 'startup/server/graphql-api.js',
-      //   pattern: '#### PLOP_TYPES_START ####',
-      //   template: '    ${ {{~ pascalCase (singular name) }}Types}',
-      // },
-      // {
-      //   type: 'append',
-      //   path: 'startup/server/graphql-api.js',
-      //   pattern: '#### PLOP_QUERY_TYPE_START ####',
-      //   templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-queries.js.hbs',
-      // },
-      // {
-      //   type: 'append',
-      //   path: 'startup/server/graphql-api.js',
-      //   pattern: '#### PLOP_MUTATION_TYPE_START ####',
-      //   templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-mutations.js.hbs',
-      // },
-      // {
-      //   type: 'append',
-      //   path: 'startup/server/graphql-api.js',
-      //   pattern: '/* #### PLOP_QUERY_RESOLVERS_START #### */',
-      //   template: '      ...{{ pascalCase (singular name) }}Queries,',
-      // },
-      // {
-      //   type: 'append',
-      //   path: 'startup/server/graphql-api.js',
-      //   pattern: '/* #### PLOP_MUTATION_RESOLVERS_START #### */',
-      //   template: '      ...{{ pascalCase (singular name) }}Mutations,',
-      // },
+      {
+        type: 'append',
+        path: 'ui/layout/App.jsx',
+        pattern: '/* #### PLOP_IMPORTS_START #### */',
+        templateFile: 'tools/plop/generators/UIModule/templates/app-imports.js.hbs',
+      },
+      {
+        type: 'append',
+        path: 'ui/layout/App.jsx',
+        pattern: '/* #### PLOP_ROUTES_START #### */',
+        templateFile: 'tools/plop/generators/UIModule/templates/app-routes.js.hbs',
+      },
+      {
+        type: 'append',
+        path: 'ui/components/AuthenticatedNavigation.jsx',
+        pattern: '#### PLOP_USER_MENU_ITEMS_START ####',
+        templateFile: 'tools/plop/generators/UIModule/templates/user-menu-items.js.hbs',
+      },
+      {
+        type: 'append',
+        path: 'ui/components/AuthenticatedNavigation.jsx',
+        pattern: '#### PLOP_ADMIN_MENU_ITEMS_START ####',
+        templateFile: 'tools/plop/generators/UIModule/templates/admin-menu-items.js.hbs',
+      },
     ];
   },
 };
+
+// /ui/components/AuthenticatedNavigation.jsx
+// {/* #### PLOP_USER_MENU_ITEMS_START #### */}
+// /ui/components/AuthenticatedNavigation.jsx
+//{/* #### PLOP_ADMIN_MENU_ITEMS_START #### */}
