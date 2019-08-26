@@ -1,6 +1,6 @@
 #import "../fragments/{{ pascalCase name }}.gql"
 
-query {{ camelCase (singular name) }} {
+query {{ camelCase name }} {
   {{ camelCase (singular name) }} {
     ...{{ pascalCase (singular name) }}Attributes
   }

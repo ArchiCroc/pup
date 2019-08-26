@@ -17,7 +17,7 @@
                   />
                    <AuthenticatedRoute
                     exact
-                    path="/{{ dashCase name }}/:{{primaryKeyField}}/new"
+                    path="/{{ dashCase name }}/new"
                     component={New{{ pascalCase (singular name) ~}} }
                     setAfterLoginPath={setAfterLoginPath}
                     {...props}
@@ -32,4 +32,3 @@
                     {...state}
                   />
                   {/* #### {{ constantCase name }}_ROUTES_END #### */}
-
