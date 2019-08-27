@@ -8,5 +8,3 @@ createIndex({{ pascalCase name }}, { {{primaryKeyField}}: 1 });
 {{#compare primaryKeyField '!==' urlKeyField }}
 createIndex({{ pascalCase name }}, { {{urlKeyField}}: 1 });
 {{/compare}}
-
-    

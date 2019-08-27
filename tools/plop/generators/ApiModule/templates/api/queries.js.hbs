@@ -7,13 +7,13 @@ export default {
     context.user && context.user._id ? {{ pascalCase name }}.find({ {{userKeyField}}: context.user._id }).fetch() : [],
   {{ camelCase (singular name) }}: (parent, args, context) => {
   {{#compare primaryKeyField '===' urlKeyField }}
-    return {{ pascalCase name }}.findOne({ {{primaryKeyField}}: args.{{primaryKeyField}}  }),
+    return {{ pascalCase name }}.findOne({ {{primaryKeyField}}: args.{{primaryKeyField}}  });
   {{else}}
     if (args.{{ primaryKeyField }}) {
-      return {{ pascalCase name }}.findOne({ {{primaryKeyField}}: args.{{primaryKeyField}}  }),
+      return {{ pascalCase name }}.findOne({ {{primaryKeyField}}: args.{{primaryKeyField}}  });
     } 
     if (args.{{ urlKeyField }}) {
-      return {{ pascalCase name }}.findOne({ {{urlKeyField}}: args.{{urlKeyField}}  }),
+      return {{ pascalCase name }}.findOne({ {{urlKeyField}}: args.{{urlKeyField}}  });
     } 
     return null;
   {{/compare}}

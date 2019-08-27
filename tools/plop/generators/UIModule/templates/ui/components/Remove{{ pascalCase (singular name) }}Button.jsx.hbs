@@ -52,6 +52,7 @@ Remove{{ pascalCase (singular name) }}Button.defaultProps = {
 };
 
 Remove{{ pascalCase (singular name) }}Button.propTypes = {
+  history: PropTypes.object.isRequired,
   className: PropTypes.string,
   disabled: PropTypes.bool,
   {{ primaryKeyField }}: PropTypes.string.isRequired,

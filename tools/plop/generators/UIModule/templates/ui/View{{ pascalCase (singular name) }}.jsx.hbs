@@ -14,13 +14,13 @@ import { {{ camelCase (singular name) }} as {{ camelCase (singular name) }}Query
 
 import StyledView{{ pascalCase (singular name) }} from './StyledView{{ pascalCase (singular name) }}';
 
-const View{{ pascalCase (singular name) }} = ({ history, match }) => {
-  const { loading, data: { {{ camelCase (singular name) }} } = {} } = useQuery({{ camelCase (singular name) }}Query, { variables: { slug: match.params.slug } });
+const View{{ pascalCase (singular name) }} = ({ match }) => {
+  const { loading, data: { {{ camelCase (singular name) }} } = {} } = useQuery({{ camelCase (singular name) }}Query, { variables: { {{ urlKeyField }}: match.params.{{ urlKeyField }} } });
 
   return (
     <StyledView{{ pascalCase (singular name) }}>
       <PageHeader title={i18n.__('{{ pascalCase name }}.view_{{ snakeCase (singular name) }}')} />
-      { {{~ camelCase (singular name) }} && <Edit{{ pascalCase (singular name) }}Button {{primaryKeyField}}={ {{~ camelCase (singular name) }}.{{ primaryKeyField ~}} } />
+      { {{~ camelCase (singular name) }} && <Edit{{ pascalCase (singular name) }}Button {{urlKeyField}}={ {{~ camelCase (singular name) }}.{{ urlKeyField ~}} } />}
       <Row>
         <Col xs={24} sm={16} md={12} lg={8}>
           {loading ? (
@@ -35,7 +35,7 @@ const View{{ pascalCase (singular name) }} = ({ history, match }) => {
 };
 
 View{{ pascalCase (singular name) }}.propTypes = {
-  history: PropTypes.object.isRequired,
+  // history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
 };
 

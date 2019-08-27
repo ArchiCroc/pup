@@ -6,14 +6,14 @@ query {{ camelCase name }} {
   }
 }
 
-query edit{{ pascalCase (singular name) }}(${{ primaryKeyField }}: {{ primaryKeyField }}{{#compare primaryKeyField '!==' urlKeyField }}, ${{ urlKeyField }}: {{ urlKeyField }}{{/compare}}) {
-  {{ camelCase (singular name) }}({{ urlKeyField }}: ${{ urlKeyField }}) {
+query edit{{ pascalCase (singular name) }}(${{ primaryKeyField }}: {{ primaryKeyType }}{{#compare primaryKeyField '!==' urlKeyField }}, ${{ urlKeyField }}: {{ urlKeyType }}{{/compare}}) {
+  {{ camelCase (singular name) }}({{ primaryKeyField }}: ${{ primaryKeyField }}{{#compare primaryKeyField '!==' urlKeyField }}, {{ urlKeyField }}: ${{ urlKeyField }}{{/compare}}) {
     ...{{ pascalCase (singular name) }}Attributes
   }
 }
 
-query {{ camelCase (singular name) }}(${{ primaryKeyField }}: {{ primaryKeyField }}{{#compare primaryKeyField '!==' urlKeyField }}, ${{ urlKeyField }}: {{ urlKeyField }}{{/compare}}) {
-  {{ camelCase (singular name) }}({{ urlKeyField }}: ${{ urlKeyField }}) {
+query {{ camelCase (singular name) }}(${{ primaryKeyField }}: {{ primaryKeyType }}{{#compare primaryKeyField '!==' urlKeyField }}, ${{ urlKeyField }}: {{ urlKeyType }}{{/compare}}) {
+  {{ camelCase (singular name) }}({{ primaryKeyField }}: ${{ primaryKeyField }}{{#compare primaryKeyField '!==' urlKeyField }}, {{ urlKeyField }}: ${{ urlKeyField }}{{/compare}}) {
     ...{{ pascalCase (singular name) }}Attributes
   }
 }

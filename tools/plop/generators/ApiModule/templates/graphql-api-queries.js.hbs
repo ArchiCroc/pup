@@ -1,5 +1,5 @@
       #### {{ constantCase name }}_QUERY_TYPES_START ####
       {{ camelCase name }}: [{{ pascalCase (singular name) }}]
       my{{ pascalCase name }}: [{{ pascalCase (singular name) }}]
-      {{ camelCase (singular name) }}({{ primaryKeyField }}: {{ primaryKeyType }}): {{ pascalCase (singular name) }}
+      {{ camelCase (singular name) }}({{ primaryKeyField }}: {{ primaryKeyType }}{{#compare primaryKeyField '!==' urlKeyField }}, {{ urlKeyField }}: {{ urlKeyType }}{{/compare}}): {{ pascalCase (singular name) }}
       #### {{ constantCase name }}_QUERY_TYPES_END ####

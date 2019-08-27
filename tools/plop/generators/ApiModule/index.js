@@ -53,7 +53,6 @@ module.exports = {
     let userKeyIndex = schemaValues.findIndex((field) => field.userKey);
     // if primary key isn't found, set it to the primaryKey field
     if (userKeyIndex !== -1) {
-      userKeyIndex = primaryKeyIndex;
       data.userKeyField = schemaKeys[userKeyIndex];
     } else {
       data.userKeyField = 'createdById';

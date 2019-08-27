@@ -23,7 +23,7 @@ export default {
       delete cleanDoc.{{ primaryKeyField }};
 
       {{ pascalCase name }}.update({ {{ primaryKeyField }} }, { $set: cleanDoc });
-      return {{ pascalCase name }}.findOne({{ pascalCase (singular name) }}Id);
+      return {{ pascalCase name }}.findOne({{ primaryKeyField }});
     }
 
     cleanDoc.createdById = userId;
