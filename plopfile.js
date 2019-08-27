@@ -7,6 +7,7 @@ const componentGenerator = require('./tools/plop/generators/Component');
 const pageGenerator = require('./tools/plop/generators/Page');
 const hookGenerator = require('./tools/plop/generators/Hook');
 const i18nFileGenerator = require('./tools/plop/generators/I18nFile');
+const basicModuleGenerator = require('./tools/plop/generators/BasicModule');
 
 function compare(v1, o1, v2, mainOperator, v3, o2, v4, opts) {
   let options = opts;
@@ -44,6 +45,7 @@ module.exports = (plop) => {
   plop.setHelper('compare', compare);
   plop.setHelper('log', console.log);
 
+  plop.setGenerator('Add Basic Module', basicModuleGenerator);
   plop.setGenerator('API Module', apiModuleGenerator);
   plop.setGenerator('UI Module', uiModuleGenerator);
   plop.setGenerator('Component', componentGenerator);
