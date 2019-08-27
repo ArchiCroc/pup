@@ -63,13 +63,21 @@ module.exports = {
     data.primaryKeyField = schemaKeys[primaryKeyIndex];
     data.primaryKeyType = data.schema[data.primaryKeyField].type || 'String';
 
-    let primaryLabelIndex = schemaValues.findIndex((field) => field.primaryLabel);
-    // if primary key isn't found, set it to the first field that is a string
-    if (primaryLabelIndex === -1) {
-      primaryLabelIndex = schemaValues.findIndex((field) => field.type === 'String');
+    let urlKeyIndex = schemaValues.findIndex((field) => field.urlKey);
+    // if primary key isn't found, set it to the primaryKey field
+    if (urlKeyIndex === -1) {
+      urlKeyIndex = primaryKeyIndex;
     }
-    data.primaryLabelField = schemaKeys[primaryLabelIndex];
-    data.primaryLabelType = data.schema[data.primaryLabelField].type || 'String';
+    data.urlKeyField = schemaKeys[urlKeyIndex];
+    data.urlKeyType = data.schema[data.urlKeyField].type || 'String';
+
+    let labelKeyIndex = schemaValues.findIndex((field) => field.labelKey);
+    // if primary key isn't found, set it to the first field that is a string
+    if (labelKeyIndex === -1) {
+      labelKeyIndex = schemaValues.findIndex((field) => field.type === 'String');
+    }
+    data.labelKeyField = schemaKeys[labelKeyIndex];
+    data.labelKeyType = data.schema[data.labelKeyField].type || 'String';
 
     return [
       {

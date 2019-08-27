@@ -9,9 +9,7 @@ import AutoForm from 'uniforms/AutoForm';
 {{#each fieldImports}}
 import {{this.variable}} from '{{this.path}}';
 {{/each}}
-import Divider from 'antd/lib/divider';
 import message from 'antd/lib/message';
-import Remove{{ pascalCase (singular name) }}Button from './Remove{{ pascalCase (singular name) }}Button';
 
 import { {{ camelCase name }} as {{ camelCase name}}Query } from '../queries/{{ pascalCase name }}.gql';
 import { save{{ pascalCase (singular name) }} as save{{ pascalCase (singular name) }}Mutation } from '../mutations/{{ pascalCase name }}.gql';

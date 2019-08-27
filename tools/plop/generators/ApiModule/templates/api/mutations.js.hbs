@@ -6,8 +6,8 @@ export default {
   save{{ pascalCase (singular name) }}: (root, args, context) => {
     if (!context.user) throw new Error('Sorry, you must be logged in to add a new {{ pascalCase (singular name) }}.');
 
-    const cleanDoc = {{ pascalCase (singular name) }}Schema.clean(args);
-    {{ pascalCase (singular name) }}Schema.validate(cleanDoc.{{ camelCase (singular name) }});
+    const cleanDoc = {{ pascalCase (singular name) }}Schema.clean(args.{{ camelCase (singular name) }});
+    {{ pascalCase (singular name) }}Schema.validate(cleanDoc);
 
     const userId = context.user._id;
     const timestamp = new Date();
@@ -15,14 +15,15 @@ export default {
     cleanDoc.updatedBy = userId;
     cleanDoc.updatedAtUTC = timestamp;
 
-    if (cleanDoc._id) {
+    if (cleanDoc.{{ primaryKeyField }}) {
       cleanDoc.updatedBy = context.user._id;
       cleanDoc.updatedAt = new Date();
 
-      const { _id } = cleanDoc;
-      delete cleanDoc._id;
+      const { {{ primaryKeyField }} } = cleanDoc;
+      delete cleanDoc.{{ primaryKeyField }};
 
-      {{ pascalCase name }}.update({ _id }, { $set: cleanDoc });
+      {{ pascalCase name }}.update({ {{ primaryKeyField }} }, { $set: cleanDoc });
+      return {{ pascalCase name }}.findOne({{ pascalCase (singular name) }}Id);
     }
 
     cleanDoc.createdById = userId;

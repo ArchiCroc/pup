@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/react-hooks';
 import Table from 'antd/lib/table';
@@ -12,7 +12,7 @@ import Styled{{ pascalCase name }} from './Styled{{ pascalCase name }}';
 
 import { {{ camelCase name }} as {{ camelCase name }}Query } from './queries/{{ pascalCase name }}.gql';
 
-const {{ pascalCase name }} = (props) => {
+const {{ pascalCase name }} = ({ history }) => {
   const {
     loading, data: { {{ camelCase name }} }  = [] } = useQuery({{ camelCase name }}Query);
 
@@ -21,12 +21,12 @@ const {{ pascalCase name }} = (props) => {
   {{#compare this.input '!==' 'Hidden'}}
     {{~#compare this.input '||' this.table }}
     {
-      title: i18n.__(' {{~ pascalCase @root.name ~}} .{{#compare this.table 'typeof' 'string'}}{{ snakeCase @key }}'),
+      title: i18n.__(' {{~ pascalCase @root.name ~}} .{{ snakeCase @key }}'),
       dataIndex: '{{ @key }}',
       {{#compare this.type '===' 'String'}}
       sorter: (a, b) => a.{{ @key }}.localeCompare(b.{{ @key }}),
       defaultSortOrder: 'ascend',
-      // render: (value, record) => <Link to={`/{{ dashCase @root.name }}/${record.{{ @root.primaryKeyField ~}} }/edit`}>{value}</Link>, // eslint-disable-line
+      // render: (value, record) => <Link to={`/{{ dashCase @root.name }}/${record.{{ @root.urlKeyField ~}} }/edit`}>{value}</Link>, // eslint-disable-line
       {{/compare}}
       {{#compare this.type 'includes' 'Date|DateTime|Time'}}
       sorter: (a, b) => new Date(a.{{ @key }}).getTime() - new Date(b.{{ @key }}).getTime(),
@@ -49,6 +49,14 @@ const {{ pascalCase name }} = (props) => {
 {{/each}}
   ];
 
+  const handleOnRow = (record) => {
+    return {
+      onClick: () => {
+        history.push(`/big-toys/${record.{{ urlKeyField ~}} }`);
+      },
+    };
+  };
+
   return (
     <Styled{{ pascalCase name }}>
       <PageHeader title={i18n.__('{{ pascalCase name }}.{{ snakeCase (singular name) }}_plural')} />
@@ -57,6 +65,8 @@ const {{ pascalCase name }} = (props) => {
         dataSource={ {{~ camelCase name ~}} }
         columns={columns}
         rowKey="{{ primaryKeyField }}"
+        rowClassName="clickable"
+        onRow={handleOnRow}
         pagination={false}
         loading={loading}
       />

@@ -42,6 +42,23 @@ module.exports = {
     data.primaryKeyField = schemaKeys[primaryKeyIndex];
     data.primaryKeyType = data.schema[data.primaryKeyField].type || 'String';
 
+    let urlKeyIndex = schemaValues.findIndex((field) => field.urlKey);
+    // if primary key isn't found, set it to the primaryKey field
+    if (urlKeyIndex === -1) {
+      urlKeyIndex = primaryKeyIndex;
+    }
+    data.urlKeyField = schemaKeys[urlKeyIndex];
+    data.urlKeyType = data.schema[data.urlKeyField].type || 'String';
+
+    let userKeyIndex = schemaValues.findIndex((field) => field.userKey);
+    // if primary key isn't found, set it to the primaryKey field
+    if (userKeyIndex !== -1) {
+      userKeyIndex = primaryKeyIndex;
+      data.userKeyField = schemaKeys[userKeyIndex];
+    } else {
+      data.userKeyField = 'createdById';
+    }
+
     return [
       {
         type: 'addMany',

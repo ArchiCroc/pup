@@ -9,7 +9,7 @@ import message from 'antd/lib/message';
 import { {{ camelCase (singular name) }} as {{ camelCase (singular name) }}Query } from '../queries/{{ pascalCase name }}.gql';
 import { remove{{ pascalCase (singular name) }} as remove{{ pascalCase (singular name) }}Mutation } from '../mutations/{{ pascalCase name }}.gql';
 
-const Remove{{ pascalCase (singular name) }}Button = ({ {{ primaryKeyField }}, name, className, disabled }) => {
+const Remove{{ pascalCase (singular name) }}Button = ({ {{ primaryKeyField }}, {{ labelKeyField }}, className, disabled }) => {
   const [remove{{ pascalCase (singular name) }}] = useMutation(remove{{ pascalCase (singular name) }}Mutation, {
     ignoreResults: true,
     onCompleted: () => {
@@ -25,7 +25,7 @@ const Remove{{ pascalCase (singular name) }}Button = ({ {{ primaryKeyField }}, n
 
   function showConfirmModal() {
     modal.confirm({
-      title: i18n.___('{{ pascalCase name }}.remove_confirmation', { label }),
+      title: i18n.___('{{ pascalCase name }}.confirm_remove_{{ snakeCase (singular name) }}', { {{ labelKeyField }} }),
       onOk: remove{{ pascalCase (singular name) }},
       okText: i18n.__('{{ pascalCase name }}.remove'),
       okType: 'danger',
@@ -55,7 +55,7 @@ Remove{{ pascalCase (singular name) }}Button.propTypes = {
   className: PropTypes.string,
   disabled: PropTypes.bool,
   {{ primaryKeyField }}: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  {{ labelKeyField }}: PropTypes.string.isRequired,
 };
 
 export default Remove{{ pascalCase (singular name) }}Button;

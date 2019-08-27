@@ -7,6 +7,9 @@ import Col from 'antd/lib/col';
 import PageHeader from '../components/PageHeader';
 import Loading from '../components/Loading';
 import NotFound from '../pages/NotFound';
+
+import Edit{{ pascalCase (singular name) }}Button from './components/Edit{{ pascalCase (singular name) }}Button'
+
 import { {{ camelCase (singular name) }} as {{ camelCase (singular name) }}Query } from './queries/{{ pascalCase name }}.gql';
 
 import StyledView{{ pascalCase (singular name) }} from './StyledView{{ pascalCase (singular name) }}';
@@ -17,6 +20,7 @@ const View{{ pascalCase (singular name) }} = ({ history, match }) => {
   return (
     <StyledView{{ pascalCase (singular name) }}>
       <PageHeader title={i18n.__('{{ pascalCase name }}.view_{{ snakeCase (singular name) }}')} />
+      { {{~ camelCase (singular name) }} && <Edit{{ pascalCase (singular name) }}Button {{primaryKeyField}}={ {{~ camelCase (singular name) }}.{{ primaryKeyField ~}} } />
       <Row>
         <Col xs={24} sm={16} md={12} lg={8}>
           {loading ? (

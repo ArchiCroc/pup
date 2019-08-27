@@ -1,5 +1,6 @@
 {
   "_id": {
+    "primaryKey": true,
     "type": "String",
     "input": "Hidden",
     "validate" : {
@@ -8,7 +9,7 @@
     }
   },
   "slug": {
-    "primaryKey": true,
+    "urlKey": true,
     "type": "String",
     "input": "Text"
   },
@@ -18,9 +19,9 @@
     "defaultValue": false
   },
   "title": {
+    "labelKey": true,
     "type": "String",
     "input": "Text",
-    "primaryLabel": true,
     "validate" : {
         "max": 100
     }
@@ -37,6 +38,7 @@
     "table": "Created At"
   },
   "createdById": {
+    "userKey": true,
     "type": "String"
   },
   "createdBy": {
