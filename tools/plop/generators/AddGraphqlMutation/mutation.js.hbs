@@ -1,0 +1,38 @@
+  // {{mutationType}}
+  {{mutationName}}: (parent, args, context) => {
+    if (!context.user) {
+      throw new Error('Sorry, you must be logged in to {{mutationName}} {{moduleName}}');
+    }
+    // if (!isAdmin(context.user._id)) {
+    //   throw new Error('[Sorry, you must be an Admin to {{mutationName}} {{moduleName}}');
+    // }
+
+    const schema = {{singular moduleName}}Schema.pick({{#each mutationParamSegments}}'{{param}}'{{#unless @last}}, {{/unless}}{{/each}});
+    const cleanDoc = schema.clean(args)
+    schema.validate(cleanDoc);
+
+    const { {{mutationParamSegments.0.param}} } = cleanDoc;
+
+    const {{camelCase (singular moduleName)}} = {{moduleName}}.findOne({{mutationParamSegments.0.param}});
+    // .map((item) => {
+    //  item._id = item._id._str;
+    //  return item;
+    // });
+
+    if (!{{camelCase (singular moduleName)}}) {
+      throw new Error('{{pascalCase (singular moduleName)}} not found');
+    }
+
+  
+    const updateDoc = {
+      {{#each mutationParamSegments}}
+      // {{param}}: cleanDoc.{{param}},
+      {{/each}}
+      updatedById: context.user._id,
+      updatedAtUTC: new Date(),
+    };
+
+    {{moduleName}}.update({ {{mutationParamSegments.0.param}} }, { $set: updateDoc });
+    return Object.assign({{camelCase (singular moduleName)}}, updateDoc);
+ 
+  },

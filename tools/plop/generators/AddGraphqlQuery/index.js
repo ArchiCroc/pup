@@ -3,7 +3,7 @@ const { join } = require('path');
 
 const dirs = (p) => readdirSync(p).filter((f) => statSync(join(p, f)).isDirectory());
 
-const regEx = /^(\w+)\(((?:\s*(?:\w+:\s*\w+),?)*)\):\s*(\w+)$/;
+const regEx = /^(\w+)\(((?:\s*(?:\w+:\s*\[?\w+\]?),?)*)\):\s*(\[?\w+\]?)$/;
 
 module.exports = {
   description: 'Add a query to an existing API Module',
@@ -30,6 +30,11 @@ module.exports = {
     // data.returnType = queryParts[3];
     // eslint-disable-next-line
     [, data.queryName, data.queryParams, data.returnType] = queryParts;
+    // eslint-disable-next-line
+    data.queryParamSegments = data.queryParams.split(',').map((paramWithType) => {
+      const parts = paramWithType.split(':').map((item) => item.trim());
+      return { param: parts[0], type: parts[1] };
+    });
 
     return [
       {
@@ -45,6 +50,17 @@ module.exports = {
         pattern: '#### PLOP_QUERY_TYPES_START ####',
         template: `      {{queryType}}`,
         data,
+      },
+      {
+        type: 'comment',
+        comment: `Example Query:
+        
+query {{queryName}}({{#each queryParamSegments}}\${{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}) {
+  {{queryName}}({{#each queryParamSegments}}{{param}}: \${{param}}{{#unless @last}}, {{/unless}}{{/each}}){
+    ...{{ pascalCase (singular moduleName) }}Attributes
+  }
+}
+      `,
       },
     ];
   },

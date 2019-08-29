@@ -1,4 +1,4 @@
-  //  {{queryType}}
+  // {{queryType}}
   {{queryName}}: (parent, args, context) => {
     if (!context.user) {
       throw new Error('Sorry, you must be logged in to {{queryName}} {{moduleName}}');
@@ -7,9 +7,13 @@
     //   throw new Error('[Sorry, you must be an Admin to query {{queryName}} {{moduleName}}');
     // }
 
-    const query = {};
-    
-    return ProjectLocations.find(query, { sort: { name: 1 } });
+    const query = {
+      {{#each queryParamSegments}}
+      // {{param}}: args.{{param}},
+      {{/each}}
+    };
+
+    return {{moduleName}}.find(query, { /* sort: { createdAtUTC: 1 } */ });
     // .map((item) => {
     //  item._id = item._id._str;
     //  return item;

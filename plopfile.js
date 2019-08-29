@@ -13,6 +13,11 @@ const basicModuleGenerator = require('./tools/plop/generators/BasicModule');
 
 const dirs = (p) => readdirSync(p).filter((f) => statSync(join(p, f)).isDirectory());
 
+function comment(data, userConfig, plop) {
+  const { comment = '' } = userConfig;
+  return plop.renderString(comment, data); // render the comment as hbs templates
+}
+
 function compare(v1, o1, v2, mainOperator, v3, o2, v4, opts) {
   let options = opts;
   const operators = {
@@ -44,6 +49,7 @@ function compare(v1, o1, v2, mainOperator, v3, o2, v4, opts) {
 
 module.exports = (plop) => {
   plop.setPrompt('jsonFile', filePath);
+  plop.setActionType('comment', comment);
   plop.setHelper('pluralize', (txt) => pluralize(txt));
   plop.setHelper('singular', (txt) => pluralize.singular(txt));
   plop.setHelper('compare', compare);
