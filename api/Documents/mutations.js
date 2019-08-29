@@ -71,4 +71,6 @@ export default {
     Documents.remove(args);
     return args;
   },
+  /* #### PLOP_MUTATIONS_START #### */
+  /* #### PLOP_MUTATIONS_END #### */
 };

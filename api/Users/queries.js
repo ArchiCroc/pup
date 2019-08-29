@@ -41,4 +41,6 @@ export default {
     exportUserData({
       user,
     }),
+  /* #### PLOP_QUERIES_START #### */
+  /* #### PLOP_QUERIES_END #### */
 };

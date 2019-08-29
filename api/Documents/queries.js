@@ -10,4 +10,6 @@ export default {
         { _id: args._id, isPublic: true },
       ],
     }),
+  /* #### PLOP_QUERIES_START #### */
+  /* #### PLOP_QUERIES_END #### */
 };

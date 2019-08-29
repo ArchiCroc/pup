@@ -30,4 +30,6 @@ export default {
 
     return { _id: args._id };
   },
+  /* #### PLOP_MUTATIONS_START #### */
+  /* #### PLOP_MUTATIONS_END #### */
 };

@@ -56,4 +56,6 @@ export default {
       _id: context.user._id,
     };
   },
+  /* #### PLOP_MUTATIONS_START #### */
+  /* #### PLOP_MUTATIONS_END #### */
 };
