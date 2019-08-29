@@ -1,6 +1,7 @@
-import sanitizeHtml from 'sanitize-html';
 import {{ pascalCase name }} from './{{ pascalCase name }}';
 import {{ pascalCase (singular name) }}Schema from './schemas/{{ dashCase (singular name) }}';
+// import sanitizeHtml from 'sanitize-html';
+// import { isAdmin } from '../Users/actions/checkIfAuthorized';
 
 export default {
   save{{ pascalCase (singular name) }}: (root, args, context) => {
