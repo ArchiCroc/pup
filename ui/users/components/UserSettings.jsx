@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { useMutation } from '@apollo/react-hooks';
 import AutoForm from 'uniforms-antd/AutoForm';
+import BoolField from 'uniforms-antd/BoolField';
 import SubmitField from 'uniforms-antd/SubmitField';
 import message from 'antd/lib/message';
 import UserSettingsSchema from '../../../api/Users/schemas/user-settings';
@@ -10,6 +11,9 @@ import StyledUserSettings from './StyledUserSettings';
 import { user as userQuery } from '../queries/Users.gql';
 
 import { updateUserSettings as updateUserSettingsMutation } from '../mutations/Users.gql';
+
+/* #### PLOP_IMPORTS_START #### */
+/* #### PLOP_IMPORTS_END #### */
 
 function renderSubmitButton() {
   return <SubmitField value={i18n.__('Users.user_settings_submit')} />;
@@ -47,7 +51,11 @@ const UserSettings = ({ user }) => {
         showInlineError
         placeholder
         submitField={renderSubmitButton}
-      />
+      >
+        <BoolField name="gdpr.canSendMarketingEmails" />
+        {/* #### PLOP_FIELDS_START #### */}
+        {/* #### PLOP_FIELDS_END #### */}
+      </AutoForm>
     </StyledUserSettings>
   );
 };

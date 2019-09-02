@@ -1,0 +1,11 @@
+{{#each schema.fields ~}}
+  {{~#compare this.type '&&' this.input}}
+    {{#compare this.type '===' 'object'}}
+        <ListField name="{{ camelCase @key }}">
+          <ListItemField name="$" />
+        </ListField>
+    {{else}}
+    <{{ pascalCase this.input }}Field name="{{ @key }}" />
+    {{/compare}}
+  {{/compare~}}
+{{~/each}}

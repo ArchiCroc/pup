@@ -10,14 +10,28 @@ export default `
     lastName: String
   }
 
-
+  input UserSettingsGDPRInput {
+    canSendMarketingEmails: Boolean
+    #### PLOP_USER_SETTINGS_GDPR_INPUT_START ####
+    #### PLOP_USER_SETTINGS_GDPR_INPUT_END ####
+  }
 
   input UserSettingsInput {
-    gdprCanSendMarketingEmails: Boolean
+    gdpr: UserSettingsGDPRInput
+    #### PLOP_USER_SETTINGS_INPUT_START ####
+    #### PLOP_USER_SETTINGS_INPUT_END ####
+  }
+
+  type UserSettingsGDPR {
+    canSendMarketingEmails: Boolean
+    #### PLOP_USER_SETTINGS_GDPR_TYPE_START ####
+    #### PLOP_USER_SETTINGS_GDPR_TYPE_END ####
   }
 
   type UserSettings {
-    gdprCanSendMarketingEmails: Boolean
+    gdpr: UserSettingsGDPR
+    #### PLOP_USER_SETTINGS_TYPE_START ####
+    #### PLOP_USER_SETTINGS_TYPE_END ####
   }
 
   type Profile {

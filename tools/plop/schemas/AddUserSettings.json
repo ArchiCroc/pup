@@ -1,0 +1,19 @@
+{ 
+  "schemaImports": ["import i18n from 'meteor/universe:i18n';"],
+  "fields": {
+    "gdpr.canCollectErrors": {
+      "type": "Boolena",
+      "input": "Bool",
+      "defaultValue": false
+    },
+    "language": {
+      "type": "String",
+      "input": "Select",
+      "choices": "i18n.getLanguages()",
+      "defaultValue": false,
+      "uniforms": {
+        "options": "() => i18n.getLanguages().map(value => ({value, label: i18n.getLanguageNativeName(value) }))"
+      }
+    }
+  }
+}

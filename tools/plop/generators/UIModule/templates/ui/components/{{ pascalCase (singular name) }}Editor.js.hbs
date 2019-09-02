@@ -10,6 +10,8 @@ import AutoForm from 'uniforms/AutoForm';
 import {{this.variable}} from '{{this.path}}';
 {{/each}}
 import message from 'antd/lib/message';
+/* #### PLOP_IMPORTS_START #### */
+/* #### PLOP_IMPORTS_END #### */
 
 import { {{ camelCase name }} as {{ camelCase name}}Query } from '../queries/{{ pascalCase name }}.gql';
 import { save{{ pascalCase (singular name) }} as save{{ pascalCase (singular name) }}Mutation } from '../mutations/{{ pascalCase name }}.gql';
