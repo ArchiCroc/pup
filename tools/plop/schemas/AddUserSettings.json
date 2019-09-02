@@ -2,7 +2,7 @@
   "schemaImports": ["import i18n from 'meteor/universe:i18n';"],
   "fields": {
     "gdpr.canCollectErrors": {
-      "type": "Boolena",
+      "type": "Boolean",
       "input": "Bool",
       "defaultValue": false
     },

@@ -17,7 +17,7 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
 {{#each schema.fields ~}}
   {{~#compare this.type '&&' this.input}}
     {{~#compare this.type '!startsWith' '['}}
-  {{@key}}: {
+  {{#compare @key 'includes' '.'}}'{{@key}}'{{else}}{{@key}}{{/compare}}: {
     type: {{this.type}},
     {{#compare this.input '!=' 'Hidden'}}
     label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_label'),
@@ -66,7 +66,7 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
     },
   },
   {{else}}
-  {{@key}}: {
+  {{#compare @key 'includes' '.'}}'{{@key}}'{{else}}{{@key}}{{/compare}}: {
     type: Array,
     {{#compare this.input '!=' 'Hidden'}}
     label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_label'),

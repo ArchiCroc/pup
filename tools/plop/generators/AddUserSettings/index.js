@@ -70,7 +70,7 @@ module.exports = {
         pattern: '#### PLOP_USER_SETTINGS_GDPR_INPUT_START ####',
         template: `{{#each schema.fields }}
 {{~#compare this.type '&&' this.input '&&' @key 'startsWith' 'gdpr'}}
-  {{@key}}: {{this.type}}{{#compare this.validate.optional '==' undefined '||' this.validate.optional '==' false}}{{#compare this.defaultValue '==' undefined}}!{{/compare}}{{/compare}}
+    {{@key}}: {{this.type}}{{#compare this.validate.optional '==' undefined '||' this.validate.optional '==' false}}{{#compare this.defaultValue '==' undefined}}!{{/compare}}{{/compare}}
 {{/compare~}}
 {{/each~}}`,
       },
@@ -80,7 +80,7 @@ module.exports = {
         pattern: '#### PLOP_USER_SETTINGS_INPUT_START ####',
         template: `{{#each schema.fields }}
 {{~#compare this.type '&&' this.input '&&' @key '!startsWith' 'gdpr'}}
-  {{@key}}: {{this.type}}{{#compare this.validate.optional '==' undefined '||' this.validate.optional '==' false}}{{#compare this.defaultValue '==' undefined}}!{{/compare}}{{/compare}}
+    {{@key}}: {{this.type}}{{#compare this.validate.optional '==' undefined '||' this.validate.optional '==' false}}{{#compare this.defaultValue '==' undefined}}!{{/compare}}{{/compare}}
 {{/compare~}}
 {{/each~}}`,
       },
@@ -91,7 +91,7 @@ module.exports = {
         template: `{{#each schema.fields ~}}
 {{~#if this.type}}
 {{#compare @key 'startsWith' 'gdpr'}}
-  {{@key}}: {{this.type}}
+    {{@key}}: {{this.type}}
 {{/compare}}
 {{/if~}}
 {{~/each}}`,
@@ -103,14 +103,14 @@ module.exports = {
         template: `{{#each schema.fields ~}}
 {{~#if this.type}}
 {{#compare @key '!startsWith' 'gdpr'}}
-  {{@key}}: {{this.type}}
+    {{@key}}: {{this.type}}
 {{/compare}}
 {{/if~}}
 {{~/each}}`,
       },
       {
         type: 'append',
-        path: 'ui/users/components/UserSettings.js',
+        path: 'ui/users/components/UserSettings.jsx',
         pattern: '#### PLOP_IMPORTS_START ####',
         template: `{{#each fieldImports}}
 import {{this.variable}} from '{{this.path}}';
@@ -118,7 +118,7 @@ import {{this.variable}} from '{{this.path}}';
       },
       {
         type: 'append',
-        path: 'ui/users/components/UserSettings.js',
+        path: 'ui/users/components/UserSettings.jsx',
         pattern: '{/* #### PLOP_FIELDS_START #### */}',
         templateFile: 'tools/plop/generators/AddUserSettings/templates/fields.js.hbs',
       },
