@@ -21,7 +21,7 @@ delete_{{ snakeCase (singular name) }}: Delete {{ titleCase (singular name) }}
 blank_state_title: No {{ titleCase name }} here, friend!
 blank_state_subtitle: ""
 
-{{#each schema}}
+{{#each schema.fields}}
   {{#compare this.table '||' this.input}}
     {{#compare this.input '!=' 'Hidden'}}
 {{snakeCase @key}}: {{#compare this.table 'typeof' 'string'}}{{this.table}}{{else}}{{ titleCase @key}}{{/compare}}

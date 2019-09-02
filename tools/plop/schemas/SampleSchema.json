@@ -1,4 +1,4 @@
-{
+{ "fields": {
   "_id": {
     "primaryKey": true,
     "type": "String",
@@ -56,4 +56,5 @@
   "comments": {
     "type": "[Comment]"
   }
+}
 }

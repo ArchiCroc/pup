@@ -17,7 +17,7 @@ const {{ pascalCase name }} = ({ history }) => {
     loading, data: { {{ camelCase name }} }  = [] } = useQuery({{ camelCase name }}Query);
 
   const columns = [
-{{#each schema ~}}
+{{#each schema.fields ~}}
   {{#compare this.input '!==' 'Hidden'}}
     {{~#compare this.input '||' this.table }}
     {

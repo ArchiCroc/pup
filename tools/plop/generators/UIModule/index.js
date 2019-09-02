@@ -43,8 +43,8 @@ module.exports = {
     },
   ],
   actions: (data) => {
-    const schemaKeys = Object.keys(data.schema);
-    const schemaValues = Object.values(data.schema);
+    const schemaKeys = Object.keys(data.schema.fields);
+    const schemaValues = Object.values(data.schema.fields);
 
     data.fieldImports = _.uniq(
       schemaValues.filter((field) => field.input).map((field) => field.input),
@@ -61,7 +61,7 @@ module.exports = {
       primaryKeyIndex = 0;
     }
     data.primaryKeyField = schemaKeys[primaryKeyIndex];
-    data.primaryKeyType = data.schema[data.primaryKeyField].type || 'String';
+    data.primaryKeyType = data.schema.fields[data.primaryKeyField].type || 'String';
 
     let urlKeyIndex = schemaValues.findIndex((field) => field.urlKey);
     // if primary key isn't found, set it to the primaryKey field
@@ -69,7 +69,7 @@ module.exports = {
       urlKeyIndex = primaryKeyIndex;
     }
     data.urlKeyField = schemaKeys[urlKeyIndex];
-    data.urlKeyType = data.schema[data.urlKeyField].type || 'String';
+    data.urlKeyType = data.schema.fields[data.urlKeyField].type || 'String';
 
     let labelKeyIndex = schemaValues.findIndex((field) => field.labelKey);
     // if primary key isn't found, set it to the first field that is a string
@@ -77,7 +77,7 @@ module.exports = {
       labelKeyIndex = schemaValues.findIndex((field) => field.type === 'String');
     }
     data.labelKeyField = schemaKeys[labelKeyIndex];
-    data.labelKeyType = data.schema[data.labelKeyField].type || 'String';
+    data.labelKeyType = data.schema.fields[data.labelKeyField].type || 'String';
 
     return [
       {

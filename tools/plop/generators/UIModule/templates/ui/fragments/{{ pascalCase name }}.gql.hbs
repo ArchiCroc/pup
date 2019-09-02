@@ -1,5 +1,5 @@
 fragment {{ pascalCase (singular name) }}Attributes on {{ pascalCase (singular name) }} {
-  {{#each schema ~}}
+  {{#each schema.fields ~}}
     {{~#compare this.table '||' this.input}}
     {{@key}}
     {{/compare~}}

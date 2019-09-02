@@ -33,6 +33,8 @@ function compare(v1, o1, v2, mainOperator, v3, o2, v4, opts) {
     '||': (a, b) => a || b,
     includes: (a, b) => b.split('|').includes(a),
     '!includes': (a, b) => !b.split('|').includes(a),
+    startsWith: (a, b) => a.startsWith(b),
+    '!startsWith': (a, b) => !a.startsWith(b),
     typeof: (a, b) => typeof a === b,
   };
   const a1 = operators[o1](v1, v2);
@@ -54,6 +56,9 @@ module.exports = (plop) => {
   plop.setHelper('singular', (txt) => pluralize.singular(txt));
   plop.setHelper('compare', compare);
   plop.setHelper('log', console.log);
+  plop.setHelper('stripBrackets', (text) => {
+    return text.replace(/\[(\w+)\]/, '$1');
+  });
 
   const generators = dirs('./tools/plop/generators');
 

@@ -54,7 +54,7 @@ const {{ pascalCase (singular name) }}Editor = ({ doc, history }) => {
         showInlineError
         placeholder
       >
-{{#each schema ~}}
+{{#each schema.fields ~}}
   {{~#compare this.type '&&' this.input}}
     {{#compare this.type '===' 'object'}}
         <ListField name="{{ camelCase @key }}">

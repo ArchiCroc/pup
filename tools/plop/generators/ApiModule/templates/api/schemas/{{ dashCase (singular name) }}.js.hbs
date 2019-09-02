@@ -1,10 +1,20 @@
 import Uniforms from 'uniforms';
 import SimpleSchema from 'simpl-schema';
 import i18n from 'meteor/universe:i18n';
+{{#each schema.schemaImports }}
+{{{this}}}
+{{/each}}
+
+{{#each schema.fields }}
+  {{#if this.clean}}
+const clean{{pascalCase @key}} = {{{this.clean}}};
+  {{/if}}
+{{/each}}
 
 const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
-  {{#each schema ~}}
-    {{~#compare this.type '&&' this.input}}
+{{#each schema.fields ~}}
+  {{~#compare this.type '&&' this.input}}
+    {{~#compare this.type '!startsWith' '['}}
   {{@key}}: {
     type: {{this.type}},
     {{#compare this.input '!=' 'Hidden'}}
@@ -16,24 +26,86 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
     {{~#if this.validate.optional}}
     optional: true,
     {{/if}}
+    {{#if this.validate.regEx}}
+    regEx: {{this.validate.regEx}},
+    {{/if}}
     {{#if this.validate.max}}
     max: {{this.validate.max}},
     {{/if}}
     {{#if this.validate.min}}
     min: {{this.validate.min}},
     {{/if}}
+    {{#if this.clean}}
+    autoValue() {
+      if (this.value) {
+        return clean{{pascalCase @key}}(this.value);
+      }
+      return this.value;
+    },
+    {{/if}}
+    {{#if this.choices}}
+      {{#compare this.choices 'typeof' 'object'}}
+    allowedValues: [{{#each this.choices}}{{#compare this 'typeof' 'string'}}'{{this}}'{{else}}{{this}}{{/compare}}{{#unless @last}}, {{/unless}}{{/each}}],
+      {{else}}
+    allowedValues: {{this.choices}},
+      {{/compare}}
+    {{/if}}
     uniforms: {
       {{#compare this.input '==' 'Hidden'  }}
       type: 'hidden',
       {{else}}
-      {{#compare this.type '!=' 'Boolean'  }}
+        {{#compare this.type '!=' 'Boolean'  }}
       placeholder: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_placeholder'),
-      {{/compare}}
+        {{/compare}}
       {{/compare}}
     },
   },
-    {{/compare~}}
-  {{~/each}}
+  {{else}}
+  {{@key}}: {
+    type: Array,
+    {{#compare this.input '!=' 'Hidden'}}
+    label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_label'),
+    {{/compare}}
+    {{#compare this.defaultValue '!==' undefined}}
+    defaultValue: {{this.defaultValue}},
+    {{/compare}}
+    {{~#if this.validate.optional}}
+    optional: true,
+    {{/if}}
+    {{#if this.validate.minCount}}
+    minCount: {{this.validate.minCount}},
+    {{/if}}
+    {{#if this.validate.maxCount}}
+    maxCount: {{this.validate.maxCount}},
+    {{/if}}
+    uniforms: {
+      {{#compare this.input '==' 'Hidden'  }}
+      type: 'hidden',
+      {{else}}
+        {{#compare this.type '!=' 'Boolean'  }}
+      placeholder: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_placeholder'),
+        {{/compare}}
+      {{/compare}}
+    },
+  },
+  '{{@key}}.$': {
+    type: {{stripBrackets this.type}},
+    {{#if this.validate.regEx}}
+    regEx: {{this.validate.regEx}},
+    {{/if}}
+    {{#if this.validate.max}}
+    max: {{this.validate.max}},
+    {{/if}}
+    {{#if this.validate.min}}
+    min: {{this.validate.min}},
+    {{/if}}
+    {{#if this.choices}}
+    allowedValues: {{this.validate.min}},
+    {{/if}}
+  },
+    {{/compare}}
+  {{/compare~}}
+{{~/each}}
 });
 
 export default {{ pascalCase (singular name) }}Schema;
