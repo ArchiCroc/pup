@@ -31,8 +31,8 @@ module.exports = {
     },
   ],
   actions: (data) => {
-    const schemaKeys = Object.keys(data.schema);
-    const schemaValues = Object.values(data.schema);
+    const schemaKeys = Object.keys(data.schema.fields);
+    const schemaValues = Object.values(data.schema.fields);
 
     let primaryKeyIndex = schemaValues.findIndex((field) => field.primaryKey);
     // if primary key isn't found, set it to the first key

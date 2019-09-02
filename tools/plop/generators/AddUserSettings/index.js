@@ -1,5 +1,6 @@
 /* eslint-disable  */
 const fs = require('fs');
+const _ = require('lodash');
 
 const requireField = (fieldName) => {
   return (value) => {
@@ -21,8 +22,8 @@ module.exports = {
     },
   ],
   actions: (data) => {
-    const schemaKeys = Object.keys(data.schema);
-    const schemaValues = Object.values(data.schema);
+    const schemaKeys = Object.keys(data.schema.fields);
+    const schemaValues = Object.values(data.schema.fields);
 
     data.fieldImports = _.uniq(
       schemaValues.filter((field) => field.input).map((field) => field.input),
@@ -78,7 +79,6 @@ module.exports = {
         pattern: '#### PLOP_FIELDS_START ####',
         templateFile: 'tools/plop/generators/AddUserSettings/templates/en.i18n.yml.hbs',
       },
-
       {
         type: 'append',
         path: 'api/Users/types.js',

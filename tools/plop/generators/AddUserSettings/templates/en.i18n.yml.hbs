@@ -1,14 +1,14 @@
 {{#each schema.fields}}
   {{#compare this.table '||' this.input}}
     {{#compare this.input '!=' 'Hidden'}}
-{{snakeCase @key}}: {{#compare this.table 'typeof' 'string'}}{{this.table}}{{else}}{{ titleCase @key}}{{/compare}}
+{{snakeCase @key}}: {{#compare this.table 'typeof' 'string'}}{{this.table}}{{else}}{{ titleCase (truncate @key 'gdpr.')}}{{/compare}}
     {{#if this.input}}
-{{snakeCase @key}}_label: {{titleCase @key}}
+{{snakeCase @key}}_label: {{titleCase (truncate @key 'gdpr.')}}
       {{#compare this.type '!=' 'Boolean'  }}
         {{#compare this.input 'in' 'Array|Select|Options|Dropdown'  }}
-{{snakeCase @key}}_placeholder: Select {{titleCase @key}}
+{{snakeCase @key}}_placeholder: Select {{titleCase (truncate @key 'gdpr.')}}
         {{else}}
-{{snakeCase @key}}_placeholder: {{titleCase @key}}
+{{snakeCase @key}}_placeholder: {{titleCase (truncate @key 'gdpr.')}}
         {{/compare}}
       {{/compare}}
     {{/if}}
