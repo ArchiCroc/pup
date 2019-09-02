@@ -21,6 +21,7 @@ delete_{{ snakeCase (singular name) }}: Delete {{ titleCase (singular name) }}
 blank_state_title: No {{ titleCase name }} here, friend!
 blank_state_subtitle: ""
 
+#### PLOP_FIELDS_START ####
 {{#each schema.fields}}
   {{#compare this.table '||' this.input}}
     {{#compare this.input '!=' 'Hidden'}}
@@ -38,4 +39,5 @@ blank_state_subtitle: ""
     {{/compare}}
   {{/compare}}
 {{/each}}
+#### PLOP_FIELDS_END ####
 

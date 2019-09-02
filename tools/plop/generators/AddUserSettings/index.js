@@ -24,6 +24,15 @@ module.exports = {
     const schemaKeys = Object.keys(data.schema);
     const schemaValues = Object.values(data.schema);
 
+    data.fieldImports = _.uniq(
+      schemaValues.filter((field) => field.input).map((field) => field.input),
+    ).map((field) => ({
+      variable: `${field}Field`,
+      path: uniformsFields.includes(field)
+        ? `uniforms-antd/${field}Field`
+        : `../components/${field}Field`,
+    }));
+
     let primaryKeyIndex = schemaValues.findIndex((field) => field.primaryKey);
     // if primary key isn't found, set it to the first key
     if (primaryKeyIndex === -1) {
@@ -55,13 +64,19 @@ module.exports = {
         pattern: '/* #### PLOP_IMPORTS_START #### */',
         template: `{{#each schema.schemaImports }}
 {{{this}}}
-{{/each}}`,
+{{~/each}}`,
       },
       {
         type: 'append',
         path: 'api/Users/schemas/user-settings.js',
         pattern: '/* #### PLOP_SCHEMA_START #### */',
         templateFile: 'tools/plop/generators/AddUserSettings/templates/user-settings.js.hbs',
+      },
+      {
+        type: 'append',
+        path: 'i18n/en/users.en.i18n.yml',
+        pattern: '#### PLOP_FIELDS_START ####',
+        templateFile: 'tools/plop/generators/AddUserSettings/templates/en.i18n.yml.hbs',
       },
 
       {
@@ -70,7 +85,7 @@ module.exports = {
         pattern: '#### PLOP_USER_SETTINGS_GDPR_INPUT_START ####',
         template: `{{#each schema.fields }}
 {{~#compare this.type '&&' this.input '&&' @key 'startsWith' 'gdpr'}}
-    {{@key}}: {{this.type}}{{#compare this.validate.optional '==' undefined '||' this.validate.optional '==' false}}{{#compare this.defaultValue '==' undefined}}!{{/compare}}{{/compare}}
+    {{truncate @key 'gdpr.'}}: {{this.type}}{{#compare this.validate.optional '==' undefined '||' this.validate.optional '==' false}}{{#compare this.defaultValue '==' undefined}}!{{/compare}}{{/compare}}
 {{/compare~}}
 {{/each~}}`,
       },
@@ -91,7 +106,7 @@ module.exports = {
         template: `{{#each schema.fields ~}}
 {{~#if this.type}}
 {{#compare @key 'startsWith' 'gdpr'}}
-    {{@key}}: {{this.type}}
+    {{truncate @key 'gdpr.'}}: {{this.type}}
 {{/compare}}
 {{/if~}}
 {{~/each}}`,
@@ -114,7 +129,7 @@ module.exports = {
         pattern: '/* #### PLOP_IMPORTS_START #### */',
         template: `{{#each fieldImports}}
 import {{this.variable}} from '{{this.path}}';
-{{/each}}`,
+{{~/each}}`,
       },
       {
         type: 'append',
@@ -129,7 +144,7 @@ import {{this.variable}} from '{{this.path}}';
         template: `{{#each schema.fields ~}}
 {{~#if this.type}}
 {{#compare @key 'startsWith' 'gdpr.'}}
-        {{truncate @key 'gdpr.'}}
+      {{truncate @key 'gdpr.'}}
 {{/compare}}
 {{/if~}}
 {{~/each}}`,
@@ -141,7 +156,7 @@ import {{this.variable}} from '{{this.path}}';
         template: `{{#each schema.fields ~}}
 {{~#if this.type}}
 {{#compare @key '!startsWith' 'gdpr'}}
-      {{@key}}
+    {{@key}}
 {{/compare}}
 {{/if~}}
 {{~/each}}`,
@@ -153,7 +168,7 @@ import {{this.variable}} from '{{this.path}}';
         template: `{{#each schema.fields ~}}
 {{~#if this.type}}
 {{#compare @key 'startsWith' 'gdpr.'}}
-        {{truncate @key 'gdpr.'}}
+      {{truncate @key 'gdpr.'}}
 {{/compare}}
 {{/if~}}
 {{~/each}}`,
@@ -165,7 +180,7 @@ import {{this.variable}} from '{{this.path}}';
         template: `{{#each schema.fields ~}}
 {{~#if this.type}}
 {{#compare @key '!startsWith' 'gdpr'}}
-      {{@key}}
+    {{@key}}
 {{/compare}}
 {{/if~}}
 {{~/each}}`,
