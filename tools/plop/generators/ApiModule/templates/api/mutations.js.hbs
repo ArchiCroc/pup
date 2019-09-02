@@ -1,10 +1,15 @@
 import {{ pascalCase name }} from './{{ pascalCase name }}';
 import {{ pascalCase (singular name) }}Schema from './schemas/{{ dashCase (singular name) }}';
 // import sanitizeHtml from 'sanitize-html';
-// import { isAdmin } from '../Users/actions/checkIfAuthorized';
+import checkUserRole from '../Users/actions/checkUserRole';
 
 export default {
   save{{ pascalCase (singular name) }}: (root, args, context) => {
+    {{#compare schema.permissions.save '!==' 'everyone' }}
+    if (!context.user || context.user._id || checkUserRole(context.user._id, {{schema.permissions.save}}) {
+      throw new Error('Sorry, you must have permission to save {{ pascalCase (singular name) }}.');
+    }
+    {{/compare}}
     if (!context.user) throw new Error('Sorry, you must be logged in to add a new {{ pascalCase (singular name) }}.');
 
     const cleanDoc = {{ pascalCase (singular name) }}Schema.clean(args.{{ camelCase (singular name) }});
@@ -35,7 +40,11 @@ export default {
     return doc;
   },
   remove{{ pascalCase (singular name) }}: (root, args, context) => {
-    if (!context.user) throw new Error('Sorry, you must be logged in to remove a {{ pascalCase (singular name) }}.');
+    {{#compare schema.permissions.delete '!==' 'everyone' }}
+    if (!context.user || context.user._id || checkUserRole(context.user._id, {{schema.permissions.delete}}) {
+      throw new Error('Sorry, you must have permission to save {{ pascalCase (singular name) }}.');
+    }
+    {{/compare}}
     if (!{{ pascalCase name }}.findOne({ {{ primaryKeyField }}: args.{{ primaryKeyField }}, createdById: context.user._id }))
       throw new Error('Sorry, you need to be the owner of this {{ pascalCase (singular name) }} to remove it.');
     {{ pascalCase name }}.remove(args);

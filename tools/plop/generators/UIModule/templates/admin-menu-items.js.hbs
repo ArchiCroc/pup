@@ -1,2 +1,8 @@
       {/* #### {{ constantCase name }}_ADMIN_MENU_ITEMS_START #### */}
+      {{#compare schema.menu.index '===' 'admin'}}
+      <Menu.Item key="/{{ dashCase name }}">
+        {i18n.__('{{ pascalCase name }}.{{ snakeCase (singular name) ~}}_plural')}
+        <Link to="/{{ dashCase name }}" />
+      </Menu.Item>
+      {{/compare}}
       {/* #### {{ constantCase name }}_ADMIN_MENU_ITEMS_END #### */}

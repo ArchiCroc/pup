@@ -1,15 +1,32 @@
 import {{ pascalCase name }} from './{{ pascalCase name }}';
-// import { isAdmin } from '../Users/actions/checkIfAuthorized';
+import checkUserRole from '../Users/actions/checkUserRole';
 
 export default {
-  {{ camelCase name }}: (parent, args, context) =>
-    context.user && context.user._id ? {{ pascalCase name }}.find().fetch() : [],
-  my{{ pascalCase name }}: (parent, args, context) =>
-    context.user && context.user._id ? {{ pascalCase name }}.find({ {{userKeyField}}: context.user._id }).fetch() : [],
+  {{ camelCase name }}: (parent, args, context) => {
+    {{#compare schema.permissions.read '!==' 'everyone' }}
+    if (!context.user || context.user._id || checkUserRole(context.user._id, {{schema.permissions.read}}) {
+      throw new Error('Sorry, you must have permission to view {{ pascalCase name }}.');
+    }
+    {{/compare}}
+    return {{ pascalCase name }}.find().fetch()
+  },
+  my{{ pascalCase name }}: (parent, args, context) => {
+    {{#compare schema.permissions.read '!==' 'everyone' }}
+    if (!context.user || context.user._id || checkUserRole(context.user._id, {{schema.permissions.read}}) {
+      throw new Error('Sorry, you must have permission to view my {{ pascalCase name }}.');
+    }
+    {{/compare}}
+    return {{ pascalCase name }}.find({ {{userKeyField}}: context.user._id }).fetch();
+  },
   {{ camelCase (singular name) }}: (parent, args, context) => {
-  {{#compare primaryKeyField '===' urlKeyField }}
+    {{#compare schema.permissions.read '!==' 'everyone' }}
+    if (!context.user || context.user._id || checkUserRole(context.user._id, {{schema.permissions.read}}) {
+      throw new Error('Sorry, you must have permission to view {{ pascalCase (singular name) }}.');
+    }
+    {{/compare}}
+    {{#compare primaryKeyField '===' urlKeyField }}
     return {{ pascalCase name }}.findOne({ {{primaryKeyField}}: args.{{primaryKeyField}}  });
-  {{else}}
+    {{else}}
     if (args.{{ primaryKeyField }}) {
       return {{ pascalCase name }}.findOne({ {{primaryKeyField}}: args.{{primaryKeyField}}  });
     } 
@@ -17,7 +34,7 @@ export default {
       return {{ pascalCase name }}.findOne({ {{urlKeyField}}: args.{{urlKeyField}}  });
     } 
     return null;
-  {{/compare}}
+    {{/compare}}
   }
   /* #### PLOP_QUERIES_START #### */
   /* #### PLOP_QUERIES_END #### */
