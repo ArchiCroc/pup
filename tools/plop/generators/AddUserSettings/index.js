@@ -111,7 +111,7 @@ module.exports = {
       {
         type: 'append',
         path: 'ui/users/components/UserSettings.jsx',
-        pattern: '#### PLOP_IMPORTS_START ####',
+        pattern: '/* #### PLOP_IMPORTS_START #### */',
         template: `{{#each fieldImports}}
 import {{this.variable}} from '{{this.path}}';
 {{/each}}`,
@@ -124,7 +124,7 @@ import {{this.variable}} from '{{this.path}}';
       },
       {
         type: 'append',
-        path: 'api/Users/queries/Users.gql',
+        path: 'ui/users/queries/Users.gql',
         pattern: '#### PLOP_USER_SETTINGS_GDPR_START ####',
         template: `{{#each schema.fields ~}}
 {{~#if this.type}}
@@ -136,7 +136,7 @@ import {{this.variable}} from '{{this.path}}';
       },
       {
         type: 'append',
-        path: 'api/Users/queries/Users.gql',
+        path: 'ui/users/queries/Users.gql',
         pattern: '#### PLOP_USER_SETTINGS_START ####',
         template: `{{#each schema.fields ~}}
 {{~#if this.type}}
@@ -148,7 +148,7 @@ import {{this.variable}} from '{{this.path}}';
       },
       {
         type: 'append',
-        path: 'api/Users/fragments/Users.gql',
+        path: 'ui/users/fragments/Users.gql',
         pattern: '#### PLOP_USER_SETTINGS_GDPR_START ####',
         template: `{{#each schema.fields ~}}
 {{~#if this.type}}
@@ -160,7 +160,7 @@ import {{this.variable}} from '{{this.path}}';
       },
       {
         type: 'append',
-        path: 'api/Users/fragments/Users.gql',
+        path: 'ui/users/fragments/Users.gql',
         pattern: '#### PLOP_USER_SETTINGS_START ####',
         template: `{{#each schema.fields ~}}
 {{~#if this.type}}

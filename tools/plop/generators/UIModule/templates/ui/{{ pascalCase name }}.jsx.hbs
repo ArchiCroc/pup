@@ -28,7 +28,7 @@ const {{ pascalCase name }} = ({ history }) => {
       defaultSortOrder: 'ascend',
       // render: (value, record) => <Link to={`/{{ dashCase @root.name }}/${record.{{ @root.urlKeyField ~}} }/edit`}>{value}</Link>, // eslint-disable-line
       {{/compare}}
-      {{#compare this.type 'includes' 'Date|DateTime|Time'}}
+      {{#compare this.type 'in' 'Date|DateTime|Time'}}
       sorter: (a, b) => new Date(a.{{ @key }}).getTime() - new Date(b.{{ @key }}).getTime(),
       defaultSortOrder: 'descend',
       render: ({{ @key }}) => <PrettyDate timestamp={ {{~ @key ~}} } />, // eslint-disable-line 

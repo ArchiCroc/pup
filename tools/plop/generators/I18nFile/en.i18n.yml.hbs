@@ -28,7 +28,7 @@ blank_state_subtitle: ""
     {{#if this.input}}
 {{snakeCase @key}}_label: {{titleCase @key}}
       {{#compare this.type '!=' 'Boolean'  }}
-        {{#compare this.input 'includes' 'Array|Select|Options|Dropdown'  }}
+        {{#compare this.input 'in' 'Array|Select|Options|Dropdown'  }}
 {{snakeCase @key}}_placeholder: Select {{titleCase @key}}
         {{else}}
 {{snakeCase @key}}_placeholder: {{titleCase @key}}
