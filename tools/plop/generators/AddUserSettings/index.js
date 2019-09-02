@@ -11,6 +11,21 @@ const requireField = (fieldName) => {
   };
 };
 
+const uniformsFields = [
+  'Auto',
+  'Bool',
+  'Date',
+  'Hidden',
+  'List',
+  'ListItem',
+  'LongText',
+  'Num',
+  'Radio',
+  'Select',
+  'Submit',
+  'Text',
+];
+
 module.exports = {
   description: 'Add User Settings from a schema',
   prompts: [
@@ -33,30 +48,7 @@ module.exports = {
         ? `uniforms-antd/${field}Field`
         : `../components/${field}Field`,
     }));
-
-    let primaryKeyIndex = schemaValues.findIndex((field) => field.primaryKey);
-    // if primary key isn't found, set it to the first key
-    if (primaryKeyIndex === -1) {
-      primaryKeyIndex = 0;
-    }
-    data.primaryKeyField = schemaKeys[primaryKeyIndex];
-    data.primaryKeyType = data.schema[data.primaryKeyField].type || 'String';
-
-    let urlKeyIndex = schemaValues.findIndex((field) => field.urlKey);
-    // if primary key isn't found, set it to the primaryKey field
-    if (urlKeyIndex === -1) {
-      urlKeyIndex = primaryKeyIndex;
-    }
-    data.urlKeyField = schemaKeys[urlKeyIndex];
-    data.urlKeyType = data.schema[data.urlKeyField].type || 'String';
-
-    let userKeyIndex = schemaValues.findIndex((field) => field.userKey);
-    // if primary key isn't found, set it to the primaryKey field
-    if (userKeyIndex !== -1) {
-      data.userKeyField = schemaKeys[userKeyIndex];
-    } else {
-      data.userKeyField = 'createdById';
-    }
+    data.name = 'Users'; // ensure copied scripts are able to resolve the correct module
 
     return [
       {
@@ -65,7 +57,7 @@ module.exports = {
         pattern: '/* #### PLOP_IMPORTS_START #### */',
         template: `{{#each schema.schemaImports }}
 {{{this}}}
-{{~/each}}`,
+{{/each}}`,
       },
       {
         type: 'append',
@@ -129,7 +121,7 @@ module.exports = {
         pattern: '/* #### PLOP_IMPORTS_START #### */',
         template: `{{#each fieldImports}}
 import {{this.variable}} from '{{this.path}}';
-{{~/each}}`,
+{{/each}}`,
       },
       {
         type: 'append',
