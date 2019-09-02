@@ -59,6 +59,10 @@ module.exports = (plop) => {
   plop.setHelper('stripBrackets', (text) => {
     return text.replace(/\[(\w+)\]/, '$1');
   });
+  plop.setHelper('truncate', (text, prefix) => {
+    const regEx = new RegExp(`^${prefix}(.*)`);
+    return text.replace(regEx, '$1');
+  });
 
   const generators = dirs('./tools/plop/generators');
 

@@ -122,6 +122,54 @@ import {{this.variable}} from '{{this.path}}';
         pattern: '{/* #### PLOP_FIELDS_START #### */}',
         templateFile: 'tools/plop/generators/AddUserSettings/templates/fields.js.hbs',
       },
+      {
+        type: 'append',
+        path: 'api/Users/queries/Users.gql',
+        pattern: '#### PLOP_USER_SETTINGS_GDPR_START ####',
+        template: `{{#each schema.fields ~}}
+{{~#if this.type}}
+{{#compare @key 'startsWith' 'gdpr.'}}
+        {{truncate @key 'gdpr.'}}
+{{/compare}}
+{{/if~}}
+{{~/each}}`,
+      },
+      {
+        type: 'append',
+        path: 'api/Users/queries/Users.gql',
+        pattern: '#### PLOP_USER_SETTINGS_START ####',
+        template: `{{#each schema.fields ~}}
+{{~#if this.type}}
+{{#compare @key '!startsWith' 'gdpr'}}
+      {{@key}}
+{{/compare}}
+{{/if~}}
+{{~/each}}`,
+      },
+      {
+        type: 'append',
+        path: 'api/Users/fragments/Users.gql',
+        pattern: '#### PLOP_USER_SETTINGS_GDPR_START ####',
+        template: `{{#each schema.fields ~}}
+{{~#if this.type}}
+{{#compare @key 'startsWith' 'gdpr.'}}
+        {{truncate @key 'gdpr.'}}
+{{/compare}}
+{{/if~}}
+{{~/each}}`,
+      },
+      {
+        type: 'append',
+        path: 'api/Users/fragments/Users.gql',
+        pattern: '#### PLOP_USER_SETTINGS_START ####',
+        template: `{{#each schema.fields ~}}
+{{~#if this.type}}
+{{#compare @key '!startsWith' 'gdpr'}}
+      {{@key}}
+{{/compare}}
+{{/if~}}
+{{~/each}}`,
+      },
     ];
   },
 };

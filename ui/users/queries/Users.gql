@@ -24,7 +24,13 @@ query user($_id: String) {
 query userSettings {
   user {
     settings {
-      gdprCanSendMarketingEmails
+      gdpr {
+      canSendMarketingEmails
+      #### PLOP_USER_SETTINGS_GDPR_START ####
+      #### PLOP_USER_SETTINGS_GDPR_END ####
+    }
+    #### PLOP_USER_SETTINGS_START ####
+    #### PLOP_USER_SETTINGS_END ####
     }
   }
 }

@@ -23,7 +23,7 @@ const validateOptions = (options) => {
 };
 
 const queryUser = (options) => {
-  console.log('queryUser', options);
+  // console.log('queryUser', options);
   try {
     validateOptions(options);
     const user = getUser(options.userIdToQuery);
