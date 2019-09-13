@@ -9,21 +9,21 @@ import { withTracker } from 'meteor/react-meteor-data';
 function AuthorizedRoute(props) {
   const [authorized, setAuthorized] = useState(undefined);
 
-  const checkIfAuthorized = () => {
-    const { loading, userId, userRoles, userIsInRoles, pathAfterFailure } = props;
+  function checkIfAuthorized() {
+    const { history, loading, userId, userRoles, userIsInRoles, pathAfterFailure } = props;
 
-    if (!userId) props.history.push(pathAfterFailure || '/');
+    if (!userId) history.push(pathAfterFailure || '/');
 
     if (!loading && userRoles.length > 0) {
       if (!userIsInRoles) {
-        props.history.push(pathAfterFailure || '/');
+        history.push(pathAfterFailure || '/');
       } else {
         // Check to see if authorized is still false before setting. This prevents an infinite loop
         // when this is used within componentDidUpdate.
         if (!authorized) setAuthorized(true); // eslint-disable-line
       }
     }
-  };
+  }
 
   if (authorized === undefined) {
     checkIfAuthorized();
@@ -35,7 +35,7 @@ function AuthorizedRoute(props) {
     <Route
       path={path}
       exact={exact}
-      render={(renderProps) => React.createElement(component, { ...rest, ...renderProps })}
+      render={() => React.createElement(component, { ...rest, ...props })}
     />
   ) : (
     <div />
@@ -66,16 +66,15 @@ AuthorizedRoute.propTypes = {
 };
 
 export default withRouter(
-  withTracker(
-    ({ allowedRoles, allowedGroup }) =>
-      // eslint-disable-line
-      Meteor.isClient
-        ? {
-            loading: Meteor.isClient ? !Roles.subscription.ready() : true,
-            userId: Meteor.userId(),
-            userRoles: Roles.getRolesForUser(Meteor.userId()),
-            userIsInRoles: Roles.userIsInRole(Meteor.userId(), allowedRoles, allowedGroup),
-          }
-        : {},
+  withTracker(({ allowedRoles, allowedGroup }) =>
+    // eslint-disable-line
+    Meteor.isClient
+      ? {
+          loading: Meteor.isClient ? !Roles.subscription.ready() : true,
+          userId: Meteor.userId(),
+          userRoles: Roles.getRolesForUser(Meteor.userId()),
+          userIsInRoles: Roles.userIsInRole(Meteor.userId(), allowedRoles, allowedGroup),
+        }
+      : {},
   )(AuthorizedRoute),
 );

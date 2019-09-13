@@ -3,7 +3,7 @@
   "short_name": "Pup",
   "start_url": "/",
   "display": "fullscreen",
-  "background_color": "#000000",
+  "background_color": "#4285F4",
   "theme_color": "#4285F4",
   "icons": [
     {

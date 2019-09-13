@@ -1,15 +1,16 @@
 /* eslint-disable no-underscore-dangle, no-unused-expressions */
-import Uniforms from 'uniforms';
-import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
+
 import React from 'react';
-// import i18n from 'meteor/universe:i18n';
-import { hydrate } from 'react-dom';
+import { hydrate, render } from 'react-dom';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 // import { ApolloProvider } from 'react-apollo';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
+// import i18n from 'meteor/universe:i18n';
+import Uniforms from 'uniforms';
+import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 
 import LocaleProvider from 'antd/lib/locale-provider';
 import enUS from 'antd/lib/locale-provider/en_US';
@@ -30,8 +31,9 @@ import GlobalStyle from './GlobalStyle';
 
 Accounts.onLogout(() => apolloClient.resetStore());
 
-Meteor.startup(() =>
-  hydrate(
+Meteor.startup(() => {
+  const target = document.getElementById('react-root');
+  const app = (
     <LocaleProvider locale={enUS}>
       <ThemeProvider theme={{}}>
         <ApolloProvider client={apolloClient}>
@@ -43,7 +45,8 @@ Meteor.startup(() =>
           </BrowserRouter>
         </ApolloProvider>
       </ThemeProvider>
-    </LocaleProvider>,
-    document.getElementById('react-root'),
-  ),
-);
+    </LocaleProvider>
+  );
+
+  return !window.noSSR ? hydrate(app, target) : render(app, target);
+});

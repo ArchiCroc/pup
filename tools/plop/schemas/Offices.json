@@ -1,0 +1,156 @@
+{ "name": "Offices",
+  "permissions": {
+    "read":"user",
+    "save": "admin",
+    "delete":"admin"
+  },
+  "menu": {
+    "index": "admin"
+  },
+
+  "schemaImports": ["import moment from 'moment-timezone';"],
+    
+  "fields": {
+    "_id": {
+      "primaryKey": true,
+      "type": "String",
+      "input": "Hidden",
+      "validate" : {
+        "max": 24,
+        "optional": true
+      }
+    },
+    "name": {
+      "labelKey": true,
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+          "max": 64
+      }
+    },
+    "slug": {
+      "urlKey": true,
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+        "max": 48
+      },
+      "clean": "(item) => item.toLowerCase()",
+      "sourceField": "name",
+      "sourceModifier": "(item)=> item.dashCase()",
+      "table": false
+    },
+    "folderName": {
+      "labelKey": true,
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+          "max": 4
+      },
+      "clean": "(item) => item.toUpperCase()"
+    },
+    "visionNames": {
+      "type": "[String]",
+      "input": "Text",
+      "validate" : {
+          "max": 100,
+          "optional": true
+      },
+      "table": false
+    },
+    "ipSubnets": {
+      "type": "[String]",
+      "input": "Text",
+      "validate" : {
+          "max": 48,
+          "optional": true
+      },
+      "table": false
+    },
+    "projectNumberCode": {
+      "type": "String",
+      "input": "Text",
+      "validate": {
+        "max": 3,
+        "optional": true
+      },
+      "table": false
+    },
+    "timezone": {
+      "type": "String",
+      "input": "Select",
+      "choices": "moment.tz.names()",
+      "validate": {
+        "max": 100,
+        "optional": true
+      }
+    },
+    "isActive": {
+      "type": "Boolean",
+      "input": "Bool",
+      "defaultValue": true
+    },
+    "openDate": {
+      "type": "Date",
+      "input": "Date",
+      "validate": {
+        "optional": true
+      },
+      "table": false
+    },
+    "closeDate": {
+      "type": "Date",
+      "input": "Date",
+      "validate": {
+        "optional": true
+      },
+      "table": false
+    },
+    "itEmailAddress": {
+      "type": "String",
+      "input": "Text",
+      "validate": {
+        "regEx": "SimpleSchema.RegEx.Email",
+        "max": 64
+      },
+      "table": false
+    },
+    "defaultProjectFolderNameFormat": {
+      "type": "String",
+      "input": "Select",
+      "choices": [
+        "${projectName}",
+        "${projectNumber}",
+        "${projectNumber} ${projectName}",
+        "${projectNumber}_${projectName}"
+      ],
+      "validate": {
+        "max": 64
+      },
+      "table": false
+    },
+    "createdAtUTC": {
+      "type": "DateTime",
+      "table": "Created At"
+    },
+    "createdById": {
+      "userKey": true,
+      "type": "String"
+    },
+    "createdBy": {
+      "type": "User"
+    },
+    "updatedAtUTC": {
+      "type": "DateTime"
+    },
+    "updatedById": {
+      "type": "String"
+    },
+    "updatedBy": {
+      "type": "User"
+    },
+    "comments": {
+      "type": "[Comment]"
+    }
+  }
+}

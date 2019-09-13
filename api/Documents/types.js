@@ -7,6 +7,6 @@ export default `
     updatedAt: DateTime
     body: String
     owner: String
-    comments: [Comment]
+    comments(sortBy: String): [Comment]
   }
 `;

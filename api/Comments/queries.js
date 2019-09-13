@@ -1,7 +1,10 @@
 import Comments from './Comments';
 
 export default {
-  comments: ({ _id }) => Comments.find({ documentId: _id }, { sort: { createdAt: 1 } }).fetch(),
-  /* #### PLOP_QUERIES_START #### */
-  /* #### PLOP_QUERIES_END #### */
+  comments: (parent, args) => {
+    return Comments.find(
+      { documentId: parent && parent._id },
+      { sort: { createdAt: args.sortBy === 'newestFirst' ? -1 : 1 } },
+    ).fetch();
+  },
 };

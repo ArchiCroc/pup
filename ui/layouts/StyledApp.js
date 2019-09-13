@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
-const StyledApp = styled.div`
-  visibility: ${(props) => (props.ready && !props.loading ? 'visible' : 'hidden')};
-  padding-bottom: 60px;
+const App = styled.div`
+  visibility: ${(props) => (props.ready && props.loading !== 'true' ? 'visible' : 'hidden')};
 
   > .container {
     margin-bottom: 80px;

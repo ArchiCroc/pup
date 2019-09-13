@@ -4,7 +4,7 @@ import { getUser } from 'meteor/apollo';
 import schema from './graphql-api';
 
 const server = new ApolloServer({
-  ...schema,
+  schema,
   context: async ({ req }) => ({
     user: await getUser(req.headers.authorization),
   }),

@@ -13,3 +13,6 @@ import './graphql';
 import './ssr';
 
 import '../../api/Documents/server/indexes';
+
+/* #### PLOP_IMPORTS_START #### */
+/* #### PLOP_IMPORTS_END #### */
