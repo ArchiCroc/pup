@@ -1,45 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
-import OAuthLoginButton from '../OAuthLoginButton';
-import Loading from '../Loading';
-import oAuthServicesQuery from '../../queries/OAuth.gql';
-import Styles from './styles';
+import { useQuery } from '@apollo/react-hooks';
+import OAuthLoginButton from './OAuthLoginButton';
+import oAuthServicesQuery from '../queries/OAuth.gql';
+import StyledOAuthLoginButtons from './StyledOAuthLoginButtons';
+import Loading from '../../components/Loading';
 
-const OAuthLoginButtons = ({ emailMessage, data: { oAuthServices, loading } }) => (
-  <React.Fragment>
-    {loading ? (
-      <Loading />
-    ) : (
-      <React.Fragment>
-        {oAuthServices.length ? (
-          <Styles.OAuthLoginButtons emailMessage={emailMessage}>
-            {oAuthServices.map((service) => (
-              <OAuthLoginButton key={service} service={service} />
-            ))}
-            {emailMessage && (
-              <Styles.EmailMessage offset={emailMessage.offset}>
-                {emailMessage.text}
-              </Styles.EmailMessage>
-            )}
-          </Styles.OAuthLoginButtons>
-        ) : (
-          <React.Fragment />
-        )}
-      </React.Fragment>
-    )}
-  </React.Fragment>
-);
-
-OAuthLoginButtons.propTypes = {
-  data: PropTypes.object.isRequired,
-  emailMessage: PropTypes.object.isRequired,
-};
-
-export default graphql(oAuthServicesQuery, {
-  options: ({ services }) => ({
+const OAuthLoginButtons = ({ emailMessage, services }) => {
+  const { loading, data } = useQuery(oAuthServicesQuery, {
     variables: {
       services,
     },
-  }),
-})(OAuthLoginButtons);
+  });
+  return (
+    <StyledOAuthLoginButtons>
+      {loading ? (
+        <Loading />
+      ) : (
+        <React.Fragment>
+          {data.oAuthServices.length ? (
+            <>
+              {data.oAuthServices.map((service) => (
+                <OAuthLoginButton key={service} service={service} />
+              ))}
+              {emailMessage && <>{emailMessage.text}</>}
+            </>
+          ) : (
+            <React.Fragment />
+          )}
+        </React.Fragment>
+      )}
+    </StyledOAuthLoginButtons>
+  );
+};
+
+OAuthLoginButtons.propTypes = {
+  services: PropTypes.array.isRequired,
+  emailMessage: PropTypes.object.isRequired,
+};
+
+export default OAuthLoginButtons;

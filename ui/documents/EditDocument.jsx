@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import DocumentEditor from './components/DocumentEditor';
 import Loading from '../components/Loading';
-import NotFound from '../pages';
+import NotFound from '../pages/NotFound';
 import { editDocument as editDocumentQuery } from './queries/Documents.gql';
 
 const EditDocument = ({ match, history }) => {

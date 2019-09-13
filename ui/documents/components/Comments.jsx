@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import CommentComposer from './CommentComposer';
 import { timeago } from '../../../modules/dates';
 
-import { StyledComments, CommentsList, CommentsListHeader, Comment } from './styles';
+import { StyledComments, CommentsList, CommentsListHeader, Comment } from './StyledComments';
 
 const Comments = ({ sortBy, onChangeSortBy, documentId, comments }) => (
   <StyledComments>

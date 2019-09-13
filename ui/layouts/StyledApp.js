@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const App = styled.div`
+const StyledApp = styled.div`
   visibility: ${(props) => (props.ready && props.loading !== 'true' ? 'visible' : 'hidden')};
 
   > .container {

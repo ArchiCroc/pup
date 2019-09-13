@@ -39,7 +39,7 @@ import ResetPassword from '../users/ResetPassword';
 import AdminUsers from '../users/admin/AdminUsers';
 import AdminUser from '../users/admin/AdminUser';
 
-import NotFound from '../pages';
+import NotFound from '../pages/NotFound';
 import Footer from '../components/Footer';
 
 import Terms from '../pages/Terms';
