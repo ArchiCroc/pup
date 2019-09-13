@@ -3,8 +3,8 @@ import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
-import Validation from '../../components/Validation';
-import OAuthLoginButtons from '../../components/OAuthLoginButtons';
+import Validation from '../components/Validation/Validation';
+import OAuthLoginButtons from '../components/OAuthLoginButtons/OAuthLoginButtons';
 import AccountPageFooter from '../../components/AccountPageFooter';
 import { StyledLogin, LoginPromo } from './styles';
 

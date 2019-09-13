@@ -8,10 +8,10 @@ import { capitalize } from 'lodash';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Bert } from 'meteor/themeteorchef:bert';
-import Validation from '../../components/Validation';
-import InputHint from '../../components/InputHint';
+import Validation from '../components/Validation/Validation';
+import InputHint from '../components/InputHint';
 import AccountPageFooter from '../../components/AccountPageFooter';
-import UserSettings from '../../components/UserSettings';
+import UserSettings from '../components/UserSettings/UserSettings';
 import { user as userQuery, exportUserData as exportUserDataQuery } from '../../queries/Users.gql';
 import {
   updateUser as updateUserMutation,

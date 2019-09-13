@@ -4,7 +4,7 @@ import { Row, Col, Alert, FormGroup, ControlLabel, Button } from 'react-bootstra
 import { Link } from 'react-router-dom';
 import { Accounts } from 'meteor/accounts-base';
 import { Bert } from 'meteor/themeteorchef:bert';
-import Validation from '../../components/Validation';
+import Validation from '../components/Validation/Validation';
 import AccountPageFooter from '../../components/AccountPageFooter';
 import StyledResetPassword from './styles';
 

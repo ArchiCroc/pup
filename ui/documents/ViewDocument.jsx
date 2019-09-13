@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import { Meteor } from 'meteor/meteor';
-import SEO from '../../components/SEO';
-import BlankState from '../../components/BlankState';
-import Comments from '../../components/Comments';
+import SEO from '../components/SEO';
+import BlankState from '../components/BlankState';
+import Comments from '../components/Comments/Comments';
 import { document as documentQuery } from '../../queries/Documents.gql';
-import parseMarkdown from '../../../modules/parseMarkdown';
+import parseMarkdown from '../../modules/parseMarkdown';
 
 import { StyledViewDocument, DocumentBody } from './styles';
 

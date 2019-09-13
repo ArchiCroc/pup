@@ -4,7 +4,7 @@ import { Button, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { compose, graphql } from 'react-apollo';
 import styled from 'styled-components';
 import { Bert } from 'meteor/themeteorchef:bert';
-import AdminUserSettingsModal from '../../components/AdminUserSettingsModal';
+import AdminUserSettingsModal from '../../components/AdminUserSettingsModal/AdminUserSettingsModal';
 import BlankState from '../../components/BlankState';
 import userSettingsQuery from '../../queries/UserSettings.gql';
 import {

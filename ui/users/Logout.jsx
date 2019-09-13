@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
-import Icon from '../../components/Icon';
+import Icon from '../components/Icon';
 import Styles from './styles';
 
 const { productName, twitterUsername, facebookUsername } = Meteor.settings.public;

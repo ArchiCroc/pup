@@ -6,9 +6,9 @@ import { graphql } from 'react-apollo';
 import { Accounts } from 'meteor/accounts-base';
 import { Bert } from 'meteor/themeteorchef:bert';
 import { sendVerificationEmail as sendVerificationEmailMutation } from '../../mutations/Users.gql';
-import Validation from '../../components/Validation';
-import OAuthLoginButtons from '../../components/OAuthLoginButtons';
-import InputHint from '../../components/InputHint';
+import Validation from '../components/Validation/Validation';
+import OAuthLoginButtons from '../components/OAuthLoginButtons/OAuthLoginButtons';
+import InputHint from '../components/InputHint';
 import AccountPageFooter from '../../components/AccountPageFooter';
 import StyledSignup from './styles';
 

@@ -4,7 +4,7 @@ import { graphql } from 'react-apollo';
 import { Button } from 'react-bootstrap';
 import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
-import Validation from '../Validation';
+import Validation from '../Validation/Validation';
 import { document as documentQuery } from '../../queries/Documents.gql';
 import addCommentMutation from '../../mutations/Comments.gql';
 import StyledCommentComposer from './styles';

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import SearchInput from '../../components/SearchInput';
-import AdminUsersList from '../../components/AdminUsersList';
+import AdminUsersList from '../../components/AdminUsersList/AdminUsersList';
 
 import AdminUsersHeader from './styles';
 
