@@ -1,42 +1,28 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role, jsx-a11y/anchor-is-valid */
-
 import React from 'react';
-import SearchInput from '../../components/SearchInput';
-import AdminUsersList from '../../components/AdminUsersList/AdminUsersList';
+import i18n from 'meteor/universe:i18n';
+import PageHeader from '../../components/PageHeader';
+// import SearchInput from '../components/SearchInput';
+import AdminUsersList from './components/AdminUsersList';
 
-import AdminUsersHeader from './styles';
+import StyledAdminUsers from './StyledAdminUsers';
 
-class AdminUsers extends React.Component {
-  state = {
-    currentPage: 1,
-  };
-
-  render() {
-    const { search, currentPage } = this.state;
-
-    return (
-      <div className="AdminUsers">
-        <AdminUsersHeader className="page-header clearfix">
-          <h4 className="pull-left">Users</h4>
-          <SearchInput
+function AdminUsers(props) {
+  return (
+    <StyledAdminUsers>
+      <PageHeader title={i18n.__('Users.users')} />
+      {/* <SearchInput
             placeholder="Search users..."
-            value={search}
+            value={this.state.search}
             onChange={(event) => this.setState({ search: event.target.value })}
-          />
-        </AdminUsersHeader>
-        <AdminUsersList
-          search={search}
-          currentPage={currentPage}
-          perPage={10}
-          onChangePage={(newPage) => this.setState({ currentPage: newPage })}
-        />
-      </div>
-    );
-  }
+          /> */}
+
+      <AdminUsersList {...props} />
+    </StyledAdminUsers>
+  );
 }
 
-AdminUsers.propTypes = {
-  // prop: PropTypes.string.isRequired,
-};
+// AdminUsers.propTypes = {
+//   // prop: PropTypes.string.isRequired,
+// };
 
 export default AdminUsers;

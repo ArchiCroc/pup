@@ -1,63 +1,79 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
-import { Button } from 'react-bootstrap';
-import { Meteor } from 'meteor/meteor';
-import { Bert } from 'meteor/themeteorchef:bert';
-import Validation from '../Validation/Validation';
-import { document as documentQuery } from '../../queries/Documents.gql';
-import addCommentMutation from '../../mutations/Comments.gql';
-import StyledCommentComposer from './styles';
+import { useMutation } from '@apollo/react-hooks';
+// import { Meteor } from 'meteor/meteor';
+import i18n from 'meteor/universe:i18n';
+import Button from 'antd/lib/button';
+import message from 'antd/lib/message';
+import AutoForm from 'uniforms/AutoForm';
+import LongTextField from 'uniforms-antd/LongTextField';
 
-const CommentComposer = ({ mutate, documentId }) => (
-  <StyledCommentComposer>
-    <header>Add a Comment</header>
-    <Validation
-      rules={{
-        comment: {
-          required: true,
-        },
-      }}
-      messages={{
-        comment: {
-          required: "What's your comment?",
-        },
-      }}
-      submitHandler={(form) => {
-        if (Meteor.userId()) {
-          mutate({
-            variables: {
-              documentId,
-              comment: form.comment.value.trim(),
-            },
-            refetchQueries: [
-              { query: documentQuery, variables: { _id: documentId, sortBy: 'newestFirst' } },
-            ],
-          });
+import StyledCommentComposer from './StyledCommentComposer';
 
-          document.querySelector('[name="comment"]').value = '';
-        } else {
-          Bert.alert('Sorry, you need to be logged in to comment!', 'danger');
-        }
-      }}
-    >
-      <form onSubmit={(event) => event.preventDefault()}>
-        <textarea
-          className="form-control"
+import { document as documentQuery } from '../queries/Documents.gql';
+import addCommentMutation from '../mutations/Comments.gql';
+
+import CommentSchema from '../../../api/Comments/schemas/comment';
+
+const CommentComposer = ({ documentId }) => {
+  const defaultDoc = { documentId, comment: undefined };
+  const [doc, setDoc] = useState();
+  const [addComment] = useMutation(addCommentMutation, {
+    ignoreResults: true,
+    refetchQueries: [
+      {
+        query: documentQuery,
+        variables: { _id: documentId },
+      },
+    ],
+    onCompleted: () => {
+      // @todo this doesn't seem to be called, is it being dismounted?
+      console.log('mutation is complete');
+      message.success(i18n.__('Documents.comment_success'));
+      // reset the form
+      setDoc(defaultDoc);
+    },
+    onError: (error) => {
+      message.error(i18n.__('Documents.comment_error', { error: error.message }));
+    },
+  });
+
+  const handleSubmit = (form) => {
+    const cleanForm = CommentSchema.clean(form);
+    addComment({
+      variables: cleanForm,
+      // refetchQueries: [{ query: editDocumentQuery }],
+    });
+    setDoc(defaultDoc);
+  };
+
+  return (
+    <StyledCommentComposer>
+      <header>{i18n.__('Documents.add_comment_header')}</header>
+      <AutoForm
+        name="comment"
+        model={doc}
+        schema={CommentSchema}
+        onSubmit={handleSubmit}
+        showInlineError
+        placeholder
+      >
+        <LongTextField
           name="comment"
-          placeholder="Have a comment about this?"
+          label={false}
+          placeholder={i18n.__('Documents.comment_placeholder')}
         />
-        <Button type="submit" bsStyle="success">
-          Post Comment
+
+        <Button htmlType="submit" type="primary">
+          {i18n.__('Documents.comment_submit')}
         </Button>
-      </form>
-    </Validation>
-  </StyledCommentComposer>
-);
+      </AutoForm>
+    </StyledCommentComposer>
+  );
+};
 
 CommentComposer.propTypes = {
   documentId: PropTypes.string.isRequired,
-  mutate: PropTypes.func.isRequired,
 };
 
-export default graphql(addCommentMutation)(CommentComposer);
+export default CommentComposer;

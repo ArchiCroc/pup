@@ -1,17 +1,17 @@
 import React from 'react';
-import { Alert } from 'react-bootstrap';
 import { Meteor } from 'meteor/meteor';
+import i18n from 'meteor/universe:i18n';
+import Alert from 'antd/lib/alert';
 
 const NotFound = () => (
   <div className="NotFound">
-    <Alert bsStyle="danger">
-      <p>
-        <strong>Error [404]</strong>
-        {': '}
-        {Meteor.isClient ? window.location.pathname : ''}
-        {' does not exist.'}
-      </p>
-    </Alert>
+    <Alert
+      type="danger"
+      message={i18n.__('page_not_found_title')}
+      description={i18n.__('page_not_found_message', {
+        page: Meteor.isClient ? window.location.pathname : '',
+      })}
+    />
   </div>
 );
 

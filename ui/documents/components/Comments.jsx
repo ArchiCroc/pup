@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CommentComposer from '../CommentComposer';
+import CommentComposer from './CommentComposer';
 import { timeago } from '../../../modules/dates';
 
 import { StyledComments, CommentsList, CommentsListHeader, Comment } from './styles';
@@ -17,24 +17,23 @@ const Comments = ({ sortBy, onChangeSortBy, documentId, comments }) => (
             <option value="oldestFirst">Oldest First</option>
           </select>
         </CommentsListHeader>
-        {comments.map(({ _id, user, createdAt, comment }) => {
-          const name = user && user.name;
-          return (
-            <Comment key={_id}>
-              <header>
-                <p>
-                  <strong>{`${name && name.first} ${name && name.last}`}</strong>
-                  <span>{timeago(createdAt)}</span>
-                </p>
-              </header>
-              <div>
-                {comment.split('\n').map((item, key) => (
-                  <p key={`${_id}_${key}` /* eslint-disable-line */}>{item}</p>
-                ))}
-              </div>
-            </Comment>
-          );
-        })}
+        {comments.map(({ _id, user, createdAt, comment }) => (
+          <Comment key={_id}>
+            <header>
+              <p>
+                <strong>
+                  {user.profile.firstName} {user.profile.lastName}
+                </strong>
+                <span>{timeago(createdAt)}</span>
+              </p>
+            </header>
+            <div>
+              {comment.split('\n').map((item, key) => (
+                <p key={`${_id}_${key}` /* eslint-disable-line */}>{item}</p>
+              ))}
+            </div>
+          </Comment>
+        ))}
       </CommentsList>
     )}
   </StyledComments>

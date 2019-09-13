@@ -1,114 +1,72 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compose, graphql } from 'react-apollo';
-import { Breadcrumb, Tab } from 'react-bootstrap';
+import { useQuery } from '@apollo/react-hooks';
+import { generatePath } from 'react-router';
+// import i18n from 'meteor/universe:i18n';
+import Tabs from 'antd/lib/tabs';
+import Breadcrumb from 'antd/lib/breadcrumb';
 import { Link } from 'react-router-dom';
-import { Bert } from 'meteor/themeteorchef:bert';
-import AdminUserProfile from '../../components/AdminUserProfile';
-import UserSettings from '../../components/UserSettings';
-import { user as userQuery, users as usersQuery } from '../../queries/Users.gql';
-import {
-  updateUser as updateUserMutation,
-  removeUser as removeUserMutation,
-} from '../../mutations/Users.gql';
+import AdminUserProfile from './components/AdminUserProfile';
+import UserSettings from '../components/UserSettings';
+import { user as userQuery } from '../queries/Users.gql';
 
-import Styles from './styles';
+import Styles from './StyledAdminUser';
 
-class AdminUser extends React.Component {
-  state = { activeTab: 'profile' };
+function AdminUser({ match, history }) {
+  const { loading, data } = useQuery(userQuery, {
+    fetchPolicy: 'no-cache',
+    variables: {
+      _id: match.params._id,
+    },
+  });
 
-  render() {
-    const { data, updateUser, removeUser } = this.props;
-    const { activeTab } = this.state;
-    const name = data.user && data.user.name;
-    const username = data.user && data.user.username;
+  function handleTabClick(key) {
+    const path = generatePath(match.path, { _id: match.params._id, tab: key });
 
-    return data.user ? (
-      <div className="AdminUser">
-        <Breadcrumb>
-          <li>
-            <Link to="/admin/users">Users</Link>
-          </li>
-          <Breadcrumb.Item active>{name ? `${name.first} ${name.last}` : username}</Breadcrumb.Item>
-        </Breadcrumb>
-        <Styles.AdminUserHeader className="page-header">
-          {name ? `${name.first} ${name.last}` : username}
-          {data.user.oAuthProvider && (
-            <span className={`label label-${data.user.oAuthProvider}`}>
-              {data.user.oAuthProvider}
-            </span>
-          )}
-        </Styles.AdminUserHeader>
-        <Styles.AdminUserTabs
-          animation={false}
-          activeKey={activeTab}
-          onSelect={(selectedTab) => this.setState({ activeTab: selectedTab })}
-          id="admin-user-tabs"
-        >
-          <Tab eventKey="profile" title="Profile">
-            <AdminUserProfile
-              user={data.user}
-              updateUser={(options, callback) => {
-                // NOTE: Do this to allow us to perform work inside of AdminUserProfile
-                // after a successful update. Not ideal, but hey, c'est la vie.
-                updateUser(options);
-                if (callback) callback();
-              }}
-              removeUser={removeUser}
-            />
-          </Tab>
-          <Tab eventKey="settings" title="Settings">
-            <UserSettings
-              isAdmin
-              userId={data.user._id}
-              settings={data.user.settings}
-              updateUser={updateUser}
-            />
-          </Tab>
-        </Styles.AdminUserTabs>
-      </div>
-    ) : (
-      <div />
-    );
+    history.push(path);
   }
+
+  const { user: { profile: { firstName, lastName }, username } = { profile: {} } } = data;
+
+  return data.user ? (
+    <div className="AdminUser">
+      <Breadcrumb>
+        <Breadcrumb.Item>
+          <Link to="/admin/users">Users</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>{name ? `${firstName} ${lastName}` : username}</Breadcrumb.Item>
+      </Breadcrumb>
+      <Styles.AdminUserHeader className="page-header">
+        {name ? `${firstName} ${lastName}` : username}
+        {data.user.oAuthProvider && (
+          <span className={`label label-${data.user.oAuthProvider}`}>
+            {data.user.oAuthProvider}
+          </span>
+        )}
+      </Styles.AdminUserHeader>
+      {/* <Styles.AdminUserTabs
+          animation={false}
+          activeKey={this.state.activeTab}
+          onSelect={(activeTab) => this.setState({ activeTab })}
+          id="admin-user-tabs"
+        > */}
+      <Tabs activeKey={match.params.tab || 'profile'} onTabClick={handleTabClick}>
+        <Tabs.TabPane key="profile" tab="Profile">
+          <AdminUserProfile user={data.user} />
+        </Tabs.TabPane>
+        <Tabs.TabPane key="settings" tab="Settings">
+          <UserSettings isAdmin user={data.user} />
+        </Tabs.TabPane>
+      </Tabs>
+    </div>
+  ) : (
+    <div />
+  );
 }
 
 AdminUser.propTypes = {
-  data: PropTypes.object.isRequired,
-  updateUser: PropTypes.func.isRequired,
-  removeUser: PropTypes.func.isRequired,
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
-export default compose(
-  graphql(userQuery, {
-    options: ({ match }) => ({
-      // NOTE: This ensures cache isn't too aggressive when moving between users.
-      // Forces Apollo to perform userQuery as a user is loaded instead of falling
-      // back to the cache. Users share similar data which gets cached and ends up
-      // breaking the UI.
-      fetchPolicy: 'no-cache',
-      variables: {
-        _id: match.params._id,
-      },
-    }),
-  }),
-  graphql(updateUserMutation, {
-    name: 'updateUser',
-    options: ({ match }) => ({
-      refetchQueries: [{ query: userQuery, variables: { _id: match.params._id } }],
-      onCompleted: () => {
-        Bert.alert('User updated!', 'success');
-      },
-    }),
-  }),
-  graphql(removeUserMutation, {
-    name: 'removeUser',
-    options: ({ history }) => ({
-      refetchQueries: [{ query: usersQuery }],
-      onCompleted: () => {
-        Bert.alert('User deleted!', 'success');
-        history.push('/admin/users');
-      },
-    }),
-  }),
-)(AdminUser);
+export default AdminUser;

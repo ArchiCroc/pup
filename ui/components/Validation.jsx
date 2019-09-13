@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import validate from '../../../modules/validate';
+import validate from '../../modules/validate';
 
 class Validation extends React.Component {
   constructor(props) {

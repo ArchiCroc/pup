@@ -1,32 +1,28 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
-import Styles from './styles';
+import i18n from 'meteor/universe:i18n';
+import Button from 'antd/lib/button';
+
+import StyledIndex from './StyledIndex';
 
 const Index = () => (
-  <Styles.Index>
+  <StyledIndex>
     <img
       src="https://s3-us-west-2.amazonaws.com/cleverbeagle-assets/graphics/email-icon.png"
       alt="Clever Beagle"
     />
-    <h1>Pup</h1>
-    <p>The Ultimate Boilerplate for Products.</p>
+    <h1>{i18n.__('index_title')}</h1>
+    <p>{i18n.__('index_subtitle')}</p>
     <div>
-      <Button href="http://cleverbeagle.com/pup">Read the Docs</Button>
-      <Button href="https://github.com/cleverbeagle/pup">
-        <i className="fa fa-star" />
-        {' Star on GitHub'}
+      <Button href="http://cleverbeagle.com/pup">{i18n.__('index_docs_button')}</Button>
+      <> </>
+      <Button href="https://github.com/cleverbeagle/pup" icon="star">
+        {i18n.__('index_star_button')}
       </Button>
     </div>
     <footer>
-      <p>
-        {'Want to learn how to build a really solid MVP with Pup? '}
-        <a href="https://cleverbeagle.com/together?utm_source=pup&utm_medium=app&utm_campaign=oss">
-          Check out Together by Clever Beagle
-        </a>
-        .
-      </p>
+      <p>{i18n.___('index_footer')}</p>
     </footer>
-  </Styles.Index>
+  </StyledIndex>
 );
 
 export default Index;
