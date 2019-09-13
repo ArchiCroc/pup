@@ -40,11 +40,6 @@ email@1.2.3
 es5-shim@4.8.0
 facebook-oauth@1.6.0
 fetch@0.1.1
-<<<<<<< HEAD
-=======
-fortawesome:fontawesome@4.7.0
-fourseven:scss@4.10.0
->>>>>>> b2b783b9a2f762d74e64abc15956d1219daf9f14
 geojson-utils@1.0.10
 github-oauth@1.2.2
 google-oauth@1.2.6
@@ -60,10 +55,6 @@ localstorage@1.2.0
 logging@1.1.20
 meteor@1.9.3
 meteor-base@1.4.0
-<<<<<<< HEAD
-=======
-meteorhacks:picker@1.0.3
->>>>>>> b2b783b9a2f762d74e64abc15956d1219daf9f14
 minifier-css@1.4.2
 minifier-js@2.4.1
 minimongo@1.4.5

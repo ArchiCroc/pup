@@ -1,116 +1,77 @@
 import React from 'react';
-import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';
+import AutoForm from 'uniforms/AutoForm';
+import AutoField from 'uniforms-antd/AutoField';
+// import ErrorsField from 'uniforms-antd/ErrorsField';
+import i18n from 'meteor/universe:i18n';
+import Button from 'antd/lib/button';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
+import Divider from 'antd/lib/divider';
 import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
-import { Bert } from 'meteor/themeteorchef:bert';
-import Validation from '../components/Validation/Validation';
-import OAuthLoginButtons from '../components/OAuthLoginButtons/OAuthLoginButtons';
-import AccountPageFooter from '../../components/AccountPageFooter';
-import { StyledLogin, LoginPromo } from './styles';
+import message from 'antd/lib/message';
+import OAuthLoginButtons from './components/OAuthLoginButtons';
+import AccountPageFooter from './components/AccountPageFooter';
+import { StyledLogin, LoginPromo } from './StyledLogin';
+import LoginSchema from '../../api/Users/schemas/login';
 
-class Login extends React.Component {
-  handleSubmit = (form) => {
-    Meteor.loginWithPassword(form.emailAddress.value, form.password.value, (error) => {
+function Login() {
+  function handleSubmit(form) {
+    const cleanForm = LoginSchema.clean(form);
+
+    Meteor.loginWithPassword(cleanForm.emailAddress, cleanForm.password, (error) => {
       if (error) {
-        Bert.alert(error.reason, 'danger');
+        message.error(error.reason);
       } else {
-        Bert.alert('Welcome back!', 'success');
+        message.success(i18n.__('Users.login_success'));
       }
     });
-  };
-
-  render() {
-    return (
-      <StyledLogin>
-        <LoginPromo>
-          <header>
-            <img
-              src="http://cleverbeagle-assets.s3.amazonaws.com/graphics/pup-document-graphic.png"
-              alt="Clever Beagle"
-            />
-            <h4>Introducing Documents</h4>
-            <p>Keep track of your ideas, privately and publicly.</p>
-          </header>
-        </LoginPromo>
-        <Row>
-          <Col xs={12}>
-            <h4 className="page-header">Log In</h4>
-            <Row>
-              <Col xs={12}>
-                <OAuthLoginButtons
-                  emailMessage={{
-                    offset: 100,
-                    text: 'Log In with an Email Address',
-                  }}
-                />
-              </Col>
-            </Row>
-            <Validation
-              rules={{
-                emailAddress: {
-                  required: true,
-                  email: true,
-                },
-                password: {
-                  required: true,
-                },
-              }}
-              messages={{
-                emailAddress: {
-                  required: 'Need an email address here.',
-                  email: 'Is this email address correct?',
-                },
-                password: {
-                  required: 'Need a password here.',
-                },
-              }}
-              submitHandler={(form) => {
-                this.handleSubmit(form);
-              }}
-            >
-              <form ref={(form) => (this.form = form)} onSubmit={(event) => event.preventDefault()}>
-                <FormGroup>
-                  <ControlLabel>Email Address</ControlLabel>
-                  <input
-                    type="email"
-                    name="emailAddress"
-                    className="form-control"
-                    placeholder="Email Address"
-                    data-test="emailAddress"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <ControlLabel className="clearfix">
-                    <span className="pull-left">Password</span>
-                    <Link className="pull-right" to="/recover-password">
-                      Forgot password?
-                    </Link>
-                  </ControlLabel>
-                  <input
-                    type="password"
-                    name="password"
-                    className="form-control"
-                    placeholder="Password"
-                    data-test="password"
-                  />
-                </FormGroup>
-                <Button type="submit" bsStyle="success" block>
-                  Log In
-                </Button>
-                <AccountPageFooter>
-                  <p>
-                    {"Don't have an account? "}
-                    <Link to="/signup">Sign Up</Link>
-                    {'.'}
-                  </p>
-                </AccountPageFooter>
-              </form>
-            </Validation>
-          </Col>
-        </Row>
-      </StyledLogin>
-    );
   }
+
+  return (
+    <StyledLogin>
+      <Row className="login">
+        <Col sm={24} md={12} lg={12}>
+          <LoginPromo>
+            <header>
+              <h4>{i18n.__('Users.login_promo_header')}</h4>
+              <p>{i18n.__('Users.login_promo_body')}</p>
+            </header>
+          </LoginPromo>
+        </Col>
+        <Col sm={24} md={12} lg={12} className="login-form">
+          <h2 className="page-header">{i18n.__('Users.login_header')}</h2>
+            {/* @todo add check to hide diver if not using oauth */}
+          <OAuthLoginButtons services={['facebook', 'github', 'google']} />
+          <Divider>{i18n.__('Users.login_with_email')}</Divider>
+          <AutoForm
+            name="login"
+            schema={LoginSchema}
+            onSubmit={handleSubmit}
+            showInlineError
+            placeholder
+          >
+            {/* <ErrorsField /> */}
+            <AutoField name="emailAddress" placeholder={i18n.__('Users.email_address')} />
+            <AutoField name="password" placeholder={i18n.__('Users.password')} />
+
+            <Link className="pull-right" to="/recover-password">
+              {i18n.__('Users.forgot_password')}
+            </Link>
+
+            <Button htmlType="submit" type="primary" block>
+              {i18n.__('Users.log_in')}
+            </Button>
+            <AccountPageFooter>
+              <p>
+                {"Don't have an account?"} <Link to="/signup">{i18n.__('Users.sign_up')}</Link>.
+              </p>
+            </AccountPageFooter>
+          </AutoForm>
+        </Col>
+      </Row>
+    </StyledLogin>
+  );
 }
 
 export default Login;

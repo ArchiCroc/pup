@@ -1,82 +1,132 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { compose, graphql, withApollo } from 'react-apollo';
+import AutoForm from 'uniforms/AutoForm';
+import AutoField from 'uniforms-antd/AutoField';
+import i18n from 'meteor/universe:i18n';
+import { generatePath } from 'react-router';
+// import { compose, graphql, withApollo } from 'react-apollo';
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import FileSaver from 'file-saver';
 import base64ToBlob from 'b64-to-blob';
-import { Row, Col, FormGroup, ControlLabel, Button, Tabs, Tab } from 'react-bootstrap';
-import { capitalize } from 'lodash';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
+import Tabs from 'antd/lib/tabs';
+import Button from 'antd/lib/button';
+import Modal from 'antd/lib/modal';
+import capitalize from 'lodash/capitalize';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { Bert } from 'meteor/themeteorchef:bert';
-import Validation from '../components/Validation/Validation';
-import InputHint from '../components/InputHint';
-import AccountPageFooter from '../../components/AccountPageFooter';
-import UserSettings from '../components/UserSettings/UserSettings';
-import { user as userQuery, exportUserData as exportUserDataQuery } from '../../queries/Users.gql';
+import message from 'antd/lib/message';
+import AccountPageFooter from './components/AccountPageFooter';
+import UserSettings from './components/UserSettings';
+import { user as userQuery, exportUserData as exportUserDataQuery } from './queries/Users.gql';
 import {
   updateUser as updateUserMutation,
   removeUser as removeUserMutation,
-} from '../../mutations/Users.gql';
-import Styles from './styles';
+} from './mutations/Users.gql';
+import ProfileSchema from '../../api/Users/schemas/profile';
+import StyledProfile from './StyledProfile';
 
-class Profile extends React.Component {
-  state = { activeTab: 'profile' };
+function Profile({ match, history }) {
+  // const [activeTab, setActiveTab] = useState('profile');
 
-  getUserType = (user) => (user.oAuthProvider ? 'oauth' : 'password');
+  const client = useApolloClient();
 
-  handleExportData = async (event) => {
-    const { client } = this.props;
+  const { loading, data } = useQuery(userQuery, {
+    fetchPolicy: 'no-cache',
+    variables: {
+      _id: match.params._id,
+    },
+  });
+
+  const [updateUser] = useMutation(updateUserMutation, {
+    onCompleted: () => {
+      message.success(i18n.__('Users.profile_save_success'));
+    },
+    onError: (error) => {
+      message.error(error.message);
+    },
+    refetchQueries: [{ query: userQuery, variables: { _id: match.params._id } }],
+  });
+  const [removeUser] = useMutation(removeUserMutation, {
+    onCompleted: () => {
+      message.success(i18n.__('Users.user_delete_success'));
+      history.push('/');
+    },
+    onError: (error) => {
+      message.error(error.message);
+    },
+  });
+
+  const getUserType = (user) => (user.oAuthProvider ? 'oauth' : 'password');
+
+  const handleExportData = async (event) => {
     event.preventDefault();
-    const { data } = await client.query({
+    const { data: result } = await client.query({
       query: exportUserDataQuery,
     });
 
-    FileSaver.saveAs(base64ToBlob(data.exportUserData.zip), `${Meteor.userId()}.zip`);
+    FileSaver.saveAs(base64ToBlob(result.exportUserData.zip), `${Meteor.userId()}.zip`);
   };
 
-  handleDeleteAccount = () => {
-    const { removeUser } = this.props;
-    if (confirm('Are you sure? This will permanently delete your account and all of its data.')) {
-      removeUser();
-    }
+  const handleDeleteAccount = () => {
+    // @todo make this an antd confirm box
+
+    Modal.confirm({
+      title: i18n.__('Users.confirm_delete_account_title'),
+      content: i18n.__('Users.confirm_delete_account_content'),
+      okText: i18n.__('Users.delete_my_account'),
+      okType: 'danger',
+      cancelText: i18n.__('Users.cancel'),
+      onOk() {
+        removeUser();
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
   };
 
-  handleSubmit = (form) => {
-    const { updateUser } = this.props;
+  const handleSubmit = (form) => {
+    const cleanForm = ProfileSchema.clean(form);
     updateUser({
       variables: {
         user: {
-          email: form.emailAddress.value,
+          email: cleanForm.emailAddress,
           profile: {
-            name: {
-              first: form.firstName.value,
-              last: form.lastName.value,
-            },
+            firstName: cleanForm.firstName,
+            lastName: cleanForm.lastName,
           },
         },
       },
     });
 
-    if (form.newPassword.value) {
-      Accounts.changePassword(form.currentPassword.value, form.newPassword.value, (error) => {
+    if (cleanForm.newPassword) {
+      Accounts.changePassword(cleanForm.currentPassword, cleanForm.newPassword, (error) => {
         if (error) {
-          Bert.alert(error.reason, 'danger');
+          message.error(error.reason);
         } else {
-          form.currentPassword.value = ''; // eslint-disable-line no-param-reassign
-          form.newPassword.value = ''; // eslint-disable-line no-param-reassign
+          cleanForm.currentPassword = ''; // eslint-disable-line no-param-reassign
+          cleanForm.newPassword = ''; // eslint-disable-line no-param-reassign
         }
       });
     }
   };
 
-  renderOAuthUser = (user) => (
+  function handleTabClick(key) {
+    const path = generatePath(match.path, { _id: match.params._id, tab: key });
+    history.push(path);
+  }
+
+  const renderOAuthUser = (user) => (
     <div className="OAuthProfile">
       <div key={user.oAuthProvider} className={`LoggedInWith ${user.oAuthProvider}`}>
         <img src={`/${user.oAuthProvider}.svg`} alt={user.oAuthProvider} />
         <p>
-          {`You're logged in with ${capitalize(user.oAuthProvider)} using the email address ${
-            user.emailAddress
-          }.`}
+          {i18n.__('Users.profile_oauth_user', {
+            provider: capitalize(user.oAuthProvider),
+            email: user.emailAddress,
+          })}
         </p>
         <Button
           className={`btn btn-${user.oAuthProvider}`}
@@ -89,200 +139,118 @@ class Profile extends React.Component {
           }
           target="_blank"
         >
-          {'Edit Profile on '}
-          {capitalize(user.oAuthProvider)}
+          {i18n.__('Users.edit_profile_on_o_auth_provider', {
+            oAuthProvider: capitalize(user.oAuthProvider),
+          })}
         </Button>
       </div>
     </div>
   );
 
-  renderPasswordUser = (user) => (
+  const renderPasswordUser = (user) => (
     <div>
-      <Row>
-        <Col xs={6}>
-          <FormGroup>
-            <ControlLabel>First Name</ControlLabel>
-            <input
-              type="text"
-              name="firstName"
-              defaultValue={user.name.first}
-              className="form-control"
-            />
-          </FormGroup>
+      <Row gutter={50}>
+        <Col xs={12}>
+          <AutoField name="firstName" />
         </Col>
-        <Col xs={6}>
-          <FormGroup>
-            <ControlLabel>Last Name</ControlLabel>
-            <input
-              type="text"
-              name="lastName"
-              defaultValue={user.name.last}
-              className="form-control"
-            />
-          </FormGroup>
+        <Col xs={12}>
+          <AutoField name="lastName" />
         </Col>
       </Row>
-      <FormGroup>
-        <ControlLabel>Email Address</ControlLabel>
-        <input
-          type="email"
-          name="emailAddress"
-          defaultValue={user.emailAddress}
-          className="form-control"
-        />
-      </FormGroup>
-      <FormGroup>
-        <ControlLabel>Current Password</ControlLabel>
-        <input type="password" name="currentPassword" className="form-control" />
-      </FormGroup>
-      <FormGroup>
-        <ControlLabel>New Password</ControlLabel>
-        <input type="password" name="newPassword" className="form-control" />
-        <InputHint>Use at least six characters.</InputHint>
-      </FormGroup>
-      <Button type="submit" bsStyle="success">
-        Save Profile
+
+      <AutoField name="emailAddress" />
+      <AutoField
+        name="currentPassword"
+        // ref={(currentPassword) => {
+        //   this.currentPassword = currentPassword;
+        // }}
+      />
+      <AutoField
+        name="newPassword"
+        // ref={(newPassword) => {
+        //   this.newPassword = newPassword;
+        // }}
+        extra={i18n.__('Users.password_help')}
+      />
+
+      <Button htmlType="submit" type="primary">
+        {i18n.__('Users.profile_submit')}
       </Button>
     </div>
   );
 
-  renderProfileForm = (user) =>
+  const renderProfileForm = (user) =>
     user &&
     {
-      password: this.renderPasswordUser,
-      oauth: this.renderOAuthUser,
-    }[this.getUserType(user)](user);
+      password: renderPasswordUser,
+      oauth: renderOAuthUser,
+    }[getUserType(user)](user);
 
-  render() {
-    const { data, updateUser } = this.props;
-    const { activeTab } = this.state;
+  // convert graphql into flat data for form
+  const model = data.user
+    ? {
+        firstName: data.user.profile.firstName,
+        lastName: data.user.profile.lastName,
+        emailAddress: data.user.emailAddress,
+      }
+    : {};
 
-    return data.user ? (
-      <Styles.Profile>
-        <h4 className="page-header">
-          {data.user.name ? `${data.user.name.first} ${data.user.name.last}` : data.user.username}
-        </h4>
-        <Tabs
-          animation={false}
-          activeKey={activeTab}
-          onSelect={(newTab) => this.setState({ activeTab: newTab })}
-          id="admin-user-tabs"
-        >
-          <Tab eventKey="profile" title="Profile">
-            <Row>
-              <Col xs={12} sm={6} md={4}>
-                <Validation
-                  rules={{
-                    firstName: {
-                      required: true,
-                    },
-                    lastName: {
-                      required: true,
-                    },
-                    emailAddress: {
-                      required: true,
-                      email: true,
-                    },
-                    currentPassword: {
-                      required: (form, blah) => {
-                        console.log(form, blah);
-                        // Only required if newPassword field has a value.
-                        return document.querySelector('[name="newPassword"]').value.length > 0;
-                      },
-                    },
-                    newPassword: {
-                      required() {
-                        // Only required if currentPassword field has a value.
-                        return document.querySelector('[name="currentPassword"]').value.length > 0;
-                      },
-                      minlength: 6,
-                    },
-                  }}
-                  messages={{
-                    firstName: {
-                      required: "What's your first name?",
-                    },
-                    lastName: {
-                      required: "What's your last name?",
-                    },
-                    emailAddress: {
-                      required: 'Need an email address here.',
-                      email: 'Is this email address correct?',
-                    },
-                    currentPassword: {
-                      required: 'Need your current password if changing.',
-                    },
-                    newPassword: {
-                      required: 'Need your new password if changing.',
-                    },
-                  }}
-                  submitHandler={(form) => this.handleSubmit(form)}
-                >
-                  <form
-                    ref={(form) => (this.form = form)}
-                    onSubmit={(event) => event.preventDefault()}
-                  >
-                    {this.renderProfileForm(data.user)}
-                  </form>
-                </Validation>
-                <AccountPageFooter>
-                  <p>
-                    <Button bsStyle="link" className="btn-export" onClick={this.handleExportData}>
-                      Export my data
-                    </Button>
-                    {' - '}
-                    Download all of your documents as .txt files in a .zip
-                  </p>
-                </AccountPageFooter>
-                <AccountPageFooter>
-                  <Button bsStyle="danger" onClick={this.handleDeleteAccount}>
-                    Delete My Account
+  return data.user ? (
+    <StyledProfile>
+      <h4 className="page-header">
+        {data.user.profile
+          ? `${data.user.profile.firstName} ${data.user.profile.lastName}`
+          : data.user.username}
+      </h4>
+      <Tabs
+        // animation={false}
+        // activeKey={activeTab}
+        // onChange={setActiveTab}
+        activeKey={match.params.tab || 'profile'}
+        onTabClick={handleTabClick}
+      >
+        <Tabs.TabPane key="profile" tab={i18n.__('Users.profile')}>
+          <Row>
+            <Col xs={24} sm={18} md={12}>
+              <AutoForm
+                schema={ProfileSchema}
+                model={model}
+                onSubmit={handleSubmit}
+                showInlineError
+                placeholder
+              >
+                {renderProfileForm(data.user)}
+              </AutoForm>
+
+              <AccountPageFooter>
+                <p>
+                  <Button type="link" className="btn-export" onClick={handleExportData}>
+                    {i18n.__('Users.export_user_data_button')}
                   </Button>
-                </AccountPageFooter>
-              </Col>
-            </Row>
-          </Tab>
-          <Tab eventKey="settings" title="Settings">
-            <UserSettings settings={data.user.settings} updateUser={updateUser} />
-          </Tab>
-        </Tabs>
-      </Styles.Profile>
-    ) : (
-      <div />
-    );
-  }
+                  {i18n.__('Users.export_user_data_help')}
+                </p>
+              </AccountPageFooter>
+              <AccountPageFooter>
+                <Button type="danger" onClick={handleDeleteAccount}>
+                  {i18n.__('Users.delete_my_account_button')}
+                </Button>
+              </AccountPageFooter>
+            </Col>
+          </Row>
+        </Tabs.TabPane>
+        <Tabs.TabPane key="settings" tab={i18n.__('Users.settings')}>
+          <UserSettings user={data.user} />
+        </Tabs.TabPane>
+      </Tabs>
+    </StyledProfile>
+  ) : (
+    <div />
+  );
 }
 
 Profile.propTypes = {
-  data: PropTypes.object.isRequired,
-  updateUser: PropTypes.func.isRequired,
-  removeUser: PropTypes.func.isRequired,
-  client: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
-export default compose(
-  graphql(userQuery),
-  graphql(updateUserMutation, {
-    name: 'updateUser',
-    options: () => ({
-      refetchQueries: [{ query: userQuery }],
-      onCompleted: () => {
-        Bert.alert('Profile updated!', 'success');
-      },
-      onError: (error) => {
-        Bert.alert(error.message, 'danger');
-      },
-    }),
-  }),
-  graphql(removeUserMutation, {
-    name: 'removeUser',
-    options: () => ({
-      onCompleted: () => {
-        Bert.alert('User removed!', 'success');
-      },
-      onError: (error) => {
-        Bert.alert(error.message, 'danger');
-      },
-    }),
-  }),
-)(withApollo(Profile));
+export default Profile;

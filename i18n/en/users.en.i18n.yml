@@ -45,7 +45,13 @@ continue: Continue
 verify_email_subject: Please verify your account for Pup App
 user_activated_title: Thank-you
 user_activated_message: Your account is now activated
+
+#Log out
 logout: Logout
+logout_title: Stay safe out there.
+logout_message: "Don't forget to like and follow ${productName} elsewhere on the web:"
+
+
 complete_registration: Complete Registration
 enrollment_complete: Enrollment Complete
 change_password: Change Password
@@ -90,7 +96,7 @@ confirm_delete_account_title: Are you sure you want to delete your account?
 confirm_delete_account_content: This will permanently delete your account and all of its data. Consider exporting it first for safe keeping.
 
 profile_oauth_user: You're logged in with ${provider} using the email address ${email}
-profile_oauth_edit_profile: Edit Profile on ${provider}
+edit_profile_on_o_auth_provider: Edit Profile on ${oAuthProvider}
 profile_submit: Save Profile
 export_user_data_button: Export my data
 export_user_data_help: " - Download all of your documents as .txt files in a .zip"
@@ -98,7 +104,7 @@ export_user_data_help: " - Download all of your documents as .txt files in a .zi
 profile: Profile
 settings: Settings
 user_settings: User Settings
-edit_profile_on_o_auth_provider: Edit Profile on ${oAuthProvider}
+
 
 delete_my_account_button: Delete My Account
 

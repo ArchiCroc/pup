@@ -1,81 +1,64 @@
 import React from 'react';
-import { Row, Col, Alert, FormGroup, ControlLabel, Button } from 'react-bootstrap';
+import i18n from 'meteor/universe:i18n';
+import AutoForm from 'uniforms/AutoForm';
+import AutoField from 'uniforms-antd/AutoField';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
+import Alert from 'antd/lib/alert';
+import Button from 'antd/lib/button';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Accounts } from 'meteor/accounts-base';
-import { Bert } from 'meteor/themeteorchef:bert';
-import Validation from '../components/Validation/Validation';
-import AccountPageFooter from '../../components/AccountPageFooter';
-import StyledRecoverPassword from './styles';
+import message from 'antd/lib/message';
+import AccountPageFooter from './components/AccountPageFooter';
+import StyledRecoverPassword from './StyledRecoverPassword';
+import RecoverPasswordSchema from '../../api/Users/schemas/recover-password';
 
-class RecoverPassword extends React.Component {
-  handleSubmit = (form) => {
-    const { history } = this.props;
-    const email = form.emailAddress.value;
+function RecoverPassword(props) {
+  const handleSubmit = (form) => {
+    const cleanForm = RecoverPasswordSchema.clean(form);
+
+    const { history } = props;
+    const email = cleanForm.emailAddress;
 
     Accounts.forgotPassword({ email }, (error) => {
       if (error) {
-        Bert.alert(error.reason, 'danger');
+        message.error(error.reason);
       } else {
-        Bert.alert(`Check ${email} for a reset link!`, 'success');
+        message.success(i18n.__('Users.recover_email_success', { email }));
         history.push('/login');
       }
     });
   };
 
-  render() {
-    return (
-      <StyledRecoverPassword>
-        <Row>
-          <Col xs={12}>
-            <h4 className="page-header">Recover Password</h4>
-            <Alert bsStyle="info">
-              Enter your email address below to receive a link to reset your password.
-            </Alert>
-            <Validation
-              rules={{
-                emailAddress: {
-                  required: true,
-                  email: true,
-                },
-              }}
-              messages={{
-                emailAddress: {
-                  required: 'Need an email address here.',
-                  email: 'Is this email address correct?',
-                },
-              }}
-              submitHandler={(form) => {
-                this.handleSubmit(form);
-              }}
-            >
-              <form ref={(form) => (this.form = form)} onSubmit={(event) => event.preventDefault()}>
-                <FormGroup>
-                  <ControlLabel>Email Address</ControlLabel>
-                  <input
-                    type="email"
-                    name="emailAddress"
-                    className="form-control"
-                    placeholder="Email Address"
-                  />
-                </FormGroup>
-                <Button type="submit" bsStyle="success" block>
-                  Recover Password
-                </Button>
-                <AccountPageFooter>
-                  <p>
-                    {'Remember your password? '}
-                    <Link to="/login">Log In</Link>
-                    {'.'}
-                  </p>
-                </AccountPageFooter>
-              </form>
-            </Validation>
-          </Col>
-        </Row>
-      </StyledRecoverPassword>
-    );
-  }
+  return (
+    <StyledRecoverPassword>
+      <Row>
+        <Col xs={24}>
+          <h4 className="page-header">{i18n.__('Users.recover_password_header')}</h4>
+          <Alert type="info" message={i18n.__('Users.recover_password_help')} />
+          <AutoForm
+            name="recover-password"
+            schema={RecoverPasswordSchema}
+            onSubmit={handleSubmit}
+            showInlineError
+            placeholder
+          >
+            <AutoField name="emailAddress" />
+            <Button htmlType="submit" type="primary">
+              {i18n.__('Users.recover_password_submit')}
+            </Button>
+            <AccountPageFooter>
+              <p>
+                {i18n.__('Users.recover_password_footer')}{' '}
+                <Link to="/login">{i18n.__('Users.log_in')}</Link>.
+              </p>
+            </AccountPageFooter>
+          </AutoForm>
+        </Col>
+      </Row>
+    </StyledRecoverPassword>
+  );
 }
 
 RecoverPassword.propTypes = {
