@@ -10,7 +10,7 @@ type {{ pascalCase (singular name) }} {
 input {{ pascalCase (singular name) }}Input {
 {{#each schema.fields }}
   {{~#compare this.type '&&' this.input}}
-  {{@key}}: {{this.type}}{{#compare this.validate.optional '==' undefined '||' this.validate.optional '==' false}}{{#compare this.defaultValue '==' undefined}}!{{/compare}}{{/compare}}
+  {{@key}}: {{#compare this.type '===' 'Number'}}Float{{else}}{{this.type}}{{/compare}}{{#compare this.validate.optional '==' undefined '||' this.validate.optional '==' false}}{{#compare this.defaultValue '==' undefined}}!{{/compare}}{{/compare}}
   {{/compare~}}
 {{/each~}}
 }
