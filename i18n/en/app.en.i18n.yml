@@ -1,6 +1,6 @@
 
 
-footer: © ${copyrightYear} ${productName}
+footer: '© ${copyrightYear} ${productName}'
 terms_of_service: Terms
 terms_of_service_hidden: ' of Service'
 privacy_policy: Privacy
@@ -8,11 +8,12 @@ privacy_policy_hidden: ' Policy'
 
 admin: Admin
 
-# Not Found Page
-page_error: Oops
+# React Error Page
+page_error_title: Oops
 page_error_message: This page had a problem rendering. Please contact the site's Admin.
 
-Title: 404 Page Not Found
+# Not Found Page
+page_not_found_title: 404 Page Not Found
 page_not_found: Page Not Found
 page_not_found_message:  ${page} does not exist.
 

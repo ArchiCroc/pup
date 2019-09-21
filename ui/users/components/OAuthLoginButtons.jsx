@@ -6,8 +6,8 @@ import oAuthServicesQuery from '../queries/OAuth.gql';
 import StyledOAuthLoginButtons from './StyledOAuthLoginButtons';
 import Loading from '../../components/Loading';
 
-const OAuthLoginButtons = ({ emailMessage, services }) => {
-  const { loading, data } = useQuery(oAuthServicesQuery, {
+const OAuthLoginButtons = ({ services }) => {
+  const { loading, data: { oAuthServices } = {} } = useQuery(oAuthServicesQuery, {
     variables: {
       services,
     },
@@ -17,18 +17,17 @@ const OAuthLoginButtons = ({ emailMessage, services }) => {
       {loading ? (
         <Loading />
       ) : (
-        <React.Fragment>
-          {data.oAuthServices.length ? (
+        <>
+          {oAuthServices.length ? (
             <>
-              {data.oAuthServices.map((service) => (
+              {oAuthServices.map((service) => (
                 <OAuthLoginButton key={service} service={service} />
               ))}
-              {emailMessage && <>{emailMessage.text}</>}
             </>
           ) : (
             <React.Fragment />
           )}
-        </React.Fragment>
+        </>
       )}
     </StyledOAuthLoginButtons>
   );
@@ -36,7 +35,6 @@ const OAuthLoginButtons = ({ emailMessage, services }) => {
 
 OAuthLoginButtons.propTypes = {
   services: PropTypes.array.isRequired,
-  emailMessage: PropTypes.object.isRequired,
 };
 
 export default OAuthLoginButtons;

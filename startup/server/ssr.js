@@ -8,8 +8,12 @@ import 'isomorphic-fetch';
 import { onPageLoad } from 'meteor/server-render';
 import { StaticRouter } from 'react-router';
 import { Helmet } from 'react-helmet';
-import { ServerStyleSheet } from 'styled-components';
+import { ServerStyleSheet, ThemeProvider } from 'styled-components';
 import { Meteor } from 'meteor/meteor';
+import ConfigProvider from 'antd/lib/config-provider';
+import enUS from 'antd/lib/locale-provider/en_US';
+
+import GlobalStyle from '../../ui/layouts/GlobalStyle';
 import App from '../../ui/layouts/App';
 import checkIfBlacklisted from '../../modules/server/checkIfBlacklisted';
 
@@ -34,11 +38,16 @@ onPageLoad(async (sink) => {
 
   const stylesheet = new ServerStyleSheet();
   const app = stylesheet.collectStyles(
-    <ApolloProvider client={apolloClient}>
-      <StaticRouter location={sink.request.url} context={{}}>
-        <App location={sink.request.url} />
-      </StaticRouter>
-    </ApolloProvider>,
+    <ConfigProvider locale={enUS}>
+      <ThemeProvider theme={{}}>
+        <ApolloProvider client={apolloClient}>
+          <GlobalStyle />
+          <StaticRouter location={sink.request.url} context={{}}>
+            <App location={sink.request.url} />
+          </StaticRouter>
+        </ApolloProvider>
+      </ThemeProvider>
+    </ConfigProvider>,
   );
 
   // NOTE: renderToStringWithData pre-fetches all queries in the component tree. This allows the data

@@ -11,6 +11,7 @@ import './email';
 import './sitemap';
 import './graphql';
 import './ssr';
+import './rest-api';
 
 import '../../api/Documents/server/indexes';
 
