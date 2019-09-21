@@ -1,0 +1,68 @@
+{ 
+  "name": "ErrorReports",
+  "permissions": {
+    "read":"admin",
+    "save": "admin",
+    "delete":"admin"
+  },
+  "menu": {
+    "index": "admin"
+  },
+    
+  "fields": {
+    "_id": {
+      "primaryKey": true,
+      "urlKey": true,
+      "type": "String",
+      "input": "Hidden",
+      "validate" : {
+        "max": 24,
+        "optional": true
+      }
+    },
+    "level": {
+      "type": "Integer",
+      "input": "Select",
+      "choices": { "Silly": 0, "Debug": 1, "Verbose": 2, "Info": 3, "Warning": 3, "Error": 5 },
+      "validate": {
+        "max": 1
+      },
+      "clean": "(item) => parseInt(item, 10);"
+    },
+    "message": {
+      "labelKey": true,
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+          "max": 1024
+      }
+    },
+    "path": {
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+        "max": 1024,
+        "optional": true
+      }
+    },
+    "trace": {
+      "type": "[String]",
+      "input": "Text",
+      "validate" : {
+          "optional": true
+      },
+      "table": false
+    },
+    "createdAtUTC": {
+      "type": "DateTime",
+      "table": "Created At"
+    },
+    "createdById": {
+      "userKey": true,
+      "type": "String"
+    },
+    "createdBy": {
+      "type": "User"
+    }
+  }
+}
