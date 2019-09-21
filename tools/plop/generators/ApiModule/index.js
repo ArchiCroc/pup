@@ -103,6 +103,13 @@ module.exports = {
         pattern: '/* #### PLOP_MUTATION_RESOLVERS_START #### */',
         template: '      ...{{ pascalCase (singular name) }}Mutations,',
       },
+      {
+        type: 'append',
+        path: 'startup/server/index.js',
+        pattern: '/* #### PLOP_IMPORTS_START #### */',
+        template: `import '../../api/{{ pascalCase name }}/server/indexes';
+import '../../api/{{ pascalCase name }}/server/rest-api';`,
+      },
     ];
   },
 };
