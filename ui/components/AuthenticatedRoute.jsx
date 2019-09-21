@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
+import PageErrorBoundary from './PageErrorBoundary';
 
 class AuthenticatedRoute extends React.Component {
   componentWillMount() {
@@ -20,12 +21,16 @@ class AuthenticatedRoute extends React.Component {
         exact={exact}
         render={(props) =>
           authenticated ? (
-            React.createElement(component, {
-              ...props,
-              ...rest,
-              loggingIn,
-              authenticated,
-            })
+            React.createElement(
+              PageErrorBoundary,
+              { path },
+              React.createElement(component, {
+                ...props,
+                ...rest,
+                loggingIn,
+                authenticated,
+              }),
+            )
           ) : (
             <Redirect to="/login" />
           )

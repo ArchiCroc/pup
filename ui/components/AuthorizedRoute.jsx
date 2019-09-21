@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 import { Roles } from 'meteor/alanning:roles';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
+import PageErrorBoundary from './PageErrorBoundary';
 
 function AuthorizedRoute(props) {
   const [authorized, setAuthorized] = useState(undefined);
@@ -35,7 +36,13 @@ function AuthorizedRoute(props) {
     <Route
       path={path}
       exact={exact}
-      render={() => React.createElement(component, { ...rest, ...props })}
+      render={() =>
+        React.createElement(
+          PageErrorBoundary,
+          { path },
+          React.createElement(component, { ...rest, ...props }),
+        )
+      }
     />
   ) : (
     <div />
