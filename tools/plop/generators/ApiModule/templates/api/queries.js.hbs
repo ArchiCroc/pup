@@ -4,7 +4,7 @@ import checkUserRole from '../Users/actions/checkUserRole';
 export default {
   {{ camelCase name }}: (parent, args, context) => {
     {{#compare schema.permissions.read '!==' 'everyone' }}
-    if (!context.user || context.user._id || checkUserRole(context.user._id, {{schema.permissions.read}}) {
+    if (!context.user || context.user._id || checkUserRole(context.user._id, '{{schema.permissions.read}}')) {
       throw new Error('Sorry, you must have permission to view {{ pascalCase name }}.');
     }
     {{/compare}}
@@ -12,7 +12,7 @@ export default {
   },
   my{{ pascalCase name }}: (parent, args, context) => {
     {{#compare schema.permissions.read '!==' 'everyone' }}
-    if (!context.user || context.user._id || checkUserRole(context.user._id, {{schema.permissions.read}}) {
+    if (!context.user || context.user._id || checkUserRole(context.user._id, '{{schema.permissions.read}}')) {
       throw new Error('Sorry, you must have permission to view my {{ pascalCase name }}.');
     }
     {{/compare}}
@@ -20,7 +20,7 @@ export default {
   },
   {{ camelCase (singular name) }}: (parent, args, context) => {
     {{#compare schema.permissions.read '!==' 'everyone' }}
-    if (!context.user || context.user._id || checkUserRole(context.user._id, {{schema.permissions.read}}) {
+    if (!context.user || context.user._id || checkUserRole(context.user._id, '{{schema.permissions.read}}')) {
       throw new Error('Sorry, you must have permission to view {{ pascalCase (singular name) }}.');
     }
     {{/compare}}
@@ -31,7 +31,7 @@ export default {
       return {{ pascalCase name }}.findOne({ {{primaryKeyField}}: args.{{primaryKeyField}}  });
     } 
     if (args.{{ urlKeyField }}) {
-      return {{ pascalCase name }}.findOne({ {{urlKeyField}}: args.{{urlKeyField}}  });
+      return {{ pascalCase name }}.findOne({ {{urlKeyField}}: args.{{urlKeyField}} });
     } 
     return null;
     {{/compare}}
