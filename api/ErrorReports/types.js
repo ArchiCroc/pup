@@ -1,7 +1,7 @@
 export default `
 type ErrorReport {
   _id: String
-  level: Integer
+  level: Int
   message: String
   path: String
   trace: [String]
@@ -12,7 +12,7 @@ type ErrorReport {
 
 input ErrorReportInput {
   _id: String
-  level: Integer!
+  level: Int!
   message: String!
   path: String
   trace: [String]

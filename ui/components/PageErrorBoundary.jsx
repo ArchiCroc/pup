@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Accounts } from 'meteor/accounts-base';
 import i18n from 'meteor/universe:i18n';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
@@ -19,6 +21,26 @@ class PageErrorBoundary extends React.Component {
     // You can also log the error to an error reporting service
     // logErrorToMyService(error, info);
     // @todo use an error logging service
+    console.log({ error: error.toString(), info }, typeof error, error.message, error.stack);
+    const xhr = new XMLHttpRequest();
+    const url = '/public-api/v1/error-reports';
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('x-token', Accounts._storedLoginToken());
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        const json = JSON.parse(xhr.responseText);
+        console.log('[errorReports]', json);
+      }
+    };
+    const data = JSON.stringify({
+      message: error.toString(),
+      stack: error.stack,
+      componentStack: info.componentStack,
+      path: this.props.path,
+      userToken: Accounts._storedLoginToken(),
+    });
+    xhr.send(data);
   }
 
   render() {
@@ -44,5 +66,13 @@ class PageErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
+
+PageErrorBoundary.defaultProps = {
+  path: '',
+};
+
+PageErrorBoundary.propTypes = {
+  path: PropTypes.string,
+};
 
 export default PageErrorBoundary;

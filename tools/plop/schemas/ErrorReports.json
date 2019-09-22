@@ -21,7 +21,7 @@
       }
     },
     "level": {
-      "type": "Integer",
+      "type": "Int",
       "input": "Select",
       "choices": { "Silly": 0, "Debug": 1, "Verbose": 2, "Info": 3, "Warning": 3, "Error": 5 },
       "validate": {

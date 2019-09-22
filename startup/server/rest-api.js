@@ -6,7 +6,7 @@ import isNumber from 'lodash/isNumber';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
-const { productName } = Meteor.settings.public; 
+const { productName } = Meteor.settings.public;
 
 /**
  * Customized Middleware for error handling
@@ -103,6 +103,7 @@ const parseBasicAuth = (request, response, next) => {
 
 // set the middleware
 ApiRoutes.ErrorMiddleware.use('/api', handleErrorAsHalJson);
+ApiRoutes.ErrorMiddleware.use('/public-api', handleErrorAsHalJson);
 ApiRoutes.Middleware.use('/api', Meteor.bindEnvironment(parseBasicAuth)); // this has to run in a fiber to call a meteor method in validateApikey
 ApiRoutes.Error = (message, detail, code) => {
   const error = new Error(message);

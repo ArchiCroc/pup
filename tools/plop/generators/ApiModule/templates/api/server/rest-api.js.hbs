@@ -3,7 +3,7 @@
 import { JsonRoutes as ApiRoutes } from 'meteor/simple:json-routes';
 
 /*
-ApiRoutes.add('post', '/api/v1/{{ dashCase name }}/submit', async (request, response) => {
+ApiRoutes.add('post', '/api/v1/{{ dashCase name }}', async (request, response) => {
   if (!request.body) {
     throw ApiRoutes.Error('Api Error', 'Missing Post Data');
   }
