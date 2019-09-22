@@ -17,6 +17,11 @@ import CommentMutations from '../../api/Comments/mutations';
 import OAuthQueries from '../../api/OAuth/queries';
 
 /* #### PLOP_IMPORTS_START #### */
+/* #### ERROR_REPORTS_IMPORTS_START #### */
+import ErrorReportTypes from '../../api/ErrorReports/types';
+import ErrorReportQueries from '../../api/ErrorReports/queries';
+import ErrorReportMutations from '../../api/ErrorReports/mutations';
+/* #### ERROR_REPORTS_IMPORTS_END #### */
 /* #### PLOP_IMPORTS_END #### */
 
 const schema = {
@@ -26,6 +31,7 @@ const schema = {
     ${CommentTypes}
 
     #### PLOP_TYPES_START ####
+    ${ErrorReportTypes}
     #### PLOP_TYPES_END ####
 
     scalar DateTime
@@ -42,6 +48,11 @@ const schema = {
       exportUserData: UserDataExport
       oAuthServices(services: [String]): [String]
       #### PLOP_QUERY_TYPES_START ####
+      #### ERROR_REPORTS_QUERY_TYPES_START ####
+      errorReports: [ErrorReport]
+      myErrorReports: [ErrorReport]
+      errorReport(_id: String): ErrorReport
+      #### ERROR_REPORTS_QUERY_TYPES_END ####
       #### PLOP_QUERY_TYPES_END ####
     }
 
@@ -58,6 +69,10 @@ const schema = {
       sendVerificationEmail: User
       sendWelcomeEmail: User
       #### PLOP_MUTATION_TYPES_START ####
+      #### ERROR_REPORTS_MUTATION_TYPES_START ####
+      saveErrorReport(errorReport: ErrorReportInput): ErrorReport
+      removeErrorReport(_id: String!): ErrorReport
+      #### ERROR_REPORTS_MUTATION_TYPES_END ####
       #### PLOP_MUTATION_TYPES_END ####
     }
   `,
@@ -70,6 +85,7 @@ const schema = {
       //  ...UserSettingsQueries,
       ...OAuthQueries,
       /* #### PLOP_QUERY_RESOLVERS_START #### */
+      ...ErrorReportQueries,
       /* #### PLOP_QUERY_RESOLVERS_END #### */
     },
     Mutation: {
@@ -78,6 +94,7 @@ const schema = {
       ...UserMutations,
       // ...UserSettingsMutations,
       /* #### PLOP_MUTATION_RESOLVERS_START #### */
+      ...ErrorReportMutations,
       /* #### PLOP_MUTATION_RESOLVERS_END #### */
     },
     Document: {

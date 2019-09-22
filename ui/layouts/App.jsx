@@ -25,6 +25,12 @@ import ViewDocument from '../documents/ViewDocument';
 import EditDocument from '../documents/EditDocument';
 
 /* #### PLOP_IMPORTS_START #### */
+/* #### ERROR_REPORTS_IMPORTS_START #### */
+import ErrorReports from '../error-reports/ErrorReports';
+import ViewErrorReport from '../error-reports/ViewErrorReport';
+import NewErrorReport from '../error-reports/NewErrorReport';
+import EditErrorReport from '../error-reports/EditErrorReport';
+/* #### ERROR_REPORTS_IMPORTS_END #### */
 /* #### PLOP_IMPORTS_END #### */
 
 import Profile from '../users/Profile';
@@ -110,6 +116,40 @@ class App extends React.Component {
                   />
 
                   {/* #### PLOP_ROUTES_START #### */}
+                  {/* #### ERROR_REPORTS_ROUTES_START #### */}
+                  <AuthenticatedRoute
+                    exact
+                    path="/error-reports"
+                    component={ErrorReports}
+                    setAfterLoginPath={setAfterLoginPath}
+                    {...props}
+                    {...state}
+                  />
+                  <AuthenticatedRoute
+                    exact
+                    path="/error-reports/new"
+                    component={NewErrorReport}
+                    setAfterLoginPath={setAfterLoginPath}
+                    {...props}
+                    {...state}
+                  />
+                  <AuthenticatedRoute
+                    exact
+                    path="/error-reports/:_id"
+                    component={ViewErrorReport}
+                    setAfterLoginPath={setAfterLoginPath}
+                    {...props}
+                    {...state}
+                  />
+                  <AuthenticatedRoute
+                    exact
+                    path="/error-reports/:_id/edit"
+                    component={EditErrorReport}
+                    setAfterLoginPath={setAfterLoginPath}
+                    {...props}
+                    {...state}
+                  />
+                  {/* #### ERROR_REPORTS_ROUTES_END #### */}
                   {/* #### PLOP_ROUTES_END #### */}
 
                   <AuthenticatedRoute

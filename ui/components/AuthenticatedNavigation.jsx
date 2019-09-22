@@ -19,11 +19,19 @@ const AuthenticatedNavigation = ({ name, history, userId, location = { pathname:
         <Link to="/documents" />
       </Menu.Item>
       {/* #### PLOP_USER_MENU_ITEMS_START #### */}
+      {/* #### ERROR_REPORTS_USER_MENU_ITEMS_START #### */}
+      {/* #### ERROR_REPORTS_USER_MENU_ITEMS_END #### */}
       {/* #### PLOP_USER_MENU_ITEMS_END #### */}
 
       {Roles.userIsInRole(userId, 'admin') && (
         <Menu.SubMenu title={i18n.__('admin')}>
           {/* #### PLOP_ADMIN_MENU_ITEMS_START #### */}
+      {/* #### ERROR_REPORTS_ADMIN_MENU_ITEMS_START #### */}
+      <Menu.Item key="/error-reports">
+        {i18n.__('ErrorReports.error_report_plural')}
+        <Link to="/error-reports" />
+      </Menu.Item>
+      {/* #### ERROR_REPORTS_ADMIN_MENU_ITEMS_END #### */}
           {/* #### PLOP_ADMIN_MENU_ITEMS_END #### */}
           <Menu.Item key="/admin/users">
             {i18n.__('Users.user_plural')}

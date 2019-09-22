@@ -16,4 +16,6 @@ import './rest-api';
 import '../../api/Documents/server/indexes';
 
 /* #### PLOP_IMPORTS_START #### */
+import '../../api/ErrorReports/server/indexes';
+import '../../api/ErrorReports/server/rest-api';
 /* #### PLOP_IMPORTS_END #### */

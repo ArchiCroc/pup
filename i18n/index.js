@@ -6,6 +6,7 @@ import usersEnI18n from './en/users.en.i18n.yml';
 import documentsEnI18n from './en/documents.en.i18n.yml';
 
 /* #### PLOP_IMPORTS_START #### */
+import errorReportsEnI18n from './en/errorReports.en.i18n.yml';
 /* #### PLOP_IMPORTS_END #### */
 
 // workaround since the meteor loader skips them

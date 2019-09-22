@@ -1,0 +1,39 @@
+_namespace: ErrorReports
+
+error_report: Error Report
+error_report_plural: Error Reports
+view_error_report: View Error Report
+new_error_report: New Error Report
+edit_error_report: Edit Error Report
+remove_error_report: Remove Error Report
+confirm_remove_error_report: 'Are you sure? This is permanent!'
+error_report_removed_success: Error Report removed!
+error_report_saved: Error Report saved!
+
+save: Save
+yes: 'Yes'
+no: 'No'
+cancel: Cancel
+remove: Remove
+
+delete_error_report: Delete Error Report
+
+blank_state_title: No Error Reports here, friend!
+blank_state_subtitle: ""
+
+#### PLOP_FIELDS_START ####
+level: Level
+level_label: Level
+level_placeholder: Select Level
+message: Message
+message_label: Message
+message_placeholder: Message
+path: Path
+path_label: Path
+path_placeholder: Path
+trace: Trace
+trace_label: Trace
+trace_placeholder: Trace
+created_at_utc: Created At
+#### PLOP_FIELDS_END ####
+

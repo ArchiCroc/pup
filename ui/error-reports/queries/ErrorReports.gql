@@ -1,0 +1,19 @@
+#import "../fragments/ErrorReports.gql"
+
+query errorReports {
+  errorReports {
+    ...ErrorReportAttributes
+  }
+}
+
+query editErrorReport($_id: String) {
+  errorReport(_id: $_id) {
+    ...ErrorReportAttributes
+  }
+}
+
+query errorReport($_id: String) {
+  errorReport(_id: $_id) {
+    ...ErrorReportAttributes
+  }
+}

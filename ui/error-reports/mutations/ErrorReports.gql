@@ -1,0 +1,13 @@
+#import "../fragments/ErrorReports.gql"
+
+mutation saveErrorReport($errorReport: ErrorReportInput!) {
+  saveErrorReport(errorReport: $errorReport) {
+    ...ErrorReportAttributes
+  }
+}
+
+mutation removeErrorReport($_id: String!) {
+  removeErrorReport(_id: $_id) {
+    _id
+  }
+}

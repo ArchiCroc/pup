@@ -1,0 +1,10 @@
+fragment ErrorReportAttributes on ErrorReport {
+    _id
+    level
+    message
+    path
+    trace
+    createdAtUTC
+}
+
+
