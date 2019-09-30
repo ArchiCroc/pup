@@ -3,7 +3,11 @@ fragment ErrorReportAttributes on ErrorReport {
     level
     message
     path
-    trace
+    stack
+    reactStack
+    user {
+        fullName
+    }
     createdAtUTC
 }
 

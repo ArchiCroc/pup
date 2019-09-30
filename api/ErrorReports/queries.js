@@ -3,19 +3,22 @@ import checkUserRole from '../Users/actions/checkUserRole';
 
 export default {
   errorReports: (parent, args, context) => {
-    if (!context.user || context.user._id || checkUserRole(context.user._id, 'admin')) {
+    if (!context.user || !context.user._id || !checkUserRole(context.user._id, 'admin')) {
       throw new Error('Sorry, you must have permission to view ErrorReports.');
     }
-    return ErrorReports.find().fetch();
+    return ErrorReports.find({}, { sort: { createdAtUTC: -1 } }).fetch();
   },
   myErrorReports: (parent, args, context) => {
-    if (!context.user || context.user._id || checkUserRole(context.user._id, 'admin')) {
+    if (!context.user || !context.user._id || !checkUserRole(context.user._id, 'admin')) {
       throw new Error('Sorry, you must have permission to view my ErrorReports.');
     }
-    return ErrorReports.find({ createdById: context.user._id }).fetch();
+    return ErrorReports.find(
+      { createdById: context.user._id },
+      { sort: { createdAtUTC: -1 } },
+    ).fetch();
   },
   errorReport: (parent, args, context) => {
-    if (!context.user || context.user._id || checkUserRole(context.user._id, 'admin')) {
+    if (!context.user || !context.user._id || !checkUserRole(context.user._id, 'admin')) {
       throw new Error('Sorry, you must have permission to view ErrorReport.');
     }
     return ErrorReports.findOne({ _id: args._id });

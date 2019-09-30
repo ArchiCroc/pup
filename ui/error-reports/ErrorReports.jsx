@@ -13,13 +13,15 @@ import StyledErrorReports from './StyledErrorReports';
 import { errorReports as errorReportsQuery } from './queries/ErrorReports.gql';
 
 const ErrorReports = ({ history }) => {
-  const {
-    loading, data: { errorReports }  = [] } = useQuery(errorReportsQuery);
+  const { loading, data: { errorReports } = {} } = useQuery(errorReportsQuery, {
+    fetchPolicy: 'cache-and-network',
+  });
 
   const columns = [
     {
       title: i18n.__('ErrorReports.level'),
       dataIndex: 'level',
+      render: (value, record) => i18n.__(`ErrorReports.level_${value}`), // eslint-disable-line
     },
     {
       title: i18n.__('ErrorReports.message'),
@@ -44,7 +46,7 @@ const ErrorReports = ({ history }) => {
       dataIndex: 'createdAtUTC',
       sorter: (a, b) => new Date(a.createdAtUTC).getTime() - new Date(b.createdAtUTC).getTime(),
       defaultSortOrder: 'descend',
-      render: (createdAtUTC) => <PrettyDate timestamp={createdAtUTC} />, // eslint-disable-line 
+      render: (createdAtUTC) => <PrettyDate timestamp={createdAtUTC} />, // eslint-disable-line
     },
   ];
 

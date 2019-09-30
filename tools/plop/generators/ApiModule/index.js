@@ -105,6 +105,12 @@ module.exports = {
       },
       {
         type: 'append',
+        path: 'startup/server/graphql-api.js',
+        pattern: '/* #### PLOP_RESOLVERS_START #### */',
+        templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-resolvers.js.hbs',
+      },
+      {
+        type: 'append',
         path: 'startup/server/index.js',
         pattern: '/* #### PLOP_IMPORTS_START #### */',
         template: `import '../../api/{{ pascalCase name }}/server/indexes';

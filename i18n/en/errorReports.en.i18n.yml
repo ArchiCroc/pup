@@ -25,6 +25,14 @@ blank_state_subtitle: ""
 level: Level
 level_label: Level
 level_placeholder: Select Level
+level_0: Silly
+level_1: Debug
+level_2: Verbose
+level_3: Info
+level_4: Warning
+level_5: Error
+
+
 message: Message
 message_label: Message
 message_placeholder: Message

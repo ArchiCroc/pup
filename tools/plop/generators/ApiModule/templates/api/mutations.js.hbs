@@ -6,7 +6,7 @@ import checkUserRole from '../Users/actions/checkUserRole';
 export default {
   save{{ pascalCase (singular name) }}: (root, args, context) => {
     {{#compare schema.permissions.save '!==' 'everyone' }}
-    if (!context.user || context.user._id || checkUserRole(context.user._id, '{{schema.permissions.save}}')) {
+    if (!context.user || !context.user._id || !checkUserRole(context.user._id, '{{schema.permissions.save}}')) {
       throw new Error('Sorry, you must have permission to save {{ pascalCase (singular name) }}.');
     }
     {{/compare}}
@@ -35,13 +35,13 @@ export default {
     cleanDoc.createdById = userId;
     cleanDoc.createdAtUTC = timestamp;
 
-    const {{ pascalCase (singular name) }}Id = {{ pascalCase name }}.insert(cleanDoc);
-    const doc = {{ pascalCase name }}.findOne({{ pascalCase (singular name) }}Id);
+    const {{ camelCase (singular name) }}Id = {{ pascalCase name }}.insert(cleanDoc);
+    const doc = {{ pascalCase name }}.findOne({{ camelCase (singular name) }}Id);
     return doc;
   },
   remove{{ pascalCase (singular name) }}: (root, args, context) => {
     {{#compare schema.permissions.delete '!==' 'everyone' }}
-    if (!context.user || context.user._id || checkUserRole(context.user._id, '{{schema.permissions.delete}}')) {
+    if (!context.user || !context.user._id || !checkUserRole(context.user._id, '{{schema.permissions.delete}}')) {
       throw new Error('Sorry, you must have permission to save {{ pascalCase (singular name) }}.');
     }
     {{/compare}}

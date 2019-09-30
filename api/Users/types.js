@@ -56,6 +56,7 @@ export default `
     oAuthProvider: String
     roles: [Role]
     settings: UserSettings 
+    fullName: String
   }
 
   type Users {

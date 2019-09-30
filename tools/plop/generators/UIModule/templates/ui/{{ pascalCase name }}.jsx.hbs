@@ -13,8 +13,7 @@ import Styled{{ pascalCase name }} from './Styled{{ pascalCase name }}';
 import { {{ camelCase name }} as {{ camelCase name }}Query } from './queries/{{ pascalCase name }}.gql';
 
 const {{ pascalCase name }} = ({ history }) => {
-  const {
-    loading, data: { {{ camelCase name }} }  = [] } = useQuery({{ camelCase name }}Query);
+  const { loading, data: { {{ camelCase name }} }  = {} } = useQuery({{ camelCase name }}Query);
 
   const columns = [
 {{#each schema.fields ~}}
@@ -42,6 +41,13 @@ const {{ pascalCase name }} = ({ history }) => {
       sorter: true,
       // defaultSortOrder: 'ascend',
       render: (value, record) => value, // eslint-disable-line
+      {{/compare}}
+      {{#compare this.input 'in' 'Array|Select|Options|Dropdown'  }}
+      sorter: true,
+      // defaultSortOrder: 'ascend',
+      {{#if this.choices}}
+      render: (value, record) => i18n.__(`{{ pascalCase @root.name }}.{{@key}}_${value}`), // eslint-disable-line
+      {{/if}}
       {{/compare}}
     },
     {{/compare}}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 import PageErrorBoundary from './PageErrorBoundary';
 
-const PublicOnlyRoute = ({
+const PublicRoute = ({
   loggingIn,
   authenticated,
   afterLoginPath,
@@ -30,14 +30,14 @@ const PublicOnlyRoute = ({
   />
 );
 
-PublicOnlyRoute.defaultProps = {
+PublicRoute.defaultProps = {
   loggingIn: false,
   path: '',
   exact: false,
   afterLoginPath: null,
 };
 
-PublicOnlyRoute.propTypes = {
+PublicRoute.propTypes = {
   loggingIn: PropTypes.bool,
   authenticated: PropTypes.bool.isRequired,
   component: PropTypes.func.isRequired,
@@ -46,4 +46,4 @@ PublicOnlyRoute.propTypes = {
   exact: PropTypes.bool,
 };
 
-export default PublicOnlyRoute;
+export default PublicRoute;

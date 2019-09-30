@@ -44,6 +44,7 @@ const schema = {
       documents: [Document]
       document(_id: String): Document
       user(_id: String): User
+      resolveUser(userId: String): User
       users(page: Int, pageSize: Int, search: String, sort: String, order: String): Users
       exportUserData: UserDataExport
       oAuthServices(services: [String]): [String]
@@ -97,10 +98,16 @@ const schema = {
       ...ErrorReportMutations,
       /* #### PLOP_MUTATION_RESOLVERS_END #### */
     },
+    User: {
+      fullName: (user) => user.profile && `${user.profile.firstName} ${user.profile.lastName}`,
+    },
     Document: {
       comments: CommentQueries.comments,
     },
     Comment: {
+      user: UserQueries.user,
+    },
+    ErrorReport: {
       user: UserQueries.user,
     },
     /* #### PLOP_RESOLVERS_START #### */

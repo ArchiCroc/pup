@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import PageErrorBoundary from './PageErrorBoundary';
+import Loading from './Loading';
 
 class AuthenticatedRoute extends React.Component {
   componentWillMount() {
@@ -15,6 +16,9 @@ class AuthenticatedRoute extends React.Component {
   render() {
     const { loggingIn, authenticated, component, path, exact, ...rest } = this.props;
     // console.log('AuthenticatedRoute', this.props);
+    if (loggingIn) {
+      return <Loading />;
+    }
     return (
       <Route
         path={path}

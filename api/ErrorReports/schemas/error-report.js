@@ -4,10 +4,16 @@ import i18n from 'meteor/universe:i18n';
 /* #### PLOP_IMPORTS_START #### */
 /* #### PLOP_IMPORTS_END #### */
 
-const cleanLevel = (item) => parseInt(item, 10);;
-
 const ErrorReportSchema = new SimpleSchema({
   _id: {
+    type: String,
+    optional: true,
+    max: 24,
+    uniforms: {
+      type: 'hidden',
+    },
+  },
+  userId: {
     type: String,
     optional: true,
     max: 24,
@@ -18,14 +24,13 @@ const ErrorReportSchema = new SimpleSchema({
   level: {
     type: SimpleSchema.Integer,
     label: () => i18n.__('ErrorReports.level_label'),
-    max: 1,
     autoValue() {
       if (this.value) {
-        return cleanLevel(this.value);
+        return parseInt(this.value, 10);
       }
-      return this.value;
+      return 0; // defaultValue
     },
-    allowedValues: [0, 1, 2, 3, 3, 5],
+    allowedValues: [0, 1, 2, 3, 4, 5],
     uniforms: {
       placeholder: () => i18n.__('ErrorReports.level_placeholder'),
     },
@@ -38,6 +43,15 @@ const ErrorReportSchema = new SimpleSchema({
       placeholder: () => i18n.__('ErrorReports.message_placeholder'),
     },
   },
+  userAgent: {
+    type: String,
+    label: () => i18n.__('ErrorReports.user_agent_label'),
+    optional: true,
+    max: 1024,
+    uniforms: {
+      placeholder: () => i18n.__('ErrorReports.user_agent_placeholder'),
+    },
+  },
   path: {
     type: String,
     label: () => i18n.__('ErrorReports.path_label'),
@@ -47,15 +61,38 @@ const ErrorReportSchema = new SimpleSchema({
       placeholder: () => i18n.__('ErrorReports.path_placeholder'),
     },
   },
-  trace: {
+  stack: {
     type: Array,
-    label: () => i18n.__('ErrorReports.trace_label'),
+    label: () => i18n.__('ErrorReports.stack_label'),
     optional: true,
+    autoValue() {
+      if (typeof this.value === 'string') {
+        return this.value.split(/\r?\n/);
+      }
+      return this.value;
+    },
     uniforms: {
-      placeholder: () => i18n.__('ErrorReports.trace_placeholder'),
+      placeholder: () => i18n.__('ErrorReports.stack_placeholder'),
     },
   },
-  'trace.$': {
+  'stack.$': {
+    type: String,
+  },
+  reactStack: {
+    type: Array,
+    label: () => i18n.__('ErrorReports.react_stack_label'),
+    optional: true,
+    autoValue() {
+      if (typeof this.value === 'string') {
+        return this.value.split(/\r?\n/);
+      }
+      return this.value;
+    },
+    uniforms: {
+      placeholder: () => i18n.__('ErrorReports.react_stack_placeholder'),
+    },
+  },
+  'reactStack.$': {
     type: String,
   },
   /* #### PLOP_SCHEMA_START #### */

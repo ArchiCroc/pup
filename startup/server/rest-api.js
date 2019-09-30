@@ -5,6 +5,7 @@ import { JsonRoutes as ApiRoutes } from 'meteor/simple:json-routes';
 import isNumber from 'lodash/isNumber';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
+import { getUser } from 'meteor/apollo';
 
 const { productName } = Meteor.settings.public;
 
@@ -59,7 +60,9 @@ const handleErrorAsHalJson = (error, request, response, next) => {
 const validateApikey = (key, secret) => {
   if (key && secret) {
     // const result = Meteor.users.findOne({ _id: key, 'services.api.keys': secret });
-    const result = Meteor.users.findOne({ username: key, 'services.api.apiKeys.key': secret });
+    const result = Meteor.users
+      .rawCollection()
+      .findOne({ username: key, 'services.api.apiKeys.key': secret });
     if (result) {
       console.log('api-key is valid');
       return result;
@@ -101,10 +104,19 @@ const parseBasicAuth = (request, response, next) => {
   return false;
 };
 
+const parseAuthToken = (request, response, next) => {
+  if (request.headers && request.headers['x-token']) {
+    request.user = getUser(request.headers['x-token']);
+  }
+  next();
+  return true;
+};
+
 // set the middleware
 ApiRoutes.ErrorMiddleware.use('/api', handleErrorAsHalJson);
+ApiRoutes.Middleware.use('/api', parseBasicAuth); // this has to run in a fiber to call a meteor method in validateApikey
 ApiRoutes.ErrorMiddleware.use('/public-api', handleErrorAsHalJson);
-ApiRoutes.Middleware.use('/api', Meteor.bindEnvironment(parseBasicAuth)); // this has to run in a fiber to call a meteor method in validateApikey
+ApiRoutes.Middleware.use('/public-api', parseAuthToken);
 ApiRoutes.Error = (message, detail, code) => {
   const error = new Error(message);
   error.detail = detail;

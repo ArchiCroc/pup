@@ -1,0 +1,11 @@
+    {{ pascalCase (singular name) }}: {
+{{#each schema.fields }}
+  {{#if this.resolver}}
+      {{@key}}: {{this.resolver}},
+  {{/if}}
+  {{#if this.userKey}}
+      {{@key}}: (parent, args, context) =>
+        UserQueries.resolveUser(parent, { userId: parent.{{@key}}Id }, context),
+  {{/if}}
+{{/each~}}
+    },

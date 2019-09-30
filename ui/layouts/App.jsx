@@ -1,4 +1,4 @@
-/* eslint-disable jsx-a11y/no-href */
+/* eslint-disable jsx-a11y/no-href,react/jsx-props-no-spreading */
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -16,7 +16,7 @@ import PageErrorBoundary from '../components/PageErrorBoundary';
 
 import AuthenticatedRoute from '../components/AuthenticatedRoute';
 import AuthorizedRoute from '../components/AuthorizedRoute';
-import PublicRoute from '../components/PublicRoute';
+import PublicRoute from '../components/PublicOnlyRoute';
 
 import Index from '../pages/Index';
 
@@ -64,7 +64,21 @@ class App extends React.Component {
   state = { ready: false, afterLoginPath: null };
 
   componentDidMount() {
-    this.setPageReady();
+    const { ready } = this.state;
+    const { loading, loggingIn } = this.props;
+    // console.log('app mounted', this.props);
+    if (!ready && !loading && !loggingIn) {
+      this.setPageReady();
+    }
+  }
+
+  componentDidUpdate() {
+    const { ready } = this.state;
+    const { loading, loggingIn } = this.props;
+    // console.log('app updated', this.props);
+    if (!ready && !loading && !loggingIn) {
+      this.setPageReady();
+    }
   }
 
   setPageReady = () => {
@@ -228,10 +242,12 @@ App.defaultProps = {
   emailAddress: '',
   emailVerified: false,
   authenticated: false,
+  loggingIn: false,
 };
 
 App.propTypes = {
   loading: PropTypes.bool,
+  loggingIn: PropTypes.bool,
   userId: PropTypes.string,
   emailAddress: PropTypes.string,
   emailVerified: PropTypes.bool,

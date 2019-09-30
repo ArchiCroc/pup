@@ -1,12 +1,19 @@
 // import { Meteor } from 'meteor/meteor';
 // import { Mongo } from 'meteor/mongo';
+import {{ pascalCase name }} from '../{{ pascalCase name }}';
 import { JsonRoutes as ApiRoutes } from 'meteor/simple:json-routes';
+import {{ pascalCase (singular name) }}Schema from '../schemas/{{ dashCase (singular name) }}';
 
 /*
 ApiRoutes.add('post', '/api/v1/{{ dashCase name }}', async (request, response) => {
   if (!request.body) {
     throw ApiRoutes.Error('Api Error', 'Missing Post Data');
   }
+
+  const cleanDoc = {{ pascalCase (singular name) }}Schema.clean(args.{{ camelCase (singular name) }});
+  {{ pascalCase (singular name) }}Schema.validate(cleanDoc);
+
+  console.log(cleanDoc);
 
   // return success
   response.writeHead(204);

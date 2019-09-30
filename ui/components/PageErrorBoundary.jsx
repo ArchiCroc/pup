@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import i18n from 'meteor/universe:i18n';
 import Row from 'antd/lib/row';
@@ -35,10 +36,13 @@ class PageErrorBoundary extends React.Component {
     };
     const data = JSON.stringify({
       message: error.toString(),
-      stack: error.stack,
-      componentStack: info.componentStack,
-      path: this.props.path,
+      level: 5, // warning
+      stack: error.stack.split(/\r?\n/),
+      reactStack: info.componentStack.split(/\r?\n/),
+      path: window.location.href,
       userToken: Accounts._storedLoginToken(),
+      userAgent: window.navigator.userAgent,
+      userId: Meteor.userId(),
     });
     xhr.send(data);
   }

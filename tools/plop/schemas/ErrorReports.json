@@ -20,13 +20,17 @@
         "optional": true
       }
     },
+    "userId": {
+      "userKey": true,
+      "type": "String"
+    },
+    "user": {
+      "type": "User"
+    },
     "level": {
       "type": "Int",
       "input": "Select",
-      "choices": { "Silly": 0, "Debug": 1, "Verbose": 2, "Info": 3, "Warning": 3, "Error": 5 },
-      "validate": {
-        "max": 1
-      },
+      "choices": { "Silly": 0, "Debug": 1, "Verbose": 2, "Info": 3, "Warning": 4, "Error": 5 },
       "clean": "(item) => parseInt(item, 10);"
     },
     "message": {
@@ -45,7 +49,23 @@
         "optional": true
       }
     },
-    "trace": {
+    "userAgent": {
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+        "max": 1024,
+        "optional": true
+      }
+    },
+    "stack": {
+      "type": "[String]",
+      "input": "Text",
+      "validate" : {
+          "optional": true
+      },
+      "table": false
+    },
+    "reackStack": {
       "type": "[String]",
       "input": "Text",
       "validate" : {

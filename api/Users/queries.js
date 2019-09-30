@@ -37,6 +37,15 @@ export default {
       userIdToQuery: userIdFromParentQuery || args._id || context.user._id,
     });
   },
+  resolveUser: (parent, args, context) => {
+    if (!context.user) throw new Error('Sorry, you must be logged in to resolve a user');
+    if (!args.userId) {
+      return null;
+    }
+    return queryUser({
+      userIdToQuery: args.userId,
+    });
+  },
   exportUserData: (parent, args, { user }) =>
     exportUserData({
       user,
