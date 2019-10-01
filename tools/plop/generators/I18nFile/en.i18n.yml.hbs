@@ -23,24 +23,23 @@ blank_state_subtitle: ""
 
 #### PLOP_FIELDS_START ####
 {{#each schema.fields}}
-  {{#compare this.table '||' this.input}}
-    {{#compare this.input '!=' 'Hidden'}}
+{{#compare this.table '||' this.input}}
+{{#compare this.input '!=' 'Hidden'}}
 {{snakeCase @key}}: {{#compare this.table 'typeof' 'string'}}{{this.table}}{{else}}{{ titleCase @key}}{{/compare}}
-    {{#if this.input}}
+{{#if this.input}}
 {{snakeCase @key}}_label: {{titleCase @key}}
-      {{#compare this.type '!=' 'Boolean'  }}
-        {{#compare this.input 'in' 'Array|Select|Options|Dropdown'  }}
+{{#compare this.type '!=' 'Boolean'  }}
+{{#compare this.input 'in' 'Array|Select|Options|Dropdown'  }}
 {{snakeCase @key}}_placeholder: Select {{titleCase @key}}
 {{#each this.choices}}
-  {{snakeCase ../@key}}_{{this}}: {{@key}} 
+{{snakeCase @../key}}_{{this}}: {{@key}}
 {{/each}}
-        {{else}}
+{{else}}
 {{snakeCase @key}}_placeholder: {{titleCase @key}}
-        {{/compare}}
-      {{/compare}}
-    {{/if}}
-    {{/compare}}
-  {{/compare}}
+{{/compare}}
+{{/compare}}
+{{/if}}
+{{/compare}}
+{{/compare}}
 {{/each}}
 #### PLOP_FIELDS_END ####
-

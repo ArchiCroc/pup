@@ -54,7 +54,6 @@ module.exports = {
       .then((value) => {
         // there has to be a better way to do this but hey! this works for the moment
         values.schema = value.schema;
-        //console.log('here\'s the schema:', value.schema);
 
         return inquirer
           .prompt({
@@ -66,8 +65,7 @@ module.exports = {
           });
       }).then((value) => {
         values.name = value.name;
-        console.log('The wolf mauls you. You die. The end.', value);
-        return value;
+        return values;
       });
 
     // const prompts = new Rx.Subject();
