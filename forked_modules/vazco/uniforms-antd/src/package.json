@@ -28,7 +28,7 @@
     "invariant": "^2.0.0",
     "lodash": "^4.0.0",
     "prop-types": "^15.5.7",
-    "uniforms": "^2.2.0",
+    "uniforms": "file:../../uniforms/src",
     "warning": "^4.0.0"
   }
 }

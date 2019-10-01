@@ -22,6 +22,6 @@
     "invariant": "^2.0.0",
     "lodash": "^4.0.0",
     "simpl-schema": "^1.0.0 || ^0.0.4",
-    "uniforms": "^2.2.0"
+    "uniforms": "file:../../uniforms/src"
   }
 }

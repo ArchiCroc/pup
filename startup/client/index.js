@@ -3,14 +3,15 @@
 import React from 'react';
 import { hydrate, render } from 'react-dom';
 import { BrowserRouter, Switch } from 'react-router-dom';
+import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
+import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import { ThemeProvider } from 'styled-components';
 // import { ApolloProvider } from 'react-apollo';
 import { ApolloProvider } from '@apollo/react-hooks';
-import { Accounts } from 'meteor/accounts-base';
-import { Meteor } from 'meteor/meteor';
+
 // import i18n from 'meteor/universe:i18n';
-import Uniforms from 'uniforms';
-import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
+
 
 import ConfigProvider from 'antd/lib/config-provider';
 import enUS from 'antd/lib/locale-provider/en_US';
@@ -24,6 +25,9 @@ import GlobalStyle from '../../ui/layouts/GlobalStyle';
 import '../../i18n';
 
 // i18n.setLocale('en-US');
+
+
+console.log(SimpleSchema2Bridge);
 
 Accounts.onLogout(() => apolloClient.resetStore());
 

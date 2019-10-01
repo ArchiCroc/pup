@@ -10,7 +10,7 @@ ApiRoutes.add('post', '/public-api/v1/error-reports', (request, response) => {
   }
 
   const cleanDoc = ErrorReportSchema.clean(request.body);
-  console.log(cleanDoc);
+  // console.log(cleanDoc);
   ErrorReportSchema.validate(cleanDoc);
 
   if (request.body.userToken) {
@@ -23,7 +23,7 @@ ApiRoutes.add('post', '/public-api/v1/error-reports', (request, response) => {
   cleanDoc.createdAtUTC = new Date();
 
   const errorReportId = ErrorReports.insert(cleanDoc);
-  console.log(errorReportId);
+  // console.log(errorReportId);
   // return success
   response.writeHead(204);
   response.end();
