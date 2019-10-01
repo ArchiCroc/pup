@@ -99,6 +99,13 @@ const GlobalStyle = createGlobalStyle`
  .ant-dropdown-menu-item.active {
    font-weight: bold;
  }
+
+ .pull-left {
+   float: left;
+ }
+ .pull-right {
+   float: right;
+ }
   
 
   /* Removes unnecessary bottom padding on .container */
