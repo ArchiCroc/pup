@@ -11,42 +11,78 @@ const requireField = (fieldName) => {
     return true;
   };
 };
+/*
+module.exports = {
+  description: 'Create a Basic Module from Schema',
+  prompts: [
+    {
+      type: 'input',
+      name: 'name',
+      message: 'What is your module name?',
+      validate: requireField('name'),
+    },
+    {
+      type: 'jsonFile',
+      name: 'schema',
+      message: 'Select a Schema to guide the module fields',
+      basePath: './tools/plop/schemas',
+    },
+  ],
+  actions: (data) => {
+    const actions = [];
+    actions.push(...apiModule.actions(data));
+    actions.push(...i18nFile.actions);
+    actions.push(...uiModule.actions(data));
+    return actions;
+  },
+};
+*/
+
+const values = {};
 
 module.exports = {
   description: 'Test Plop Functions',
   prompts: async (inquirer) => {
-    console.log('[prompt]', inquirer);
+    // console.log('[prompt]', inquirer);
     return inquirer
       .prompt({
-        type: 'list',
-        name: 'weapon',
-        message: 'Pick one',
-        choices: [
-          'Use the stick',
-          'Grab a large rock',
-          'Try and make a run for it',
-          'Attack the wolf unarmed',
-        ],
+        type: 'jsonFile',
+        name: 'schema',
+        message: 'Select a Schema to guide the module fields',
+        basePath: './tools/plop/schemas',
       })
-      .then(() => {
-        console.log('The wolf mauls you. You die. The end.');
+      .then((value) => {
+        // there has to be a better way to do this but hey! this works for the moment
+        values.schema = value.schema;
+        //console.log('here\'s the schema:', value.schema);
+
+        return inquirer
+          .prompt({
+            default: value.schema.name || null,
+            type: 'input',
+            name: 'name',
+            message: 'What is your module name?',
+            validate: requireField('name'),
+          });
+      }).then((value) => {
+        values.name = value.name;
+        console.log('The wolf mauls you. You die. The end.', value);
+        return value;
       });
 
     // const prompts = new Rx.Subject();
 
-    // inquirer.prompt(prompts);
-
-    // // inquirer.prompt(prompts).ui.process.subscribe(
-    // //   function(ans) {
-    // //     console.log('Answer is: ', ans);
-    // //   },
-    // //   function(err) {
-    // //     console.log('Error: ', err);
-    // //   },
-    // //   function() {
-    // //     console.log('Completed');
-    // //   },
-    // // );
+    // inquirer.prompt(prompts).ui.process.subscribe(
+    //   function(ans) {
+    //     console.log('Answer is: ', ans);
+    //   },
+    //   function(err) {
+    //     console.log('Error: ', err);
+    //   },
+    //   function(stuff) {
+    //     console.log('Completed', stuff);
+    //   },
+    // );
 
     // // At some point in the future, push new questions
     // prompts.next({
@@ -64,8 +100,10 @@ module.exports = {
 
     // // When you're done
     // prompts.complete();
+    // return inquirer;
   },
   actions: (data) => {
+    // console.log('actions', values);
     const actions = [
       {
         type: 'comment',
@@ -73,7 +111,7 @@ module.exports = {
       },
     ];
     // actions.push(...apiModule.actions(data));
-    // actions.push(...i18nFile.actions);
+    actions.push(...i18nFile.actions);
     // actions.push(...uiModule.actions(data));
     return actions;
   },
