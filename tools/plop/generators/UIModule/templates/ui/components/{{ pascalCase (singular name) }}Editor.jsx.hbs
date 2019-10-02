@@ -58,7 +58,7 @@ const {{ pascalCase (singular name) }}Editor = ({ doc, history }) => {
       >
 {{#each schema.fields ~}}
   {{~#compare this.type '&&' this.input}}
-    {{#compare this.type '===' 'object'}}
+    {{#compare this.type 'in' 'Object' '||' this.type 'startsWith' '['}}
         <ListField name="{{ camelCase @key }}">
           <ListItemField name="$" />
         </ListField>

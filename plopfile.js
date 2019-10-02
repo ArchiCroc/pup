@@ -58,6 +58,7 @@ module.exports = (plop) => {
   plop.setHelper('singular', (txt) => pluralize.singular(txt));
   plop.setHelper('compare', compare);
   plop.setHelper('log', console.log);
+  plop.setHelper('isArray', (value) => Array.isArray(value));
   plop.setHelper('stripBrackets', (text) => {
     return text.replace(/\[(\w+)\]/, '$1');
   });

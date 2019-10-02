@@ -66,6 +66,10 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
       {{#each this.uniforms}}
       {{@key}}: {{{this}}},
       {{/each}}
+      {{#isArray this.choices}}
+      {{else}}
+      transform: (item) => i18n.__(`{{ pascalCase @root.name }}.{{snakeCase @key}}_${label}`),
+      {{/isArray}}
     },
   },
   {{else}}
@@ -111,8 +115,28 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
     min: {{this.validate.min}},
     {{/if}}
     {{#if this.choices}}
-    allowedValues: {{this.validate.min}},
+      {{#compare this.choices 'typeof' 'object'}}
+    allowedValues: [{{#each this.choices}}{{#compare this 'typeof' 'string'}}'{{this}}'{{else}}{{this}}{{/compare}}{{#unless @last}}, {{/unless}}{{/each}}],
+      {{else}}
+    allowedValues: {{this.choices}},
+      {{/compare}}
     {{/if}}
+    uniforms: {
+      {{#compare this.input '==' 'Hidden'  }}
+      type: 'hidden',
+      {{else}}
+        {{#compare this.type '!=' 'Boolean'  }}
+      placeholder: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_placeholder'),
+        {{/compare}}
+      {{/compare}}
+      {{#each this.uniforms}}
+      {{@key}}: {{{this}}},
+      {{/each}}
+      {{#isArray this.choices}}
+      {{else}}
+      transform: (item) => i18n.__(`{{ pascalCase @root.name }}.{{snakeCase @key}}_${label}`),
+      {{/isArray}}
+    },
   },
     {{/compare}}
   {{/compare~}}
