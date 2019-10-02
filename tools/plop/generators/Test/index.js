@@ -1,4 +1,3 @@
-const Rx = require('rxjs');
 const apiModule = require('../ApiModule');
 const i18nFile = require('../I18nFile');
 const uiModule = require('../UIModule');
@@ -43,62 +42,83 @@ const values = {};
 module.exports = {
   description: 'Test Plop Functions',
   prompts: async (inquirer) => {
+    const result = await inquirer.prompt({
+      type: 'jsonFile',
+      name: 'schema',
+      message: 'Select a Schema to guide the module fields',
+      basePath: './tools/plop/schemas',
+    });
+    const name = await inquirer.prompt({
+      default: result.schema.name || null,
+      type: 'input',
+      name: 'name',
+      message: 'What is your module name?',
+      validate: requireField('name'),
+    });
+
+    Object.assign(result, name);
+    return result;
+
     // console.log('[prompt]', inquirer);
-    return inquirer
-      .prompt({
-        type: 'jsonFile',
-        name: 'schema',
-        message: 'Select a Schema to guide the module fields',
-        basePath: './tools/plop/schemas',
-      })
-      .then((value) => {
-        // there has to be a better way to do this but hey! this works for the moment
-        values.schema = value.schema;
+    // return inquirer
+    //   .prompt({
+    //     type: 'jsonFile',
+    //     name: 'schema',
+    //     message: 'Select a Schema to guide the module fields',
+    //     basePath: './tools/plop/schemas',
+    //   })
+    //   .then((value) => {
+    //     // there has to be a better way to do this but hey! this works for the moment
+    //     values.schema = value.schema;
 
-        return inquirer.prompt({
-          default: value.schema.name || null,
-          type: 'input',
-          name: 'name',
-          message: 'What is your module name?',
-          validate: requireField('name'),
-        });
-      })
-      .then((value) => {
-        values.name = value.name;
-        return values;
-      });
+    //     return inquirer.prompt({
+    //       default: value.schema.name || null,
+    //       type: 'input',
+    //       name: 'name',
+    //       message: 'What is your module name?',
+    //       validate: requireField('name'),
+    //     });
+    //   })
+    //   .then((value) => {
+    //     values.name = value.name;
+    //     return values;
+    //   });
+    // return new Promise((resolve) => {
+    //   const prompts = new Rx.Subject();
 
-    // const prompts = new Rx.Subject();
+    //   inquirer.prompt(prompts).ui.process.subscribe(
+    //     (ans) => {
+    //       // console.log('Answer is: ', ans);
+    //       values[ans.name] = ans.answer;
+    //     },
+    //     (err) => {
+    //       console.log('Error: ', err);
+    //     },
+    //     (stuff) => {
+    //       console.log('Completed', stuff);
+    //       resolve(stuff);
+    //     },
+    //   );
 
-    // inquirer.prompt(prompts).ui.process.subscribe(
-    //   function(ans) {
-    //     console.log('Answer is: ', ans);
-    //   },
-    //   function(err) {
-    //     console.log('Error: ', err);
-    //   },
-    //   function(stuff) {
-    //     console.log('Completed', stuff);
-    //   },
-    // );
+    //   // At some point in the future, push new questions
+    //   prompts.next({
+    //     type: 'jsonFile',
+    //     name: 'schema',
+    //     message: 'Select a Schema to guide the module fields',
+    //     basePath: './tools/plop/schemas',
+    //   });
+    //   // hmm would be nice if this worked...
+    //   prompts.next(() =>( {
+    //     default: values.schema.name || null,
+    //     type: 'input',
+    //     name: 'name',
+    //     message: 'What is your module name?',
+    //     validate: requireField('name'),
+    //   }));
 
-    // // At some point in the future, push new questions
-    // prompts.next({
-    //   type: 'input',
-    //   name: 'name',
-    //   message: 'What is your module name?',
-    //   validate: requireField('name'),
+    //   // When you're done
+    //   prompts.complete();
     // });
-    // prompts.next({
-    //   type: 'input2',
-    //   name: 'name',
-    //   message: 'A second Name',
-    //   validate: requireField('name'),
-    // });
-
-    // // When you're done
-    // prompts.complete();
-    // return inquirer;
   },
   actions: (data) => {
     // console.log('actions', values);
@@ -108,9 +128,9 @@ module.exports = {
         comment: `Test Action`,
       },
     ];
-    actions.push(...apiModule.actions(data));
-    actions.push(...i18nFile.actions);
-    actions.push(...uiModule.actions(data));
+    // actions.push(...apiModule.actions(data));
+    // actions.push(...i18nFile.actions);
+    // actions.push(...uiModule.actions(data));
     return actions;
   },
 };

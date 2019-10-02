@@ -11,35 +11,24 @@ const requireField = (fieldName) => {
   };
 };
 
-const values = {};
-
 module.exports = {
   description: 'Create Basic Module with UI, i18n and API',
   prompts: async (inquirer) => {
-    // console.log('[prompt]', inquirer);
-    return inquirer
-      .prompt({
-        type: 'jsonFile',
-        name: 'schema',
-        message: 'Select a Schema to guide the module fields',
-        basePath: './tools/plop/schemas',
-      })
-      .then((value) => {
-        // there has to be a better way to do this but hey! this works for the moment
-        values.schema = value.schema;
-
-        return inquirer.prompt({
-          default: value.schema.name || null,
-          type: 'input',
-          name: 'name',
-          message: 'What is your module name?',
-          validate: requireField('name'),
-        });
-      })
-      .then((value) => {
-        values.name = value.name;
-        return values;
-      });
+    const values = await inquirer.prompt({
+      type: 'jsonFile',
+      name: 'schema',
+      message: 'Select a Schema to guide the module fields',
+      basePath: './tools/plop/schemas',
+    });
+    const name = await inquirer.prompt({
+      default: values.schema.name || null,
+      type: 'input',
+      name: 'name',
+      message: 'What is your module name?',
+      validate: requireField('name'),
+    });
+    Object.assign(values, name);
+    return values;
   },
   actions: (data) => {
     // console.log('actions', values);
