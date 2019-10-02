@@ -4,7 +4,12 @@ query errorReports($page: Int, $pageSize: Int, $search: String, $sort: String, $
   errorReports(page: $page, pageSize: $pageSize, search: $search, sort: $sort, order: $order, level: $level) {
     total
     errorReports {
-    ...ErrorReportAttributes
+      _id
+      level
+      message
+      path
+      userAgent
+      createdAtUTC
     }
   }
 }

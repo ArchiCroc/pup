@@ -13,7 +13,7 @@ export default {
     const {
       search,
       pageSize = 10,
-      currentPage = 1,
+      page = 1,
       sort = '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelKey}}{{/if}}',
       order = '{{#if schema.defaultSortOrder}}{{schema.defaultSortOrder}}{{else}}ascend{{/if}}',
       {{#each schema.fields}}
@@ -27,7 +27,7 @@ export default {
 
     const options = {
       limit: cleanPageSize,
-      skip: currentPage * cleanPageSize - cleanPageSize,
+      skip: page * cleanPageSize - cleanPageSize,
     };
 
     const orderDirection = order === 'descend' ? -1 : 1;

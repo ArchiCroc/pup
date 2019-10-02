@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 const PrettyDate = (props) => {
   let timezone = props.timezone && props.timezone;
 
-  if (!timezone && window.currentTimezone) {
-    timezone = window.currentTimezone;
+  if (!timezone) {
+    timezone = moment.tz.guess();
   }
   const timestamp = !timezone
     ? moment.utc(props.timestamp)

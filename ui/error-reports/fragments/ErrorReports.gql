@@ -3,6 +3,7 @@ fragment ErrorReportAttributes on ErrorReport {
     level
     message
     path
+    userAgent
     stack
     reactStack
     user {

@@ -11,7 +11,7 @@ export default {
     const {
       search,
       pageSize = 10,
-      currentPage = 1,
+      page = 1,
       sort = 'createdAtUTC',
       order = 'descend',
       level,
@@ -21,7 +21,7 @@ export default {
 
     const options = {
       limit: cleanPageSize,
-      skip: currentPage * cleanPageSize - cleanPageSize,
+      skip: page * cleanPageSize - cleanPageSize,
     };
 
     const orderDirection = order === 'descend' ? -1 : 1;

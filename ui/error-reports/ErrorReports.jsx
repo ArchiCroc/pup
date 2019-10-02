@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/react-hooks';
 import queryString from 'query-string';
+import isString from 'lodash/isString';
 import Table from 'antd/lib/table';
 import PageHeader from '../components/PageHeader';
 import PrettyDate from '../components/PrettyDate';
@@ -13,7 +14,15 @@ import StyledErrorReports from './StyledErrorReports';
 
 import { errorReports as errorReportsQuery } from './queries/ErrorReports.gql';
 
-const ErrorReports = ({ history }) => {
+const ErrorReports = ({ history, location }) => {
+  const {
+    page = 1,
+    sort = 'createdAtUTC',
+    order = 'descend',
+    search = null,
+    level = null,
+  } = queryString.parse(location.search, { arrayFormat: 'comma' });
+
   const paginationObject = {
     pageSize: 10,
     //  onChange: this.onPageChange,
@@ -44,7 +53,11 @@ const ErrorReports = ({ history }) => {
       dataIndex: 'path',
       sorter: true,
       defaultSortOrder: 'ascend',
-      // render: (value, record) => <Link to={`/error-reports/${record._id}/edit`}>{value}</Link>, // eslint-disable-line
+      render: (value, record) => (
+        <a href={value} target="_blank" onClick={(event) => event.stopPropagation()}>
+          {value}
+        </a>
+      ), // eslint-disable-line
     },
     {
       title: i18n.__('ErrorReports.userAgent'),
@@ -52,10 +65,13 @@ const ErrorReports = ({ history }) => {
     },
   ];
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentSearch, setCurrentSearch] = useState(null);
-  const [currentSort, setCurrentSort] = useState('createdAtUTC');
-  const [currentOrder, setCurrentOrder] = useState('descend');
+  const [currentPage, setCurrentPage] = useState(parseInt(page, 10));
+  const [currentSort, setCurrentSort] = useState(sort);
+  const [currentOrder, setCurrentOrder] = useState(order);
+  const [currentSearch, setCurrentSearch] = useState(search);
+  const [currentLevel, setCurrentLevel] = useState(
+    level && isString(level) ? [parseInt(level, 10)] : level && level.map(parseInt),
+  );
 
   const { loading, data: { errorReports } = {} } = useQuery(errorReportsQuery, {
     fetchPolicy: 'cache-and-network',
@@ -69,7 +85,7 @@ const ErrorReports = ({ history }) => {
   });
 
   // complete paginationObject
-  if (errorReports && errorReports.users) {
+  if (errorReports && errorReports.errorReports) {
     paginationObject.total = errorReports.total;
     paginationObject.current = currentPage;
   }
@@ -79,14 +95,14 @@ const ErrorReports = ({ history }) => {
   }
 
   function handleTableChange(pagination, filters, sorter) {
-    // console.log(pagination, filters, sorter);
-    const { levels: newLevels = null } = filters;
+    const { level: newLevel = null } = filters;
 
     const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
 
     setCurrentPage(pagination.current);
     setCurrentOrder(sorter.order);
     setCurrentSort(sorter.field);
+    setCurrentLevel(newLevel);
 
     history.push({
       pathname: window.location.pathname,
@@ -95,7 +111,7 @@ const ErrorReports = ({ history }) => {
           page: pagination.current,
           sort: currentField,
           order: sorter.order,
-          levels: newLevels,
+          level: newLevel,
         },
         { arrayFormat: 'comma' },
       )}`,
@@ -124,6 +140,7 @@ const ErrorReports = ({ history }) => {
 
 ErrorReports.propTypes = {
   history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 export default ErrorReports;

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Roles } from 'meteor/alanning:roles';
 // import { Link } from 'react-router-dom';
+import isString from 'lodash/isString';
 import queryString from 'query-string';
 import Table from 'antd/lib/table';
 import { useQuery } from '@apollo/react-hooks';
@@ -13,7 +15,21 @@ import { users as usersQuery } from '../../queries/Users.gql';
 // @todo filter these
 // @ todo add status and account creation date
 
-const AdminUsersList = ({ history }) => {
+const AdminUsersList = ({ history, location }) => {
+  const {
+    page = 1,
+    sort = 'name',
+    order = 'ascend',
+    search = null,
+    role = null,
+  } = queryString.parse(location.search, { arrayFormat: 'comma' });
+
+  const [currentPage, setCurrentPage] = useState(parseInt(page, 10));
+  const [currentSort, setCurrentSort] = useState(sort);
+  const [currentOrder, setCurrentOrder] = useState(order);
+  const [currentSearch, setCurrentSearch] = useState(search);
+  const [currentRole, setCurrentRole] = useState(role && isString(role) ? [role] : role);
+
   const paginationObject = {
     pageSize: 10,
     //  onChange: this.onPageChange,
@@ -22,28 +38,28 @@ const AdminUsersList = ({ history }) => {
   const columns = [
     {
       title: () => i18n.__('Users.name'),
-      dataIndex: 'profile',
-      key: 'name',
+      dataIndex: 'fullName',
+      defaultSortOrder: 'ascend',
       sorter: true,
-      // sortOrder: 'ascend',
-      render: (profile) => `${profile.firstName} ${profile.lastName}`,
-      // {name ? `${firstName} ${lastName}` : username}
     },
     {
       title: () => i18n.__('Users.email_address'),
       dataIndex: 'emailAddress',
+      defaultSortOrder: 'ascend',
       sorter: true,
     },
     {
-      title: 'Users.source',
-      dataIndex: 'oAuthProvider',
+      title: () => i18n.__('Users.role_plural'),
+      dataIndex: 'roles',
+      defaultSortOrder: 'ascend',
+      filteredValue: currentRole,
+      //filters: Roles.getAllRoles().fetch(),
+      filters: ['user', 'admin', 'api'].map((item) => ({ text: item, value: item })),
+      sorter: true,
+      // render: (item) => item && item.map((item2) => item2.name).join(', '),
+      render: (item) => item && item.join(', '),
     },
   ];
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentSearch, setCurrentSearch] = useState(null);
-  const [currentSort, setCurrentSort] = useState('name');
-  const [currentOrder, setCurrentOrder] = useState('descend');
 
   const { loading, error, data: { users } = {} } = useQuery(usersQuery, {
     fetchPolicy: 'no-cache',
@@ -53,6 +69,7 @@ const AdminUsersList = ({ history }) => {
       search: currentSearch,
       sort: currentSort,
       order: currentOrder,
+      role: currentRole,
     },
   });
 
@@ -62,20 +79,21 @@ const AdminUsersList = ({ history }) => {
     paginationObject.current = currentPage;
   }
 
-  function onRowClick(row) {
-    // console.log('onRowClick', row);
+  function handleRowClick(row) {
+    // console.log('handleRowClick', row);
     history.push(`${window.location.pathname}/${row._id}`);
   }
 
-  function onTableChange(pagination, filters, sorter) {
+  function handleTableChange(pagination, filters, sorter) {
     // console.log(pagination, filters, sorter);
-    const { roles: newRoles = null } = filters;
+    const { roles: newRole = null } = filters;
 
     const currentField = sorter.field ? sorter.field.split('.')[0] : 'name';
 
     setCurrentPage(pagination.current);
     setCurrentOrder(sorter.order);
     setCurrentSort(sorter.field);
+    setCurrentRole(newRole);
 
     history.push({
       pathname: window.location.pathname,
@@ -84,7 +102,7 @@ const AdminUsersList = ({ history }) => {
           page: pagination.current,
           sort: currentField,
           order: sorter.order,
-          roles: newRoles,
+          role: newRole,
         },
         { arrayFormat: 'comma' },
       )}`,
@@ -100,10 +118,10 @@ const AdminUsersList = ({ history }) => {
         rowKey="_id"
         pagination={paginationObject}
         loading={loading}
-        onChange={onTableChange}
+        onChange={handleTableChange}
         rowClassName="clickable"
         onRow={(record) => ({
-          onClick: () => onRowClick(record),
+          onClick: () => handleRowClick(record),
         })}
       />
     </>
@@ -116,10 +134,7 @@ const AdminUsersList = ({ history }) => {
 
 AdminUsersList.propTypes = {
   history: PropTypes.object.isRequired,
-  // search: PropTypes.string,
-  // pageSize: PropTypes.number.isRequired,
-  // currentPage: PropTypes.number.isRequired,
-  // onChangePage: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 export default AdminUsersList;
