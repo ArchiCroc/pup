@@ -56,11 +56,11 @@ const ErrorReportEditor = ({ doc, history }) => {
         showInlineError
         placeholder
       >
-    <HiddenField name="_id" />
-    <SelectField name="level" />
-    <TextField name="message" />
-    <TextField name="path" />
-    <TextField name="trace" />
+        <HiddenField name="_id" />
+        <SelectField name="level" />
+        <TextField name="message" />
+        <TextField name="path" />
+        <TextField name="stack" />
         <Button htmlType="submit" type="primary" block>
           {i18n.__('ErrorReports.save')}
         </Button>

@@ -5,7 +5,7 @@ import checkUserRole from '../Users/actions/checkUserRole';
 
 export default {
   saveErrorReport: (root, args, context) => {
-    if (!context.user || context.user._id || checkUserRole(context.user._id, 'admin')) {
+    if (!context.user || !context.user._id || !checkUserRole(context.user._id, 'admin')) {
       throw new Error('Sorry, you must have permission to save ErrorReport.');
     }
     if (!context.user) throw new Error('Sorry, you must be logged in to add a new ErrorReport.');
@@ -38,7 +38,7 @@ export default {
     return doc;
   },
   removeErrorReport: (root, args, context) => {
-    if (!context.user || context.user._id || checkUserRole(context.user._id, 'admin')) {
+    if (!context.user || !context.user._id || !checkUserRole(context.user._id, 'admin')) {
       throw new Error('Sorry, you must have permission to save ErrorReport.');
     }
     if (!ErrorReports.findOne({ _id: args._id, createdById: context.user._id }))

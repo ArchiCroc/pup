@@ -50,7 +50,14 @@ const schema = {
       oAuthServices(services: [String]): [String]
       #### PLOP_QUERY_TYPES_START ####
       #### ERROR_REPORTS_QUERY_TYPES_START ####
-      errorReports: [ErrorReport]
+      errorReports(
+        page: Int
+        pageSize: Int
+        search: String
+        sort: String
+        order: String
+        level: [Int]
+      ): ErrorReports
       myErrorReports: [ErrorReport]
       errorReport(_id: String): ErrorReport
       #### ERROR_REPORTS_QUERY_TYPES_END ####

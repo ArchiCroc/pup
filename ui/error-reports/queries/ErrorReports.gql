@@ -1,8 +1,11 @@
 #import "../fragments/ErrorReports.gql"
 
-query errorReports {
-  errorReports {
+query errorReports($page: Int, $pageSize: Int, $search: String, $sort: String, $order: String, $level: [Int]) {
+  errorReports(page: $page, pageSize: $pageSize, search: $search, sort: $sort, order: $order, level: $level) {
+    total
+    errorReports {
     ...ErrorReportAttributes
+    }
   }
 }
 

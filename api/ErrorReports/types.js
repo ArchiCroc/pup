@@ -14,6 +14,11 @@ type ErrorReport {
   createdBy: User
 }
 
+type ErrorReports {
+  total: Int
+  errorReports: [ErrorReport]
+}
+
 input ErrorReportInput {
   _id: String
   userId: String

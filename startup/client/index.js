@@ -12,7 +12,6 @@ import { ApolloProvider } from '@apollo/react-hooks';
 
 // import i18n from 'meteor/universe:i18n';
 
-
 import ConfigProvider from 'antd/lib/config-provider';
 import enUS from 'antd/lib/locale-provider/en_US';
 
@@ -25,9 +24,6 @@ import GlobalStyle from '../../ui/layouts/GlobalStyle';
 import '../../i18n';
 
 // i18n.setLocale('en-US');
-
-
-console.log(SimpleSchema2Bridge);
 
 Accounts.onLogout(() => apolloClient.resetStore());
 
