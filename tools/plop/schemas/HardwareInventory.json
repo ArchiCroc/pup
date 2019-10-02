@@ -1,0 +1,105 @@
+{ "name": "HardwareInventory",
+  "permissions": {
+    "read":"admin",
+    "save": "admin",
+    "delete":"admin"
+  },
+  "menu": {
+    "index": "admin"
+  },
+    
+  "fields": {
+    "_id": {
+      "primaryKey": true,
+      "urlKey": true,
+      "type": "String",
+      "input": "Hidden",
+      "validate" : {
+        "max": 24,
+        "optional": true
+      }
+    },
+    "hardwareType": {
+      "type": "HardwareType",
+      "input": "CrossReferenceSelect",
+      "key": "fullName",
+      "value": "_id"
+    },
+    "name": {
+      "labelKey": true,
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+          "max": 64
+      }
+    },
+    "description": {
+      "labelKey": true,
+      "type": "String",
+      "input": "LongText",
+      "validate" : {
+          "max": 1024
+      }
+    },
+    "assignedTo": {
+      "type": "User",
+      "input": "CrossReferenceAutoComplete",
+      "key": "fullName",
+      "value": "_id",
+      "validate" : {
+        "optional": true
+      }
+    },
+    "office": {
+      "type": "Office",
+      "input": "CrossReferenceSelect",
+      "key": "name",
+      "value": "_id"
+    },
+    "brand": {
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+        "max": 1024
+      }
+    },
+    "modelNumber": {
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+        "max": 1024
+      }
+    },
+    "serialNumber": {
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+        "max": 1024
+      }
+    },
+    
+    "createdAtUTC": {
+      "type": "DateTime",
+      "table": "Created At"
+    },
+    "createdById": {
+      "userKey": true,
+      "type": "String"
+    },
+    "createdBy": {
+      "type": "User"
+    },
+    "updatedAtUTC": {
+      "type": "DateTime"
+    },
+    "updatedById": {
+      "type": "String"
+    },
+    "updatedBy": {
+      "type": "User"
+    },
+    "comments": {
+      "type": "[Comment]"
+    }
+  }
+}

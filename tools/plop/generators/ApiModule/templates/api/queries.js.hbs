@@ -1,4 +1,5 @@
 import {{ pascalCase name }} from './{{ pascalCase name }}';
+// import isArray from 'lodash/isArray';
 import checkUserRole from '../Users/actions/checkUserRole';
 
 export default {
@@ -8,7 +9,57 @@ export default {
       throw new Error('Sorry, you must have permission to view {{ pascalCase name }}.');
     }
     {{/compare}}
-    return {{ pascalCase name }}.find().fetch()
+
+    const {
+      search,
+      pageSize = 10,
+      currentPage = 1,
+      sort = '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelKey}}{{/if}}',
+      order = '{{#if schema.defaultSortOrder}}{{schema.defaultSortOrder}}{{else}}ascend{{/if}}',
+      {{#each schema.fields}}
+      {{#if this.filterable}}
+      {{ @key }},
+      {{/if}}
+      {{/each}}
+    } = args;
+
+    const cleanPageSize = pageSize > 100 ? 100 : pageSize;
+
+    const options = {
+      limit: cleanPageSize,
+      skip: currentPage * cleanPageSize - cleanPageSize,
+    };
+
+    const orderDirection = order === 'descend' ? -1 : 1;
+    options.sort = {};
+    options.sort[sort] = orderDirection;
+    
+    const query = {};
+    {{#each schema.fields}}
+    {{#if this.filterable}}
+    if (isArray({{ @key }})) {
+      query.{{ @key }} = { $in: {{ @key }} };
+    }
+    {{/if}}
+    {{/each}}
+
+    if (search) {
+      const searchRegEx = new RegExp(search, 'i');
+      query.$or = [
+      {{#each schema.fields}}
+        {{#if this.searchable}}
+        { {{ @key }}: searchRegEx }
+        {{/if}}
+      {{/each}}
+      ];
+    }
+   
+    const result = {{ pascalCase name }}.find(query, options);
+
+    return {
+      total: result.count(false),
+      {{ camelCase name }}: result.fetch(),
+    };
   },
   my{{ pascalCase name }}: (parent, args, context) => {
     {{#compare schema.permissions.read '!==' 'everyone' }}
@@ -24,8 +75,9 @@ export default {
       throw new Error('Sorry, you must have permission to view {{ pascalCase (singular name) }}.');
     }
     {{/compare}}
+    const {{ camelCase (singular name) }}IdFromParentQuery = parent && parent.{{ camelCase (singular name) }}Id;
     {{#compare primaryKeyField '===' urlKeyField }}
-    return {{ pascalCase name }}.findOne({ {{primaryKeyField}}: args.{{primaryKeyField}}  });
+    return {{ pascalCase name }}.findOne({ {{primaryKeyField}}: {{ camelCase (singular name) }}Id || args.{{primaryKeyField}}  });
     {{else}}
     if (args.{{ primaryKeyField }}) {
       return {{ pascalCase name }}.findOne({ {{primaryKeyField}}: args.{{primaryKeyField}}  });

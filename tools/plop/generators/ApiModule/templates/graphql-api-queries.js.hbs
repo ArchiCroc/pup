@@ -1,5 +1,20 @@
       #### {{ constantCase name }}_QUERY_TYPES_START ####
-      {{ camelCase name }}: [{{ pascalCase (singular name) }}]
+      {{ camelCase name }}(
+        page: Int
+        pageSize: Int
+        search: String
+        sort: String
+        order: String
+        {{#each schema.fields}}
+          {{#if this.filterable}}
+            {{#compare this.type 'in' 'String|Int|Float|Number'}}
+        {{ @key }}: [{{#compare this.type '===' 'Number'}}Float{{else}}{{this.type}}{{/compare}}]
+             {{else}}
+        {{ @key }}: {{#compare this.type '===' 'Number'}}Float{{else}}{{this.type}}{{/compare}}
+             {{/compare}}
+          {{/if}}
+        {{/each}}
+      ): {{ pascalCase name }}
       my{{ pascalCase name }}: [{{ pascalCase (singular name) }}]
       {{ camelCase (singular name) }}({{ primaryKeyField }}: {{ primaryKeyType }}{{#compare primaryKeyField '!==' urlKeyField }}, {{ urlKeyField }}: {{ urlKeyType }}{{/compare}}): {{ pascalCase (singular name) }}
       #### {{ constantCase name }}_QUERY_TYPES_END ####

@@ -1,0 +1,62 @@
+{ "name": "HardwareType",
+  "permissions": {
+    "read":"admin",
+    "save": "admin",
+    "delete":"admin"
+  },
+  "menu": {
+    "index": "admin"
+  },
+    
+  "fields": {
+    "_id": {
+      "primaryKey": true,
+      "urlKey": true,
+      "type": "String",
+      "input": "Hidden",
+      "validate": {
+        "max": 24,
+        "optional": true
+      }
+    },
+    "name": {
+      "labelKey": true,
+      "type": "String",
+      "input": "Text",
+      "validate": {
+          "max": 64
+      }
+    },
+    "description": {
+      "labelKey": true,
+      "type": "String",
+      "input": "LongText",
+      "validate" : {
+          "max": 1024
+      }
+    },   
+    "createdAtUTC": {
+      "type": "DateTime",
+      "table": "Created At"
+    },
+    "createdById": {
+      "userKey": true,
+      "type": "String"
+    },
+    "createdBy": {
+      "type": "User"
+    },
+    "updatedAtUTC": {
+      "type": "DateTime"
+    },
+    "updatedById": {
+      "type": "String"
+    },
+    "updatedBy": {
+      "type": "User"
+    },
+    "comments": {
+      "type": "[Comment]"
+    }
+  }
+}

@@ -63,7 +63,7 @@ const {{ pascalCase (singular name) }}Editor = ({ doc, history }) => {
           <ListItemField name="$" />
         </ListField>
     {{else}}
-    <{{ pascalCase this.input }}Field name="{{ @key }}" />
+        <{{ pascalCase this.input }}Field name="{{ @key }}" />
     {{/compare}}
   {{/compare~}}
 {{~/each}}

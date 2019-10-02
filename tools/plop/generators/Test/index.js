@@ -55,15 +55,15 @@ module.exports = {
         // there has to be a better way to do this but hey! this works for the moment
         values.schema = value.schema;
 
-        return inquirer
-          .prompt({
-            default: value.schema.name || null,
-            type: 'input',
-            name: 'name',
-            message: 'What is your module name?',
-            validate: requireField('name'),
-          });
-      }).then((value) => {
+        return inquirer.prompt({
+          default: value.schema.name || null,
+          type: 'input',
+          name: 'name',
+          message: 'What is your module name?',
+          validate: requireField('name'),
+        });
+      })
+      .then((value) => {
         values.name = value.name;
         return values;
       });
@@ -108,9 +108,9 @@ module.exports = {
         comment: `Test Action`,
       },
     ];
-    // actions.push(...apiModule.actions(data));
+    actions.push(...apiModule.actions(data));
     actions.push(...i18nFile.actions);
-    // actions.push(...uiModule.actions(data));
+    actions.push(...uiModule.actions(data));
     return actions;
   },
 };

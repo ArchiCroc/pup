@@ -7,6 +7,11 @@ type {{ pascalCase (singular name) }} {
 {{~/each}}
 }
 
+type {{ pascalCase name }} {
+  total: Int
+  {{ camelCase name }}: [{{ pascalCase (singular name) }}]
+}
+
 input {{ pascalCase (singular name) }}Input {
 {{#each schema.fields }}
   {{~#compare this.type '&&' this.input}}

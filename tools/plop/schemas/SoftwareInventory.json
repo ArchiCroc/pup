@@ -1,0 +1,100 @@
+{ "name": "SoftwareInventory",
+  "permissions": {
+    "read":"admin",
+    "save": "admin",
+    "delete":"admin"
+  },
+  "menu": {
+    "index": "admin"
+  },
+    
+  "fields": {
+    "_id": {
+      "primaryKey": true,
+      "urlKey": true,
+      "type": "String",
+      "input": "Hidden",
+      "validate" : {
+        "max": 24,
+        "optional": true
+      }
+    },
+    "name": {
+      "labelKey": true,
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+          "max": 64
+      }
+    },
+    "description": {
+      "labelKey": true,
+      "type": "String",
+      "input": "LongText",
+      "validate" : {
+          "max": 64
+      }
+    },
+    "category": {
+      "type": "String",
+      "input": "Select",
+      "choices": ["design-bim", "design-cad", "design-visualization", "calculation"]
+    },
+    "type": {
+      "type": "String",
+      "input": "Select",
+      "choices": ["engineering", "office", "other"]
+    },
+    "riskLevel": {
+      "type": "String",
+      "input": "Select",
+      "choices": ["low", "medium", "high"]
+    },
+    "licenceType": {
+      "type": "String",
+      "input": "Select",
+      "choices": {
+        "Per Machine": "per_machine",
+        "Per User": "per_user"
+      },
+      "validate": {
+        "max": 64
+      },
+      "table": false
+    },
+    "hasLicenceServer": {
+      "type": "Boolean",
+      "input": "Checkbox"
+    },
+    "licenceServerPath": {
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+          "max": 1024
+      }
+    },
+    "createdAtUTC": {
+      "type": "DateTime",
+      "table": "Created At"
+    },
+    "createdById": {
+      "userKey": true,
+      "type": "String"
+    },
+    "createdBy": {
+      "type": "User"
+    },
+    "updatedAtUTC": {
+      "type": "DateTime"
+    },
+    "updatedById": {
+      "type": "String"
+    },
+    "updatedBy": {
+      "type": "User"
+    },
+    "comments": {
+      "type": "[Comment]"
+    }
+  }
+}

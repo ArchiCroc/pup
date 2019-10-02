@@ -22,7 +22,7 @@ const View{{ pascalCase (singular name) }} = ({ match }) => {
       <PageHeader title={i18n.__('{{ pascalCase name }}.view_{{ snakeCase (singular name) }}')} />
       { {{~ camelCase (singular name) }} && <Edit{{ pascalCase (singular name) }}Button {{urlKeyField}}={ {{~ camelCase (singular name) }}.{{ urlKeyField ~}} } />}
       <Row>
-        <Col xs={24} sm={16} md={12} lg={8}>
+        <Col xs={24} sm={24} md={20} lg={16}>
           {loading ? (
             <Loading />
           ) : (
@@ -55,7 +55,7 @@ View{{ pascalCase (singular name) }}Fields.propTypes = {
 
 const View{{ pascalCase (singular name) }}Field = ({ label, value }) => {
   return (
-    <Row>
+    <Row gutter={50}>
       <Col xs={12}>{label}</Col>
       <Col xs={12} >{value.toString()}</Col>
     </Row>

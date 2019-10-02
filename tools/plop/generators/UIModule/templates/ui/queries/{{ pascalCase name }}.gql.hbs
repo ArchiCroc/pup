@@ -1,8 +1,37 @@
 #import "../fragments/{{ pascalCase name }}.gql"
 
-query {{ camelCase name }} {
-  {{ camelCase name }} {
-    ...{{ pascalCase (singular name) }}Attributes
+query {{ camelCase name }}(
+  $page: Int, 
+  $pageSize: Int, 
+  $search: String, 
+  $sort: String, 
+  $order: String,
+  {{#each schema.fields}}
+    {{#if this.filterable}}
+      {{#compare this.type 'in' 'String|Int|Float|Number'}}
+  ${{ @key }}: [{{#compare this.type '===' 'Number'}}Float{{else}}{{this.type}}{{/compare}}],
+        {{else}}
+  ${{ @key }}: {{#compare this.type '===' 'Number'}}Float{{else}}{{this.type}}{{/compare}},
+        {{/compare}}
+    {{/if}}
+  {{/each}}
+) {
+  {{ camelCase name }}(
+    page: $page, 
+    pageSize: $pageSize, 
+    search: $search, 
+    sort: $sort, 
+    order: $order,
+    {{#each schema.fields}}
+      {{#if this.filterable}}
+    {{ @key }}: ${{#compare this.type '===' 'Number'}}Float{{else}}{{this.type}}{{/compare}},
+      {{/if}}
+    {{/each}}
+  ) {
+    total
+    {{ camelCase name }} {
+      ...{{ pascalCase (singular name) }}Attributes
+    }
   }
 }
 

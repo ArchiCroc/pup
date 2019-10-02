@@ -31,7 +31,8 @@
       "type": "Int",
       "input": "Select",
       "choices": { "Silly": 0, "Debug": 1, "Verbose": 2, "Info": 3, "Warning": 4, "Error": 5 },
-      "clean": "(item) => parseInt(item, 10);"
+      "clean": "(item) => parseInt(item, 10);",
+      "filterable": true
     },
     "message": {
       "labelKey": true,
@@ -39,7 +40,8 @@
       "input": "Text",
       "validate" : {
           "max": 1024
-      }
+      },
+      "searchable": true
     },
     "path": {
       "type": "String",
@@ -47,7 +49,8 @@
       "validate" : {
         "max": 1024,
         "optional": true
-      }
+      },
+      "searchable": true
     },
     "userAgent": {
       "type": "String",
@@ -55,7 +58,8 @@
       "validate" : {
         "max": 1024,
         "optional": true
-      }
+      },
+      "searchable": true
     },
     "stack": {
       "type": "[String]",
@@ -63,7 +67,8 @@
       "validate" : {
           "optional": true
       },
-      "table": false
+      "table": false,
+      "searchable": true
     },
     "reackStack": {
       "type": "[String]",
@@ -71,7 +76,8 @@
       "validate" : {
           "optional": true
       },
-      "table": false
+      "table": false,
+      "searchable": true
     },
     "createdAtUTC": {
       "type": "DateTime",
@@ -84,5 +90,7 @@
     "createdBy": {
       "type": "User"
     }
-  }
+  },
+  "defaultSortField": "createdAtUTC",
+  "defaultSortOrder": "descend"
 }
