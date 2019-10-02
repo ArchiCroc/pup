@@ -1,6 +1,7 @@
 /* eslint-disable  */
 const fs = require('fs');
 const _ = require('lodash');
+const processSchema = require('../../lib/processSchema');
 
 const requireField = (fieldName) => {
   return (value) => {
@@ -42,7 +43,9 @@ module.exports = {
       basePath: './tools/plop/schemas',
     },
   ],
-  actions: (data) => {
+  actions: (promptData) => {
+    const data = processSchema(promptData);
+
     const schemaKeys = Object.keys(data.schema.fields);
     const schemaValues = Object.values(data.schema.fields);
 
@@ -73,30 +76,6 @@ module.exports = {
         path: `uniforms-antd/ListItemField`,
       });
     }
-
-    let primaryKeyIndex = schemaValues.findIndex((field) => field.primaryKey);
-    // if primary key isn't found, set it to the first key
-    if (primaryKeyIndex === -1) {
-      primaryKeyIndex = 0;
-    }
-    data.primaryKeyField = schemaKeys[primaryKeyIndex];
-    data.primaryKeyType = data.schema.fields[data.primaryKeyField].type || 'String';
-
-    let urlKeyIndex = schemaValues.findIndex((field) => field.urlKey);
-    // if primary key isn't found, set it to the primaryKey field
-    if (urlKeyIndex === -1) {
-      urlKeyIndex = primaryKeyIndex;
-    }
-    data.urlKeyField = schemaKeys[urlKeyIndex];
-    data.urlKeyType = data.schema.fields[data.urlKeyField].type || 'String';
-
-    let labelKeyIndex = schemaValues.findIndex((field) => field.labelKey);
-    // if primary key isn't found, set it to the first field that is a string
-    if (labelKeyIndex === -1) {
-      labelKeyIndex = schemaValues.findIndex((field) => field.type === 'String');
-    }
-    data.labelKeyField = schemaKeys[labelKeyIndex];
-    data.labelKeyType = data.schema.fields[data.labelKeyField].type || 'String';
 
     return [
       {

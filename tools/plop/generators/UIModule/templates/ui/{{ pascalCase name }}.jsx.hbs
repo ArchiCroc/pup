@@ -66,7 +66,9 @@ const {{ pascalCase name }} = ({ history }) => {
   return (
     <Styled{{ pascalCase name }}>
       <PageHeader title={i18n.__('{{ pascalCase name }}.{{ snakeCase (singular name) }}_plural')} />
-      <New{{ pascalCase (singular name) }}Button />
+      <p>
+        <New{{ pascalCase (singular name) }}Button />
+      </p>
       <Table
         dataSource={ {{~ camelCase name }} && {{ camelCase name }}.{{ camelCase name ~}} }
         columns={columns}

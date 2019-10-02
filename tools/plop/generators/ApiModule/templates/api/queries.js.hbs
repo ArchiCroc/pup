@@ -14,7 +14,7 @@ export default {
       search,
       pageSize = 10,
       page = 1,
-      sort = '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelKey}}{{/if}}',
+      sort = '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelKeyField}}{{/if}}',
       order = '{{#if schema.defaultSortOrder}}{{schema.defaultSortOrder}}{{else}}ascend{{/if}}',
       {{#each schema.fields}}
       {{#if this.filterable}}
@@ -47,9 +47,9 @@ export default {
       const searchRegEx = new RegExp(search, 'i');
       query.$or = [
       {{#each schema.fields}}
-        {{#if this.searchable}}
+        {{#compare this.searchable '||' this.labelKey}}
         { {{ @key }}: searchRegEx },
-        {{/if}}
+        {{/compare}}
       {{/each}}
       ];
     }

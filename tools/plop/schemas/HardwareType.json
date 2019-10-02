@@ -1,4 +1,4 @@
-{ "name": "HardwareType",
+{ "name": "HardwareTypes",
   "permissions": {
     "read":"admin",
     "save": "admin",
@@ -32,7 +32,8 @@
       "type": "String",
       "input": "LongText",
       "validate" : {
-          "max": 1024
+          "max": 1024,
+          "optional": true
       }
     },   
     "createdAtUTC": {
@@ -54,9 +55,6 @@
     },
     "updatedBy": {
       "type": "User"
-    },
-    "comments": {
-      "type": "[Comment]"
     }
   }
 }
