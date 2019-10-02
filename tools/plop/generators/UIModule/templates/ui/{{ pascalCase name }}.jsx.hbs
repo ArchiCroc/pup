@@ -13,22 +13,22 @@ import Styled{{ pascalCase name }} from './Styled{{ pascalCase name }}';
 import { {{ camelCase name }} as {{ camelCase name }}Query } from './queries/{{ pascalCase name }}.gql';
 
 const {{ pascalCase name }} = ({ history }) => {
-  const { loading, data: { {{ camelCase name }} }  = {} } = useQuery({{ camelCase name }}Query);
+  const { loading, data: { {{ camelCase name }} } = {} } = useQuery({{ camelCase name }}Query);
 
   const columns = [
 {{#each schema.fields ~}}
-  {{#compare this.input '!==' 'Hidden'}}
+  {{#compare this.input '!==' 'Hidden' '&&' this.table '!==' false}}
     {{~#compare this.input '||' this.table }}
     {
       title: i18n.__(' {{~ pascalCase @root.name ~}} .{{ snakeCase @key }}'),
       dataIndex: '{{ @key }}',
       {{#compare this.type '===' 'String'}}
-      sorter: (a, b) => a.{{ @key }}.localeCompare(b.{{ @key }}),
+      sorter: true,
       defaultSortOrder: 'ascend',
       // render: (value, record) => <Link to={`/{{ dashCase @root.name }}/${record.{{ @root.urlKeyField ~}} }/edit`}>{value}</Link>, // eslint-disable-line
       {{/compare}}
       {{#compare this.type 'in' 'Date|DateTime|Time'}}
-      sorter: (a, b) => new Date(a.{{ @key }}).getTime() - new Date(b.{{ @key }}).getTime(),
+      sorter: true,
       defaultSortOrder: 'descend',
       render: ({{ @key }}) => <PrettyDate timestamp={ {{~ @key ~}} } />, // eslint-disable-line 
       {{/compare}}

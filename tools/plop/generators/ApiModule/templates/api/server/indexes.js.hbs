@@ -1,4 +1,9 @@
 import createIndex from '../../../modules/server/createIndex';
 import {{ pascalCase name }} from '../{{ pascalCase name }}';
 
-createIndex({{ pascalCase name }}, { createdById: 1 });
+{{#each schema.fields}}
+  {{#if this.index}}
+createIndex({{ pascalCase name }}, { {{ @key }}: 1 });
+  {{/if}}
+{{/each}}
+

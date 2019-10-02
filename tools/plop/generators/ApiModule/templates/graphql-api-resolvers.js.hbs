@@ -1,11 +1,14 @@
+    /* #### {{ constantCase name }}_RESOLVERS_START #### */
     {{ pascalCase (singular name) }}: {
 {{#each schema.fields }}
   {{#if this.resolver}}
       {{@key}}: {{this.resolver}},
-  {{/if}}
-  {{#if this.userKey}}
+  {{else}}
+    {{#compare this.type '===' 'User'}}
       {{@key}}: (parent, args, context) =>
         UserQueries.resolveUser(parent, { userId: parent.{{@key}}Id }, context),
+    {{/compare}}
   {{/if}}
 {{/each~}}
     },
+    /* #### {{ constantCase name }}_RESOLVERS_END #### */

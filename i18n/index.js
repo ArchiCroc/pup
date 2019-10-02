@@ -6,14 +6,15 @@ import usersEnI18n from './en/users.en.i18n.yml';
 import documentsEnI18n from './en/documents.en.i18n.yml';
 
 /* #### PLOP_IMPORTS_START #### */
+import infoReportsEnI18n from './en/infoReports.en.i18n.yml';
 import errorReportsEnI18n from './en/errorReports.en.i18n.yml';
 /* #### PLOP_IMPORTS_END #### */
 
 // workaround since the meteor loader skips them
 i18n.setOptions({ open: '${' });
-i18n.addTranslations('en-us', appEnI18n);
-i18n.addTranslations('en-us', Object.assign({}, appEnI18n, usersEnI18n));
-i18n.addTranslations('en-us', Object.assign({}, appEnI18n, documentsEnI18n));
+// i18n.addTranslations('en-us', appEnI18n);
+// i18n.addTranslations('en-us', Object.assign({}, appEnI18n, usersEnI18n));
+// i18n.addTranslations('en-us', Object.assign({}, appEnI18n, documentsEnI18n));
 i18n.setLocale('en-US');
 
 // add a helper to allow html to render from the translation file
