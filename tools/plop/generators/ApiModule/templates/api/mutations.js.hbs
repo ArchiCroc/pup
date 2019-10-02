@@ -21,7 +21,7 @@ export default {
 
     if (cleanDoc.{{ primaryKeyField }}) {
       const { {{ primaryKeyField }} } = cleanDoc;
-      
+
       const modifier = createMongoModifier({{ pascalCase (singular name) }}Schema, cleanDoc);
 
       delete modifier.$set._id;
