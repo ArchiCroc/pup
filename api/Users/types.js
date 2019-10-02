@@ -54,7 +54,7 @@ export default `
     username: String
     emailAddress: String
     oAuthProvider: String
-    roles: [Role]
+    roles: [String]
     settings: UserSettings 
     fullName: String
   }

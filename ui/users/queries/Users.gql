@@ -1,16 +1,15 @@
 #import "../fragments/Users.gql"
 
-query users($page: Int, $pageSize: Int, $search: String, $sort: String, $order: String) {
-  users(page: $page, pageSize: $pageSize, search: $search, sort: $sort, order: $order) {
+query users($page: Int, $pageSize: Int, $search: String, $sort: String, $order: String, $role: [String]) {
+  users(page: $page, pageSize: $pageSize, search: $search, sort: $sort, order: $order, role: $role) {
     total
     users {
       _id
-      profile {
-        firstName
-        lastName
-      }
+      fullName
+      username
       emailAddress
       oAuthProvider
+      roles
     }
   }
 }

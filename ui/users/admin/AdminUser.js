@@ -9,11 +9,13 @@ import { Link } from 'react-router-dom';
 import AdminUserProfile from './components/AdminUserProfile';
 import UserSettings from '../components/UserSettings';
 import { user as userQuery } from '../queries/Users.gql';
+import Loading from '../../components/Loading';
+import NotFound from '../../pages/NotFound';
 
 import Styles from './StyledAdminUser';
 
 function AdminUser({ match, history }) {
-  const { loading, data } = useQuery(userQuery, {
+  const { loading, data: { user } = {} } = useQuery(userQuery, {
     fetchPolicy: 'no-cache',
     variables: {
       _id: match.params._id,
@@ -26,9 +28,17 @@ function AdminUser({ match, history }) {
     history.push(path);
   }
 
-  const { user: { profile: { firstName, lastName }, username } = { profile: {} } } = data;
+  if (loading) {
+    return <Loading />;
+  }
 
-  return data.user ? (
+  if (!user) {
+    return <NotFound />;
+  }
+
+  const { profile: { firstName, lastName } = {}, username } = user;
+
+  return (
     <div className="AdminUser">
       <Breadcrumb>
         <Breadcrumb.Item>
@@ -38,10 +48,8 @@ function AdminUser({ match, history }) {
       </Breadcrumb>
       <Styles.AdminUserHeader className="page-header">
         {name ? `${firstName} ${lastName}` : username}
-        {data.user.oAuthProvider && (
-          <span className={`label label-${data.user.oAuthProvider}`}>
-            {data.user.oAuthProvider}
-          </span>
+        {user.oAuthProvider && (
+          <span className={`label label-${user.oAuthProvider}`}>{user.oAuthProvider}</span>
         )}
       </Styles.AdminUserHeader>
       {/* <Styles.AdminUserTabs
@@ -52,15 +60,13 @@ function AdminUser({ match, history }) {
         > */}
       <Tabs activeKey={match.params.tab || 'profile'} onTabClick={handleTabClick}>
         <Tabs.TabPane key="profile" tab="Profile">
-          <AdminUserProfile user={data.user} />
+          <AdminUserProfile user={user} />
         </Tabs.TabPane>
         <Tabs.TabPane key="settings" tab="Settings">
-          <UserSettings isAdmin user={data.user} />
+          <UserSettings isAdmin user={user} />
         </Tabs.TabPane>
       </Tabs>
     </div>
-  ) : (
-    <div />
   );
 }
 
