@@ -21,7 +21,11 @@ const View{{ pascalCase (singular name) }} = ({ match }) => {
   return (
     <StyledView{{ pascalCase (singular name) }}>
       <PageHeader title={i18n.__('{{ pascalCase name }}.view_{{ snakeCase (singular name) }}')} />
-      { {{~ camelCase (singular name) }} && <Edit{{ pascalCase (singular name) }}Button {{urlKeyField}}={ {{~ camelCase (singular name) }}.{{ urlKeyField ~}} } />}
+      { {{~ camelCase (singular name) }} && (
+        <p>
+          <Edit{{ pascalCase (singular name) }}Button {{urlKeyField}}={ {{~ camelCase (singular name) }}.{{ urlKeyField ~}} } />
+        </p>
+      )}
       <Row>
         <Col xs={24} sm={24} md={20} lg={16}>
           {loading ? (
