@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // import { Link } from 'react-router-dom';
+import queryString from 'query-string';
 import Table from 'antd/lib/table';
 import { useQuery } from '@apollo/react-hooks';
 import i18n from 'meteor/universe:i18n';
@@ -44,7 +45,7 @@ const AdminUsersList = ({ history }) => {
   const [currentSort, setCurrentSort] = useState('name');
   const [currentOrder, setCurrentOrder] = useState('descend');
 
-  const { loading, data, error } = useQuery(usersQuery, {
+  const { loading, error, data: { users } = {} } = useQuery(usersQuery, {
     fetchPolicy: 'no-cache',
     variables: {
       pageSize: paginationObject.pageSize,
@@ -56,28 +57,45 @@ const AdminUsersList = ({ history }) => {
   });
 
   // complete paginationObject
-  if (data.users && data.users.users) {
-    paginationObject.total = data.users.total;
+  if (users && users.users) {
+    paginationObject.total = users.total;
     paginationObject.current = currentPage;
   }
 
-  const onRowClick = (row) => {
-    console.log('onRowClick', row);
-    history.push(`/admin/users/${row._id}`);
-  };
+  function onRowClick(row) {
+    // console.log('onRowClick', row);
+    history.push(`${window.location.pathname}/${row._id}`);
+  }
 
-  const onTableChange = (pagination, filters, sorter) => {
-    console.log(pagination, filters, sorter);
+  function onTableChange(pagination, filters, sorter) {
+    // console.log(pagination, filters, sorter);
+    const { roles: newRoles = null } = filters;
+
+    const currentField = sorter.field ? sorter.field.split('.')[0] : 'name';
+
     setCurrentPage(pagination.current);
     setCurrentOrder(sorter.order);
     setCurrentSort(sorter.field);
-  };
+
+    history.push({
+      pathname: window.location.pathname,
+      search: `?${queryString.stringify(
+        {
+          page: pagination.current,
+          sort: currentField,
+          order: sorter.order,
+          roles: newRoles,
+        },
+        { arrayFormat: 'comma' },
+      )}`,
+    });
+  }
 
   return (
-    <React.Fragment>
+    <>
       {error && `Error! ${error.message}`}
       <Table
-        dataSource={data.users && data.users.users && data.users.users}
+        dataSource={users && users.users}
         columns={columns}
         rowKey="_id"
         pagination={paginationObject}
@@ -88,7 +106,7 @@ const AdminUsersList = ({ history }) => {
           onClick: () => onRowClick(record),
         })}
       />
-    </React.Fragment>
+    </>
   );
 };
 

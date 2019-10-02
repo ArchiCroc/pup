@@ -9,7 +9,7 @@ import StyledAdminUsers from './StyledAdminUsers';
 function AdminUsers(props) {
   return (
     <StyledAdminUsers>
-      <PageHeader title={i18n.__('Users.users')} />
+      <PageHeader title={i18n.__('Users.user_plural')} />
       {/* <SearchInput
             placeholder="Search users..."
             value={this.state.search}
