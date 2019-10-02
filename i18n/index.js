@@ -6,7 +6,6 @@ import usersEnI18n from './en/users.en.i18n.yml';
 import documentsEnI18n from './en/documents.en.i18n.yml';
 
 /* #### PLOP_IMPORTS_START #### */
-import infoReportsEnI18n from './en/infoReports.en.i18n.yml';
 import errorReportsEnI18n from './en/errorReports.en.i18n.yml';
 /* #### PLOP_IMPORTS_END #### */
 
