@@ -3,7 +3,7 @@ import {{ pascalCase name }} from '../{{ pascalCase name }}';
 
 {{#each schema.fields}}
   {{#if this.index}}
-createIndex({{ pascalCase name }}, { {{ @key }}: 1 });
+createIndex({{ pascalCase @root.name }}, { {{ @key }}: 1 });
   {{/if}}
 {{/each}}
 

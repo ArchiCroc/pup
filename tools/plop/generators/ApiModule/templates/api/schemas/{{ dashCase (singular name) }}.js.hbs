@@ -66,10 +66,12 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
       {{#each this.uniforms}}
       {{@key}}: {{{this}}},
       {{/each}}
+      {{#if this.choices}}
       {{#isArray this.choices}}
       {{else}}
-      transform: (item) => i18n.__(`{{ pascalCase @root.name }}.{{snakeCase @key}}_${label}`),
+      transform: (value) => i18n.__(`{{ pascalCase @root.name }}.{{snakeCase @key}}_${value}`),
       {{/isArray}}
+      {{/if}}
     },
   },
   {{else}}
@@ -132,10 +134,12 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
       {{#each this.uniforms}}
       {{@key}}: {{{this}}},
       {{/each}}
+      {{#if this.choices}}
       {{#isArray this.choices}}
       {{else}}
-      transform: (item) => i18n.__(`{{ pascalCase @root.name }}.{{snakeCase @key}}_${label}`),
+      transform: (value) => i18n.__(`{{ pascalCase @root.name }}.{{snakeCase @key}}_${value}`),
       {{/isArray}}
+      {{/if}}
     },
   },
     {{/compare}}

@@ -68,7 +68,7 @@ const {{ pascalCase name }} = ({ history }) => {
       <PageHeader title={i18n.__('{{ pascalCase name }}.{{ snakeCase (singular name) }}_plural')} />
       <New{{ pascalCase (singular name) }}Button />
       <Table
-        dataSource={ {{~ camelCase name ~}} }
+        dataSource={ {{~ camelCase name }} && {{ camelCase name }}.{{ camelCase name ~}} }
         columns={columns}
         rowKey="{{ primaryKeyField }}"
         rowClassName="clickable"

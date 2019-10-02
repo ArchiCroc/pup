@@ -24,7 +24,7 @@ query {{ camelCase name }}(
     order: $order,
     {{#each schema.fields}}
       {{#if this.filterable}}
-    {{ @key }}: ${{#compare this.type '===' 'Number'}}Float{{else}}{{this.type}}{{/compare}},
+    {{ @key }}: ${{@key}},
       {{/if}}
     {{/each}}
   ) {

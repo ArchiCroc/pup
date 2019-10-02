@@ -46,14 +46,33 @@ module.exports = {
     const schemaKeys = Object.keys(data.schema.fields);
     const schemaValues = Object.values(data.schema.fields);
 
-    data.fieldImports = _.uniq(
-      schemaValues.filter((field) => field.input).map((field) => field.input),
-    ).map((field) => ({
-      variable: `${field}Field`,
-      path: uniformsFields.includes(field)
-        ? `uniforms-antd/${field}Field`
-        : `../components/${field}Field`,
-    }));
+    let hasList = false;
+    data.fieldImports = _.uniqBy(
+      schemaValues
+        .filter((field) => field.input)
+        .map(({ input, type }) => {
+          if (type.startsWith('[') || type === 'Object') {
+            hasList = true;
+          }
+          return {
+            variable: `${input}Field`,
+            path: uniformsFields.includes(input)
+              ? `uniforms-antd/${input}Field`
+              : `../components/${input}Field`,
+          };
+        }),
+      'variable',
+    );
+    if (hasList) {
+      data.fieldImports.push({
+        variable: `ListField`,
+        path: `uniforms-antd/ListField`,
+      });
+      data.fieldImports.push({
+        variable: `ListItemField`,
+        path: `uniforms-antd/ListItemField`,
+      });
+    }
 
     let primaryKeyIndex = schemaValues.findIndex((field) => field.primaryKey);
     // if primary key isn't found, set it to the first key
