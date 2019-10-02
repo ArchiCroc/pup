@@ -130,7 +130,8 @@ admin_user_removed: User Deleted!
 #admin edit profile
 show_password: Show Password
 generate: Generate
-roles: Roles
+role: Role
+role_plural: Roles
 save: Save
 
 create_user: Create User

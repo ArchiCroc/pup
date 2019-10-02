@@ -45,7 +45,14 @@ const schema = {
       document(_id: String): Document
       user(_id: String): User
       resolveUser(userId: String): User
-      users(page: Int, pageSize: Int, search: String, sort: String, order: String): Users
+      users(
+        page: Int
+        pageSize: Int
+        search: String
+        sort: String
+        order: String
+        role: [String]
+      ): Users
       exportUserData: UserDataExport
       oAuthServices(services: [String]): [String]
       #### PLOP_QUERY_TYPES_START ####
@@ -106,7 +113,11 @@ const schema = {
       /* #### PLOP_MUTATION_RESOLVERS_END #### */
     },
     User: {
-      fullName: (user) => user.profile && `${user.profile.firstName} ${user.profile.lastName}`,
+      fullName: (user) =>
+        (user.profile &&
+          user.profile.firstName &&
+          `${user.profile.firstName} ${user.profile.lastName}`) ||
+        user.username,
     },
     Document: {
       comments: CommentQueries.comments,

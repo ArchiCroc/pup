@@ -6,9 +6,17 @@ import mapMeteorUserToSchema from './mapMeteorUserToSchema';
 
 let action;
 
-const getTotalUserCount = (currentUserId) => {
+const getTotalUserCount = (options) => {
+  const query = {
+    // _id: { $ne: currentUserId }
+  };
+
+  if (options.roles) {
+    query.roles = options.roles;
+  }
+
   try {
-    return Meteor.users.find({ _id: { $ne: currentUserId } }).count();
+    return Meteor.users.find(query).count();
   } catch (exception) {
     throw new Error(`[queryUsers.getTotalUserCount] ${exception.message}`);
   }
@@ -42,7 +50,9 @@ const getQuery = (options) => {
             { 'services.github.username': options.search },
           ],
         }
-      : { _id: { $ne: options.currentUser._id } };
+      : {
+          /*_id: { $ne: options.currentUser._id }*/
+        };
   } catch (exception) {
     throw new Error(`[queryUsers.getQuery] ${exception.message}`);
   }
@@ -51,6 +61,10 @@ const getQuery = (options) => {
 const getUsers = (options) => {
   try {
     const query = getQuery(options);
+    if (options.roles) {
+      query.roles = options.roles;
+    }
+    console.log(query);
     const projection = getProjection(options);
     return Meteor.users
       .find(query, projection)
@@ -76,7 +90,7 @@ const queryUsers = (options) => {
     checkIfAuthorized({ as: ['admin'], userId: options.currentUser._id });
 
     action.resolve({
-      total: getTotalUserCount(options.currentUser._id),
+      total: getTotalUserCount(options),
       users: getUsers(options),
     });
   } catch (exception) {

@@ -22,9 +22,10 @@ export default (options) => {
 
     return {
       _id: normalizedMeteorUserData._id,
+      username: options.user.username || null,
       profile: normalizedMeteorUserData.profile,
-      emailAddress: normalizedMeteorUserData.emails[0].address,
-      roles: getActiveRoles(normalizedMeteorUserData._id),
+      emailAddress: normalizedMeteorUserData.emails && normalizedMeteorUserData.emails[0].address,
+      roles: options.user.roles, //getActiveRoles(normalizedMeteorUserData._id),
       oAuthProvider:
         normalizedMeteorUserData.service !== 'password' ? normalizedMeteorUserData.service : null,
       settings: normalizedMeteorUserData.settings,
