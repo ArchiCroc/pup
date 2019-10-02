@@ -30,7 +30,7 @@ const StyledApp = styled.div`
   }
 
   .content {
-    padding: 10px 0;
+    padding: 10px 0 70px 0;
   }
 
   .app-grid {

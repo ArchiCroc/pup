@@ -53,9 +53,9 @@ const GlobalStyle = createGlobalStyle`
     border-top: none;
   }
 
-.clickable {
-  cursor: pointer
-}
+  .clickable {
+    cursor: pointer
+  }
 
   form label {
     display: block;
@@ -106,7 +106,6 @@ const GlobalStyle = createGlobalStyle`
  .pull-right {
    float: right;
  }
-  
 
   /* Removes unnecessary bottom padding on .container */
   body > #react-root > div > .container {
