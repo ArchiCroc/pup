@@ -178,7 +178,6 @@ const {{ pascalCase name }} = ({ history, location }) => {
           sort: currentField,
           order: sorter.order,
           search: currentSearch,
-          level: newLevel,
       {{#each schema.fields}}
         {{#if this.filterable}}
           {{ @key }}: new{{ pascalCase @key }},
@@ -188,8 +187,9 @@ const {{ pascalCase name }} = ({ history, location }) => {
         { arrayFormat: 'comma' },
       )}`,
     });
+  }
 
-  const handleOnRow = (record) => {
+  function handleTableRow(record) {
     return {
       onClick: () => {
         history.push(`/{{ dashCase name }}/${record.{{ urlKeyField ~}} }`);
@@ -202,7 +202,7 @@ const {{ pascalCase name }} = ({ history, location }) => {
       <PageHeader title={i18n.__('{{ pascalCase name }}.{{ snakeCase (singular name) }}_plural')} />
       <p>
         <New{{ pascalCase (singular name) }}Button />
-        <span className="pull-right" style={{ width: 300 }}>
+        <span className="pull-right" style=\{{ width: 300 }}>
           <Search
             placeholder={i18n.__('{{ pascalCase name }}.search_placeholder')}
             onSearch={handleSearch}
@@ -217,9 +217,7 @@ const {{ pascalCase name }} = ({ history, location }) => {
         dataSource={ {{~ camelCase name }} && {{ camelCase name }}.{{ camelCase name ~}} }
         loading={loading}
         onChange={handleTableChange}
-        onRow={(record) => ({
-          onClick: () => handleRowClick(record),
-        })}
+        onRow={handleTableRow}
         rowKey="{{ primaryKeyField }}"
         pagination={paginationObject}
         rowClassName="clickable"        
