@@ -21,6 +21,8 @@ delete_error_report: Delete Error Report
 blank_state_title: No Error Reports here, friend!
 blank_state_subtitle: ""
 
+search_placeholder: Search
+
 #### PLOP_FIELDS_START ####
 level: Level
 level_label: Level

@@ -86,11 +86,11 @@ const GlobalStyle = createGlobalStyle`
     border: 0;
   }
 
-  .ant-input-group-addon > button{
+  /* .ant-input-group-addon > button{
     margin: 0 -11px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-  }
+  } */
 
  ul ul.ant-dropdown-menu-item-group-list {
   list-style-type: none;

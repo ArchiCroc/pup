@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/react-hooks';
+import queryString from 'query-string';
+import isString from 'lodash/isString';
 import Table from 'antd/lib/table';
+import Input from 'antd/lib/input';
 import PageHeader from '../components/PageHeader';
 import PrettyDate from '../components/PrettyDate';
 
@@ -12,8 +15,73 @@ import Styled{{ pascalCase name }} from './Styled{{ pascalCase name }}';
 
 import { {{ camelCase name }} as {{ camelCase name }}Query } from './queries/{{ pascalCase name }}.gql';
 
-const {{ pascalCase name }} = ({ history }) => {
-  const { loading, data: { {{ camelCase name }} } = {} } = useQuery({{ camelCase name }}Query);
+const { Search } = Input;
+
+const {{ pascalCase name }} = ({ history, location }) => {
+
+  const {
+    search = null,
+    pageSize = 10,
+    page = 1,
+    sort = '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelKeyField}}{{/if}}',
+    order = '{{#if schema.defaultSortOrder}}{{schema.defaultSortOrder}}{{else}}ascend{{/if}}',
+    {{#each schema.fields}}
+    {{#if this.filterable}}
+    {{ @key }},
+    {{/if}}
+    {{/each}}
+  } = queryString.parse(location.search, { arrayFormat: 'comma' });
+
+  const paginationObject = {
+    pageSize,
+    //  onChange: this.onPageChange,
+  };
+
+  const [currentPage, setCurrentPage] = useState(parseInt(page, 10));
+  const [currentSort, setCurrentSort] = useState(sort);
+  const [currentOrder, setCurrentOrder] = useState(order);
+  const [currentSearch, setCurrentSearch] = useState(search);
+{{#each schema.fields}}
+  {{#if this.filterable}}
+    {{ @key }},
+     {{#compare this.type 'in' 'Int|[Int]' }}
+  const [current{{ pascalCase @key }}, setCurrent{{ pascalCase @key }}] = useState(
+    {{ @key }} && isString({{ @key }}) ? [parseInt({{ @key }}, 10)] : {{ @key }} && {{ @key }}.map(parseInt),
+  );
+    {{/compare}}
+    {{#compare this.type 'in' 'Float|Number|[Float]|[Number]' }}
+  const [current{{ pascalCase @key }}, setCurrent{{ pascalCase @key }}] = useState(
+    {{ @key }} && isString({{ @key }}) ? [parseFloat({{ @key }}, 10)] : {{ @key }} && {{ @key }}.map(parseFloat),
+  );
+    {{/compare}}
+    {{#compare this.type 'in' 'String|[String]' }}
+  const [current{{ pascalCase @key }}, setCurrent{{ pascalCase @key }}] = useState(
+    {{ @key }} && isString({{ @key }}) ? [{{ @key }}] : {{ @key }},
+  );
+    {{/compare}}
+    {{#compare this.type '===' 'Boolean' }}
+  const [current{{ pascalCase @key }}, setCurrent{{ pascalCase @key }}] = useState(
+    {{ @key }} && isString({{ @key }}) ? !!({{ @key }}.toLowerCase() === 'true') : {{ @key }},
+  );
+    {{/compare}}
+  {{/if}}
+{{/each}}
+
+  const { loading, data: { {{ camelCase name }} } = {} } = useQuery({{ camelCase name }}Query, {
+    fetchPolicy: 'cache-and-network',
+    variables: {
+      pageSize: paginationObject.pageSize,
+      page: currentPage,
+      search: currentSearch,
+      sort: currentSort,
+      order: currentOrder,
+  {{#each schema.fields}}
+    {{#if this.filterable}}
+      {{ @key }}: current{{ pascalCase @key }},
+    {{/if}}
+  {{/each}}
+    },
+  });
 
   const columns = [
 {{#each schema.fields ~}}
@@ -37,7 +105,7 @@ const {{ pascalCase name }} = ({ history }) => {
       // defaultSortOrder: 'ascend',
       render: (value, record, index) => i18n.__(`{{ pascalCase @root.name }}.${value ? 'yes' : 'no'}`),
       {{/compare}}
-      {{#compare this.type '===' 'Number'}}
+      {{#compare this.type 'in' 'Number|Float'}}
       sorter: true,
       // defaultSortOrder: 'ascend',
       render: (value, record) => value, // eslint-disable-line
@@ -55,6 +123,72 @@ const {{ pascalCase name }} = ({ history }) => {
 {{/each}}
   ];
 
+  // complete paginationObject
+  if ({{ camelCase name }} && {{ camelCase name }}.{{ camelCase name }}) {
+    paginationObject.total = {{ camelCase name }}.total;
+    paginationObject.current = currentPage;
+  }
+
+  function handleSearch(value) {
+    setCurrentSearch(value);
+    history.push({
+      pathname: window.location.pathname,
+      search: `?${queryString.stringify(
+        {
+          search: value,
+          page: currentPage,
+          sort: currentSort,
+          order: currentOrder,
+      {{#each schema.fields}}
+        {{#if this.filterable}}
+          {{ @key }}: current{{ pascalCase @key }},
+        {{/if}}
+      {{/each}}  
+        },
+        { arrayFormat: 'comma' },
+      )}`,
+    });
+  }
+
+  function handleTableChange(pagination, filters, sorter) {
+    const { 
+  {{#each schema.fields}}
+    {{#if this.filterable}}
+      {{ @key }}: new{{ pascalCase @key }} = null,
+    {{/if}}
+  {{/each}}  
+    } = filters;
+
+    const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
+
+    setCurrentPage(pagination.current);
+    setCurrentOrder(sorter.order);
+    setCurrentSort(sorter.field);
+{{#each schema.fields}}
+  {{#if this.filterable}}
+    set{{ pascalCase @key }}(new{{ pascalCase @key }});
+  {{/if}}
+{{/each}}  
+
+    history.push({
+      pathname: window.location.pathname,
+      search: `?${queryString.stringify(
+        {
+          page: pagination.current,
+          sort: currentField,
+          order: sorter.order,
+          search: currentSearch,
+          level: newLevel,
+      {{#each schema.fields}}
+        {{#if this.filterable}}
+          {{ @key }}: new{{ pascalCase @key }},
+        {{/if}}
+      {{/each}}  
+        },
+        { arrayFormat: 'comma' },
+      )}`,
+    });
+
   const handleOnRow = (record) => {
     return {
       onClick: () => {
@@ -68,15 +202,27 @@ const {{ pascalCase name }} = ({ history }) => {
       <PageHeader title={i18n.__('{{ pascalCase name }}.{{ snakeCase (singular name) }}_plural')} />
       <p>
         <New{{ pascalCase (singular name) }}Button />
+        <span className="pull-right" style={{ width: 300 }}>
+          <Search
+            placeholder={i18n.__('{{ pascalCase name }}.search_placeholder')}
+            onSearch={handleSearch}
+            defaultValue={currentSearch}
+            allowClear
+            enterButton
+          />
+        </span>
       </p>
       <Table
-        dataSource={ {{~ camelCase name }} && {{ camelCase name }}.{{ camelCase name ~}} }
         columns={columns}
-        rowKey="{{ primaryKeyField }}"
-        rowClassName="clickable"
-        onRow={handleOnRow}
-        pagination={false}
+        dataSource={ {{~ camelCase name }} && {{ camelCase name }}.{{ camelCase name ~}} }
         loading={loading}
+        onChange={handleTableChange}
+        onRow={(record) => ({
+          onClick: () => handleRowClick(record),
+        })}
+        rowKey="{{ primaryKeyField }}"
+        pagination={paginationObject}
+        rowClassName="clickable"        
       />
     </Styled{{ pascalCase name }}>
   );
@@ -84,6 +230,7 @@ const {{ pascalCase name }} = ({ history }) => {
 
 {{ pascalCase name }}.propTypes = {
   history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 export default {{ pascalCase name }};

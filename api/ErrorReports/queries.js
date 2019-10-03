@@ -36,7 +36,7 @@ export default {
 
     if (search) {
       const searchRegEx = new RegExp(search, 'i');
-      query.$or = [{ level: searchRegEx }];
+      query.$or = [{ path: searchRegEx }, { message: searchRegEx }, { userAgent: searchRegEx }];
     }
 
     const result = ErrorReports.find(query, options);
