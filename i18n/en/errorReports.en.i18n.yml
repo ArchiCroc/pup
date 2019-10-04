@@ -16,14 +16,16 @@ no: 'No'
 cancel: Cancel
 remove: Remove
 
+
 delete_error_report: Delete Error Report
 
+# index page
+search_placeholder: Search
 blank_state_title: No Error Reports here, friend!
 blank_state_subtitle: ""
 
-search_placeholder: Search
-
 #### PLOP_FIELDS_START ####
+user: User
 level: Level
 level_label: Level
 level_placeholder: Select Level
@@ -33,17 +35,15 @@ level_2: Verbose
 level_3: Info
 level_4: Warning
 level_5: Error
-
-
 message: Message
 message_label: Message
 message_placeholder: Message
 path: Path
 path_label: Path
 path_placeholder: Path
-trace: Trace
-trace_label: Trace
-trace_placeholder: Trace
+user_agent: User Agent
+user_agent_label: User Agent
+user_agent_placeholder: User Agent
 created_at_utc: Created At
+created_by: Created By
 #### PLOP_FIELDS_END ####
-

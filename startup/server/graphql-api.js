@@ -130,6 +130,8 @@ const schema = {
     },
     ErrorReport: {
       user: UserQueries.user,
+      createdBy: (parent, args, context) =>
+        UserQueries.user(parent, { _id: parent.createdById }, context),
     },
     /* #### PLOP_RESOLVERS_START #### */
     /* #### PLOP_RESOLVERS_END #### */

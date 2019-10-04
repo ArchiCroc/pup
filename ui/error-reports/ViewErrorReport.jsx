@@ -53,7 +53,9 @@ const ViewErrorReportFields = ({ errorReport }) => {
       <Descriptions.Item label={i18n.__('ErrorReports.user_id')}>
         {errorReport.userId}
       </Descriptions.Item>
-      <Descriptions.Item label={i18n.__('ErrorReports.user')}>{errorReport.user}</Descriptions.Item>
+      <Descriptions.Item label={i18n.__('ErrorReports.user')}>
+        {errorReport.user && errorReport.user.fullName}
+      </Descriptions.Item>
       <Descriptions.Item label={i18n.__('ErrorReports.level')}>
         {i18n.__(`ErrorReports.level_${errorReport.level}`)}
       </Descriptions.Item>
@@ -74,7 +76,7 @@ const ViewErrorReportFields = ({ errorReport }) => {
         <FormatDate timestamp={errorReport.createdAtUTC} />
       </Descriptions.Item>
       <Descriptions.Item label={i18n.__('ErrorReports.created_by')}>
-        {errorReport.createdBy.fullName}
+        {errorReport.createdBy && errorReport.createdBy.fullName}
       </Descriptions.Item>
     </Descriptions>
   );
