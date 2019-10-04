@@ -9,6 +9,8 @@ import AutoForm from 'uniforms/AutoForm';
 import HiddenField from 'uniforms-antd/HiddenField';
 import SelectField from 'uniforms-antd/SelectField';
 import TextField from 'uniforms-antd/TextField';
+import ListField from 'uniforms-antd/ListField';
+import ListItemField from 'uniforms-antd/ListItemField';
 import message from 'antd/lib/message';
 /* #### PLOP_IMPORTS_START #### */
 /* #### PLOP_IMPORTS_END #### */
@@ -60,7 +62,13 @@ const ErrorReportEditor = ({ doc, history }) => {
         <SelectField name="level" />
         <TextField name="message" />
         <TextField name="path" />
-        <TextField name="stack" />
+        <TextField name="userAgent" />
+        <ListField name="stack">
+          <ListItemField name="$" />
+        </ListField>
+        <ListField name="reackStack">
+          <ListItemField name="$" />
+        </ListField>
         <Button htmlType="submit" type="primary" block>
           {i18n.__('ErrorReports.save')}
         </Button>

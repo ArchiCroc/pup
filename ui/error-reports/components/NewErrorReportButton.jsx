@@ -22,5 +22,4 @@ NewErrorReportButton.propTypes = {
   disabled: PropTypes.bool,
 };
 
-
 export default NewErrorReportButton;

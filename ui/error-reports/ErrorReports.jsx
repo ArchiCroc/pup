@@ -18,16 +18,18 @@ import { errorReports as errorReportsQuery } from './queries/ErrorReports.gql';
 const { Search } = Input;
 
 const ErrorReports = ({ history, location }) => {
+
   const {
+    pageSize = 10,
     page = 1,
     sort = 'createdAtUTC',
     order = 'descend',
     search = null,
-    level = null,
+    level,
   } = queryString.parse(location.search, { arrayFormat: 'comma' });
 
   const paginationObject = {
-    pageSize: 10,
+    pageSize,
     //  onChange: this.onPageChange,
   };
 
@@ -35,6 +37,7 @@ const ErrorReports = ({ history, location }) => {
   const [currentSort, setCurrentSort] = useState(sort);
   const [currentOrder, setCurrentOrder] = useState(order);
   const [currentSearch, setCurrentSearch] = useState(search);
+    level,
   const [currentLevel, setCurrentLevel] = useState(
     level && isString(level) ? [parseInt(level, 10)] : level && level.map(parseInt),
   );
@@ -44,27 +47,20 @@ const ErrorReports = ({ history, location }) => {
     variables: {
       pageSize: paginationObject.pageSize,
       page: currentPage,
-      search: currentSearch,
       sort: currentSort,
       order: currentOrder,
+      search: currentSearch,
       level: currentLevel,
     },
   });
 
   const columns = [
     {
-      title: i18n.__('ErrorReports.created_at_utc'),
-      dataIndex: 'createdAtUTC',
-      sorter: true,
-      defaultSortOrder: 'descend',
-      render: (createdAtUTC) => <PrettyDate timestamp={createdAtUTC} />, // eslint-disable-line
-    },
-    {
       title: i18n.__('ErrorReports.level'),
       dataIndex: 'level',
+      sorter: true,
+      // defaultSortOrder: 'ascend',
       render: (value, record) => i18n.__(`ErrorReports.level_${value}`), // eslint-disable-line
-      filteredValue: currentLevel,
-      filters: [1, 2, 3, 4, 5].map((item) => ({ text: item, value: item })),
     },
     {
       title: i18n.__('ErrorReports.message'),
@@ -78,15 +74,21 @@ const ErrorReports = ({ history, location }) => {
       dataIndex: 'path',
       sorter: true,
       defaultSortOrder: 'ascend',
-      render: (value, record) => (
-        <a href={value} target="_blank" onClick={(event) => event.stopPropagation()}>
-          {value}
-        </a>
-      ), // eslint-disable-line
+      // render: (value, record) => <Link to={`/error-reports/${record._id}/edit`}>{value}</Link>, // eslint-disable-line
     },
     {
-      title: i18n.__('ErrorReports.userAgent'),
+      title: i18n.__('ErrorReports.user_agent'),
       dataIndex: 'userAgent',
+      sorter: true,
+      defaultSortOrder: 'ascend',
+      // render: (value, record) => <Link to={`/error-reports/${record._id}/edit`}>{value}</Link>, // eslint-disable-line
+    },
+    {
+      title: i18n.__('ErrorReports.created_at_utc'),
+      dataIndex: 'createdAtUTC',
+      sorter: true,
+      defaultSortOrder: 'descend',
+      render: (createdAtUTC) => <PrettyDate timestamp={createdAtUTC} />, // eslint-disable-line 
     },
   ];
 
@@ -95,7 +97,6 @@ const ErrorReports = ({ history, location }) => {
     paginationObject.total = errorReports.total;
     paginationObject.current = currentPage;
   }
-
   function handleSearch(value) {
     setCurrentSearch(value);
     history.push({
@@ -105,8 +106,8 @@ const ErrorReports = ({ history, location }) => {
           page: currentPage,
           sort: currentSort,
           order: currentOrder,
-          level: currentLevel,
           search: value,
+          level: currentLevel,
         },
         { arrayFormat: 'comma' },
       )}`,
@@ -114,14 +115,16 @@ const ErrorReports = ({ history, location }) => {
   }
 
   function handleTableChange(pagination, filters, sorter) {
-    const { level: newLevel = null } = filters;
+    const { 
+      level: newLevel = null,
+    } = filters;
 
     const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
 
     setCurrentPage(pagination.current);
     setCurrentOrder(sorter.order);
     setCurrentSort(sorter.field);
-    setCurrentLevel(newLevel);
+    setLevel(newLevel);
 
     history.push({
       pathname: window.location.pathname,
@@ -130,17 +133,21 @@ const ErrorReports = ({ history, location }) => {
           page: pagination.current,
           sort: currentField,
           order: sorter.order,
-          level: newLevel,
           search: currentSearch,
+          level: newLevel,
         },
         { arrayFormat: 'comma' },
       )}`,
     });
   }
 
-  function handleRowClick(row) {
-    history.push(`${window.location.pathname}/${row._id}`);
-  }
+  function handleTableRow(record) {
+    return {
+      onClick: () => {
+        history.push(`/error-reports/${record._id}`);
+      },
+    };
+  };
 
   return (
     <StyledErrorReports>
@@ -162,11 +169,9 @@ const ErrorReports = ({ history, location }) => {
         dataSource={errorReports && errorReports.errorReports}
         loading={loading}
         onChange={handleTableChange}
-        onRow={(record) => ({
-          onClick: () => handleRowClick(record),
-        })}
-        pagination={paginationObject}
+        onRow={handleTableRow}
         rowKey="_id"
+        pagination={paginationObject}
         rowClassName="clickable"
       />
     </StyledErrorReports>

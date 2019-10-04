@@ -4,6 +4,8 @@ import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/react-hooks';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
+import Descriptions from 'antd/lib/descriptions';
+import FormatDate from '../components/FormatDate';
 import PageHeader from '../components/PageHeader';
 import Loading from '../components/Loading';
 import NotFound from '../pages/NotFound';
@@ -20,9 +22,13 @@ const ViewErrorReport = ({ match }) => {
   return (
     <StyledViewErrorReport>
       <PageHeader title={i18n.__('ErrorReports.view_error_report')} />
-      {errorReport && <EditErrorReportButton _id={errorReport._id} />}
+      {errorReport && (
+        <p>
+          <EditErrorReportButton _id={errorReport._id} />
+        </p>
+      )}
       <Row>
-        <Col xs={24} sm={16} md={12} lg={8}>
+        <Col xs={24} sm={24} md={20} lg={16}>
           {loading ? (
             <Loading />
           ) : (
@@ -41,30 +47,43 @@ ViewErrorReport.propTypes = {
 
 const ViewErrorReportFields = ({ errorReport }) => {
   return (
-    <>
-      {Object.entries(errorReport).map(([label, value]) => (
-        <ViewErrorReportField key={label} label={label} value={value} />
-      ))}
-    </>
+    <Descriptions bordered column={1}>
+      <Descriptions.Item label={i18n.__('ErrorReports.user_id')}>
+        {errorReport.userId}
+      </Descriptions.Item>
+      <Descriptions.Item label={i18n.__('ErrorReports.user')}>
+        {errorReport.user}
+      </Descriptions.Item>
+      <Descriptions.Item label={i18n.__('ErrorReports.level')}>
+        {i18n.__(`ErrorReports.level_${errorReport.level}`)}
+      </Descriptions.Item>
+      <Descriptions.Item label={i18n.__('ErrorReports.message')}>
+        {errorReport.message}
+      </Descriptions.Item>
+      <Descriptions.Item label={i18n.__('ErrorReports.path')}>
+        {errorReport.path}
+      </Descriptions.Item>
+      <Descriptions.Item label={i18n.__('ErrorReports.user_agent')}>
+        {errorReport.userAgent}
+      </Descriptions.Item>
+      <Descriptions.Item label={i18n.__('ErrorReports.stack')}>
+        {errorReport.stack.join(', ')}
+      </Descriptions.Item>
+      <Descriptions.Item label={i18n.__('ErrorReports.reack_stack')}>
+        {errorReport.reackStack.join(', ')}
+      </Descriptions.Item>
+      <Descriptions.Item label={i18n.__('ErrorReports.created_at_utc')}>
+        <FormatDate timestamp={errorReport.createdAtUTC} />
+      </Descriptions.Item>
+      <Descriptions.Item label={i18n.__('ErrorReports.created_by')}>
+        {errorReport.createdBy.fullName}
+      </Descriptions.Item>
+    </Descriptions>
   );
 };
 
 ViewErrorReportFields.propTypes = {
   errorReport: PropTypes.object.isRequired,
-};
-
-const ViewErrorReportField = ({ label, value }) => {
-  return (
-    <Row>
-      <Col xs={12}>{label}</Col>
-      <Col xs={12} >{value.toString()}</Col>
-    </Row>
-  );
-};
-
-ViewErrorReportField.propTypes = {
-  label: PropTypes.string.isRequired,
-  value: PropTypes.any.isRequired,
 };
 
 export default ViewErrorReport;
