@@ -28,7 +28,8 @@
         "labelField": "message",
         "valueField": "_id"
       },
-      "showInTableView": false
+      "showInTableView": false,
+      "showInDetailView": false
     },
     "errorReport": {
       "type": "ErrorReport",
@@ -46,7 +47,8 @@
         "labelField": "fullName",
         "valueField": "_id"
       },
-      "showInTableView": false
+      "showInTableView": false,
+      "showInDetailView": false
     },
     "assignedTo": {
       "type": "User",
@@ -63,7 +65,8 @@
         "valueField": "_id",
         "multiple": true
       },
-      "showInTableView": false
+      "showInTableView": false,
+      "showInDetailView": false
     },
     "preparedBy": {
       "type": "[User]",
@@ -85,6 +88,18 @@
         "max": 1024,
         "optional": true
       }
+    },
+    "createdAtUTC": {
+      "type": "DateTime",
+      "showInTableView": "Created At"
+    },
+    "createdById": {
+      "userKey": true,
+      "type": "String",
+      "index": true
+    },
+    "createdBy": {
+      "type": "User"
     }
   }
 }

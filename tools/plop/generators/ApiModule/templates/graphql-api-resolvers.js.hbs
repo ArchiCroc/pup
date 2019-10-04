@@ -6,7 +6,7 @@
   {{else}}
     {{#compare this.type '===' 'User'}}
       {{@key}}: (parent, args, context) =>
-        UserQueries.resolveUser(parent, { _ids: parent.{{#if parentKey}}{{parentKey}}{{else}}{{@key}}Id{{/if}} }, context),
+        UserQueries.resolveUser(parent, { _id: parent.{{#if parentKey}}{{parentKey}}{{else}}{{@key}}Id{{/if}} }, context),
     {{/compare}}
      {{#compare this.type '===' '[User]'}}
       {{@key}}: (parent, args, context) =>

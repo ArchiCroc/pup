@@ -118,7 +118,7 @@ const {{ pascalCase name }} = ({ history, location }) => {
       {{#compare this.type 'in' 'Number|Float'}}
       sorter: true,
       // defaultSortOrder: 'ascend',
-      render: (value, record) => value, // eslint-disable-line
+      // render: (value, record) => value, // eslint-disable-line
       {{/compare}}
       {{#compare this.input 'in' 'Array|Select|Options|Dropdown'  }}
       sorter: true,
@@ -128,8 +128,7 @@ const {{ pascalCase name }} = ({ history, location }) => {
       {{/if}}
       {{else}}
         {{#compare this.type 'startsWith' '['}}
-      render: (value, record) => value{{#if this.dataIndex}}.map((item) => item.{{ this.dataIndex }}){{/if}}.join(', ')
-
+      render: (value) => value{{#if this.dataIndex}}.map((item) => item.{{ this.dataIndex }}){{/if}}.join(', '),
         {{/compare}}
       {{/compare}}
     },
