@@ -28,14 +28,12 @@ function convertDataIndexToGraphqlSubQuery(dataIndex, indent = 0) {
     start += part;
 
     if (index + 1 < parts.length) {
-      start += ' {\n';
-    } else {
-      start += '\n';
+      start += ' {';
     }
+    start += '\n';
 
     if (index + 1 < parts.length) {
-      end = '}' + (index ? '\n' : '') + end;
-      end = '  '.repeat(index + indent) + end;
+      end = `${'  '.repeat(index + indent)}}${index ? '\n' : ''}${end}`;
     }
   });
 
