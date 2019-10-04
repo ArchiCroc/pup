@@ -44,6 +44,12 @@ path_placeholder: Path
 user_agent: User Agent
 user_agent_label: User Agent
 user_agent_placeholder: User Agent
+stack: Stack
+stack_label: Stack
+stack_placeholder: Stack
+react_stack: React Stack
+react_stack_label: React Stack
+react_stack_placeholder: React Stack
 created_at_utc: Created At
 created_by: Created By
 #### PLOP_FIELDS_END ####
