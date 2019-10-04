@@ -37,19 +37,36 @@
       "dataIndex": "errorReport.message"
 
     },
+    "assignedToId": {
+      "type": "String",
+      "input": "CrossReferenceSearch",
+      "uniforms": {
+        "query": "users",
+        "edges": "users",
+        "labelField": "fullName",
+        "valueField": "_id"
+      },
+      "table": false
+    },
+    "assignedTo": {
+      "type": "User",
+      "dataIndex": "assignedTo.fullName"
+    },
     "name": {
       "labelKey": true,
       "type": "String",
       "input": "Text",
       "validate" : {
-          "max": 64
+        "max": 64,
+        "optional": true
       }
     },
     "description": {
       "type": "String",
       "input": "LongText",
       "validate" : {
-          "max": 1024
+        "max": 1024,
+        "optional": true
       }
     }
   }

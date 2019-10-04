@@ -102,6 +102,9 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
       {{#each this.uniforms}}
       {{@key}}: {{#compare this 'typeof' 'string'}}'{{{this}}}'{{else}}{{this}}{{/compare}},
       {{/each}}
+      {{#compare this.type 'startsWith' '[' '&&' (stripBrackets this.type) 'in' 'Select|CrossReferenceSearch|CrossReferenceSelect' }}
+      multiple: true  
+      {{/compare}}
     },
   },
   '{{@key}}.$': {

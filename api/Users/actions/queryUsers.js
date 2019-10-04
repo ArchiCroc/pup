@@ -25,7 +25,7 @@ const getTotalUserCount = (options) => {
 const getProjection = (options) => {
   try {
     return options.search
-      ? { sort: options.sort }
+      ? { sort: options.sort, limit: options.limit, skip: options.skip }
       : { limit: options.limit, skip: options.skip, sort: options.sort };
   } catch (exception) {
     throw new Error(`[queryUsers.getProjection] ${exception.message}`);
@@ -36,7 +36,7 @@ const getQuery = (options) => {
   try {
     return options.search
       ? {
-          _id: { $ne: options.currentUser._id },
+          // _id: { $ne: options.currentUser._id }, // I'm not sure the use of this
           $or: [
             { 'profile.firstName': options.search },
             { 'profile.lastName': options.search },
@@ -64,7 +64,6 @@ const getUsers = (options) => {
     if (options.roles) {
       query.roles = options.roles;
     }
-    console.log(query);
     const projection = getProjection(options);
     return Meteor.users
       .find(query, projection)

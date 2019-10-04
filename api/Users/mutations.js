@@ -25,7 +25,7 @@ export default {
     if (args._id && isAdmin(context.user._id)) {
       ({ _id } = args);
     }
-    console.log('updateUserSettings', args);
+    // console.log('updateUserSettings', args);
 
     try {
       Meteor.users.update(_id, {
