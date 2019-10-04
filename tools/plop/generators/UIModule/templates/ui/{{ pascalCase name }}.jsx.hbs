@@ -24,16 +24,18 @@ const { Search } = Input;
 const {{ pascalCase name }} = ({ history, location }) => {
 
   const {
-    search = null,
     pageSize = 10,
     page = 1,
     sort = '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelKeyField}}{{/if}}',
     order = '{{#if schema.defaultSortOrder}}{{schema.defaultSortOrder}}{{else}}ascend{{/if}}',
-    {{#each schema.fields}}
-    {{#if this.filterable}}
+{{#if isSearchable}}
+    search = null,
+{{/if}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
     {{ @key }},
-    {{/if}}
-    {{/each}}
+  {{/if}}
+{{/each}}
   } = queryString.parse(location.search, { arrayFormat: 'comma' });
 
   const paginationObject = {
@@ -44,7 +46,9 @@ const {{ pascalCase name }} = ({ history, location }) => {
   const [currentPage, setCurrentPage] = useState(parseInt(page, 10));
   const [currentSort, setCurrentSort] = useState(sort);
   const [currentOrder, setCurrentOrder] = useState(order);
+{{#if isSearchable}}
   const [currentSearch, setCurrentSearch] = useState(search);
+{{/if}}
 {{#each schema.fields}}
   {{#if this.filterable}}
     {{ @key }},
@@ -76,9 +80,11 @@ const {{ pascalCase name }} = ({ history, location }) => {
     variables: {
       pageSize: paginationObject.pageSize,
       page: currentPage,
-      search: currentSearch,
       sort: currentSort,
       order: currentOrder,
+{{#if isSearchable}}
+      search: currentSearch,
+{{/if}}
   {{#each schema.fields}}
     {{#if this.filterable}}
       {{ @key }}: current{{ pascalCase @key }},
@@ -139,10 +145,12 @@ const {{ pascalCase name }} = ({ history, location }) => {
       pathname: window.location.pathname,
       search: `?${queryString.stringify(
         {
-          search: value,
           page: currentPage,
           sort: currentSort,
           order: currentOrder,
+      {{#if isSearchable}}
+          search: value,
+      {{/if}}
       {{#each schema.fields}}
         {{#if this.filterable}}
           {{ @key }}: current{{ pascalCase @key }},
@@ -184,7 +192,9 @@ const {{ pascalCase name }} = ({ history, location }) => {
           page: pagination.current,
           sort: currentField,
           order: sorter.order,
+      {{#if isSearchable}}
           search: currentSearch,
+      {{/if}}
       {{#each schema.fields}}
         {{#if this.filterable}}
           {{ @key }}: new{{ pascalCase @key }},
