@@ -54,6 +54,7 @@ const schema = {
         search: String
         role: [String]
       ): Users
+      resolveUsers(_ids: [String], sort: String, order: String): Users
       exportUserData: UserDataExport
       oAuthServices(services: [String]): [String]
       #### PLOP_QUERY_TYPES_START ####
