@@ -49,7 +49,7 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
     },
     {{/if}}
     {{#if this.choices}}
-      {{#compare this.choices 'typeof' 'object'}}
+      {{#compare this.choices 'typeof' 'object' '||' this.choices 'typeof' 'array'}}
     allowedValues: [{{#each this.choices}}{{#compare this 'typeof' 'string'}}'{{this}}'{{else}}{{this}}{{/compare}}{{#unless @last}}, {{/unless}}{{/each}}],
       {{else}}
     allowedValues: {{this.choices}},
@@ -119,7 +119,7 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
     min: {{this.validate.min}},
     {{/if}}
     {{#if this.choices}}
-      {{#compare this.choices 'typeof' 'object'}}
+      {{#compare this.choices 'typeof' 'object' '||' this.choices 'typeof' 'array'}}
     allowedValues: [{{#each this.choices}}{{#compare this 'typeof' 'string'}}'{{this}}'{{else}}{{this}}{{/compare}}{{#unless @last}}, {{/unless}}{{/each}}],
       {{else}}
     allowedValues: {{this.choices}},
