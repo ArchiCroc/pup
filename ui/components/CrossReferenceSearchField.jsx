@@ -66,7 +66,6 @@ const CrossReferenceSearchField = (props) => {
     onCompleted: () => console.log('complete'),
   });
 
-  console.log('i', initialValue, !initialValue, loadingComplete);
   const { loading: loading2 } = useQuery(gqlQueries.initialValue, {
     variables: { _ids: initialValue },
     skip: !initialValue || loadingComplete,
@@ -143,7 +142,7 @@ CrossReferenceSearchField.propTypes = {
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   disabled: PropTypes.bool,
   query: PropTypes.string.isRequired,
   edges: PropTypes.string.isRequired,

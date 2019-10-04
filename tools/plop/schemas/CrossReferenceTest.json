@@ -53,6 +53,23 @@
       "dataIndex": "assignedTo.fullName",
       "showInTableView": true
     },
+    "preparedById": {
+      "type": "[String]",
+      "input": "CrossReferenceSearch",
+      "uniforms": {
+        "query": "users",
+        "edges": "users",
+        "labelField": "fullName",
+        "valueField": "_id",
+        "multiple": true
+      },
+      "showInTableView": false
+    },
+    "preparedBy": {
+      "type": "User",
+      "dataIndex": "preparedBy.fullName",
+      "showInTableView": true
+    },
     "name": {
       "labelKey": true,
       "type": "String",
