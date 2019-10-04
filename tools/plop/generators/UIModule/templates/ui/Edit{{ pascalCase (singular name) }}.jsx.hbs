@@ -21,7 +21,7 @@ const Edit{{ pascalCase (singular name) }} = ({ history, match }) => {
   return (
     <>
       <PageHeader title={i18n.__('{{ pascalCase name }}.edit_{{ snakeCase (singular name) }}')} />
-      <Row>
+      <Row type="flex" justify="center">
         <Col xs={24} sm={16} md={12} lg={8}>
           {loading ? (
             <Loading />

@@ -99,6 +99,14 @@ module.exports = (plop) => {
     return text.replace(regEx, '$1');
   });
 
+  plop.setHelper('stripId', (text, idText) => {
+    if (!(typeof idText === 'string')) {
+      idText = 'Id';
+    }
+    const regEx = new RegExp(`^(.*)${idText}`);
+    return text.replace(regEx, '$1');
+  });
+
   plop.setHelper('concat', function() {
     arguments = [...arguments].slice(0, -1);
     return arguments.join('');

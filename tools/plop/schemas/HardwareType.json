@@ -42,19 +42,31 @@
     },
     "createdById": {
       "userKey": true,
-      "type": "String"
+      "type": "String",
+      "index": true,
+      "showInTableView": false,
+      "showInDetailView": false
     },
     "createdBy": {
-      "type": "User"
+      "type": "User",
+      "dataIndex": "fullName"
     },
     "updatedAtUTC": {
-      "type": "DateTime"
+      "type": "DateTime",
+      "showInTableView": "Updated At"
     },
     "updatedById": {
-      "type": "String"
+      "userKey": true,
+      "type": "String",
+      "index": true,
+      "showInTableView": false,
+      "showInDetailView": false
     },
     "updatedBy": {
-      "type": "User"
+      "type": "User",
+      "dataIndex": "fullName"
     }
-  }
+  },
+  "defaultSortField": "name",
+  "defaultSortOrder": "ascend"
 }

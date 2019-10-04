@@ -1,4 +1,4 @@
-{ "name": "HardwareInventory",
+{ "name": "HardwareItems",
   "permissions": {
     "read":"admin",
     "save": "admin",
@@ -19,39 +19,76 @@
         "optional": true
       }
     },
+    "hardwareTypeId": {
+      "type": "String",
+      "input": "CrossReferenceSelect",
+      "uniforms": {
+        "query": "hardwareTypes",
+        "edges": "hardwareTypes",
+        "labelField": "name",
+        "valueField": "_id"
+      },
+      "stripIdFromKey": true,
+      "showInTableView": false,
+      "showInDetailView": false
+    },
     "hardwareType": {
       "type": "HardwareType",
-      "input": "CrossReferenceSelect",
-      "key": "name",
-      "value": "_id"
+      "resolver": "HardwareTypeQueries.hardwareType",
+      "showInTableView": true,
+      "dataIndex": "name"
+    },
+    "assignedToId": {
+      "type": "String",
+      "input": "CrossReferenceSearch",
+      "uniforms": {
+        "query": "users",
+        "edges": "users",
+        "labelField": "fullName",
+        "valueField": "_id"
+      },
+      "stripIdFromKey": true,
+      "showInTableView": false,
+      "showInDetailView": false
     },
     "assignedTo": {
       "type": "User",
-      "input": "CrossReferenceSearch",
-      "key": "fullName",
-      "value": "_id",
-      "validate" : {
-        "optional": true
-      }
+      "dataIndex": "fullName",
+      "showInTableView": true
+    },
+    "officeSlug": {
+      "type": "String",
+      "input": "CrossReferenceSelect",
+      "uniforms": {
+        "query": "offices",
+        "edges": "offices",
+        "labelField": "name",
+        "valueField": "slug"
+      },
+      "stripIdFromKey": "Slug",
+      "showInTableView": false,
+      "showInDetailView": false
     },
     "office": {
       "type": "Office",
-      "input": "CrossReferenceSelect",
-      "key": "name",
-      "value": "_id"
+      "resolver": "OfficeQueries.office",
+      "showInTableView": true,
+      "dataIndex": "name"
     },
     "brand": {
       "type": "String",
       "input": "Text",
       "validate" : {
-        "max": 128
+        "max": 128,
+        "optional": true
       }
     },
     "modelNumber": {
       "type": "String",
       "input": "Text",
       "validate" : {
-        "max": 128
+        "max": 128,
+        "optional": true
       }
     },
     "serialNumber": {
@@ -64,8 +101,11 @@
     },
     "notes": {
       "type": "String",
-      "input": "LongText"
+      "input": "LongText",
       "showInTableView": false,
+      "validate" : {
+        "optional": true
+      }
     },
     "createdAtUTC": {
       "type": "DateTime",

@@ -9,7 +9,7 @@ import {{ pascalCase (singular name) }}Editor from './components/{{ pascalCase (
 const New{{ pascalCase (singular name) }} = ({ history }) => (
   <>
     <PageHeader title={i18n.__('{{ pascalCase name }}.new_{{ snakeCase (singular name) }}')} />
-    <Row>
+    <Row type="flex" justify="center">
       <Col xs={24} sm={16} md={12} lg={8}>
         <{{ pascalCase (singular name) }}Editor history={history} />
       </Col>

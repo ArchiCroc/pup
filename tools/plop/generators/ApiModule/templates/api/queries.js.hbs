@@ -45,26 +45,26 @@ export default {
       query._id = { $in: _ids };
     }
 
-    {{#each schema.fields}}
-    {{#if this.filterable}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
     if (isArray({{ @key }})) {
       query.{{ @key }} = { $in: {{ @key }} };
     }
-    {{/if}}
-    {{/each}}
+  {{/if}}
+{{/each}}
 
-    {{#if isSearchable}}
+{{#if isSearchable}}
     if (search) {
       const searchRegEx = new RegExp(search, 'i');
       query.$or = [
-      {{#each schema.fields}}
-        {{#compare this.searchable '||' this.labelKey}}
+  {{#each schema.fields}}
+    {{#compare this.searchable '||' this.labelKey}}
         { {{ @key }}: searchRegEx },
-        {{/compare}}
-      {{/each}}
+    {{/compare}}
+  {{/each}}
       ];
     }
-    {{/if}}
+{{/if}}
 
     const result = {{ pascalCase name }}.find(query, options);
 
@@ -74,31 +74,33 @@ export default {
     };
   },
   my{{ pascalCase name }}: (parent, args, context) => {
-    {{#compare schema.permissions.read '!==' 'everyone' }}
+{{#compare schema.permissions.read '!==' 'everyone' }}
     if (!context.user || !context.user._id || !checkUserRole(context.user._id, '{{schema.permissions.read}}')) {
       throw new Error('Sorry, you must have permission to view my {{ pascalCase name }}.');
     }
-    {{/compare}}
+{{/compare}}
     return {{ pascalCase name }}.find({ {{userKeyField}}: context.user._id }).fetch();
   },
   {{ camelCase (singular name) }}: (parent, args, context) => {
-    {{#compare schema.permissions.read '!==' 'everyone' }}
+{{#compare schema.permissions.read '!==' 'everyone' }}
     if (!context.user || !context.user._id || !checkUserRole(context.user._id, '{{schema.permissions.read}}')) {
       throw new Error('Sorry, you must have permission to view {{ pascalCase (singular name) }}.');
     }
-    {{/compare}}
-    const {{ camelCase (singular name) }}IdFromParentQuery = parent && parent.{{ camelCase (singular name) }}Id;
-    {{#compare primaryKeyField '===' urlKeyField }}
-    return {{ pascalCase name }}.findOne({ {{primaryKeyField}}: {{ camelCase (singular name) }}IdFromParentQuery || args.{{primaryKeyField}}  });
-    {{else}}
-    if (args.{{ primaryKeyField }}) {
-      return {{ pascalCase name }}.findOne({ {{primaryKeyField}}: args.{{primaryKeyField}}  });
-    } 
-    if (args.{{ urlKeyField }}) {
-      return {{ pascalCase name }}.findOne({ {{urlKeyField}}: args.{{urlKeyField}} });
-    } 
+{{/compare}}
+
+    const {{ primaryKeyField }} = (parent && parent.{{ camelCase (singular name) }}{{ pascalCase primaryKeyField}}) || args.{{ primaryKeyField }};
+    if ({{ primaryKeyField }}) {
+      return {{ pascalCase name }}.findOne({ {{ primaryKeyField }} });
+    }
+{{#compare primaryKeyField '!==' urlKeyField }}
+    const {{ urlKeyField }} = (parent && parent.{{ camelCase (singular name) }}{{ pascalCase urlKeyField}) || args.{{ urlKeyField }};
+    if ({{ urlKeyField }}) {
+      return {{ pascalCase name }}.findOne({ {{ urlKeyField }} });
+    }
+{{/compare}}
+
+
     return null;
-    {{/compare}}
   }
   /* #### PLOP_QUERIES_START #### */
   /* #### PLOP_QUERIES_END #### */

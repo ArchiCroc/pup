@@ -26,25 +26,25 @@ blank_state_subtitle: ""
 
 #### PLOP_FIELDS_START ####
 {{#each schema.fields}}
-  {{#compare this.showInTableView '!==' false '||' this.showInDetailView '!==' false}}
+  {{!-- {{#compare this.showInTableView '!==' false '||' this.showInDetailView '!==' false}} --}}
     {{#compare this.input '!=' 'Hidden'}}
 {{snakeCase @key}}: {{#compare this.showInTableView 'typeof' 'string'}}{{this.showInTableView}}{{else}}{{#compare this.showInDetailView 'typeof' 'string'}}{{this.showInDetailView}}{{else}}{{ titleCase @key}}{{/compare}}{{/compare}}
       {{#if this.input}}
-{{snakeCase @key}}_label: {{titleCase @key}}
+{{snakeCase @key}}_label: {{#if this.stripIdFromKey}}{{titleCase (stripId @key this.stripIdFromKey)}}{{else}}{{titleCase @key}}{{/if}}
         {{#compare this.type '!=' 'Boolean'  }}
-          {{#compare this.input 'in' 'Array|Select|Options|Dropdown'  }}
-{{snakeCase @key}}_placeholder: Select {{titleCase @key}}
+          {{#compare this.input 'in' 'Array|Select|Options|Dropdown|CrossReferenceSelect|CrossReferenceSearch'  }}
+{{snakeCase @key}}_placeholder: Select {{#if this.stripIdFromKey}}{{titleCase (stripId @key this.stripIdFromKey)}}{{else}}{{titleCase @key}}{{/if}}
             {{#compare this.choices 'typeof' 'object'}}
               {{#each this.choices}}
 {{snakeCase @../key}}_{{this}}: {{@key}}
               {{/each}}
             {{/compare}}
           {{else}}
-{{snakeCase @key}}_placeholder: {{titleCase @key}}
+{{snakeCase @key}}_placeholder: {{#if this.stripIdFromKey}}{{titleCase (stripId @key this.stripIdFromKey)}}{{else}}{{titleCase @key}}{{/if}}
           {{/compare}}
         {{/compare}}
       {{/if}}
     {{/compare}}
-  {{/compare}}
+  {{!-- {{/compare}} --}}
 {{/each}}
 #### PLOP_FIELDS_END ####
