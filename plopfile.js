@@ -18,28 +18,24 @@ function comment(data, userConfig, plop) {
   return plop.renderString(comment, data); // render the comment as hbs templates
 }
 
-function convertDataIndexToGraphqlSubQuery(dataIndex) {
+function convertDataIndexToGraphqlSubQuery(dataIndex, indent = 0) {
   const parts = dataIndex.split('.');
   let start = '';
   let end = '';
 
   parts.forEach((part, index) => {
-    for (let i = 0; i < index; i++) {
-      start += '  ';
-    }
+    start += '  '.repeat(!!index && index + indent);
     start += part;
 
     if (index + 1 < parts.length) {
       start += ' {\n';
-    } else if (parts.length > 1) {
+    } else {
       start += '\n';
     }
 
     if (index + 1 < parts.length) {
-      end = '}\n' + end;
-      for (let i = 0; i < index; i++) {
-        end = '  ' + end;
-      }
+      end = '}' + (index ? '\n' : '') + end;
+      end = '  '.repeat(index + indent) + end;
     }
   });
 

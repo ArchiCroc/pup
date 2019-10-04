@@ -2,7 +2,7 @@ fragment {{ pascalCase (singular name) }}Attributes on {{ pascalCase (singular n
   {{#each schema.fields ~}}
     {{~#compare this.showInTableView '||' this.input}}
       {{#if dataIndex}}
-  {{convertDataIndexToGraphqlSubQuery dataIndex}}
+  {{convertDataIndexToGraphqlSubQuery dataIndex 1}}
       {{else}}
   {{@key}}
       {{/if}}
