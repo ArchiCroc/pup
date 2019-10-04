@@ -5,7 +5,7 @@ import exportUserData from './actions/exportUserData';
 
 export default {
   users: (parent, args, context) => {
-    console.log('args', args);
+    // console.log('args', parent, args, context);
     const {
       _ids,
       pageSize = 10,

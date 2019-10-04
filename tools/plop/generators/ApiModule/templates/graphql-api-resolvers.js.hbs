@@ -10,7 +10,9 @@
     {{/compare}}
      {{#compare this.type '===' '[User]'}}
       {{@key}}: (parent, args, context) =>
-        UserQueries.users(parent, { _ids: parent.{{#if parentKey}}{{parentKey}}{{else}}{{@key}}Ids{{/if}} }, context),
+        parent.preparedByIds
+          ? UserQueries.users(parent, { _ids: parent.{{#if parentKey}}{{parentKey}}{{else}}{{@key}}Ids{{/if}} }, context)
+          : [],
     {{/compare}}
   {{/if}}
 {{/each~}}
