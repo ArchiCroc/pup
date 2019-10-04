@@ -14,7 +14,7 @@ const CrossReferenceSearchField = (props) => {
     query,
     labelField,
     valueField,
-    value: initalValue,
+    value: initialValue,
     placeholder,
     disabled,
     edges,
@@ -22,7 +22,8 @@ const CrossReferenceSearchField = (props) => {
   } = props;
 
   const [search, setSearch] = useState('');
-  const [value, setValue] = useState(initalValue);
+  const [value, setValue] = useState(null);
+  const [loadingComplete, setLoadingComplete] = useState(false);
   const selectRef = useRef(null);
 
   // console.log(`
@@ -35,8 +36,9 @@ const CrossReferenceSearchField = (props) => {
   //   }
   // }`);
 
-  const gqlQuery = useMemo(() => {
-    return gql`
+  const gqlQueries = useMemo(() => {
+    return {
+      search: gql`
         query searchData($search: String) {
           ${query}(pageSize: 10, search: $search) {
             ${edges ? edges + ' {' : ''}
@@ -44,14 +46,43 @@ const CrossReferenceSearchField = (props) => {
               ${valueField}
             ${edges ? '}' : ''}
           }
-        }`;
+        }`,
+      initialValue: gql`
+        query searchData($_ids: [String]) {
+          ${query}(_ids: $_ids) {
+            ${edges ? edges + ' {' : ''}
+              ${labelField}
+              ${valueField}
+            ${edges ? '}' : ''}
+          }
+        }`,
+    };
   }, [query, labelField, valueField]);
 
-  const { loading, error, data } = useQuery(gqlQuery, {
+  const { loading, error, data } = useQuery(gqlQueries.search, {
     variables: { search },
     skip: !search,
     fetchPolicy: 'cache-and-network', // network-only
     onCompleted: () => console.log('complete'),
+  });
+
+  console.log('i', initialValue, !initialValue, loadingComplete);
+  const { loading: loading2 } = useQuery(gqlQueries.initialValue, {
+    variables: { _ids: initialValue },
+    skip: !initialValue || loadingComplete,
+    // fetchPolicy: 'cache-and-network', // network-only
+    onCompleted: (result) => {
+      setLoadingComplete(true);
+      const resultEdges = edges ? result[query][edges] : result[query];
+      if (resultEdges && resultEdges.length) {
+        const values = resultEdges.map((item) => ({
+          key: item[valueField],
+          label: item[labelField],
+        }));
+        setValue(multiple ? values : values[0]);
+        console.log('complete2', multiple ? values : values[0]);
+      }
+    },
   });
 
   function handleSearch(newValue) {
@@ -59,6 +90,7 @@ const CrossReferenceSearchField = (props) => {
   }
 
   function handleChange(newValue) {
+    console.log(newValue);
     setValue(newValue);
     setSearch('');
     if (newValue) {
@@ -78,7 +110,7 @@ const CrossReferenceSearchField = (props) => {
       }
       // filterOption={false}
       labelInValue
-      loading={loading}
+      loading={loading || loading2}
       mode={multiple ? 'multiple' : 'default'}
       onChange={handleChange}
       onSearch={debounce(handleSearch, 350)}

@@ -24,8 +24,8 @@ const getTotalUserCount = (options) => {
 
 const getProjection = (options) => {
   try {
-    return options.search
-      ? { sort: options.sort, limit: options.limit, skip: options.skip }
+    return options._ids
+      ? { sort: options.sort }
       : { limit: options.limit, skip: options.skip, sort: options.sort };
   } catch (exception) {
     throw new Error(`[queryUsers.getProjection] ${exception.message}`);
@@ -34,25 +34,31 @@ const getProjection = (options) => {
 
 const getQuery = (options) => {
   try {
-    return options.search
-      ? {
-          // _id: { $ne: options.currentUser._id }, // I'm not sure the use of this
-          $or: [
-            { 'profile.firstName': options.search },
-            { 'profile.lastName': options.search },
-            { 'emails.address': options.search },
-            { 'services.facebook.first_name': options.search },
-            { 'services.facebook.last_name': options.search },
-            { 'services.facebook.email': options.search },
-            { 'services.google.name': options.search },
-            { 'services.google.email': options.search },
-            { 'services.github.email': options.search },
-            { 'services.github.username': options.search },
-          ],
-        }
-      : {
-          /*_id: { $ne: options.currentUser._id }*/
-        };
+    if (options.search) {
+      return {
+        // _id: { $ne: options.currentUser._id }, // I'm not sure the use of this
+        $or: [
+          { 'profile.firstName': options.search },
+          { 'profile.lastName': options.search },
+          { 'emails.address': options.search },
+          { 'services.facebook.first_name': options.search },
+          { 'services.facebook.last_name': options.search },
+          { 'services.facebook.email': options.search },
+          { 'services.google.name': options.search },
+          { 'services.google.email': options.search },
+          { 'services.github.email': options.search },
+          { 'services.github.username': options.search },
+        ],
+      };
+    }
+    if (options._ids) {
+      return {
+        _id: { $in: options._ids },
+      };
+    }
+    return {
+      /*_id: { $ne: options.currentUser._id }*/
+    };
   } catch (exception) {
     throw new Error(`[queryUsers.getQuery] ${exception.message}`);
   }
@@ -64,6 +70,7 @@ const getUsers = (options) => {
     if (options.roles) {
       query.roles = options.roles;
     }
+    // console.log(query);
     const projection = getProjection(options);
     return Meteor.users
       .find(query, projection)
