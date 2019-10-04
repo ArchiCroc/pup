@@ -4,6 +4,14 @@ import {{ pascalCase name }} from '../{{ pascalCase name }}';
 {{#each schema.fields}}
   {{#if this.index}}
 createIndex({{ pascalCase @root.name }}, { {{ @key }}: 1 });
+  {{else}}
+    {{#compare primaryKeyField '!==' '_id'  }}
+createIndex({{ pascalCase name }}, { {{primaryKeyField}}: 1 });
+    {{/compare}}
+    {{#compare primaryKeyField '!==' urlKeyField }}
+createIndex({{ pascalCase name }}, { {{urlKeyField}}: 1 });
+    {{/compare}}
   {{/if}}
 {{/each}}
+
 

@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/react-hooks';
 import queryString from 'query-string';
+{{#if isFilterable}}
 import isString from 'lodash/isString';
+{{/if}}
 import Table from 'antd/lib/table';
 import Input from 'antd/lib/input';
 import PageHeader from '../components/PageHeader';
@@ -15,7 +17,9 @@ import Styled{{ pascalCase name }} from './Styled{{ pascalCase name }}';
 
 import { {{ camelCase name }} as {{ camelCase name }}Query } from './queries/{{ pascalCase name }}.gql';
 
+{{#if isSearchable}}
 const { Search } = Input;
+{{/if}}
 
 const {{ pascalCase name }} = ({ history, location }) => {
 
@@ -128,7 +132,7 @@ const {{ pascalCase name }} = ({ history, location }) => {
     paginationObject.total = {{ camelCase name }}.total;
     paginationObject.current = currentPage;
   }
-
+{{#if isSearchable}}
   function handleSearch(value) {
     setCurrentSearch(value);
     history.push({
@@ -149,8 +153,10 @@ const {{ pascalCase name }} = ({ history, location }) => {
       )}`,
     });
   }
+{{/if}}
 
   function handleTableChange(pagination, filters, sorter) {
+{{#if isFilterable}}
     const { 
   {{#each schema.fields}}
     {{#if this.filterable}}
@@ -158,6 +164,7 @@ const {{ pascalCase name }} = ({ history, location }) => {
     {{/if}}
   {{/each}}  
     } = filters;
+{{/if}}
 
     const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
 
@@ -222,7 +229,7 @@ const {{ pascalCase name }} = ({ history, location }) => {
         onRow={handleTableRow}
         rowKey="{{ primaryKeyField }}"
         pagination={paginationObject}
-        rowClassName="clickable"        
+        rowClassName="clickable"
       />
     </Styled{{ pascalCase name }}>
   );
