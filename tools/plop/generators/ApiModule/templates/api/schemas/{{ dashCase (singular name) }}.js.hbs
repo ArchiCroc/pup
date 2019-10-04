@@ -18,7 +18,7 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
   {{~#compare this.type '&&' this.input}}
     {{~#compare this.type '!startsWith' '['}}
   {{#compare @key 'includes' '.'}}'{{@key}}'{{else}}{{@key}}{{/compare}}: {
-    type: {{#compare this.type '===' 'Int'}}SimpleSchema.Integer{{else}}{{#compare this.type '===' 'Float'}}Number{{else}}{{this.type}}{{/compare}}{{/compare}},
+    type: {{#compare this.type '===' 'Int'}}SimpleSchema.Integer{{else}}{{#compare this.type '===' 'Float'}}Number{{else}}{{#compare this.type '===' 'DateTime'}}Date{{else}}{{this.type}}{{/compare}}{{/compare}}{{/compare}},
     {{#compare this.input '!=' 'Hidden'}}
     label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_label'),
     {{/compare}}

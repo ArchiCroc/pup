@@ -70,6 +70,7 @@ function compare(v1, o1, v2, mainOperator, v3, o2, v4, opts) {
     startsWith: (a, b) => a.startsWith(b),
     '!startsWith': (a, b) => !a.startsWith(b),
     typeof: (a, b) => betterTypeof(a, b), // typeof a === b,
+    '!typeof': (a, b) => !betterTypeof(a, b),
   };
   const a1 = operators[o1](v1, v2);
   let isTrue;

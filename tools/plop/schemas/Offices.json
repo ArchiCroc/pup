@@ -91,7 +91,7 @@
       "defaultValue": true
     },
     "openDate": {
-      "type": "Date",
+      "type": "DateTime",
       "input": "Date",
       "validate": {
         "optional": true
@@ -99,7 +99,7 @@
       "showInTableView": false
     },
     "closeDate": {
-      "type": "Date",
+      "type": "DateTime",
       "input": "Date",
       "validate": {
         "optional": true

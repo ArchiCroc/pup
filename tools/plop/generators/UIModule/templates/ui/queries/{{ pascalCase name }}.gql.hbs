@@ -32,9 +32,11 @@ query {{ camelCase name }}(
   ) {
     total
     {{ camelCase name }} {
+      {{primaryKeyField}}
+      {{#compare primaryKeyField '!==' urlKeyField}}{{urlKeyField}}{{/compare}}
 {{#each schema.fields ~}}
-  {{~#compare this.showInTableView '!==' false}}
-    {{~#compare this.input '||' this.showInTableView }}
+  {{~#compare this.showInTableView '!==' false '&&' @key '!==' primaryKeyField}}
+    {{~#compare this.input '||' this.showInTableView '&&' @key '!==' urlKeyField }}
       {{#if dataIndex}}
       {{convertDataIndexToGraphqlSubQuery (concat @key '.' dataIndex) 3}}
       {{else}}
