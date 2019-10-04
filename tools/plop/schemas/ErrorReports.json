@@ -86,10 +86,13 @@
     "createdById": {
       "userKey": true,
       "type": "String",
-      "index": true
+      "index": true,
+      "showInTableView": false,
+      "showInDetailView": false
     },
     "createdBy": {
-      "type": "User"
+      "type": "User",
+      "dataIndex": "fullName"
     }
   },
   "defaultSortField": "createdAtUTC",

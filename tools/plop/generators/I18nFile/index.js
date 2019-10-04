@@ -9,20 +9,23 @@ const requireField = (fieldName) => {
 
 module.exports = {
   description: 'Create a custom react hook',
-  prompts: [
-    {
-      type: 'input',
-      name: 'name',
-      message: 'What is your module name?',
-      validate: requireField('name'),
-    },
-    {
+  prompts: async (inquirer) => {
+    const values = await inquirer.prompt({
       type: 'jsonFile',
       name: 'schema',
       message: 'Select a Schema to guide the module fields',
       basePath: './tools/plop/schemas',
-    },
-  ],
+    });
+    const name = await inquirer.prompt({
+      default: values.schema.name || null,
+      type: 'input',
+      name: 'name',
+      message: 'What is your module name?',
+      validate: requireField('name'),
+    });
+    Object.assign(values, name);
+    return values;
+  },
   actions: [
     {
       type: 'add',
