@@ -49,9 +49,9 @@ const schema = {
         _ids: [String]
         page: Int
         pageSize: Int
-        search: String
         sort: String
         order: String
+        search: String
         role: [String]
       ): Users
       exportUserData: UserDataExport
@@ -59,11 +59,12 @@ const schema = {
       #### PLOP_QUERY_TYPES_START ####
       #### ERROR_REPORTS_QUERY_TYPES_START ####
       errorReports(
+        _ids: [String]
         page: Int
         pageSize: Int
-        search: String
         sort: String
         order: String
+        search: String
         level: [Int]
       ): ErrorReports
       myErrorReports: [ErrorReport]

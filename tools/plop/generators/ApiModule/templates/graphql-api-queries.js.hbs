@@ -3,9 +3,9 @@
         _ids: [String]
         page: Int
         pageSize: Int
-        search: String
         sort: String
         order: String
+        search: String
         {{#each schema.fields}}
           {{#if this.filterable}}
             {{#compare this.type 'in' 'String|Int|Float|Number'}}

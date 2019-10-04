@@ -9,27 +9,34 @@ export default {
     }
 
     const {
-      search,
+      _ids,
       pageSize = 10,
       page = 1,
       sort = 'createdAtUTC',
       order = 'descend',
+      search,
       level,
     } = args;
 
     const cleanPageSize = pageSize > 100 ? 100 : pageSize;
 
-    const options = {
-      limit: cleanPageSize,
-      skip: page * cleanPageSize - cleanPageSize,
-    };
+    const options = _ids
+      ? {}
+      : {
+          limit: cleanPageSize,
+          skip: page * cleanPageSize - cleanPageSize,
+        };
 
     const orderDirection = order === 'descend' ? -1 : 1;
-
     options.sort = {};
     options.sort[sort] = orderDirection;
 
     const query = {};
+
+    if (_ids) {
+      query._id = { $in: _ids };
+    }
+
     if (isArray(level)) {
       query.level = { $in: level };
     }
