@@ -66,7 +66,7 @@ const ErrorReportEditor = ({ doc, history }) => {
         <ListField name="stack">
           <ListItemField name="$" />
         </ListField>
-        <ListField name="reackStack">
+        <ListField name="reactStack">
           <ListItemField name="$" />
         </ListField>
         <Button htmlType="submit" type="primary" block>

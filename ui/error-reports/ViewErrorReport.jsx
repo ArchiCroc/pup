@@ -10,14 +10,16 @@ import PageHeader from '../components/PageHeader';
 import Loading from '../components/Loading';
 import NotFound from '../pages/NotFound';
 
-import EditErrorReportButton from './components/EditErrorReportButton'
+import EditErrorReportButton from './components/EditErrorReportButton';
 
 import { errorReport as errorReportQuery } from './queries/ErrorReports.gql';
 
 import StyledViewErrorReport from './StyledViewErrorReport';
 
 const ViewErrorReport = ({ match }) => {
-  const { loading, data: { errorReport } = {} } = useQuery(errorReportQuery, { variables: { _id: match.params._id } });
+  const { loading, data: { errorReport } = {} } = useQuery(errorReportQuery, {
+    variables: { _id: match.params._id },
+  });
 
   return (
     <StyledViewErrorReport>
@@ -51,18 +53,14 @@ const ViewErrorReportFields = ({ errorReport }) => {
       <Descriptions.Item label={i18n.__('ErrorReports.user_id')}>
         {errorReport.userId}
       </Descriptions.Item>
-      <Descriptions.Item label={i18n.__('ErrorReports.user')}>
-        {errorReport.user}
-      </Descriptions.Item>
+      <Descriptions.Item label={i18n.__('ErrorReports.user')}>{errorReport.user}</Descriptions.Item>
       <Descriptions.Item label={i18n.__('ErrorReports.level')}>
         {i18n.__(`ErrorReports.level_${errorReport.level}`)}
       </Descriptions.Item>
       <Descriptions.Item label={i18n.__('ErrorReports.message')}>
         {errorReport.message}
       </Descriptions.Item>
-      <Descriptions.Item label={i18n.__('ErrorReports.path')}>
-        {errorReport.path}
-      </Descriptions.Item>
+      <Descriptions.Item label={i18n.__('ErrorReports.path')}>{errorReport.path}</Descriptions.Item>
       <Descriptions.Item label={i18n.__('ErrorReports.user_agent')}>
         {errorReport.userAgent}
       </Descriptions.Item>
@@ -70,7 +68,7 @@ const ViewErrorReportFields = ({ errorReport }) => {
         {errorReport.stack.join(', ')}
       </Descriptions.Item>
       <Descriptions.Item label={i18n.__('ErrorReports.reack_stack')}>
-        {errorReport.reackStack.join(', ')}
+        {errorReport.reactStack.join(', ')}
       </Descriptions.Item>
       <Descriptions.Item label={i18n.__('ErrorReports.created_at_utc')}>
         <FormatDate timestamp={errorReport.createdAtUTC} />

@@ -22,10 +22,13 @@
     },
     "userId": {
       "userKey": true,
-      "type": "String"
+      "type": "String",
+      "showInTableView": false,
+      "showInDetailView": false
     },
     "user": {
-      "type": "User"
+      "type": "User",
+      "dataIndex": "fullName"
     },
     "level": {
       "type": "Int",
@@ -70,7 +73,7 @@
       "showInTableView": false,
       "searchable": true
     },
-    "reackStack": {
+    "reactStack": {
       "type": "[String]",
       "input": "Text",
       "validate" : {

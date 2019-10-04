@@ -18,7 +18,6 @@ import { errorReports as errorReportsQuery } from './queries/ErrorReports.gql';
 const { Search } = Input;
 
 const ErrorReports = ({ history, location }) => {
-
   const {
     pageSize = 10,
     page = 1,
@@ -37,7 +36,6 @@ const ErrorReports = ({ history, location }) => {
   const [currentSort, setCurrentSort] = useState(sort);
   const [currentOrder, setCurrentOrder] = useState(order);
   const [currentSearch, setCurrentSearch] = useState(search);
-    level,
   const [currentLevel, setCurrentLevel] = useState(
     level && isString(level) ? [parseInt(level, 10)] : level && level.map(parseInt),
   );
@@ -88,7 +86,7 @@ const ErrorReports = ({ history, location }) => {
       dataIndex: 'createdAtUTC',
       sorter: true,
       defaultSortOrder: 'descend',
-      render: (createdAtUTC) => <PrettyDate timestamp={createdAtUTC} />, // eslint-disable-line 
+      render: (createdAtUTC) => <PrettyDate timestamp={createdAtUTC} />, // eslint-disable-line
     },
   ];
 
@@ -115,9 +113,7 @@ const ErrorReports = ({ history, location }) => {
   }
 
   function handleTableChange(pagination, filters, sorter) {
-    const { 
-      level: newLevel = null,
-    } = filters;
+    const { level: newLevel = null } = filters;
 
     const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
 
@@ -147,7 +143,7 @@ const ErrorReports = ({ history, location }) => {
         history.push(`/error-reports/${record._id}`);
       },
     };
-  };
+  }
 
   return (
     <StyledErrorReports>

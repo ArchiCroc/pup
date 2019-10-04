@@ -22,7 +22,6 @@ const { Search } = Input;
 {{/if}}
 
 const {{ pascalCase name }} = ({ history, location }) => {
-
   const {
     pageSize = 10,
     page = 1,
@@ -51,7 +50,6 @@ const {{ pascalCase name }} = ({ history, location }) => {
 {{/if}}
 {{#each schema.fields}}
   {{#if this.filterable}}
-    {{ @key }},
      {{#compare (stripBrackets this.type) '===' 'Int' }}
   const [current{{ pascalCase @key }}, setCurrent{{ pascalCase @key }}] = useState(
     {{ @key }} && isString({{ @key }}) ? [parseInt({{ @key }}, 10)] : {{ @key }} && {{ @key }}.map(parseInt),
