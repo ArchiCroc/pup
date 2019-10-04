@@ -96,7 +96,7 @@ const CrossReferenceSearchField = (props) => {
     setSearch('');
     if (newValue) {
       props.onChange(multiple ? newValue.map((item) => item.key) : newValue.key);
-      selectRef.current.blur();
+      // selectRef.current.blur();
     }
   }
   // eslint-disable-next-line

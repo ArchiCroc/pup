@@ -34,7 +34,7 @@
       "type": "ErrorReport",
       "resolver": "ErrorReportQueries.errorReport",
       "showInTableView": true,
-      "dataIndex": "errorReport.message"
+      "dataIndex": "message"
 
     },
     "assignedToId": {
@@ -50,7 +50,7 @@
     },
     "assignedTo": {
       "type": "User",
-      "dataIndex": "assignedTo.fullName",
+      "dataIndex": "fullName",
       "showInTableView": true
     },
     "preparedByIds": {
@@ -67,7 +67,7 @@
     },
     "preparedBy": {
       "type": "[User]",
-      "dataIndex": "preparedBy.fullName",
+      "dataIndex": "fullName",
       "showInTableView": true
     },
     "name": {

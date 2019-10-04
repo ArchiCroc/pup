@@ -50,10 +50,19 @@ const View{{ pascalCase (singular name) }}Fields = ({ {{ camelCase (singular nam
       {{#each schema.fields ~}}
         {{~#compare this.showInTableView '||' this.input '&&' this.input '!==' 'Hidden'}}
       <Descriptions.Item label={i18n.__('{{ pascalCase @root.name }}.{{ snakeCase @key }}')}>
+        
       {{#compare this.choices 'typeof' 'object'}}
         {i18n.__(`{{ pascalCase @root.name }}.{{ snakeCase @key }}_${ {{~ camelCase (singular @root.name) }}.{{#if this.dataIndex}}{{ this.dataIndex }}{{else}}{{ @key }}{{/if ~}} }`)}
       {{else}}
-        { {{~ camelCase (singular @root.name) }}.{{#if this.dataIndex}}{{ this.dataIndex }}{{else}}{{ @key }}{{/if ~}} }
+        {{#compare this.type 'in' 'DateTime' }}
+        { {{~ camelCase (singular @root.name) }}.{{ @key }}{{#if this.dataIndex}}.{{ this.dataIndex }}{{/if ~}} }
+        {{/compare}}
+        {{#compare this.type 'startsWith' '[' }}
+        { {{~ camelCase (singular @root.name) }}.{{ @key }}{{#if this.dataIndex}}.map((item) => item.{{ this.dataIndex }}){{/if}}.join(', ')}
+        {{/compare}}
+        {{#compare this.type '!in' 'DateTime' && !this.type 'startsWith' '[' }}
+        { {{~ camelCase (singular @root.name) }}.{{ @key }}{{#if this.dataIndex}}.{{ this.dataIndex }}{{/if ~}} }
+        {{/compare}}
       {{/compare}}
       </Descriptions.Item>
         {{/compare~}}

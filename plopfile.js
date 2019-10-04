@@ -98,6 +98,11 @@ module.exports = (plop) => {
     return text.replace(regEx, '$1');
   });
 
+  plop.setHelper('concat', function() {
+    arguments = [...arguments].slice(0, -1);
+    return arguments.join('');
+  });
+
   plop.setHelper('convertDataIndexToGraphqlSubQuery', convertDataIndexToGraphqlSubQuery);
 
   const generators = dirs('./tools/plop/generators');

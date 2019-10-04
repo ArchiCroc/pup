@@ -99,7 +99,7 @@ const {{ pascalCase name }} = ({ history, location }) => {
     {{~#compare this.input '||' this.showInTableView }}
     {
       title: i18n.__(' {{~ pascalCase @root.name ~}} .{{ snakeCase @key }}'),
-      dataIndex: '{{#if this.dataIndex}}{{ this.dataIndex }}{{else}}{{ @key }}{{/if}}',
+      dataIndex: '{{ @key }}{{#if this.dataIndex}}{{#compare this.type '!startsWith' '['}}.{{ this.dataIndex }}{{/compare}}{{/if}}',
       {{#compare this.type '===' 'String'}}
       sorter: true,
       defaultSortOrder: 'ascend',
@@ -126,6 +126,11 @@ const {{ pascalCase name }} = ({ history, location }) => {
       {{#if this.choices}}
       render: (value, record) => i18n.__(`{{ pascalCase @root.name }}.{{@key}}_${value}`), // eslint-disable-line
       {{/if}}
+      {{else}}
+        {{#compare this.type 'startsWith' '['}}
+      render: (value, record) => value{{#if this.dataIndex}}.map((item) => item.{{ this.dataIndex }}){{/if}}.join(', ')
+
+        {{/compare}}
       {{/compare}}
     },
     {{/compare}}
