@@ -35,6 +35,9 @@ function processSchema(input) {
   data.labelKeyField = schemaKeys[labelKeyIndex];
   data.labelKeyType = data.schema.fields[data.labelKeyField].type || 'String';
 
+  data.isSearchable = !!schemaValues.find((field) => field.searchable);
+  data.isFilterable = !!schemaValues.find((field) => field.searchable);
+
   return data;
 }
 

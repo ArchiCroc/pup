@@ -202,6 +202,7 @@ const {{ pascalCase name }} = ({ history, location }) => {
       <PageHeader title={i18n.__('{{ pascalCase name }}.{{ snakeCase (singular name) }}_plural')} />
       <p>
         <New{{ pascalCase (singular name) }}Button />
+        {{#if isSearchable}}
         <span className="pull-right" style=\{{ width: 300 }}>
           <Search
             placeholder={i18n.__('{{ pascalCase name }}.search_placeholder')}
@@ -211,6 +212,7 @@ const {{ pascalCase name }} = ({ history, location }) => {
             enterButton
           />
         </span>
+        {{/if}}
       </p>
       <Table
         columns={columns}

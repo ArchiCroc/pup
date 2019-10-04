@@ -43,6 +43,7 @@ export default {
     {{/if}}
     {{/each}}
 
+    {{#if isSearchable}}
     if (search) {
       const searchRegEx = new RegExp(search, 'i');
       query.$or = [
@@ -53,6 +54,7 @@ export default {
       {{/each}}
       ];
     }
+    {{/if}}
 
     const result = {{ pascalCase name }}.find(query, options);
 
