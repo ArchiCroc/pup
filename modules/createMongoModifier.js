@@ -7,14 +7,18 @@ function createMongoModifier(schema, object) {
   const $unset = {};
 
   for (let i = 0; i < unsetKeys.length; i++) {
-    $unset[unsetKeys[i]] = 1;
+    const key = unsetKeys[i];
+    // @todo this needs more testing
+    if (!key.includes('$')) {
+      $unset[key] = 1;
+    }
   }
 
   const modifiers = {};
   if (Object.keys(object).length > 0) {
     modifiers.$set = object;
   }
-  if (unsetKeys.length > 0) {
+  if (Object.keys($unset).length > 0) {
     modifiers.$unset = $unset;
   }
   return modifiers;

@@ -94,11 +94,14 @@ const queryUsers = (options) => {
   try {
     validateOptions(options);
     checkIfAuthorized({ as: ['admin'], userId: options.currentUser._id });
-
-    action.resolve({
-      total: getTotalUserCount(options),
-      users: getUsers(options),
-    });
+    if (options.pagination === false) {
+      action.resolve(getUsers(options));
+    } else {
+      action.resolve({
+        total: getTotalUserCount(options),
+        users: getUsers(options),
+      });
+    }
   } catch (exception) {
     action.reject(`[queryUsers] ${exception.message}`);
   }

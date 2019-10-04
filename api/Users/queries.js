@@ -58,12 +58,45 @@ export default {
   },
   resolveUser: (parent, args, context) => {
     if (!context.user) throw new Error('Sorry, you must be logged in to resolve a user');
-    if (!args.userId) {
+    if (!args._id) {
       return null;
     }
     return queryUser({
-      userIdToQuery: args.userId,
+      userIdToQuery: args._id,
     });
+  },
+  resolveUsers: (parent, args, context) => {
+    if (!context.user) throw new Error('Sorry, you must be logged in to resolve a user');
+
+    const { _ids, sort = 'fullName', order = 'ascend' } = args;
+
+    if (!_ids) {
+      return null;
+    }
+
+    const query = {
+      pagination: false,
+      _ids,
+      currentUser: context.user,
+    };
+
+    const orderDirection = order === 'descend' ? -1 : 1;
+
+    if (sort === 'fullName') {
+      query.sort = {
+        'profile.firstName': orderDirection,
+        'profile.lastName': orderDirection,
+        'services.facebook.first_name': orderDirection,
+        'services.google.name': orderDirection,
+        'services.github.username': orderDirection,
+      };
+    } else if (sort === 'emailAddress') {
+      query.sort = {
+        'emails.0.address': orderDirection,
+      };
+    }
+
+    return queryUsers(query);
   },
   exportUserData: (parent, args, { user }) =>
     exportUserData({

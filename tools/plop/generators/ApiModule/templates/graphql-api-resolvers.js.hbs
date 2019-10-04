@@ -6,12 +6,12 @@
   {{else}}
     {{#compare this.type '===' 'User'}}
       {{@key}}: (parent, args, context) =>
-        UserQueries.resolveUser(parent, { userId: parent.{{#if parentKey}}{{parentKey}}{{else}}{{@key}}Id{{/if}} }, context),
+        UserQueries.resolveUser(parent, { _ids: parent.{{#if parentKey}}{{parentKey}}{{else}}{{@key}}Id{{/if}} }, context),
     {{/compare}}
      {{#compare this.type '===' '[User]'}}
       {{@key}}: (parent, args, context) =>
         parent.preparedByIds
-          ? UserQueries.users(parent, { _ids: parent.{{#if parentKey}}{{parentKey}}{{else}}{{@key}}Ids{{/if}} }, context)
+          ? UserQueries.resolveUsers(parent, { _ids: parent.{{#if parentKey}}{{parentKey}}{{else}}{{@key}}Ids{{/if}} }, context)
           : [],
     {{/compare}}
   {{/if}}
