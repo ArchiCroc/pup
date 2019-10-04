@@ -182,6 +182,7 @@
             "__",
             "___",
             "_id",
+            "_ids",
             "_ensureIndex",
             "_verifyEmailToken",
             "_resetPasswordToken",

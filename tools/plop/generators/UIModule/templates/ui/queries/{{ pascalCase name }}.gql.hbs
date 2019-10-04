@@ -1,6 +1,7 @@
 #import "../fragments/{{ pascalCase name }}.gql"
 
 query {{ camelCase name }}(
+  $_ids: [String]
   $page: Int, 
   $pageSize: Int, 
   $search: String, 
@@ -17,6 +18,7 @@ query {{ camelCase name }}(
   {{/each}}
 ) {
   {{ camelCase name }}(
+    _ids: $_ids,
     page: $page, 
     pageSize: $pageSize, 
     search: $search, 

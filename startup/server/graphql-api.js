@@ -46,6 +46,7 @@ const schema = {
       user(_id: String): User
       resolveUser(userId: String): User
       users(
+        _ids: [String]
         page: Int
         pageSize: Int
         search: String

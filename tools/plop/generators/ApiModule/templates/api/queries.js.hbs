@@ -11,30 +11,40 @@ export default {
     {{/compare}}
 
     const {
-      search,
+      _ids,
       pageSize = 10,
       page = 1,
       sort = '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelKeyField}}{{/if}}',
       order = '{{#if schema.defaultSortOrder}}{{schema.defaultSortOrder}}{{else}}ascend{{/if}}',
-      {{#each schema.fields}}
-      {{#if this.filterable}}
+  {{#if isSearchable}}
+      search,
+  {{/if}}
+  {{#each schema.fields}}
+    {{#if this.filterable}}
       {{ @key }},
-      {{/if}}
-      {{/each}}
+    {{/if}}
+  {{/each}}
     } = args;
 
     const cleanPageSize = pageSize > 100 ? 100 : pageSize;
 
-    const options = {
-      limit: cleanPageSize,
-      skip: page * cleanPageSize - cleanPageSize,
-    };
+    const options = _ids
+      ? {}
+      : {
+          limit: cleanPageSize,
+          skip: page * cleanPageSize - cleanPageSize,
+        };
 
     const orderDirection = order === 'descend' ? -1 : 1;
     options.sort = {};
     options.sort[sort] = orderDirection;
 
     const query = {};
+
+    if (_ids) {
+      query._id = { $in: _ids };
+    }
+
     {{#each schema.fields}}
     {{#if this.filterable}}
     if (isArray({{ @key }})) {

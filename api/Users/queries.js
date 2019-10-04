@@ -6,9 +6,18 @@ import exportUserData from './actions/exportUserData';
 export default {
   users: (parent, args, context) => {
     console.log('args', args);
-    const { search, pageSize = 10, page = 1, sort = 'fullName', order = 'ascend', role } = args;
+    const {
+      _ids,
+      pageSize = 10,
+      page = 1,
+      sort = 'fullName',
+      order = 'ascend',
+      search,
+      role,
+    } = args;
 
     const query = {
+      _ids,
       currentUser: context.user,
       search: search ? new RegExp(search, 'i') : null,
       limit: pageSize,
