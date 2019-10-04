@@ -1,12 +1,12 @@
 fragment {{ pascalCase (singular name) }}Attributes on {{ pascalCase (singular name) }} {
   {{#each schema.fields ~}}
-    {{~#compare this.showInTableView '||' this.input}}
+    {{!-- {{~#compare this.showInTableView '||' this.input }} --}}
       {{#if dataIndex}}
   {{convertDataIndexToGraphqlSubQuery (concat @key '.' dataIndex) 1}}
       {{else}}
   {{@key}}
       {{/if}}
-    {{/compare~}}
+    {{!-- {{/compare~}} --}}
   {{~/each}}
 }
 

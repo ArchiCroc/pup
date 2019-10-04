@@ -7,15 +7,15 @@ query {{ camelCase name }}(
   $search: String, 
   $sort: String, 
   $order: String,
-  {{#each schema.fields}}
-    {{#if this.filterable}}
-      {{#compare this.type 'in' 'String|Int|Float|Number'}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
+    {{#compare this.type 'in' 'String|Int|Float|Number'}}
   ${{ @key }}: [{{#compare this.type '===' 'Number'}}Float{{else}}{{this.type}}{{/compare}}],
-        {{else}}
+    {{else}}
   ${{ @key }}: {{#compare this.type '===' 'Number'}}Float{{else}}{{this.type}}{{/compare}},
-        {{/compare}}
-    {{/if}}
-  {{/each}}
+    {{/compare}}
+  {{/if}}
+{{/each}}
 ) {
   {{ camelCase name }}(
     _ids: $_ids,
@@ -24,15 +24,25 @@ query {{ camelCase name }}(
     search: $search, 
     sort: $sort, 
     order: $order,
-    {{#each schema.fields}}
-      {{#if this.filterable}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
     {{ @key }}: ${{@key}},
-      {{/if}}
-    {{/each}}
+  {{/if}}
+{{/each}}
   ) {
     total
     {{ camelCase name }} {
-      ...{{ pascalCase (singular name) }}Attributes
+{{#each schema.fields ~}}
+  {{~#compare this.showInTableView '!==' false}}
+    {{~#compare this.input '||' this.showInTableView }}
+      {{#if dataIndex}}
+      {{convertDataIndexToGraphqlSubQuery (concat @key '.' dataIndex) 3}}
+      {{else}}
+      {{@key}}
+      {{/if}}
+    {{/compare~}}
+  {{/compare~}}
+{{/each}}
     }
   }
 }
