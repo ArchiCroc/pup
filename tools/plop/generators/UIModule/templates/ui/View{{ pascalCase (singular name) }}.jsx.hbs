@@ -54,14 +54,18 @@ const View{{ pascalCase (singular name) }}Fields = ({ {{ camelCase (singular nam
       {{#compare this.choices 'typeof' 'object'}}
         {i18n.__(`{{ pascalCase @root.name }}.{{ snakeCase @key }}_${ {{~#if this.dataIndex}}{{ this.dataIndex }} && {{/if}}{{ camelCase (singular @root.name) }}.{{#if this.dataIndex}}{{ this.dataIndex }}{{else}}{{ @key }}{{/if ~}} }`)}
       {{else}}
+        {{#compare this.type '===' 'Boolean'}}
+        { {{~ camelCase (singular @root.name) }}.{{@key}} && i18n.__(`{{ pascalCase @root.name }}.${ {{~ camelCase (singular @root.name) }}.{{@key}}{{#if this.dataIndex}}.{{ this.dataIndex }}{{/if}}? 'yes' : 'no'}`)}
+        {{/compare}}
         {{#compare this.type 'in' 'DateTime' }}
-        <FormatDate timestamp={ {{~#if this.dataIndex}}{{ this.dataIndex }} && {{/if}}{{ camelCase (singular @root.name) }}.{{ @key }}{{#if this.dataIndex}}.{{ this.dataIndex }}{{/if ~}} } />
+           
+        { {{~ camelCase (singular @root.name) }}.{{@key}} && <FormatDate timestamp={ {{~ camelCase (singular @root.name) }}.{{ @key }}{{#if this.dataIndex}}.{{ this.dataIndex }}{{/if ~}} }{{#compare this.input '===' 'Date' }} format="MMMM Do, YYYY"{{/compare}} />}
         {{/compare}}
         {{#compare this.type 'startsWith' '[' }}
-        { {{~ camelCase (singular @root.name) }}.{{ @key }}{{#if this.dataIndex}}.map((item) => item.{{ this.dataIndex }}){{/if}}.join(', ')}
+        { {{~ camelCase (singular @root.name) }}.{{ @key }} && {{ camelCase (singular @root.name) }}.{{ @key }}{{#if this.dataIndex}}.map((item) => item.{{ this.dataIndex }}){{/if}}.join(', ')}
         {{/compare}}
-        {{#compare this.type '!in' 'DateTime' '&&' this.type '!startsWith' '[' }}
-        { {{~#if this.dataIndex}}{{ this.dataIndex }} && {{/if}}{{ camelCase (singular @root.name) }}.{{ @key }}{{#if this.dataIndex}}.{{ this.dataIndex }}{{/if ~}} }
+        {{#compare this.type '!in' 'DateTime|Boolean' '&&' this.type '!startsWith' '[' }}
+        { {{~#if this.dataIndex}}{{ camelCase (singular @root.name) }}.{{ @key }} && {{/if}}{{ camelCase (singular @root.name) }}.{{ @key }}{{#if this.dataIndex}}.{{ this.dataIndex }}{{/if ~}} }
         {{/compare}}
       {{/compare}}
       </Descriptions.Item>

@@ -34,9 +34,11 @@ blank_state_subtitle: ""
         {{#compare this.type '!=' 'Boolean'  }}
           {{#compare this.input 'in' 'Array|Select|Options|Dropdown'  }}
 {{snakeCase @key}}_placeholder: Select {{titleCase @key}}
-            {{#each this.choices}}
+            {{#compare this.choices 'typeof' 'object'}}
+              {{#each this.choices}}
 {{snakeCase @../key}}_{{this}}: {{@key}}
-            {{/each}}
+              {{/each}}
+            {{/compare}}
           {{else}}
 {{snakeCase @key}}_placeholder: {{titleCase @key}}
           {{/compare}}

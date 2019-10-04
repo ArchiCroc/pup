@@ -98,11 +98,11 @@ const {{ pascalCase name }} = ({ history, location }) => {
     {
       title: i18n.__(' {{~ pascalCase @root.name ~}} .{{ snakeCase @key }}'),
       dataIndex: '{{ @key }}{{#if this.dataIndex}}{{#compare this.type '!startsWith' '['}}.{{ this.dataIndex }}{{/compare}}{{/if}}',
-      {{#compare this.type '===' 'String'}}
+      {{#compare this.type '===' 'String'}}{{#compare this.choices '!typeof' 'object'}}
       sorter: true,
       defaultSortOrder: 'ascend',
       // render: (value, record) => <Link to={`/{{ dashCase @root.name }}/${record.{{ @root.urlKeyField ~}} }/edit`}>{value}</Link>, // eslint-disable-line
-      {{/compare}}
+      {{/compare}}{{/compare}}
       {{#compare this.type 'in' 'Date|DateTime|Time'}}
       sorter: true,
       defaultSortOrder: 'descend',
@@ -118,16 +118,14 @@ const {{ pascalCase name }} = ({ history, location }) => {
       // defaultSortOrder: 'ascend',
       // render: (value, record) => value, // eslint-disable-line
       {{/compare}}
-      {{#compare this.input 'in' 'Array|Select|Options|Dropdown'  }}
+      {{#compare this.choices 'typeof' 'object'  }}
       sorter: true,
       // defaultSortOrder: 'ascend',
-      {{#if this.choices}}
       render: (value, record) => i18n.__(`{{ pascalCase @root.name }}.{{@key}}_${value}`), // eslint-disable-line
-      {{/if}}
-      {{else}}
-        {{#compare this.type 'startsWith' '['}}
+      {{/compare}}
+      {{#compare this.type 'startsWith' '['}}
+      sorter: true,
       render: (value) => value{{#if this.dataIndex}}.map((item) => item.{{ this.dataIndex }}){{/if}}.join(', '),
-        {{/compare}}
       {{/compare}}
     },
     {{/compare}}
