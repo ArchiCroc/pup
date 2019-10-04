@@ -13,12 +13,12 @@ const FormatDate = (props) => {
     ? moment.utc(props.timestamp)
     : moment.utc(props.timestamp).tz(timezone);
 
-  return <>{timestamp.format('MMMM Do, YYYY [at] hh:mm a')}></>;
+  return <>{timestamp.format(props.format)}</>;
 };
 
 FormatDate.defaultProps = {
   timezone: undefined,
-  format: 'MMMM Do, YYYY [at] hh:mm a'm
+  format: 'MMMM Do, YYYY [at] hh:mm a',
 };
 
 FormatDate.propTypes = {
