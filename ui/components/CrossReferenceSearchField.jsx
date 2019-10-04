@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import Select from 'antd/lib/select';
 import connectField from 'uniforms/connectField';
+import filterDOMProps from 'uniforms/filterDOMProps';
 import wrapField from 'uniforms-antd/wrapField';
+
 import debounce from 'lodash/debounce';
 import gql from 'graphql-tag';
 
@@ -152,3 +154,12 @@ CrossReferenceSearchField.propTypes = {
 };
 
 export default connectField(CrossReferenceSearchField);
+
+filterDOMProps.register(
+  'query',
+  'edges',
+  'primaryKeyField',
+  'labelField',
+  'valueField',
+  'multiple',
+);
