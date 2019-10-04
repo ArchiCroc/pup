@@ -1,7 +1,11 @@
 fragment {{ pascalCase (singular name) }}Attributes on {{ pascalCase (singular name) }} {
   {{#each schema.fields ~}}
     {{~#compare this.table '||' this.input}}
-    {{@key}}
+      {{#if dataIndex}}
+  {{convertDataIndexToGraphqlSubQuery dataIndex}}
+      {{else}}
+  {{@key}}
+      {{/if}}
     {{/compare~}}
   {{~/each}}
 }

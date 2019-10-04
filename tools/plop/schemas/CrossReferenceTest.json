@@ -1,0 +1,56 @@
+{ "name": "CrossReferenceTests",
+  "permissions": {
+    "read": "admin",
+    "save": "admin",
+    "delete":"admin"
+  },
+  "menu": {
+    "index": "user"
+  },
+    
+  "fields": {
+    "_id": {
+      "primaryKey": true,
+      "urlKey": true,
+      "type": "String",
+      "input": "Hidden",
+      "validate" : {
+        "max": 24,
+        "optional": true
+      }
+    },
+    "errorReportId": {
+      "type": "String",
+      "input": "CrossReferenceSelect",
+      "uniforms": {
+        "query": "errorReports",
+        "edges": "errorReports",
+        "labelField": "message",
+        "valueField": "_id"
+      },
+      "table": false
+    },
+    "errorReport": {
+      "type": "ErrorReport",
+      "resolver": "ErrorReportQueries.errorReport",
+      "table": true,
+      "dataIndex": "errorReport.message"
+
+    },
+    "name": {
+      "labelKey": true,
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+          "max": 64
+      }
+    },
+    "description": {
+      "type": "String",
+      "input": "LongText",
+      "validate" : {
+          "max": 1024
+      }
+    }
+  }
+}

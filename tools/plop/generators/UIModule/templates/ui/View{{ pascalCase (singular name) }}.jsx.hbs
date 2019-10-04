@@ -50,11 +50,11 @@ const View{{ pascalCase (singular name) }}Fields = ({ {{ camelCase (singular nam
       {{#each schema.fields ~}}
         {{~#compare this.table '||' this.input '&&' this.input '!==' 'Hidden'}}
       <Descriptions.Item label={i18n.__('{{ pascalCase @root.name }}.{{ snakeCase @key }}')}>
-      {{#isObject this.choices}}
-        {i18n.__(`{{ pascalCase @root.name }}.{{ snakeCase @key }}_${ {{~ camelCase (singular @root.name) }}.{{ @key ~}} }`)}
+      {{#compare this.choices 'typeof' 'object'}}
+        {i18n.__(`{{ pascalCase @root.name }}.{{ snakeCase @key }}_${ {{~ camelCase (singular @root.name) }}.{{#if this.dataIndex}}{{ this.dataIndex }}{{else}}{{ @key }}{{/if ~}} }`)}
       {{else}}
-        { {{~ camelCase (singular @root.name) }}.{{ @key ~}} }
-      {{/isObject}}
+        { {{~ camelCase (singular @root.name) }}.{{#if this.dataIndex}}{{ this.dataIndex }}{{else}}{{ @key }}{{/if ~}} }
+      {{/compare}}
       </Descriptions.Item>
         {{/compare~}}
       {{~/each}}

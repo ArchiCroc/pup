@@ -61,7 +61,7 @@ module.exports = {
             variable: `${input}Field`,
             path: uniformsFields.includes(input)
               ? `uniforms-antd/${input}Field`
-              : `../components/${input}Field`,
+              : `../../components/${input}Field`,
           };
         }),
       'variable',

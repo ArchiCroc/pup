@@ -63,14 +63,13 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
       placeholder: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_placeholder'),
         {{/compare}}
       {{/compare}}
-      {{#each this.uniforms}}
-      {{@key}}: {{{this}}},
+      {{#each uniforms}}
+      {{@key}}: {{#compare this 'typeof' 'string'}}'{{{this}}}'{{else}}{{this}}{{/compare}},
       {{/each}}
       {{#if this.choices}}
-      {{#isArray this.choices}}
-      {{else}}
+      {{#compare this.choices 'typeof' 'object'}}
       transform: (value) => i18n.__(`{{ pascalCase @root.name }}.{{snakeCase @key}}_${value}`),
-      {{/isArray}}
+      {{/compare}}
       {{/if}}
     },
   },
@@ -101,7 +100,7 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
         {{/compare}}
       {{/compare}}
       {{#each this.uniforms}}
-      {{@key}}: {{{this}}},
+      {{@key}}: {{#compare this 'typeof' 'string'}}'{{{this}}}'{{else}}{{this}}{{/compare}},
       {{/each}}
     },
   },
@@ -132,13 +131,12 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
         {{/compare}}
       {{/compare}}
       {{#each this.uniforms}}
-      {{@key}}: {{{this}}},
+      {{@key}}: {{#compare this 'typeof' 'string'}}'{{{this}}}'{{else}}{{this}}{{/compare}},
       {{/each}}
       {{#if this.choices}}
-      {{#isArray this.choices}}
-      {{else}}
+      {{#compare this.choices 'typeof' 'object'}}
       transform: (value) => i18n.__(`{{ pascalCase @root.name }}.{{snakeCase @key}}_${value}`),
-      {{/isArray}}
+      {{/compare}}
       {{/if}}
     },
   },

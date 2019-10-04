@@ -44,17 +44,17 @@ const {{ pascalCase name }} = ({ history, location }) => {
 {{#each schema.fields}}
   {{#if this.filterable}}
     {{ @key }},
-     {{#compare this.type 'in' 'Int|[Int]' }}
+     {{#compare (stripBrackets this.type) '===' 'Int' }}
   const [current{{ pascalCase @key }}, setCurrent{{ pascalCase @key }}] = useState(
     {{ @key }} && isString({{ @key }}) ? [parseInt({{ @key }}, 10)] : {{ @key }} && {{ @key }}.map(parseInt),
   );
     {{/compare}}
-    {{#compare this.type 'in' 'Float|Number|[Float]|[Number]' }}
+    {{#compare (stripBrackets this.type) 'in' 'Float|Number' }}
   const [current{{ pascalCase @key }}, setCurrent{{ pascalCase @key }}] = useState(
     {{ @key }} && isString({{ @key }}) ? [parseFloat({{ @key }}, 10)] : {{ @key }} && {{ @key }}.map(parseFloat),
   );
     {{/compare}}
-    {{#compare this.type 'in' 'String|[String]' }}
+    {{#compare (stripBrackets this.type) '===' 'String' }}
   const [current{{ pascalCase @key }}, setCurrent{{ pascalCase @key }}] = useState(
     {{ @key }} && isString({{ @key }}) ? [{{ @key }}] : {{ @key }},
   );
@@ -89,7 +89,7 @@ const {{ pascalCase name }} = ({ history, location }) => {
     {{~#compare this.input '||' this.table }}
     {
       title: i18n.__(' {{~ pascalCase @root.name ~}} .{{ snakeCase @key }}'),
-      dataIndex: '{{ @key }}',
+      dataIndex: '{{#if this.dataIndex}}{{ this.dataIndex }}{{else}}{{ @key }}{{/if}}',
       {{#compare this.type '===' 'String'}}
       sorter: true,
       defaultSortOrder: 'ascend',

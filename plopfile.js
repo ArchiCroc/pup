@@ -18,6 +18,44 @@ function comment(data, userConfig, plop) {
   return plop.renderString(comment, data); // render the comment as hbs templates
 }
 
+function convertDataIndexToGraphqlSubQuery(dataIndex) {
+  const parts = dataIndex.split('.');
+  let start = '';
+  let end = '';
+
+  parts.forEach((part, index) => {
+    for (let i = 0; i < index; i++) {
+      start += '  ';
+    }
+    start += part;
+
+    if (index + 1 < parts.length) {
+      start += ' {\n';
+    } else if (parts.length > 1) {
+      start += '\n';
+    }
+
+    if (index + 1 < parts.length) {
+      end = '}\n' + end;
+      for (let i = 0; i < index; i++) {
+        end = '  ' + end;
+      }
+    }
+  });
+
+  return start + end;
+}
+
+function betterTypeof(a, b) {
+  if (b === 'array') {
+    return a && Array.isArray(a);
+  }
+  if (b === 'object') {
+    return a && a instanceof Object && !(a instanceof Array);
+  }
+  return typeof a === b;
+}
+
 function compare(v1, o1, v2, mainOperator, v3, o2, v4, opts) {
   let options = opts;
   const operators = {
@@ -37,7 +75,7 @@ function compare(v1, o1, v2, mainOperator, v3, o2, v4, opts) {
     '!in': (a, b) => !b.split('|').includes(a),
     startsWith: (a, b) => a.startsWith(b),
     '!startsWith': (a, b) => !a.startsWith(b),
-    typeof: (a, b) => typeof a === b,
+    typeof: (a, b) => betterTypeof(a, b), // typeof a === b,
   };
   const a1 = operators[o1](v1, v2);
   let isTrue;
@@ -57,15 +95,7 @@ module.exports = (plop) => {
   plop.setHelper('pluralize', (txt) => pluralize(txt));
   plop.setHelper('singular', (txt) => pluralize.singular(txt));
   plop.setHelper('compare', compare);
-  plop.setHelper('log', console.log);
-  plop.setHelper('isArray', (value, options) =>
-    value && Array.isArray(value) ? options.fn(this) : options.inverse(this),
-  );
-  plop.setHelper('isObject', (value, options) =>
-    value && value instanceof Object && !(value instanceof Array)
-      ? options.fn(this)
-      : options.inverse(this),
-  );
+  plop.setHelper('log', (value) => console.log(value));
   plop.setHelper('stripBrackets', (text) => {
     return text.replace(/\[(\w+)\]/, '$1');
   });
@@ -73,6 +103,8 @@ module.exports = (plop) => {
     const regEx = new RegExp(`^${prefix}(.*)`);
     return text.replace(regEx, '$1');
   });
+
+  plop.setHelper('convertDataIndexToGraphqlSubQuery', convertDataIndexToGraphqlSubQuery);
 
   const generators = dirs('./tools/plop/generators');
 
