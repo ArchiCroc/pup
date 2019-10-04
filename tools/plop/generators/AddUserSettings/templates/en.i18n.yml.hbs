@@ -1,7 +1,7 @@
 {{#each schema.fields}}
-  {{#compare this.table '||' this.input}}
+  {{#compare this.showInTableView '||' this.input}}
     {{#compare this.input '!=' 'Hidden'}}
-{{snakeCase @key}}: {{#compare this.table 'typeof' 'string'}}{{this.table}}{{else}}{{ titleCase (truncate @key 'gdpr.')}}{{/compare}}
+{{snakeCase @key}}: {{#compare this.showInTableView 'typeof' 'string'}}{{this.showInTableView}}{{else}}{{ titleCase (truncate @key 'gdpr.')}}{{/compare}}
     {{#if this.input}}
 {{snakeCase @key}}_label: {{titleCase (truncate @key 'gdpr.')}}
       {{#compare this.type '!=' 'Boolean'  }}

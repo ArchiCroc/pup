@@ -26,9 +26,9 @@ blank_state_subtitle: ""
 
 #### PLOP_FIELDS_START ####
 {{#each schema.fields}}
-  {{#compare this.table '||' this.input}}
+  {{#compare this.showInTableView '||' this.input}}
     {{#compare this.input '!=' 'Hidden'}}
-{{snakeCase @key}}: {{#compare this.table 'typeof' 'string'}}{{this.table}}{{else}}{{ titleCase @key}}{{/compare}}
+{{snakeCase @key}}: {{#compare this.showInTableView 'typeof' 'string'}}{{this.showInTableView}}{{else}}{{ titleCase @key}}{{/compare}}
       {{#if this.input}}
 {{snakeCase @key}}_label: {{titleCase @key}}
         {{#compare this.type '!=' 'Boolean'  }}

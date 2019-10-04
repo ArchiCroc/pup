@@ -38,7 +38,7 @@
     },   
     "createdAtUTC": {
       "type": "DateTime",
-      "table": "Created At"
+      "showInTableView": "Created At"
     },
     "createdById": {
       "userKey": true,

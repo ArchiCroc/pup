@@ -95,8 +95,8 @@ const {{ pascalCase name }} = ({ history, location }) => {
 
   const columns = [
 {{#each schema.fields ~}}
-  {{#compare this.input '!==' 'Hidden' '&&' this.table '!==' false}}
-    {{~#compare this.input '||' this.table }}
+  {{#compare this.input '!==' 'Hidden' '&&' this.showInTableView '!==' false}}
+    {{~#compare this.input '||' this.showInTableView }}
     {
       title: i18n.__(' {{~ pascalCase @root.name ~}} .{{ snakeCase @key }}'),
       dataIndex: '{{#if this.dataIndex}}{{ this.dataIndex }}{{else}}{{ @key }}{{/if}}',

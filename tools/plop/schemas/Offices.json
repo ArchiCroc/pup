@@ -38,7 +38,7 @@
       "clean": "(item) => item.toLowerCase()",
       "sourceField": "name",
       "sourceModifier": "(item)=> item.dashCase()",
-      "table": false
+      "showInTableView": false
     },
     "folderName": {
       "labelKey": true,
@@ -56,7 +56,7 @@
           "max": 100,
           "optional": true
       },
-      "table": false
+      "showInTableView": false
     },
     "ipSubnets": {
       "type": "[String]",
@@ -65,7 +65,7 @@
           "max": 48,
           "optional": true
       },
-      "table": false
+      "showInTableView": false
     },
     "projectNumberCode": {
       "type": "String",
@@ -74,7 +74,7 @@
         "max": 3,
         "optional": true
       },
-      "table": false
+      "showInTableView": false
     },
     "timezone": {
       "type": "String",
@@ -96,7 +96,7 @@
       "validate": {
         "optional": true
       },
-      "table": false
+      "showInTableView": false
     },
     "closeDate": {
       "type": "Date",
@@ -104,7 +104,7 @@
       "validate": {
         "optional": true
       },
-      "table": false
+      "showInTableView": false
     },
     "itEmailAddress": {
       "type": "String",
@@ -113,7 +113,7 @@
         "regEx": "SimpleSchema.RegEx.Email",
         "max": 64
       },
-      "table": false
+      "showInTableView": false
     },
     "defaultProjectFolderNameFormat": {
       "type": "String",
@@ -127,11 +127,11 @@
       "validate": {
         "max": 64
       },
-      "table": false
+      "showInTableView": false
     },
     "createdAtUTC": {
       "type": "DateTime",
-      "table": "Created At"
+      "showInTableView": "Created At"
     },
     "createdById": {
       "userKey": true,

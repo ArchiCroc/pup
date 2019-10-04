@@ -28,12 +28,12 @@
         "labelField": "message",
         "valueField": "_id"
       },
-      "table": false
+      "showInTableView": false
     },
     "errorReport": {
       "type": "ErrorReport",
       "resolver": "ErrorReportQueries.errorReport",
-      "table": true,
+      "showInTableView": true,
       "dataIndex": "errorReport.message"
 
     },
@@ -46,11 +46,12 @@
         "labelField": "fullName",
         "valueField": "_id"
       },
-      "table": false
+      "showInTableView": false
     },
     "assignedTo": {
       "type": "User",
-      "dataIndex": "assignedTo.fullName"
+      "dataIndex": "assignedTo.fullName",
+      "showInTableView": true
     },
     "name": {
       "labelKey": true,

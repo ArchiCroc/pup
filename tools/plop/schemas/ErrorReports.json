@@ -67,7 +67,7 @@
       "validate" : {
           "optional": true
       },
-      "table": false,
+      "showInTableView": false,
       "searchable": true
     },
     "reackStack": {
@@ -76,12 +76,12 @@
       "validate" : {
           "optional": true
       },
-      "table": false,
+      "showInTableView": false,
       "searchable": true
     },
     "createdAtUTC": {
       "type": "DateTime",
-      "table": "Created At"
+      "showInTableView": "Created At"
     },
     "createdById": {
       "userKey": true,
