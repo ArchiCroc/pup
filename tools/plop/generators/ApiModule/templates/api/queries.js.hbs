@@ -93,7 +93,7 @@ export default {
       return {{ pascalCase name }}.findOne({ {{ primaryKeyField }} });
     }
 {{#compare primaryKeyField '!==' urlKeyField }}
-    const {{ urlKeyField }} = (parent && parent.{{ camelCase (singular name) }}{{ pascalCase urlKeyField}) || args.{{ urlKeyField }};
+    const {{ urlKeyField }} = (parent && parent.{{ camelCase (singular name) }}{{ pascalCase urlKeyField }}) || args.{{ urlKeyField }};
     if ({{ urlKeyField }}) {
       return {{ pascalCase name }}.findOne({ {{ urlKeyField }} });
     }
