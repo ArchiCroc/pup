@@ -50,9 +50,6 @@ ViewErrorReport.propTypes = {
 const ViewErrorReportFields = ({ errorReport }) => {
   return (
     <Descriptions bordered column={1}>
-      <Descriptions.Item label={i18n.__('ErrorReports.user_id')}>
-        {errorReport.userId}
-      </Descriptions.Item>
       <Descriptions.Item label={i18n.__('ErrorReports.user')}>
         {errorReport.user && errorReport.user.fullName}
       </Descriptions.Item>
@@ -69,7 +66,7 @@ const ViewErrorReportFields = ({ errorReport }) => {
       <Descriptions.Item label={i18n.__('ErrorReports.stack')}>
         {errorReport.stack.join(', ')}
       </Descriptions.Item>
-      <Descriptions.Item label={i18n.__('ErrorReports.reack_stack')}>
+      <Descriptions.Item label={i18n.__('ErrorReports.react_stack')}>
         {errorReport.reactStack.join(', ')}
       </Descriptions.Item>
       <Descriptions.Item label={i18n.__('ErrorReports.created_at_utc')}>
