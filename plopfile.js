@@ -3,13 +3,6 @@ const filePath = require('inquirer-parse-json-file'); // require('inquirer-file-
 
 const { readdirSync, statSync } = require('fs');
 const { join } = require('path');
-const apiModuleGenerator = require('./tools/plop/generators/ApiModule');
-const uiModuleGenerator = require('./tools/plop/generators/UIModule');
-const componentGenerator = require('./tools/plop/generators/Component');
-const pageGenerator = require('./tools/plop/generators/Page');
-const hookGenerator = require('./tools/plop/generators/Hook');
-const i18nFileGenerator = require('./tools/plop/generators/I18nFile');
-const basicModuleGenerator = require('./tools/plop/generators/BasicModule');
 
 const dirs = (p) => readdirSync(p).filter((f) => statSync(join(p, f)).isDirectory());
 

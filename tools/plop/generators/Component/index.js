@@ -8,7 +8,7 @@ const requireField = (fieldName) => {
 };
 
 module.exports = {
-  description: 'Create a reusable component',
+  description: 'WIP - Create a reusable component',
   prompts: [
     {
       type: 'input',
