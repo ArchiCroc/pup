@@ -36,8 +36,8 @@ module.exports = {
       {
         type: 'addMany',
         destination: 'api/{{ pascalCase name }}/',
-        base: 'tools/plop/generators/ApiModule/templates/api/',
-        templateFiles: 'tools/plop/generators/ApiModule/templates/api/**',
+        base: 'tools/plop/generators/BasicApiModule/templates/api/',
+        templateFiles: 'tools/plop/generators/BasicApiModule/templates/api/**',
         verbose: true,
         data,
       },
@@ -45,7 +45,7 @@ module.exports = {
         type: 'append',
         path: 'startup/server/graphql-api.js',
         pattern: '/* #### PLOP_IMPORTS_START #### */',
-        templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-imports.js.hbs',
+        templateFile: 'tools/plop/generators/BasicApiModule/templates/graphql-api-imports.js.hbs',
       },
       {
         type: 'append',
@@ -57,13 +57,13 @@ module.exports = {
         type: 'append',
         path: 'startup/server/graphql-api.js',
         pattern: '#### PLOP_QUERY_TYPES_START ####',
-        templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-queries.js.hbs',
+        templateFile: 'tools/plop/generators/BasicApiModule/templates/graphql-api-queries.js.hbs',
       },
       {
         type: 'append',
         path: 'startup/server/graphql-api.js',
         pattern: '#### PLOP_MUTATION_TYPES_START ####',
-        templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-mutations.js.hbs',
+        templateFile: 'tools/plop/generators/BasicApiModule/templates/graphql-api-mutations.js.hbs',
       },
       {
         type: 'append',
@@ -81,7 +81,7 @@ module.exports = {
         type: 'append',
         path: 'startup/server/graphql-api.js',
         pattern: '/* #### PLOP_RESOLVERS_START #### */',
-        templateFile: 'tools/plop/generators/ApiModule/templates/graphql-api-resolvers.js.hbs',
+        templateFile: 'tools/plop/generators/BasicApiModule/templates/graphql-api-resolvers.js.hbs',
       },
       {
         type: 'append',

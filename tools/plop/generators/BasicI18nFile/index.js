@@ -30,7 +30,7 @@ module.exports = {
     {
       type: 'add',
       path: 'i18n/en/{{camelCase name}}.en.i18n.yml',
-      templateFile: 'tools/plop/generators/I18nFile/en.i18n.yml.hbs',
+      templateFile: 'tools/plop/generators/BasicI18nFile/en.i18n.yml.hbs',
     },
     {
       type: 'append',
