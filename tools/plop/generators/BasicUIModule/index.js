@@ -28,7 +28,7 @@ const uniformsFields = [
 ];
 
 module.exports = {
-  description: 'Create a new UI module',
+  description: 'Create a new Basic UI module from a predefined Schema',
   prompts: async (inquirer) => {
     const values = await inquirer.prompt({
       type: 'jsonFile',

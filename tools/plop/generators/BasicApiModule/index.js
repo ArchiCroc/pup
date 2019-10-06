@@ -12,7 +12,7 @@ const requireField = (fieldName) => {
 };
 
 module.exports = {
-  description: 'Create a new api module',
+  description: 'Create a new Basic API module from a predefined Schema',
   prompts: async (inquirer) => {
     const values = await inquirer.prompt({
       type: 'jsonFile',

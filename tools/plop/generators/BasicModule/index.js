@@ -1,6 +1,6 @@
-const apiModule = require('../ApiModule');
-const i18nFile = require('../I18nFile');
-const uiModule = require('../UIModule');
+const apiModule = require('../BasicApiModule');
+const i18nFile = require('../BasicI18nFile');
+const uiModule = require('../BasicUIModule');
 
 const requireField = (fieldName) => {
   return (value) => {
@@ -12,7 +12,7 @@ const requireField = (fieldName) => {
 };
 
 module.exports = {
-  description: 'Create Basic Module with UI, i18n and API',
+  description: 'Create Basic Module with UI, i18n and API from a predefined Schema',
   prompts: async (inquirer) => {
     const values = await inquirer.prompt({
       type: 'jsonFile',

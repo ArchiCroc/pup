@@ -1,194 +1,190 @@
-### Pup
-The Ultimate Boilerplate for Products.
+### Pup+
 
-[Read the Documentation](https://cleverbeagle.com/pup)
+An Opinionated take on an even better version of "Pup: The Ultimate Boilerplate for Products".
 
-[![CircleCI](https://circleci.com/gh/cleverbeagle/pup.svg?style=shield)](https://circleci.com/gh/cleverbeagle/pup)
-
-Want to work side-by-side with an experienced, trusted mentor? [Check out Clever Beagle](http://cleverbeagle.com).
+[Read the Orginal Documentation](https://cleverbeagle.com/pup)
 
 ---
 
-**NOTE:** The following represents example `README.md` content for your product. **_The information below should be customized for your product._**
+### So... What makes this better (in my opinion)
 
----
+- Groups related React page components into folders by module. One component per file. Page Components in the root, sub components in the components sub folder. 
+- Most React Components have been refactored to functions and hooks.
+- Removes packages that had dependency on the Meteor Blaze and jQuery modules to help offset the other added packages
+- Adds [Simple-Schema] (https://github.com/aldeed/simple-schema-js) to clean and validate all the data coming into the app
+- Adds [Uniforms](https://github.com/vazco/uniforms) to handle validation of forms
+- Switches to [Ant Design](https://ant.design) as the primary UI Component Library
+- Adds [Universe i18n](https://github.com/vazco/meteor-universe-i18n) for i18n support. (Work in Progress)
+  - I'm considering swapping to a more full featured i18n Library but this is the one works good enough for the time being. 
+- Adds a Plop code generator for quickly adding new modules to the app.  Helps you get to the fun parts faster.
+  - Define a schema with all the fields for your module and it can generate the boilerplate react ui and graphql api for
+  - See the section below on 
+- Changes the UserPreferences Api from dynamic fields to a hard code schema. Use Plop help add new fields.
+- Adds a React ErrorBoundary inside each route so a page error doesn't crash the app.
+- Adds a predefined module 'ErrorReports' to collect react errors
 
-1. Infrastructure
-2. Settings & Configuration
-3. Dependencies
-4. Commands
-5. Git & Branching
-6. Testing
-7. Releasing
+#### What's the catch?
 
-### 1. Infrastructure
+The Bundle size is bigger.
+- [moment](https://www.npmjs.com/package/moment) and [moment-timezone](https://www.npmjs.com/package/moment-timezone) are big and it would be great to use one of the newer alternatves but several other modules used depend on them
+- [AntDesign](https://www.npmjs.com/package/antd) while the app only includes the components as needed, The icon import includes EVERYTING which is less than idea. There are some options to investigate in https://github.com/ant-design/ant-design/issues/12011 but I haven't gotten thier import helper working yet
+- AntD imports should be split out into specific modules like to prevent loading unused components 
+    import Table from 'antd/lib/table';
 
-The following explains how the `production` and `staging` environments for this app are managed and configured.
+Mobile Formating needs work
+- Getting the menu to collapse bootstrap style on small screens is on my todo list
 
-#### Where is DNS configured for this app?
+Testing Coverage still sucks
+- Creating default Test via the Plop code generator is on my Roadmap
 
-DNS for the app is configured and managed via [DNSimple](https://dnsimple.com).
-
-#### Where does the database live?
-
-The database is hosted via [Compose](https://compose.com). A single deployment `cleverbeagle` exists with a `pup` database for the `production` environment and a `pup-staging` database for the `staging` environment. Additionally, the "Oplog Access" add-on has been enabled to [improve the performance of Meteor in `production`](https://galaxy-guide.meteor.com/apm-optimize-your-app-for-oplog.html).
-
-#### Where does this app live?
-
-The app is deployed to [https://galaxy.meteor.com](https://galaxy.meteor.com). It has two versions:
-
-1. `staging` which is accessed via `https://pup-staging.cleverbeagle.com` and is used to test a release in a production environment _before_ being deployed to `production`.
-2. `production` which is accessed via `https://pup.cleverbeagle.com` and is the live, customer-facing server.
-
-Deployment to these domains is controlled via NPM scripts defined in the `package.json` file at the root of the project, `npm run staging` and `npm run production`.
-
-#### How does the SSL work?
-
-SSL certificates are generated via the UI at [https://galaxy.meteor.com/cleverbeagle](https://galaxy.meteor.com/cleverbeagle). Each application's certificates are managed via the app's settings page:
-
-- [Staging Server Settings Dashboard](https://galaxy.meteor.com/app/pup-staging.cleverbeagle.com/settings)
-- [Production Server Settings Dashboard](https://galaxy.meteor.com/app/pup.cleverbeagle.com/settings)
-
-SSL certificates are auto-generated by Galaxy using the Let's Encrypt Certificate Authority and shouldn't require any maintenance. If maintenance or edits are required, locate the "Domains & Encryption" section of the app's settings page (linked above) and click on the domain you'd like to manage.
-
-### 2. Settings & Configuration
-
-Settings for the app are defined in three files at the root of the project:
-
-- `settings-development.json` contains the settings specific to the `development` environment (i.e., when running the app on your computer).
-- `settings-staging.json` contains the settings specific to the `staging` environmnet (i.e., when deploying the app to `pup-staging.cleverbeagle.com`).
-- `settings-production.json` contains the settings specific to the `production` environment (i.e., when deploying the app to `pup.cleverbeagle.com`).
-
-Each settings file should **_only be used in conjunction with the environment it's intended for_**. Further, each settings file's contents should be restricted to that specific environment (i.e., don't use an API key intended for the `production` environment in `development` and vice-versa—only break this rule when a given service's API key provisioning makes this prohibitive).
-
-#### How do I load the settings file?
-
-Settings files are automatically loaded for you as part of the NPM commands listed below. It's best to rely on these instead of doing it manually.
-
-#### How do I access the accounts used in the settings files?
-
-If you need to obtain an API key, password, or other secret information, you can find this in the [Clever Beagle 1Password Vault](https://cleverbeagle.1password.com). If you do not have access to this, send a direct message to @rglover in Slack or email him ryan.glover@cleverbeagle.com.
-
-### 3. Dependencies
-
-Dependencies for `pup.cleverbeagle.com` are installed via NPM and Meteor's Atmosphere package system. Atmosphere dependencies are installed automatically on app startup. NPM dependencies can be installed with the following command **before the first startup of the application**:
-
+### Getting Started - Install Prereqs and run the local dev server
+```shell
+    meteor npm install
+    meteor npm run dev
 ```
-meteor npm install
+Starts default dev server at http://localhost:3000
+
+### Running plop
+```shell
+    meteor npx plop
 ```
 
-### 4. Commands
-
-The following NPM commands can be used when working on the app.
-
-#### dev
-
-```
-$ npm run dev
-```
-
-Runs the app development server at `http://localhost:3000` and loads the `settings-development.json` file.
-
-#### staging
-
-```
-$ npm run staging
+### Built in Plop Generators
+```shell
+      AddGraphqlMutation - Add a mutation to an existing API Module
+      AddGraphqlQuery - Add a query to an existing API Module
+      AddUserSettings - Add User Settings from a schema
+    > BasicModule - Create Basic Module with UI, i18n and API from a predefined schema
+      BasicApiModule - Create a new api module
+      BasicI18nFile - Create an i18n from a predefined schema
+      BasicUIModule - Create a new UI module from a predefined schema
+      Page - Create a page   
 ```
 
-Deploys the app to the staging server at `https://pup-staging.cleverbeagle.com` and loads the `settings-staging.json` file.
-
-#### production
-
+#### Example Module Schema
+```js
+{ 
+  "name": "ErrorReports", // module name
+  "permissions": { // what api role is required to preform the action
+    "read":"admin", // default possible values: everyone|user|admin
+    "save": "admin",
+    "delete":"admin"
+  },
+  "menu": { // which pages to add to the menu and which menu do they go in
+    "index": "admin" // default possible values: everyone|user|admin
+  },
+    
+  "fields": { // data fields for the module
+    "_id": { // fields keys are the name of the field and column to be created
+      "primaryKey": true, // primary key for the database. Only one per schema. first one found is used.
+      "urlKey": true, // key to use in item in URLs, defaults to primaryKey. Only one per schema. first one found is used.
+      "type": "String", // The Graphql Type. String|Int|Float|DateTime|Boolean|<custom type>, wrap in [] for arrays
+      "input": "Hidden", // Unforms Type See below for full list of supported values
+      "validate" : { // simple-schema validations options see (https://github.com/aldeed/simple-schema-js#schema-rules)
+        "max": 24,
+        "optional": true
+      }
+    },
+    "userId": {
+      "userKey": true,
+      "type": "String",
+      "input": "CrossReferenceSearch", // CrossReferenceSelect|CrossReferenceSearch are two special input types to pull in data from other modules
+      "uniforms": {
+        "query": "users", // graphqlQuery to uses
+        "edges": "users", //if the query returns like { total: 100, users: [User]}, the name of the subfield that holds the values. Leave undefined if the results are returned directly like [Users]
+        "labelField": "fullName", // label field to query to show for each item in the Input
+        "valueField": "_id" // value field to query to return when an item is selected
+      },
+      "showInTableView": false, // Show this field in the table of items on the index page. Possible Values: true (default)| false | String (will be used as the label)
+      "showInDetailView": false // Show this field in the table of items on the detail page. Possible Values: true (default)| false  | String (will be used as the label)
+    },
+    "user": {
+      "type": "User", // Example of a custom type, has a built in 
+      "dataIndex": "fullName" // which field in the object to display
+    },
+    "level": {
+      "type": "Int",
+      "input": "Select",
+      "choices": { "Silly": 0, "Debug": 1, "Verbose": 2, "Info": 3, "Warning": 4, "Error": 5 },
+      "clean": "(item) => parseInt(item, 10);", // optional helper to clean form input
+      "filterable": true // should this field be filterable in data tables. Possible values: true | false (default)
+    },
+    "message": {
+      "labelKey": true, // the primary label field for the module. Only one per schema. First one found is used. Defaults to primaryKey
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+          "max": 1024
+      },
+      "searchable": true // should this field be search in data tables. Possible values: true | false (default)
+    },
+    "path": {
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+        "max": 1024,
+        "optional": true
+      },
+      "searchable": true
+    },
+    "createdAtUTC": {
+      "type": "DateTime",
+      "showInTableView": "Created At"
+    },
+    "createdById": {
+      "userKey": true,
+      "type": "String",
+      "index": true,
+      "showInTableView": false,
+      "showInDetailView": false
+    },
+    "createdBy": {
+      "type": "User",
+      "dataIndex": "fullName"
+    }
+  },
+  "defaultSortField": "createdAtUTC", // in the table and search, default field to sort by
+  "defaultSortOrder": "descend" // in the table and search, default field way to order the sort by field
+}
 ```
-$ npm run production
-```
 
-Deploys the app to the production server at `https://pup.cleverbeagle.com` and loads the `settings-production.json` file.
+#### Supported Types
+[Graphql Scalar Types](https://www.apollographql.com/docs/apollo-server/schema/schema/): 
+- Int, Float, String, Boolean, ID
 
-#### test
+graphql-iso-date: 
+- Date, DateTime
 
-```
-$ npm run test
-```
+Types Defined by the Pup+ App: 
+- Users, Documents, ErrorReports
 
-Runs all [Jest](https://jestjs.io/) test suites in the app once and then quits.
+#### Supported Inputs
+[Uniform Fields](https://github.com/vazco/uniforms/blob/master/docs/api-fields.md):
 
-#### test-watch
+|    Component    |                    Description                    |
+| :-------------: | :-----------------------------------------------: |
+|   `AutoField`   |       Automatically renders a given field.        |
+|  `AutoFields`   |        Automatically renders given fields.        |
+|   `BoolField`   |                     Checkbox.                     |
+|   `DateField`   |           HTML5 `datetime-local` input.           |
+|  `ErrorField`   |         Error message for a given field.          |
+|  `ErrorsField`  |  Error message with a list of validation errors.  |
+|  `HiddenField`  | Hidden field (with a possibility to omit in DOM). |
+| `ListAddField`  |      An icon with action to add a list item.      |
+| `ListDelField`  |    An icon with action to remove a list item.     |
+|   `ListField`   |              List of nested fields.               |
+| `ListItemField` |             Single list item wrapper.             |
+| `LongTextField` |                     Textarea.                     |
+|   `NestField`   |              Block of nested fields.              |
+|   `NumField`    |                  Numeric input.                   |
+|  `RadioField`   |                  Radio checkbox.                  |
+|  `SelectField`  |       Select (or set of radio checkboxes).        |
+|  `SubmitField`  |                  Submit button.                   |
+|   `TextField`   |       Text (or any HTML5 compatible) input.       |
 
-```
-$ npm run test-watch
-```
+Defined in Pup+
 
-Runs all [Jest](https://jestjs.io/) test suites in the app in watch mode and reruns whenever a test or file in the app changes.
-
-#### test-e2e
-
-```
-$ npm run test-e2e
-```
-
-Runs all end-to-end tests using [TestCafe](https://github.com/DevExpress/testcafe) once and then quits.
-
-### 5. Git & Branching
-
-[Read the "Managing branches in Git" tutorial in the Pup docs](https://cleverbeagle.com/pup/v2/tutorials/managing-branches-in-git)
-
-### 6. Testing
-
-There are two types of testing performed in relation to the app: manual and automated. Manual testing is any testing where you're _manually_ clicking around the app yourself to test things out. Automated testing is any where you're relying on the automated test suites in the app to test things out.
-
-#### Test Users
-
-When you start the app for the first time in development and staging mode, we create a set of test users to use when testing different permissions:
-
-| Email Address | Password | Roles | Notes |
-|:----------------|:--------:|:-------:|:-------------------------------|
-| admin@admin.com | password | `admin` | Full access to the application.
-| user+1@test.com | password | `user`  | Access to user-only features.
-| user+2@test.com | password | `user`  | Access to user-only features.
-| user+3@test.com | password | `user`  | Access to user-only features.
-| user+4@test.com | password | `user`  | Access to user-only features.
-| user+5@test.com | password | `user`  | Access to user-only features.
-
-#### Test Data
-
-When you start the app for the first time, we create test data for all collections in the application. If you ever want to "start over" with fresh data in your `development` environment, stop the app and in your terminal run:
-
-```
-meteor reset
-```
-
-Upon restarting the app, the databased will be reseeded with the default test data.
-
-**FAIR WARNING**: This command will **PERMANENTLY ERASE** (😈) any data that you've added to the app manually. If you've added something that you will need/want after the reset, make sure to back it up first.
-
-#### Writing Tests
-
-[Read the "Writing and running automated tests" tutorial in the Pup docs](https://cleverbeagle.com/pup/v2/tutorials/writing-and-running-automated-tests)
-
-### 7. Releasing
-
-Releasing the app to both the `staging` and `production` environment should be performed primarily via continuous integration. This is configured via Circle CI and the `.circleci/config.yml` file at the root of the app.
-
-If an emergency deployment is required, the `npm run staging` and `npm run production` commands detailed in the "NPM Commands" section above can be utilized.
-
-#### Performing a release
-
-In order for a release to be pushed to either the `staging` or `production` environment via continuous integration, code must be pushed to:
-
-- The `master` branch when releasing new code into production.
-- The `staging` branch when releasing new code to the `staging` server.
-
-When code is pushed, the continuous integration service should pick this change up and automatically deploy per the rules in the `.circleci/config.yml` file in the app.
-
-#### Tagging releases on master
-
-When code has been tested and confirmed ready for production, it's important to tag the release in Git so that it's clear when and where certain code is introduced. In order to tag a release, it's recommended that the [Git Extras library](https://github.com/tj/git-extras/blob/master/Commands.md#git-release) be used, specifically, the `git release <Semantic Version Number>` command be utilized.
-
-This pushed the code to the `master` branch while also creating a tag locally and remotely, all simultaneously.
-
-For more information on Semantic Versioning, [visit the official documentation site](https://semver.org/).
-
-#### Migration
-$rename : { "profile.name.first": "profile.firstName","profile.name.last": "profile.lastName", "profile.name.middle": "profile.middleName"},
-$unset : {"profile.name"}
+|    Component    |                    Description                    |
+| :-------------: | :-----------------------------------------------: |
+|`CrossReferenceSearchField`| Autocomplete one or multiple values from a different module |
+|`CrossReferenceSelectField`| Select one or multiple values from a different module       | 

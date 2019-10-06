@@ -112,7 +112,6 @@
     "jest": "^24.9.0",
     "jest-cli": "^24.9.0",
     "lint-staged": "^9.4.1",
-    "node-plop": "github:ArchiCroc/node-plop#v0.20.0-beta",
     "plop": "github:ArchiCroc/plop#v2.5.0-beta",
     "pluralize": "^8.0.0",
     "prettier": "1.18.2",

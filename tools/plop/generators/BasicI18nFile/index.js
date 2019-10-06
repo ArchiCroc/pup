@@ -8,7 +8,7 @@ const requireField = (fieldName) => {
 };
 
 module.exports = {
-  description: 'Create a custom react hook',
+  description: 'Create an i18n file for a Basic Module from a predefined Schema',
   prompts: async (inquirer) => {
     const values = await inquirer.prompt({
       type: 'jsonFile',
