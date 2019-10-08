@@ -78,6 +78,7 @@
     "react-router-dom": "^5.1.2",
     "sanitize-html": "^1.20.1",
     "simpl-schema": "^1.5.6",
+    "slugify": "^1.3.5",
     "styled-components": "^4.4.0",
     "subscriptions-transport-ws": "^0.9.16",
     "uniforms": "file:forked_modules/vazco/uniforms/src",
