@@ -5,10 +5,10 @@ import { useQuery /* , useMutation */ } from '@apollo/react-hooks';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Divider from 'antd/lib/divider';
-import PageHeader from '../components/PageHeader';
+import PageHeader from '{{uiPathOffset}}../components/PageHeader';
 import {{ pascalCase singularName }}Editor from './components/{{ pascalCase singularName }}Editor';
-import Loading from '../components/Loading';
-import NotFound from '../pages/NotFound';
+import Loading from '{{uiPathOffset}}../components/Loading';
+import NotFound from '{{uiPathOffset}}../pages/NotFound';
 import Remove{{ pascalCase singularName }}Button from './components/Remove{{ pascalCase singularName }}Button';
 
 import { edit{{ pascalCase singularName }} as {{ camelCase singularName }}Query } from './queries/{{ pascalCase pluralName }}.gql';

@@ -46,42 +46,49 @@ module.exports = {
         path: 'startup/server/graphql-api.js',
         pattern: '/* #### PLOP_IMPORTS_START #### */',
         templateFile: 'tools/plop/generators/BasicApiModule/templates/graphql-api-imports.js.hbs',
+        data,
       },
       {
         type: 'append',
         path: 'startup/server/graphql-api.js',
         pattern: '#### PLOP_TYPES_START ####',
         template: '    ${ {{~ pascalCase singularName }}Types}',
+        data,
       },
       {
         type: 'append',
         path: 'startup/server/graphql-api.js',
         pattern: '#### PLOP_QUERY_TYPES_START ####',
         templateFile: 'tools/plop/generators/BasicApiModule/templates/graphql-api-queries.js.hbs',
+        data,
       },
       {
         type: 'append',
         path: 'startup/server/graphql-api.js',
         pattern: '#### PLOP_MUTATION_TYPES_START ####',
         templateFile: 'tools/plop/generators/BasicApiModule/templates/graphql-api-mutations.js.hbs',
+        data,
       },
       {
         type: 'append',
         path: 'startup/server/graphql-api.js',
         pattern: '/* #### PLOP_QUERY_RESOLVERS_START #### */',
         template: '      ...{{ pascalCase singularName }}Queries,',
+        data,
       },
       {
         type: 'append',
         path: 'startup/server/graphql-api.js',
         pattern: '/* #### PLOP_MUTATION_RESOLVERS_START #### */',
         template: '      ...{{ pascalCase singularName }}Mutations,',
+        data,
       },
       {
         type: 'append',
         path: 'startup/server/graphql-api.js',
         pattern: '/* #### PLOP_RESOLVERS_START #### */',
         templateFile: 'tools/plop/generators/BasicApiModule/templates/graphql-api-resolvers.js.hbs',
+        data,
       },
       {
         type: 'append',
@@ -89,6 +96,7 @@ module.exports = {
         pattern: '/* #### PLOP_IMPORTS_START #### */',
         template: `import '../../api/{{ apiFolderName }}/server/indexes';
 import '../../api/{{ apiFolderName }}/server/rest-api';`,
+        data,
       },
     ];
   },

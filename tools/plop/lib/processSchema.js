@@ -1,8 +1,8 @@
-import changeCase from 'change-case';
-import pluralize from 'pluralize';
+const changeCase = require('change-case');
+const pluralize = require('pluralize');
 
 function processSchema(input) {
-  const data = input;
+  const data = { ...input };
   const schemaKeys = Object.keys(data.schema.fields);
   const schemaValues = Object.values(data.schema.fields);
 
@@ -11,16 +11,18 @@ function processSchema(input) {
     .split('/')
     .map((folder) => changeCase.pascal(folder))
     .join('/');
+  data.apiPathOffset = '../'.repeat(data.apiFolderName.split('/').length - 1);
 
   // turn collection/bigItem into collection/big-item
   data.uiFolderName = (data.schema.uiFolderName || data.name)
     .split('/')
     .map((folder) => changeCase.param(folder))
     .join('/');
+  data.uiPathOffset = '../'.repeat(data.uiFolderName.split('/').length - 1);
 
   // clean the name. collection/bigItem into Collection/BigItem
   if (data.name.includes('/')) {
-    data.name
+    data.name = data.name
       .split('/')
       .map((folder) => changeCase.pascal(folder))
       .join('');

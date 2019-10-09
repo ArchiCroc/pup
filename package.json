@@ -65,6 +65,7 @@
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.26",
     "node-fetch": "^2.6.0",
+    "plop": "github:ArchiCroc/plop#v2.5.0-beta",
     "polished": "^3.4.1",
     "prop-types": "^15.7.2",
     "query-string": "^6.8.3",
@@ -113,7 +114,6 @@
     "jest": "^24.9.0",
     "jest-cli": "^24.9.0",
     "lint-staged": "^9.4.1",
-    "plop": "github:ArchiCroc/plop#v2.5.0-beta",
     "pluralize": "^8.0.0",
     "prettier": "1.18.2",
     "testcafe": "^1.5.0"

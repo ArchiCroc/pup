@@ -1,0 +1,76 @@
+{ "name": "Collection/Brands",
+  "permissions": {
+    "read":"admin",
+    "save": "admin",
+    "delete":"admin"
+  },
+  "menu": {
+    "index": "admin"
+  },    
+  "schemaImports": ["import slugify from 'slugify';"],
+  "fields": {
+    "_id": {
+      "primaryKey": true,
+      "type": "String",
+      "input": "Hidden",
+      "validate" : {
+        "max": 24,
+        "optional": true
+      }
+    },
+    "name": {
+      "labelKey": true,
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+          "max": 64
+      }
+    },
+    "slug": {
+      "urlKey": true,
+      "type": "String",
+      "input": "ChainedSlug",
+      "validate" : {
+        "max": 48
+      },
+      "clean": "(item) => slugify(item, { lower: true});",
+      "showInTableView": false,
+      "uniforms": {
+        "sourceField": "name"
+      }
+    },
+    "createdAtUTC": {
+      "type": "DateTime",
+      "showInTableView": "Created At"
+    },
+    "createdById": {
+      "userKey": true,
+      "type": "String",
+      "index": true,
+      "showInTableView": false,
+      "showInDetailView": false
+    },
+    "createdBy": {
+      "type": "User",
+      "dataIndex": "fullName"
+    },
+    "updatedAtUTC": {
+      "type": "DateTime",
+      "showInTableView": "Updated At"
+    },
+    "updatedById": {
+      "userKey": true,
+      "type": "String",
+      "index": true,
+      "showInTableView": false,
+      "showInDetailView": false
+    },
+    "updatedBy": {
+      "type": "User",
+      "dataIndex": "fullName"
+    }
+    
+  },
+  "defaultSortField": "name",
+  "defaultSortOrder": "ascend"
+}

@@ -1,6 +1,6 @@
 import isArray from 'lodash/isArray';
 import {{ pascalCase pluralName }} from './{{ pascalCase pluralName }}';
-import checkUserRole from '../Users/actions/checkUserRole';
+import checkUserRole from '{{apiPathOffset}}../Users/actions/checkUserRole';
 
 export default {
   {{ camelCase pluralName }}: (parent, args, context) => {

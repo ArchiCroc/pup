@@ -1,3 +1,5 @@
+const processSchema = require('../../lib/processSchema');
+
 const requireField = (fieldName) => {
   return (value) => {
     if (String(value).length === 0) {
@@ -26,17 +28,22 @@ module.exports = {
     Object.assign(values, name);
     return values;
   },
-  actions: [
-    {
-      type: 'add',
-      path: 'i18n/en/{{camelCase name}}.en.i18n.yml',
-      templateFile: 'tools/plop/generators/BasicI18nFile/en.i18n.yml.hbs',
-    },
-    {
-      type: 'append',
-      path: 'i18n/index.js',
-      pattern: '/* #### PLOP_IMPORTS_START #### */',
-      template: `import {{camelCase name}}EnI18n from './en/{{camelCase pluralName}}.en.i18n.yml';`,
-    },
-  ],
+  actions: (promptData) => {
+    const data = processSchema(promptData);
+    return [
+      {
+        type: 'add',
+        path: 'i18n/en/{{camelCase name}}.en.i18n.yml',
+        templateFile: 'tools/plop/generators/BasicI18nFile/en.i18n.yml.hbs',
+        data,
+      },
+      {
+        type: 'append',
+        path: 'i18n/index.js',
+        pattern: '/* #### PLOP_IMPORTS_START #### */',
+        template: `import {{camelCase name}}EnI18n from './en/{{camelCase pluralName}}.en.i18n.yml';`,
+        data,
+      },
+    ];
+  },
 };

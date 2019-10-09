@@ -1,8 +1,8 @@
 import {{ pascalCase pluralName }} from './{{ pascalCase pluralName }}';
 import {{ pascalCase singularName }}Schema from './schemas/{{ dashCase singularName }}';
 // import sanitizeHtml from 'sanitize-html';
-import checkUserRole from '../Users/actions/checkUserRole';
-import createMongoModifier from '../../modules/createMongoModifier';
+import checkUserRole from '{{apiPathOffset}}../Users/actions/checkUserRole';
+import createMongoModifier from '{{apiPathOffset}}../../modules/createMongoModifier';
 
 export default {
   save{{ pascalCase singularName }}: (root, args, context) => {

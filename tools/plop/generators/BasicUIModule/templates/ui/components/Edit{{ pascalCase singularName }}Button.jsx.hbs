@@ -5,7 +5,7 @@ import Button from 'antd/lib/button';
 import { LinkContainer } from 'react-router-bootstrap';
 
 const Edit{{ pascalCase singularName }}Button = ({ {{ urlKeyField }}, className, disabled }) => (
-  <LinkContainer to={`/{{ dashCase pluralName }}/${ {{~ urlKeyField ~}} }/edit`}>
+  <LinkContainer to={`/{{ uiFolderName }}/${ {{~ urlKeyField ~}} }/edit`}>
     <Button type="primary" icon="plus" className={className}>
       {i18n.__('{{ pascalCase pluralName }}.edit_{{ snakeCase singularName }}')}
     </Button>

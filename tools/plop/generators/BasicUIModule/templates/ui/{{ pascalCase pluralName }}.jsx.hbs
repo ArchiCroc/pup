@@ -8,8 +8,8 @@ import isString from 'lodash/isString';
 {{/if}}
 import Table from 'antd/lib/table';
 import Input from 'antd/lib/input';
-import PageHeader from '../components/PageHeader';
-import PrettyDate from '../components/PrettyDate';
+import PageHeader from '{{uiPathOffset}}../components/PageHeader';
+import PrettyDate from '{{uiPathOffset}}../components/PrettyDate';
 
 import New{{ pascalCase singularName }}Button from './components/New{{ pascalCase singularName }}Button';
 
@@ -209,7 +209,7 @@ const {{ pascalCase pluralName }} = ({ history, location }) => {
   function handleTableRow(record) {
     return {
       onClick: () => {
-        history.push(`/{{ dashCase pluralName }}/${record.{{ urlKeyField ~}} }`);
+        history.push(`/{{ uiFolderName }}/${record.{{ urlKeyField ~}} }`);
       },
     };
   };

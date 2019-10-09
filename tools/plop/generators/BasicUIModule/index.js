@@ -64,7 +64,7 @@ module.exports = {
             variable: `${input}Field`,
             path: uniformsFields.includes(input)
               ? `uniforms-antd/${input}Field`
-              : `../../components/${input}Field`,
+              : `${data.uiPathOffset}../../components/${input}Field`,
           };
         }),
       'variable',
@@ -94,24 +94,28 @@ module.exports = {
         path: 'ui/layouts/App.jsx',
         pattern: '/* #### PLOP_IMPORTS_START #### */',
         templateFile: 'tools/plop/generators/BasicUIModule/templates/app-imports.js.hbs',
+        data,
       },
       {
         type: 'append',
         path: 'ui/layouts/App.jsx',
         pattern: '{/* #### PLOP_ROUTES_START #### */}',
         templateFile: 'tools/plop/generators/BasicUIModule/templates/app-routes.js.hbs',
+        data,
       },
       {
         type: 'append',
         path: 'ui/components/AuthenticatedNavigation.jsx',
         pattern: '{/* #### PLOP_USER_MENU_ITEMS_START #### */}',
         templateFile: 'tools/plop/generators/BasicUIModule/templates/user-menu-items.js.hbs',
+        data,
       },
       {
         type: 'append',
         path: 'ui/components/AuthenticatedNavigation.jsx',
         pattern: '{/* #### PLOP_ADMIN_MENU_ITEMS_START #### */}',
         templateFile: 'tools/plop/generators/BasicUIModule/templates/admin-menu-items.js.hbs',
+        data,
       },
     ];
   },

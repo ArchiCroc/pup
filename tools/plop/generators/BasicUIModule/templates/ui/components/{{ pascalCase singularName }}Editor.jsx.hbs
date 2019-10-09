@@ -16,7 +16,7 @@ import message from 'antd/lib/message';
 import { {{ camelCase pluralName }} as {{ camelCase name}}Query } from '../queries/{{ pascalCase pluralName }}.gql';
 import { save{{ pascalCase singularName }} as save{{ pascalCase singularName }}Mutation } from '../mutations/{{ pascalCase pluralName }}.gql';
 
-import {{ pascalCase singularName }}Schema from '../../../api/{{ pascalCase pluralName }}/schemas/{{ dashCase singularName }}';
+import {{ pascalCase singularName }}Schema from '{{uiPathOffset}}../../../api/{{ apiFolderName }}/schemas/{{ dashCase singularName }}';
 
 import Styled{{ pascalCase singularName }}Editor from './Styled{{ pascalCase singularName }}Editor';
 
@@ -25,7 +25,7 @@ const {{ pascalCase singularName }}Editor = ({ doc, history }) => {
     ignoreResults: true,
     onCompleted: () => {
       message.success(i18n.__('{{ pascalCase pluralName }}.{{ snakeCase singularName }}_saved'));
-      history.push('/{{ dashCase pluralName }}');
+      history.push('/{{ uiFolderName }}');
     },
     onError: (error) => {
       message.error(error.message);

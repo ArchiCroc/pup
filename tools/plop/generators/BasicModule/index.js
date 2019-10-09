@@ -39,7 +39,7 @@ module.exports = {
       // },
     ];
     actions.push(...apiModule.actions(data));
-    actions.push(...i18nFile.actions);
+    actions.push(...i18nFile.actions(data));
     actions.push(...uiModule.actions(data));
     return actions;
   },
