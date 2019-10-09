@@ -1,12 +1,12 @@
 import isArray from 'lodash/isArray';
-import {{ pascalCase name }} from './{{ pascalCase name }}';
+import {{ pascalCase pluralName }} from './{{ pascalCase pluralName }}';
 import checkUserRole from '../Users/actions/checkUserRole';
 
 export default {
-  {{ camelCase name }}: (parent, args, context) => {
+  {{ camelCase pluralName }}: (parent, args, context) => {
     {{#compare schema.permissions.read '!==' 'everyone' }}
     if (!context.user || !context.user._id || !checkUserRole(context.user._id, '{{schema.permissions.read}}')) {
-      throw new Error('Sorry, you must have permission to view {{ pascalCase name }}.');
+      throw new Error('Sorry, you must have permission to view {{ pascalCase pluralName }}.');
     }
     {{/compare}}
 
@@ -66,36 +66,36 @@ export default {
     }
 {{/if}}
 
-    const result = {{ pascalCase name }}.find(query, options);
+    const result = {{ pascalCase pluralName }}.find(query, options);
 
     return {
       total: result.count(false),
-      {{ camelCase name }}: result.fetch(),
+      {{ camelCase pluralName }}: result.fetch(),
     };
   },
-  my{{ pascalCase name }}: (parent, args, context) => {
+  my{{ pascalCase pluralName }}: (parent, args, context) => {
 {{#compare schema.permissions.read '!==' 'everyone' }}
     if (!context.user || !context.user._id || !checkUserRole(context.user._id, '{{schema.permissions.read}}')) {
-      throw new Error('Sorry, you must have permission to view my {{ pascalCase name }}.');
+      throw new Error('Sorry, you must have permission to view my {{ pascalCase pluralName }}.');
     }
 {{/compare}}
-    return {{ pascalCase name }}.find({ {{userKeyField}}: context.user._id }).fetch();
+    return {{ pascalCase pluralName }}.find({ {{userKeyField}}: context.user._id }).fetch();
   },
-  {{ camelCase (singular name) }}: (parent, args, context) => {
+  {{ camelCase singularName }}: (parent, args, context) => {
 {{#compare schema.permissions.read '!==' 'everyone' }}
     if (!context.user || !context.user._id || !checkUserRole(context.user._id, '{{schema.permissions.read}}')) {
-      throw new Error('Sorry, you must have permission to view {{ pascalCase (singular name) }}.');
+      throw new Error('Sorry, you must have permission to view {{ pascalCase singularName }}.');
     }
 {{/compare}}
 
-    const {{ primaryKeyField }} = (parent && parent.{{ camelCase (singular name) }}{{ pascalCase primaryKeyField}}) || args.{{ primaryKeyField }};
+    const {{ primaryKeyField }} = (parent && parent.{{ camelCase singularName }}{{ pascalCase primaryKeyField}}) || args.{{ primaryKeyField }};
     if ({{ primaryKeyField }}) {
-      return {{ pascalCase name }}.findOne({ {{ primaryKeyField }} });
+      return {{ pascalCase pluralName }}.findOne({ {{ primaryKeyField }} });
     }
 {{#compare primaryKeyField '!==' urlKeyField }}
-    const {{ urlKeyField }} = (parent && parent.{{ camelCase (singular name) }}{{ pascalCase urlKeyField }}) || args.{{ urlKeyField }};
+    const {{ urlKeyField }} = (parent && parent.{{ camelCase singularName }}{{ pascalCase urlKeyField }}) || args.{{ urlKeyField }};
     if ({{ urlKeyField }}) {
-      return {{ pascalCase name }}.findOne({ {{ urlKeyField }} });
+      return {{ pascalCase pluralName }}.findOne({ {{ urlKeyField }} });
     }
 {{/compare}}
 

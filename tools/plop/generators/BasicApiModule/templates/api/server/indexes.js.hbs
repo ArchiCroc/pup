@@ -1,15 +1,15 @@
 import createIndex from '../../../modules/server/createIndex';
-import {{ pascalCase name }} from '../{{ pascalCase name }}';
+import {{ pascalCase pluralName }} from '../{{ pascalCase pluralName }}';
 
 {{#each schema.fields}}
   {{#if this.index}}
-createIndex({{ pascalCase @root.name }}, { {{ @key }}: 1 });
+createIndex({{ pascalCase @root.pluralName }}, { {{ @key }}: 1 });
   {{else}}
     {{#compare primaryKeyField '!==' '_id' '&&' primaryKeyField '==' @key   }}
-createIndex({{ pascalCase @root.name }}, { {{primaryKeyField}}: 1 });
+createIndex({{ pascalCase @root.pluralName }}, { {{primaryKeyField}}: 1 });
     {{/compare}}
     {{#compare primaryKeyField '!==' urlKeyField '&&' urlKeyField '===' @key  }}
-createIndex({{ pascalCase @root.name }}, { {{urlKeyField}}: 1 });
+createIndex({{ pascalCase @root.pluralName }}, { {{urlKeyField}}: 1 });
     {{/compare}}
   {{/if}}
 {{/each}}

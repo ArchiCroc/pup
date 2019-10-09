@@ -1,0 +1,62 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { useMutation } from '@apollo/react-hooks';
+import i18n from 'meteor/universe:i18n';
+import Button from 'antd/lib/button';
+import modal from 'antd/lib/modal';
+import message from 'antd/lib/message';
+
+import { {{ camelCase pluralName }} as {{ camelCase pluralName }}Query } from '../queries/{{ pascalCase pluralName }}.gql';
+import { remove{{ pascalCase singularName }} as remove{{ pascalCase singularName }}Mutation } from '../mutations/{{ pascalCase pluralName }}.gql';
+
+const Remove{{ pascalCase singularName }}Button = ({ {{ primaryKeyField }}, {{ labelKeyField }}, history, className, disabled }) => {
+  const [remove{{ pascalCase singularName }}] = useMutation(remove{{ pascalCase singularName }}Mutation, {
+    ignoreResults: true,
+    onCompleted: () => {
+      message.success(i18n.__('{{ pascalCase pluralName }}.{{ snakeCase singularName }}_saved'));
+      history.push('/{{ dashCase pluralName }}');
+    },
+    onError: (error) => {
+      message.error(error.message);
+    },
+    refetchQueries: [{ query: {{ camelCase pluralName }}Query }],
+    variables: { {{ primaryKeyField }} },
+  });
+
+  function showConfirmModal() {
+    modal.confirm({
+      title: i18n.___('{{ pascalCase pluralName }}.confirm_remove_{{ snakeCase singularName }}', { {{ labelKeyField }} }),
+      onOk: remove{{ pascalCase singularName }},
+      okText: i18n.__('{{ pascalCase pluralName }}.remove'),
+      okType: 'danger',
+      cancelText: i18n.__('{{ pascalCase pluralName }}.cancel'),
+    });
+  }
+
+  return (
+    <Button
+      key={ {{~ primaryKeyField ~}} }
+      className={className}
+      type="danger"
+      disabled={disabled}
+      onClick={showConfirmModal}
+    >
+      {i18n.__('{{ pascalCase pluralName }}.remove_{{ snakeCase singularName }}')}
+    </Button>
+  );
+};
+
+Remove{{ pascalCase singularName }}Button.defaultProps = {
+  className: undefined,
+  disabled: false,
+};
+
+Remove{{ pascalCase singularName }}Button.propTypes = {
+  history: PropTypes.object.isRequired,
+  className: PropTypes.string,
+  disabled: PropTypes.bool,
+  {{ primaryKeyField }}: PropTypes.string.isRequired,
+  {{ labelKeyField }}: PropTypes.string.isRequired,
+};
+
+export default Remove{{ pascalCase singularName }}Button;

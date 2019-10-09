@@ -13,31 +13,31 @@ import message from 'antd/lib/message';
 /* #### PLOP_IMPORTS_START #### */
 /* #### PLOP_IMPORTS_END #### */
 
-import { {{ camelCase name }} as {{ camelCase name}}Query } from '../queries/{{ pascalCase name }}.gql';
-import { save{{ pascalCase (singular name) }} as save{{ pascalCase (singular name) }}Mutation } from '../mutations/{{ pascalCase name }}.gql';
+import { {{ camelCase pluralName }} as {{ camelCase name}}Query } from '../queries/{{ pascalCase pluralName }}.gql';
+import { save{{ pascalCase singularName }} as save{{ pascalCase singularName }}Mutation } from '../mutations/{{ pascalCase pluralName }}.gql';
 
-import {{ pascalCase (singular name) }}Schema from '../../../api/{{ pascalCase name }}/schemas/{{ dashCase (singular name) }}';
+import {{ pascalCase singularName }}Schema from '../../../api/{{ pascalCase pluralName }}/schemas/{{ dashCase singularName }}';
 
-import Styled{{ pascalCase (singular name) }}Editor from './Styled{{ pascalCase (singular name) }}Editor';
+import Styled{{ pascalCase singularName }}Editor from './Styled{{ pascalCase singularName }}Editor';
 
-const {{ pascalCase (singular name) }}Editor = ({ doc, history }) => {
-  const [save{{ pascalCase (singular name) }}] = useMutation(save{{ pascalCase (singular name) }}Mutation, {
+const {{ pascalCase singularName }}Editor = ({ doc, history }) => {
+  const [save{{ pascalCase singularName }}] = useMutation(save{{ pascalCase singularName }}Mutation, {
     ignoreResults: true,
     onCompleted: () => {
-      message.success(i18n.__('{{ pascalCase name }}.{{ snakeCase (singular name) }}_saved'));
-      history.push('/{{ dashCase name }}');
+      message.success(i18n.__('{{ pascalCase pluralName }}.{{ snakeCase singularName }}_saved'));
+      history.push('/{{ dashCase pluralName }}');
     },
     onError: (error) => {
       message.error(error.message);
     },
-    refetchQueries: [{ query: {{ camelCase name }}Query }],
+    refetchQueries: [{ query: {{ camelCase pluralName }}Query }],
   });
 
   function handleSubmit(form) {
-    const cleanForm = {{ pascalCase (singular name) }}Schema.clean(form);
+    const cleanForm = {{ pascalCase singularName }}Schema.clean(form);
     // console.log('cleanForm', cleanForm);
-    save{{ pascalCase (singular name) }}({
-      variables: { {{ camelCase (singular name) }}: cleanForm },
+    save{{ pascalCase singularName }}({
+      variables: { {{ camelCase singularName }}: cleanForm },
     });
   }
 
@@ -47,10 +47,10 @@ const {{ pascalCase (singular name) }}Editor = ({ doc, history }) => {
   }
 
   return (
-    <Styled{{ pascalCase (singular name) }}Editor>
+    <Styled{{ pascalCase singularName }}Editor>
       <AutoForm
-        name="{{ camelCase (singular name) }}"
-        schema={ {{~ pascalCase (singular name) }}Schema}
+        name="{{ camelCase singularName }}"
+        schema={ {{~ pascalCase singularName }}Schema}
         onSubmit={handleSubmit}
         model={doc || {}}
         showInlineError
@@ -68,20 +68,20 @@ const {{ pascalCase (singular name) }}Editor = ({ doc, history }) => {
   {{/compare~}}
 {{~/each}}
         <Button htmlType="submit" type="primary" block>
-          {i18n.__('{{ pascalCase name }}.save')}
+          {i18n.__('{{ pascalCase pluralName }}.save')}
         </Button>
       </AutoForm>
-    </Styled{{ pascalCase (singular name) }}Editor>
+    </Styled{{ pascalCase singularName }}Editor>
   );
 };
 
-{{ pascalCase (singular name) }}Editor.defaultProps = {
+{{ pascalCase singularName }}Editor.defaultProps = {
   doc: null,
 };
 
-{{ pascalCase (singular name) }}Editor.propTypes = {
+{{ pascalCase singularName }}Editor.propTypes = {
   doc: PropTypes.object,
   history: PropTypes.object.isRequired,
 };
 
-export default {{ pascalCase (singular name) }}Editor;
+export default {{ pascalCase singularName }}Editor;

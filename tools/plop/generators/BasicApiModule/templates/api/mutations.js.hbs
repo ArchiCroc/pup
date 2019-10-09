@@ -1,19 +1,19 @@
-import {{ pascalCase name }} from './{{ pascalCase name }}';
-import {{ pascalCase (singular name) }}Schema from './schemas/{{ dashCase (singular name) }}';
+import {{ pascalCase pluralName }} from './{{ pascalCase pluralName }}';
+import {{ pascalCase singularName }}Schema from './schemas/{{ dashCase singularName }}';
 // import sanitizeHtml from 'sanitize-html';
 import checkUserRole from '../Users/actions/checkUserRole';
 import createMongoModifier from '../../modules/createMongoModifier';
 
 export default {
-  save{{ pascalCase (singular name) }}: (root, args, context) => {
+  save{{ pascalCase singularName }}: (root, args, context) => {
     {{#compare schema.permissions.save '!==' 'everyone' }}
     if (!context.user || !context.user._id || !checkUserRole(context.user._id, '{{schema.permissions.save}}')) {
-      throw new Error('Sorry, you must have permission to save {{ pascalCase (singular name) }}.');
+      throw new Error('Sorry, you must have permission to save {{ pascalCase singularName }}.');
     }
     {{/compare}}
 
-    const cleanDoc = {{ pascalCase (singular name) }}Schema.clean(args.{{ camelCase (singular name) }});
-    {{ pascalCase (singular name) }}Schema.validate(cleanDoc);
+    const cleanDoc = {{ pascalCase singularName }}Schema.clean(args.{{ camelCase singularName }});
+    {{ pascalCase singularName }}Schema.validate(cleanDoc);
 
     const userId = context.user._id;
     const timestamp = new Date();
@@ -21,15 +21,15 @@ export default {
     if (cleanDoc.{{ primaryKeyField }}) {
       const { {{ primaryKeyField }} } = cleanDoc;
 
-      const modifier = createMongoModifier({{ pascalCase (singular name) }}Schema, cleanDoc);
+      const modifier = createMongoModifier({{ pascalCase singularName }}Schema, cleanDoc);
 
       delete modifier.$set._id;
 
       modifier.$set.updatedById = userId;
       modifier.$set.updatedAtUTC = timestamp;
 
-      {{ pascalCase name }}.update({ {{ primaryKeyField }} }, modifier);
-      return {{ pascalCase name }}.findOne({{ primaryKeyField }});
+      {{ pascalCase pluralName }}.update({ {{ primaryKeyField }} }, modifier);
+      return {{ pascalCase pluralName }}.findOne({{ primaryKeyField }});
     }
 
     cleanDoc.createdById = userId;
@@ -37,20 +37,20 @@ export default {
     cleanDoc.updatedById = userId;
     cleanDoc.updatedAtUTC = timestamp;
 
-    const {{ camelCase (singular name) }}Id = {{ pascalCase name }}.insert(cleanDoc);
-    const doc = {{ pascalCase name }}.findOne({{ camelCase (singular name) }}Id);
+    const {{ camelCase singularName }}Id = {{ pascalCase pluralName }}.insert(cleanDoc);
+    const doc = {{ pascalCase pluralName }}.findOne({{ camelCase singularName }}Id);
     return doc;
   },
-  remove{{ pascalCase (singular name) }}: (root, args, context) => {
+  remove{{ pascalCase singularName }}: (root, args, context) => {
     {{#compare schema.permissions.delete '!==' 'everyone' }}
     if (!context.user || !context.user._id || !checkUserRole(context.user._id, '{{schema.permissions.delete}}')) {
-      throw new Error('Sorry, you must have permission to save {{ pascalCase (singular name) }}.');
+      throw new Error('Sorry, you must have permission to save {{ pascalCase singularName }}.');
     }
     {{/compare}}
-    if (!{{ pascalCase name }}.findOne({ {{ primaryKeyField }}: args.{{ primaryKeyField }}, createdById: context.user._id })) {
-      throw new Error('Sorry, you need to be the owner of this {{ pascalCase (singular name) }} to remove it.');
+    if (!{{ pascalCase pluralName }}.findOne({ {{ primaryKeyField }}: args.{{ primaryKeyField }}, createdById: context.user._id })) {
+      throw new Error('Sorry, you need to be the owner of this {{ pascalCase singularName }} to remove it.');
     }
-    {{ pascalCase name }}.remove(args);
+    {{ pascalCase pluralName }}.remove(args);
     return args;
   },
   /* #### PLOP_MUTATIONS_START #### */

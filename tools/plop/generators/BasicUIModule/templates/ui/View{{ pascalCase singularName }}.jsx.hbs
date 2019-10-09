@@ -10,21 +10,21 @@ import PageHeader from '../components/PageHeader';
 import Loading from '../components/Loading';
 import NotFound from '../pages/NotFound';
 
-import Edit{{ pascalCase (singular name) }}Button from './components/Edit{{ pascalCase (singular name) }}Button'
+import Edit{{ pascalCase singularName }}Button from './components/Edit{{ pascalCase singularName }}Button'
 
-import { {{ camelCase (singular name) }} as {{ camelCase (singular name) }}Query } from './queries/{{ pascalCase name }}.gql';
+import { {{ camelCase singularName }} as {{ camelCase singularName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
 
-import StyledView{{ pascalCase (singular name) }} from './StyledView{{ pascalCase (singular name) }}';
+import StyledView{{ pascalCase singularName }} from './StyledView{{ pascalCase singularName }}';
 
-const View{{ pascalCase (singular name) }} = ({ match }) => {
-  const { loading, data: { {{ camelCase (singular name) }} } = {} } = useQuery({{ camelCase (singular name) }}Query, { variables: { {{ urlKeyField }}: match.params.{{ urlKeyField }} } });
+const View{{ pascalCase singularName }} = ({ match }) => {
+  const { loading, data: { {{ camelCase singularName }} } = {} } = useQuery({{ camelCase singularName }}Query, { variables: { {{ urlKeyField }}: match.params.{{ urlKeyField }} } });
 
   return (
-    <StyledView{{ pascalCase (singular name) }}>
-      <PageHeader title={i18n.__('{{ pascalCase name }}.view_{{ snakeCase (singular name) }}')} />
-      { {{~ camelCase (singular name) }} && (
+    <StyledView{{ pascalCase singularName }}>
+      <PageHeader title={i18n.__('{{ pascalCase pluralName }}.view_{{ snakeCase singularName }}')} />
+      { {{~ camelCase singularName }} && (
         <p>
-          <Edit{{ pascalCase (singular name) }}Button {{urlKeyField}}={ {{~ camelCase (singular name) }}.{{ urlKeyField ~}} } />
+          <Edit{{ pascalCase singularName }}Button {{urlKeyField}}={ {{~ camelCase singularName }}.{{ urlKeyField ~}} } />
         </p>
       )}
       <Row type="flex" justify="center">
@@ -32,20 +32,20 @@ const View{{ pascalCase (singular name) }} = ({ match }) => {
           {loading ? (
             <Loading />
           ) : (
-            <>{ {{~ camelCase (singular name) }} ? <View{{ pascalCase (singular name) }}Fields {{ camelCase (singular name) }}={ {{~ camelCase (singular name) ~}} } /> : <NotFound />}</>
+            <>{ {{~ camelCase singularName }} ? <View{{ pascalCase singularName }}Fields {{ camelCase singularName }}={ {{~ camelCase singularName ~}} } /> : <NotFound />}</>
           )}
         </Col>
       </Row>
-    </StyledView{{ pascalCase (singular name) }}>
+    </StyledView{{ pascalCase singularName }}>
   );
 };
 
-View{{ pascalCase (singular name) }}.propTypes = {
+View{{ pascalCase singularName }}.propTypes = {
   // history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
 };
 
-const View{{ pascalCase (singular name) }}Fields = ({ {{ camelCase (singular name) }} }) => {
+const View{{ pascalCase singularName }}Fields = ({ {{ camelCase singularName }} }) => {
   return (
     <Descriptions bordered column={1}>
 {{#each schema.fields ~}}
@@ -75,8 +75,8 @@ const View{{ pascalCase (singular name) }}Fields = ({ {{ camelCase (singular nam
   );
 };
 
-View{{ pascalCase (singular name) }}Fields.propTypes = {
-  {{ camelCase (singular name) }}: PropTypes.object.isRequired,
+View{{ pascalCase singularName }}Fields.propTypes = {
+  {{ camelCase singularName }}: PropTypes.object.isRequired,
 };
 
-export default View{{ pascalCase (singular name) }};
+export default View{{ pascalCase singularName }};

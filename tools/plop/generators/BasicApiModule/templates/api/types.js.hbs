@@ -1,5 +1,5 @@
 export default `
-type {{ pascalCase (singular name) }} {
+type {{ pascalCase singularName }} {
 {{#each schema.fields ~}}
   {{~#if this.type}}
   {{@key}}: {{this.type}}
@@ -7,12 +7,12 @@ type {{ pascalCase (singular name) }} {
 {{~/each}}
 }
 
-type {{ pascalCase name }} {
+type {{ pascalCase pluralName }} {
   total: Int
-  {{ camelCase name }}: [{{ pascalCase (singular name) }}]
+  {{ camelCase pluralName }}: [{{ pascalCase singularName }}]
 }
 
-input {{ pascalCase (singular name) }}Input {
+input {{ pascalCase singularName }}Input {
 {{#each schema.fields }}
   {{~#compare this.type '&&' this.input}}
   {{@key}}: {{#compare this.type '===' 'Number'}}Float{{else}}{{this.type}}{{/compare}}{{#compare this.validate.optional '==' undefined '||' this.validate.optional '==' false}}{{#compare this.defaultValue '==' undefined}}!{{/compare}}{{/compare}}

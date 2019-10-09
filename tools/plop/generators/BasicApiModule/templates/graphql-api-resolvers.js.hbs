@@ -1,5 +1,5 @@
-    /* #### {{ constantCase name }}_RESOLVERS_START #### */
-    {{ pascalCase (singular name) }}: {
+    /* #### {{ constantCase pluralName }}_RESOLVERS_START #### */
+    {{ pascalCase singularName }}: {
 {{#each schema.fields }}
   {{#if this.resolver}}
       {{@key}}: {{this.resolver}},
@@ -17,4 +17,4 @@
   {{/if}}
 {{/each~}}
     },
-    /* #### {{ constantCase name }}_RESOLVERS_END #### */
+    /* #### {{ constantCase pluralName }}_RESOLVERS_END #### */

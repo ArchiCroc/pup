@@ -1,14 +1,14 @@
-_namespace: {{ pascalCase name }}
+_namespace: {{ pascalCase pluralName }}
 
-{{ snakeCase (singular name) }}: {{ titleCase (singular name) }}
-{{ snakeCase (singular name) }}_plural: {{ titleCase name }}
-view_{{ snakeCase (singular name) }}: View {{ titleCase (singular name) }}
-new_{{ snakeCase (singular name) }}: New {{ titleCase (singular name) }}
-edit_{{ snakeCase (singular name) }}: Edit {{ titleCase (singular name) }}
-remove_{{ snakeCase (singular name) }}: Remove {{ titleCase (singular name) }}
-confirm_remove_{{ snakeCase (singular name) }}: 'Are you sure? This is permanent!'
-{{ snakeCase (singular name) }}_removed_success: {{ titleCase (singular name) }} removed!
-{{ snakeCase (singular name) }}_saved: {{ titleCase (singular name) }} saved!
+{{ snakeCase singularName }}: {{ titleCase singularName }}
+{{ snakeCase singularName }}_plural: {{ titleCase pluralName }}
+view_{{ snakeCase singularName }}: View {{ titleCase singularName }}
+new_{{ snakeCase singularName }}: New {{ titleCase singularName }}
+edit_{{ snakeCase singularName }}: Edit {{ titleCase singularName }}
+remove_{{ snakeCase singularName }}: Remove {{ titleCase singularName }}
+confirm_remove_{{ snakeCase singularName }}: 'Are you sure? This is permanent!'
+{{ snakeCase singularName }}_removed_success: {{ titleCase singularName }} removed!
+{{ snakeCase singularName }}_saved: {{ titleCase singularName }} saved!
 
 save: Save
 yes: 'Yes'
@@ -17,11 +17,11 @@ cancel: Cancel
 remove: Remove
 
 
-delete_{{ snakeCase (singular name) }}: Delete {{ titleCase (singular name) }}
+delete_{{ snakeCase singularName }}: Delete {{ titleCase singularName }}
 
 # index page
 search_placeholder: Search
-blank_state_title: No {{ titleCase name }} here, friend!
+blank_state_title: No {{ titleCase pluralName }} here, friend!
 blank_state_subtitle: ""
 
 #### PLOP_FIELDS_START ####

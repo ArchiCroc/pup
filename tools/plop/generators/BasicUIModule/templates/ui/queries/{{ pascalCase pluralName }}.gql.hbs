@@ -1,6 +1,6 @@
-#import "../fragments/{{ pascalCase name }}.gql"
+#import "../fragments/{{ pascalCase pluralName }}.gql"
 
-query {{ camelCase name }}(
+query {{ camelCase pluralName }}(
   $_ids: [String]
   $page: Int, 
   $pageSize: Int, 
@@ -17,7 +17,7 @@ query {{ camelCase name }}(
   {{/if}}
 {{/each}}
 ) {
-  {{ camelCase name }}(
+  {{ camelCase pluralName }}(
     _ids: $_ids,
     page: $page, 
     pageSize: $pageSize, 
@@ -31,7 +31,7 @@ query {{ camelCase name }}(
 {{/each}}
   ) {
     total
-    {{ camelCase name }} {
+    {{ camelCase pluralName }} {
       {{primaryKeyField}}
       {{#compare primaryKeyField '!==' urlKeyField}}{{urlKeyField}}{{/compare}}
 {{#each schema.fields ~}}
@@ -49,14 +49,14 @@ query {{ camelCase name }}(
   }
 }
 
-query edit{{ pascalCase (singular name) }}(${{ primaryKeyField }}: {{ primaryKeyType }}{{#compare primaryKeyField '!==' urlKeyField }}, ${{ urlKeyField }}: {{ urlKeyType }}{{/compare}}) {
-  {{ camelCase (singular name) }}({{ primaryKeyField }}: ${{ primaryKeyField }}{{#compare primaryKeyField '!==' urlKeyField }}, {{ urlKeyField }}: ${{ urlKeyField }}{{/compare}}) {
-    ...{{ pascalCase (singular name) }}Attributes
+query edit{{ pascalCase singularName }}(${{ primaryKeyField }}: {{ primaryKeyType }}{{#compare primaryKeyField '!==' urlKeyField }}, ${{ urlKeyField }}: {{ urlKeyType }}{{/compare}}) {
+  {{ camelCase singularName }}({{ primaryKeyField }}: ${{ primaryKeyField }}{{#compare primaryKeyField '!==' urlKeyField }}, {{ urlKeyField }}: ${{ urlKeyField }}{{/compare}}) {
+    ...{{ pascalCase singularName }}Attributes
   }
 }
 
-query {{ camelCase (singular name) }}(${{ primaryKeyField }}: {{ primaryKeyType }}{{#compare primaryKeyField '!==' urlKeyField }}, ${{ urlKeyField }}: {{ urlKeyType }}{{/compare}}) {
-  {{ camelCase (singular name) }}({{ primaryKeyField }}: ${{ primaryKeyField }}{{#compare primaryKeyField '!==' urlKeyField }}, {{ urlKeyField }}: ${{ urlKeyField }}{{/compare}}) {
-    ...{{ pascalCase (singular name) }}Attributes
+query {{ camelCase singularName }}(${{ primaryKeyField }}: {{ primaryKeyType }}{{#compare primaryKeyField '!==' urlKeyField }}, ${{ urlKeyField }}: {{ urlKeyType }}{{/compare}}) {
+  {{ camelCase singularName }}({{ primaryKeyField }}: ${{ primaryKeyField }}{{#compare primaryKeyField '!==' urlKeyField }}, {{ urlKeyField }}: ${{ urlKeyField }}{{/compare}}) {
+    ...{{ pascalCase singularName }}Attributes
   }
 }

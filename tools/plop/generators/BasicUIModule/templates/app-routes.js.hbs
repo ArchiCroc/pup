@@ -1,34 +1,34 @@
-                  {/* #### {{ constantCase name }}_ROUTES_START #### */}
+                  {/* #### {{ constantCase pluralName }}_ROUTES_START #### */}
                   <AuthenticatedRoute
                     exact
-                    path="/{{ dashCase name }}"
-                    component={ {{~ pascalCase name ~}} }
+                    path="/{{ uiFolderName }}"
+                    component={ {{~ pascalCase pluralName ~}} }
                     setAfterLoginPath={setAfterLoginPath}
                     {...props}
                     {...state}
                   />
                   <AuthenticatedRoute
                     exact
-                    path="/{{ dashCase name }}/new"
-                    component={New{{ pascalCase (singular name) ~}} }
+                    path="/{{ uiFolderName }}/new"
+                    component={New{{ pascalCase singularName ~}} }
                     setAfterLoginPath={setAfterLoginPath}
                     {...props}
                     {...state}
                   />
                   <AuthenticatedRoute
                     exact
-                    path="/{{ dashCase name }}/:{{urlKeyField}}"
-                    component={View{{ pascalCase (singular name) ~}}}
+                    path="/{{ uiFolderName }}/:{{urlKeyField}}"
+                    component={View{{ pascalCase singularName ~}}}
                     setAfterLoginPath={setAfterLoginPath}
                     {...props}
                     {...state}
                   />
                   <AuthenticatedRoute
                     exact
-                    path="/{{ dashCase name }}/:{{urlKeyField}}/edit"
-                    component={Edit{{ pascalCase (singular name) ~}}}
+                    path="/{{ uiFolderName }}/:{{urlKeyField}}/edit"
+                    component={Edit{{ pascalCase singularName ~}}}
                     setAfterLoginPath={setAfterLoginPath}
                     {...props}
                     {...state}
                   />
-                  {/* #### {{ constantCase name }}_ROUTES_END #### */}
+                  {/* #### {{ constantCase pluralName }}_ROUTES_END #### */}

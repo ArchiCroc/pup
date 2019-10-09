@@ -13,7 +13,7 @@ const clean{{pascalCase @key}} = {{{this.clean}}};
   {{/if}}
 {{/each}}
 
-const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
+const {{ pascalCase singularName }}Schema = new SimpleSchema({
 {{#each schema.fields ~}}
   {{~#compare this.type '&&' this.input}}
     {{~#compare this.type '!startsWith' '['}}
@@ -150,4 +150,4 @@ const {{ pascalCase (singular name) }}Schema = new SimpleSchema({
   /* #### PLOP_SCHEMA_END #### */
 });
 
-export default {{ pascalCase (singular name) }}Schema;
+export default {{ pascalCase singularName }}Schema;

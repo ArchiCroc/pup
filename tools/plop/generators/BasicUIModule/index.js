@@ -83,7 +83,7 @@ module.exports = {
     return [
       {
         type: 'addMany',
-        destination: 'ui/{{ dashCase name }}/',
+        destination: 'ui/{{ uiFolderName }}/',
         base: 'tools/plop/generators/BasicUIModule/templates/ui/',
         templateFiles: 'tools/plop/generators/BasicUIModule/templates/ui/**',
         verbose: true,

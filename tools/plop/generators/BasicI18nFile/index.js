@@ -36,7 +36,7 @@ module.exports = {
       type: 'append',
       path: 'i18n/index.js',
       pattern: '/* #### PLOP_IMPORTS_START #### */',
-      template: `import {{camelCase name}}EnI18n from './en/{{camelCase name}}.en.i18n.yml';`,
+      template: `import {{camelCase name}}EnI18n from './en/{{camelCase pluralName}}.en.i18n.yml';`,
     },
   ],
 };

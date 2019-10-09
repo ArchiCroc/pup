@@ -1,5 +1,5 @@
-      #### {{ constantCase name }}_QUERY_TYPES_START ####
-      {{ camelCase name }}(
+      #### {{ constantCase pluralName }}_QUERY_TYPES_START ####
+      {{ camelCase pluralName }}(
         _ids: [String]
         page: Int
         pageSize: Int
@@ -15,7 +15,7 @@
              {{/compare}}
           {{/if}}
         {{/each}}
-      ): {{ pascalCase name }}
-      my{{ pascalCase name }}: [{{ pascalCase (singular name) }}]
-      {{ camelCase (singular name) }}({{ primaryKeyField }}: {{ primaryKeyType }}{{#compare primaryKeyField '!==' urlKeyField }}, {{ urlKeyField }}: {{ urlKeyType }}{{/compare}}): {{ pascalCase (singular name) }}
-      #### {{ constantCase name }}_QUERY_TYPES_END ####
+      ): {{ pascalCase pluralName }}
+      my{{ pascalCase pluralName }}: [{{ pascalCase singularName }}]
+      {{ camelCase singularName }}({{ primaryKeyField }}: {{ primaryKeyType }}{{#compare primaryKeyField '!==' urlKeyField }}, {{ urlKeyField }}: {{ urlKeyType }}{{/compare}}): {{ pascalCase singularName }}
+      #### {{ constantCase pluralName }}_QUERY_TYPES_END ####

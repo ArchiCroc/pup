@@ -1,0 +1,13 @@
+#import "../fragments/{{ pascalCase pluralName }}.gql"
+
+mutation save{{ pascalCase singularName }}(${{ camelCase singularName }}: {{ pascalCase singularName }}Input!) {
+  save{{ pascalCase singularName }}({{ camelCase singularName }}: ${{ camelCase singularName }}) {
+    ...{{ pascalCase singularName }}Attributes
+  }
+}
+
+mutation remove{{ pascalCase singularName }}(${{ primaryKeyField }}: {{ primaryKeyType }}!) {
+  remove{{ pascalCase singularName }}({{ primaryKeyField }}: ${{ primaryKeyField }}) {
+    {{ primaryKeyField }}
+  }
+}

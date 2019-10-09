@@ -35,7 +35,7 @@ module.exports = {
     return [
       {
         type: 'addMany',
-        destination: 'api/{{ pascalCase name }}/',
+        destination: 'api/{{ apiFolderName }}/',
         base: 'tools/plop/generators/BasicApiModule/templates/api/',
         templateFiles: 'tools/plop/generators/BasicApiModule/templates/api/**',
         verbose: true,
@@ -51,7 +51,7 @@ module.exports = {
         type: 'append',
         path: 'startup/server/graphql-api.js',
         pattern: '#### PLOP_TYPES_START ####',
-        template: '    ${ {{~ pascalCase (singular name) }}Types}',
+        template: '    ${ {{~ pascalCase singularName }}Types}',
       },
       {
         type: 'append',
@@ -69,13 +69,13 @@ module.exports = {
         type: 'append',
         path: 'startup/server/graphql-api.js',
         pattern: '/* #### PLOP_QUERY_RESOLVERS_START #### */',
-        template: '      ...{{ pascalCase (singular name) }}Queries,',
+        template: '      ...{{ pascalCase singularName }}Queries,',
       },
       {
         type: 'append',
         path: 'startup/server/graphql-api.js',
         pattern: '/* #### PLOP_MUTATION_RESOLVERS_START #### */',
-        template: '      ...{{ pascalCase (singular name) }}Mutations,',
+        template: '      ...{{ pascalCase singularName }}Mutations,',
       },
       {
         type: 'append',
@@ -87,8 +87,8 @@ module.exports = {
         type: 'append',
         path: 'startup/server/index.js',
         pattern: '/* #### PLOP_IMPORTS_START #### */',
-        template: `import '../../api/{{ pascalCase name }}/server/indexes';
-import '../../api/{{ pascalCase name }}/server/rest-api';`,
+        template: `import '../../api/{{ apiFolderName }}/server/indexes';
+import '../../api/{{ apiFolderName }}/server/rest-api';`,
       },
     ];
   },

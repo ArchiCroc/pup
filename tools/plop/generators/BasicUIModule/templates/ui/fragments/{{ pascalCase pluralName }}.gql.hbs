@@ -1,4 +1,4 @@
-fragment {{ pascalCase (singular name) }}Attributes on {{ pascalCase (singular name) }} {
+fragment {{ pascalCase singularName }}Attributes on {{ pascalCase singularName }} {
   {{#each schema.fields ~}}
     {{!-- {{~#compare this.showInTableView '||' this.input }} --}}
       {{#if dataIndex}}

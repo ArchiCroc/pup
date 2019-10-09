@@ -1,0 +1,44 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import i18n from 'meteor/universe:i18n';
+import { useQuery /* , useMutation */ } from '@apollo/react-hooks';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
+import Divider from 'antd/lib/divider';
+import PageHeader from '../components/PageHeader';
+import {{ pascalCase singularName }}Editor from './components/{{ pascalCase singularName }}Editor';
+import Loading from '../components/Loading';
+import NotFound from '../pages/NotFound';
+import Remove{{ pascalCase singularName }}Button from './components/Remove{{ pascalCase singularName }}Button';
+
+import { edit{{ pascalCase singularName }} as {{ camelCase singularName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
+
+const Edit{{ pascalCase singularName }} = ({ history, match }) => {
+  const { loading, data: { {{ camelCase singularName }} = undefined } = {} } = useQuery({{ camelCase singularName }}Query, { 
+    variables: { {{ urlKeyField }}: match.params.{{ urlKeyField }} } 
+  });
+
+  return (
+    <>
+      <PageHeader title={i18n.__('{{ pascalCase pluralName }}.edit_{{ snakeCase singularName }}')} />
+      <Row type="flex" justify="center">
+        <Col xs={24} sm={16} md={12} lg={8}>
+          {loading ? (
+            <Loading />
+          ) : (
+            <>{ {{~ camelCase singularName }} ? <{{ pascalCase singularName }}Editor doc={ {{~ camelCase singularName ~}} } history={history} /> : <NotFound />}</>
+          )}
+          <Divider />
+          { {{~ camelCase singularName }} && <Remove{{ pascalCase singularName }}Button {{primaryKeyField}}={ {{~ camelCase singularName }}.{{primaryKeyField ~}} } {{labelKeyField}}={ {{~ camelCase singularName}}.{{labelKeyField ~}} } history={history} />}
+        </Col>
+      </Row>
+    </>
+  );
+};
+
+Edit{{ pascalCase singularName }}.propTypes = {
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+};
+
+export default Edit{{ pascalCase singularName }};
