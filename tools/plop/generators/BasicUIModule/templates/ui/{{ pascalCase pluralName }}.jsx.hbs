@@ -10,8 +10,10 @@ import Table from 'antd/lib/table';
 import Input from 'antd/lib/input';
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
 import PrettyDate from '{{uiPathOffset}}../components/PrettyDate';
-
 import New{{ pascalCase singularName }}Button from './components/New{{ pascalCase singularName }}Button';
+{{#if schema.permissions.create}}
+import hasRole from '{{uiPathOffset}}../../modules/hasRole';
+{{/if}}
 
 import Styled{{ pascalCase pluralName }} from './Styled{{ pascalCase pluralName }}';
 
@@ -21,7 +23,7 @@ import { {{ camelCase pluralName }} as {{ camelCase pluralName }}Query } from '.
 const { Search } = Input;
 {{/if}}
 
-const {{ pascalCase pluralName }} = ({ history, location }) => {
+const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
   const {
     pageSize = 10,
     page = 1,
@@ -218,7 +220,7 @@ const {{ pascalCase pluralName }} = ({ history, location }) => {
     <Styled{{ pascalCase pluralName }}>
       <PageHeader title={i18n.__('{{ pascalCase pluralName }}.{{ snakeCase singularName }}_plural')} />
       <p>
-        <New{{ pascalCase singularName }}Button />
+        {{#if schema.permissions.create}}{ hasRole(roles, [{{#each this.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && ({{/if}}<New{{ pascalCase singularName }}Button />{{#if schema.permissions.create}})}{{/if}}
         {{#if isSearchable}}
         <span className="pull-right" style=\{{ width: 300 }}>
           <Search
@@ -248,6 +250,7 @@ const {{ pascalCase pluralName }} = ({ history, location }) => {
 {{ pascalCase pluralName }}.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
+  roles: PropTypes.object.isArray,
 };
 
 export default {{ pascalCase pluralName }};

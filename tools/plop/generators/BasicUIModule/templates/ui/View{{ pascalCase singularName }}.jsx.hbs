@@ -9,6 +9,9 @@ import FormatDate from '{{uiPathOffset}}../components/FormatDate';
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
 import Loading from '{{uiPathOffset}}../components/Loading';
 import NotFound from '{{uiPathOffset}}../pages/NotFound';
+{{#if schema.permissions.update}}
+import hasRole from '{{uiPathOffset}}../../modules/hasRole';
+{{/if}}
 
 import Edit{{ pascalCase singularName }}Button from './components/Edit{{ pascalCase singularName }}Button'
 
@@ -16,13 +19,13 @@ import { {{ camelCase singularName }} as {{ camelCase singularName }}Query } fro
 
 import StyledView{{ pascalCase singularName }} from './StyledView{{ pascalCase singularName }}';
 
-const View{{ pascalCase singularName }} = ({ match }) => {
+const View{{ pascalCase singularName }} = ({ match, roles }) => {
   const { loading, data: { {{ camelCase singularName }} } = {} } = useQuery({{ camelCase singularName }}Query, { variables: { {{ urlKeyField }}: match.params.{{ urlKeyField }} } });
 
   return (
     <StyledView{{ pascalCase singularName }}>
       <PageHeader title={i18n.__('{{ pascalCase pluralName }}.view_{{ snakeCase singularName }}')} />
-      { {{~ camelCase singularName }} && (
+      { {{~ camelCase singularName }}{{#if schema.permissions.update}} && hasRole(){{/if}} && (
         <p>
           <Edit{{ pascalCase singularName }}Button {{urlKeyField}}={ {{~ camelCase singularName }}.{{ urlKeyField ~}} } />
         </p>
@@ -43,6 +46,7 @@ const View{{ pascalCase singularName }} = ({ match }) => {
 View{{ pascalCase singularName }}.propTypes = {
   // history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
+  roles: PropTypes.object.isArray,
 };
 
 const View{{ pascalCase singularName }}Fields = ({ {{ camelCase singularName }} }) => {

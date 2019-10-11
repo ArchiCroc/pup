@@ -4,26 +4,30 @@ import checkUserRole from '{{apiPathOffset}}../Users/actions/checkUserRole';
 
 export default {
   {{ camelCase pluralName }}: (parent, args, context) => {
-    {{#compare schema.permissions.read '!==' 'everyone' }}
-    if (!context.user || !context.user._id || !checkUserRole(context.user._id, '{{schema.permissions.read}}')) {
-      throw new Error('Sorry, you must have permission to view {{ pascalCase pluralName }}.');
+{{#if schema.permissions.read}}
+    if (!context.user || !context.user._id || !checkUserRole(context.user._id, [{{#each schema.permissions.read }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}])) {
+      throw new Error('Sorry, you must have permission to view {{ titleCase pluralName }}.');
     }
-    {{/compare}}
 
+{{/if}}
+    /* #### PLOP_QUERY_VALIDATION_START #### */
+    {{schema.hooks.queryValidation}}
+    /* #### PLOP_QUERY_VALIDATION_END #### */
+    
     const {
       _ids,
       pageSize = 10,
       page = 1,
       sort = '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelKeyField}}{{/if}}',
       order = '{{#if schema.defaultSortOrder}}{{schema.defaultSortOrder}}{{else}}ascend{{/if}}',
-  {{#if isSearchable}}
+{{#if isSearchable}}
       search,
-  {{/if}}
-  {{#each schema.fields}}
-    {{#if this.filterable}}
+{{/if}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
       {{ @key }},
-    {{/if}}
-  {{/each}}
+  {{/if}}
+{{/each}}
     } = args;
 
     const cleanPageSize = pageSize > 100 ? 100 : pageSize;
@@ -40,7 +44,12 @@ export default {
     options.sort[sort] = orderDirection;
 
     const query = {};
+    
+{{#compare schema.collectionPermissionFilter.read 'includes' 'self' }}
+    // schema.collectionPermissionFilter.read includes self
+    query.{{userKeyField}} = context.user._id;
 
+{{/compare}}
     if (_ids) {
       query._id = { $in: _ids };
     }
@@ -66,6 +75,10 @@ export default {
     }
 {{/if}}
 
+    /* #### PLOP_QUERY_PRE_FIND_START #### */
+    {{schema.hooks.queryPreFind}}
+    /* #### PLOP_QUERY_PRE_FIND_END #### */
+
     const result = {{ pascalCase pluralName }}.find(query, options);
 
     return {
@@ -74,32 +87,59 @@ export default {
     };
   },
   my{{ pascalCase pluralName }}: (parent, args, context) => {
-{{#compare schema.permissions.read '!==' 'everyone' }}
-    if (!context.user || !context.user._id || !checkUserRole(context.user._id, '{{schema.permissions.read}}')) {
-      throw new Error('Sorry, you must have permission to view my {{ pascalCase pluralName }}.');
+{{#if schema.permissions.read }}
+    if (!context.user || !context.user._id || !checkUserRole(context.user._id, [{{#each schema.permissions.read }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}])) {
+      throw new Error('Sorry, you must have permission to view my {{ titleCase pluralName }}.');
     }
-{{/compare}}
-    return {{ pascalCase pluralName }}.find({ {{userKeyField}}: context.user._id }).fetch();
+{{/if}}
+    /* #### PLOP_QUERY_VALIDATION_START #### */
+    {{schema.hooks.queryValidation}}
+    /* #### PLOP_QUERY_VALIDATION_END #### */
+
+    const query = { {{userKeyField}}: context.user._id }} };
+    const options = {};
+
+    /* #### PLOP_QUERY_PRE_FIND_START #### */
+    {{schema.hooks.queryPreFind}}
+    /* #### PLOP_QUERY_PRE_FIND_END #### */
+
+    return {{ pascalCase pluralName }}.find(query).fetch(query, options);
   },
   {{ camelCase singularName }}: (parent, args, context) => {
-{{#compare schema.permissions.read '!==' 'everyone' }}
-    if (!context.user || !context.user._id || !checkUserRole(context.user._id, '{{schema.permissions.read}}')) {
-      throw new Error('Sorry, you must have permission to view {{ pascalCase singularName }}.');
+{{#if schema.permissions.read}}
+    if (!context.user || !context.user._id || !checkUserRole(context.user._id, [{{#each schema.permissions.read }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}])) {
+      throw new Error('Sorry, you must have permission to view {{ titleCase singularName }}.');
     }
+
+{{/if}}
+    /* #### PLOP_QUERY_VALIDATION_START #### */
+    {{schema.hooks.queryValidation}}
+    /* #### PLOP_QUERY_VALIDATION_END #### */
+     
+    const query = {};
+    const options = {};
+
+{{#compare schema.collectionPermissionFilter.read 'includes' 'self' }}
+    // schema.collectionPermissionFilter.read includes self
+    query.{{userKeyField}} = context.user._id;
+
 {{/compare}}
+    /* #### PLOP_QUERY_PRE_FIND_START #### */
+    {{schema.hooks.queryPreFind}}
+    /* #### PLOP_QUERY_PRE_FIND_END #### */
 
     const {{ primaryKeyField }} = (parent && parent.{{ camelCase singularName }}{{ pascalCase primaryKeyField}}) || args.{{ primaryKeyField }};
     if ({{ primaryKeyField }}) {
-      return {{ pascalCase pluralName }}.findOne({ {{ primaryKeyField }} });
+      query.{{ primaryKeyField }} = {{ primaryKeyField }}
+      return {{ pascalCase pluralName }}.findOne(query, options);
     }
 {{#compare primaryKeyField '!==' urlKeyField }}
     const {{ urlKeyField }} = (parent && parent.{{ camelCase singularName }}{{ pascalCase urlKeyField }}) || args.{{ urlKeyField }};
     if ({{ urlKeyField }}) {
-      return {{ pascalCase pluralName }}.findOne({ {{ urlKeyField }} });
+      query.{{ urlKeyField }} = {{ urlKeyField }}
+      return {{ pascalCase pluralName }}.findOne(query);
     }
 {{/compare}}
-
-
     return null;
   }
   /* #### PLOP_QUERIES_START #### */

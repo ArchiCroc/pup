@@ -6,6 +6,22 @@ function processSchema(input) {
   const schemaKeys = Object.keys(data.schema.fields);
   const schemaValues = Object.values(data.schema.fields);
 
+  // ensure permissions are an array of strings, if a single string is given, wrap it in an array
+  data.schema.permissions = data.schema.permissions || {};
+  data.schema.permissions.read = data.schema.permissions.read || 'everyone';
+  data.schema.permissions.save = data.schema.permissions.save || 'everyone';
+  data.schema.permissions.delete = data.schema.permissions.delete || 'everyone';
+  // eslint-disable-next-line
+  for (let permissionKey in data.schema.permissions) {
+    const permission = data.schema.permissions[permissionKey];
+    if (typeof permission === 'string') {
+      data.schema.permissions[permissionKey] = [permission];
+    }
+    data.schema.permissions[permissionKey] = !permission.includes('everyone')
+      ? permission
+      : undefined;
+  }
+
   // turn collection/bigItem into Collection/BigItem
   data.apiFolderName = (data.schema.apiFolderName || data.name)
     .split('/')
@@ -69,6 +85,21 @@ function processSchema(input) {
 
   data.isSearchable = !!schemaValues.find((field) => field.searchable);
   data.isFilterable = !!schemaValues.find((field) => field.searchable);
+
+  // clean up field permissions
+  data.hasFieldPermissions = !!schemaValues.findIndex((field) => field.permissions);
+  if (data.hasFieldPermissions) {
+    // eslint-disable-next-line
+    for (let fieldKey in data.schema.fields) {
+      const permission = data.schema.fields[fieldKey];
+      if (typeof permission === 'string' && permission !== 'everyone') {
+        data.schema.fields[fieldKey] = [permission];
+      } else {
+        // remove everyone, we will assume that none == everyone
+        data.schema.fields[fieldKey] = !permission.includes('everyone') ? permission : undefined;
+      }
+    }
+  }
 
   return data;
 }

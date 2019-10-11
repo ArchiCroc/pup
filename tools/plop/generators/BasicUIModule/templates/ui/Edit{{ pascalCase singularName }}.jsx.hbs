@@ -13,7 +13,7 @@ import Remove{{ pascalCase singularName }}Button from './components/Remove{{ pas
 
 import { edit{{ pascalCase singularName }} as {{ camelCase singularName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
 
-const Edit{{ pascalCase singularName }} = ({ history, match }) => {
+const Edit{{ pascalCase singularName }} = ({ history, match, roles }) => {
   const { loading, data: { {{ camelCase singularName }} = undefined } = {} } = useQuery({{ camelCase singularName }}Query, { 
     variables: { {{ urlKeyField }}: match.params.{{ urlKeyField }} } 
   });
@@ -26,10 +26,10 @@ const Edit{{ pascalCase singularName }} = ({ history, match }) => {
           {loading ? (
             <Loading />
           ) : (
-            <>{ {{~ camelCase singularName }} ? <{{ pascalCase singularName }}Editor doc={ {{~ camelCase singularName ~}} } history={history} /> : <NotFound />}</>
+            <>{ {{~ camelCase singularName }} ? <{{ pascalCase singularName }}Editor doc={ {{~ camelCase singularName ~}} } history={history} roles={roles} /> : <NotFound />}</>
           )}
           <Divider />
-          { {{~ camelCase singularName }} && <Remove{{ pascalCase singularName }}Button {{primaryKeyField}}={ {{~ camelCase singularName }}.{{primaryKeyField ~}} } {{labelKeyField}}={ {{~ camelCase singularName}}.{{labelKeyField ~}} } history={history} />}
+          { {{~ camelCase singularName }} && {{#if schema.permissions.create}} hasRole(roles, [{{#each this.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && {{/if}}<Remove{{ pascalCase singularName }}Button {{primaryKeyField}}={ {{~ camelCase singularName }}.{{primaryKeyField ~}} } {{labelKeyField}}={ {{~ camelCase singularName}}.{{labelKeyField ~}} } history={history} />}
         </Col>
       </Row>
     </>
@@ -39,6 +39,7 @@ const Edit{{ pascalCase singularName }} = ({ history, match }) => {
 Edit{{ pascalCase singularName }}.propTypes = {
   history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
+  roles: PropTypes.object.isArray,
 };
 
 export default Edit{{ pascalCase singularName }};

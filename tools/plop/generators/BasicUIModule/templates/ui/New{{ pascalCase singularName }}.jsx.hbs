@@ -6,12 +6,12 @@ import Col from 'antd/lib/col';
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
 import {{ pascalCase singularName }}Editor from './components/{{ pascalCase singularName }}Editor';
 
-const New{{ pascalCase singularName }} = ({ history }) => (
+const New{{ pascalCase singularName }} = ({ history, roles }) => (
   <>
     <PageHeader title={i18n.__('{{ pascalCase pluralName }}.new_{{ snakeCase singularName }}')} />
     <Row type="flex" justify="center">
       <Col xs={24} sm={16} md={12} lg={8}>
-        <{{ pascalCase singularName }}Editor history={history} />
+        <{{ pascalCase singularName }}Editor history={history} roles={roles} />
       </Col>
     </Row>
   </>
@@ -19,6 +19,7 @@ const New{{ pascalCase singularName }} = ({ history }) => (
 
 New{{ pascalCase singularName }}.propTypes = {
   history: PropTypes.object.isRequired,
+  roles: PropTypes.object.isArray,
 };
 
 export default New{{ pascalCase singularName }};

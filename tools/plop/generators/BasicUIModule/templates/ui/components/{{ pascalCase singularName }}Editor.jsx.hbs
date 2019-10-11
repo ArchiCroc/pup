@@ -5,11 +5,15 @@ import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import i18n from 'meteor/universe:i18n';
 import Button from 'antd/lib/button';
+import message from 'antd/lib/message';
 import AutoForm from 'uniforms/AutoForm';
+{{#if hasFieldPermissions }}
+import hasRole from '{{uiPathOffset}}../../../modules/hasRole';
+{{/if}}
 {{#each fieldImports}}
 import {{this.variable}} from '{{this.path}}';
 {{/each}}
-import message from 'antd/lib/message';
+
 /* #### PLOP_IMPORTS_START #### */
 /* #### PLOP_IMPORTS_END #### */
 
@@ -20,7 +24,7 @@ import {{ pascalCase singularName }}Schema from '{{uiPathOffset}}../../../api/{{
 
 import Styled{{ pascalCase singularName }}Editor from './Styled{{ pascalCase singularName }}Editor';
 
-const {{ pascalCase singularName }}Editor = ({ doc, history }) => {
+const {{ pascalCase singularName }}Editor = ({ doc = {}, history, roles }) => {
   const [save{{ pascalCase singularName }}] = useMutation(save{{ pascalCase singularName }}Mutation, {
     ignoreResults: true,
     onCompleted: () => {
@@ -52,11 +56,19 @@ const {{ pascalCase singularName }}Editor = ({ doc, history }) => {
         name="{{ camelCase singularName }}"
         schema={ {{~ pascalCase singularName }}Schema}
         onSubmit={handleSubmit}
-        model={doc || {}}
+        model={doc}
         showInlineError
         placeholder
       >
 {{#each schema.fields ~}}
+  {{#compare this.permissions.create '||' this.permissions.update}}
+  { hasRole(roles, 
+    {{~#compare this.permissions.create 'arrayIsEqual' this.permissions.update ~}}
+      [{{#each this.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}])}
+    {{~/else ~}}
+       doc.{{primaryKeyField}} ? [{{#each this.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]:[{{#each this.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}])}
+    {{~/compare ~}}
+  {{/compare}}
   {{~#compare this.type '&&' this.input}}
     {{#compare this.type 'in' 'Object|[String]|[Int]|[Number]' '&&' this.input '!in' 'CrossReferenceSelect|CrossReferenceSearch'}}
         <ListField name="{{ camelCase @key }}">
@@ -66,6 +78,9 @@ const {{ pascalCase singularName }}Editor = ({ doc, history }) => {
         <{{ pascalCase this.input }}Field name="{{ @key }}" />
     {{/compare}}
   {{/compare~}}
+    {{#compare this.permissions.create '||' this.permissions.update}}
+  )}
+  {{/compare}}
 {{~/each}}
         <Button htmlType="submit" type="primary" block>
           {i18n.__('{{ pascalCase pluralName }}.save')}
@@ -82,6 +97,7 @@ const {{ pascalCase singularName }}Editor = ({ doc, history }) => {
 {{ pascalCase singularName }}Editor.propTypes = {
   doc: PropTypes.object,
   history: PropTypes.object.isRequired,
+  roles: PropTypes.object.isArray,
 };
 
 export default {{ pascalCase singularName }}Editor;
