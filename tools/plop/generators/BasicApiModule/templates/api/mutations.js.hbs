@@ -2,33 +2,33 @@ import {{ pascalCase pluralName }} from './{{ pascalCase pluralName }}';
 import {{ pascalCase singularName }}Schema from './schemas/{{ dashCase singularName }}';
 // import sanitizeHtml from 'sanitize-html';
 import checkUserRole from '{{apiPathOffset}}../Users/actions/checkUserRole';
-import createMongoModifier from '{{apiPathOffset}}../../modules/server/createMongoModifier';
+import createMongoModifier from '{{apiPathOffset}}../Users/actions/checkUserRole';
 
 export default {
-  save{{ pascalCase singularName }}: (root, args, context) => {
+  save{{ pascalCase singularName }}: (root, args, { user }) => {
 {{#compare schema.permissions.create 'arrayIsEqual' schema.permissions.update ~}}
   {{#if schema.permissions.create }}
-    if (!context.user || !context.user._id || !checkUserRole(context.user._id, [{{#each schema.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}])) {
+    if (!user || !user._id || !checkUserRole(user._id, [{{#each schema.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}])) {
       throw new Error('Sorry, you must have permission to save a {{ titleCase singularName }}.');
     }
 
   {{/if}}
-{{/else}}
+{{else}}
   {{#if schema.permissions.update}}
-    if (args._id && !checkUserRole(context.user._id, [{{#each schema.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}])) {
+    if (args._id && !checkUserRole(user._id, [{{#each schema.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}])) {
       throw new Error('Sorry, you must have permission to update a {{ titleCase singularName }}.');
     }
   {{/if}}
   {{#if schema.permissions.create}}
-    if (!args._id && !checkUserRole(context.user._id, [{{#each schema.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}])) {
+    if (!args._id && !checkUserRole(user._id, [{{#each schema.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}])) {
       throw new Error('Sorry, you must have permission to create a {{ titleCase singularName }}.');
     }
   {{/if}}
 
 {{/compare}}
     /* #### PLOP_MUTATION_REMOVE_VALIDATION_START #### */
-    {{schema.hooks.mutationValidation}}
-    {{schema.hooks.mutationSaveValidation}}
+    {{~schema.hooks.mutationValidation}}
+    {{~schema.hooks.mutationSaveValidation}}
     /* #### PLOP_MUTATION_REMOVE_VALIDATION_END #### */
 
     const cleanDoc = {{ pascalCase singularName }}Schema.clean(args.{{ camelCase singularName }});
@@ -37,7 +37,7 @@ export default {
     /* #### PLOP_MUTATION_PRE_SAVE_START #### */
     /* #### PLOP_MUTATION_PRE_SAVE_END #### */
 
-    const userId = context.user._id;
+    const userId = user._id;
     const timestamp = new Date();
 
     if (cleanDoc.{{ primaryKeyField }}) {
@@ -49,13 +49,13 @@ export default {
 
 {{#compare schema.collectionPermissionFilter.update 'includes' 'self' }}
       // schema.collectionPermissionFilter.update includes self
-      if (!{{ pascalCase pluralName }}.findOne({ {{ primaryKeyField }}: args.{{ primaryKeyField }}, {{userKeyField}}: context.user._id })) {
+      if (!{{ pascalCase pluralName }}.findOne({ {{ primaryKeyField }}: args.{{ primaryKeyField }}, {{userKeyField}}: user._id })) {
         throw new Error('Sorry, you are not the user that is has permission to update this {{ titleCase singularName }}.');
       }
 
 {{/compare}}
       /* #### PLOP_MUTATION_PRE_UPDATE_START #### */
-      {{schema.hooks.mutationPreUpdate}}
+      {{~schema.hooks.mutationPreUpdate}}
       /* #### PLOP_MUTATION_PRE_UPDATE_END #### */
 
       modifier.$set.updatedById = userId;
@@ -71,32 +71,32 @@ export default {
     cleanDoc.updatedAtUTC = timestamp;
 
     /* #### PLOP_MUTATION_PRE_INSERT_START #### */
-    {{schema.hooks.mutationPreInsert}}
+    {{~schema.hooks.mutationPreInsert}}
     /* #### PLOP_MUTATION_PRE_INSERT_END #### */
 
     const {{ camelCase singularName }}Id = {{ pascalCase pluralName }}.insert(cleanDoc);
     const doc = {{ pascalCase pluralName }}.findOne({{ camelCase singularName }}Id);
     return doc;
   },
-  remove{{ pascalCase singularName }}: (root, args, context) => {
+  remove{{ pascalCase singularName }}: (root, args, { user }) => {
 {{#if schema.permissions.delete }}
-    if (!context.user || !context.user._id || !checkUserRole(context.user._id, [{{#each schema.permissions.delete }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}])) {
+    if (!user || !user._id || !checkUserRole(user._id, [{{#each schema.permissions.delete }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}])) {
       throw new Error('Sorry, you must have permission to remove {{ titleCase singularName }}.');
     }
 
 {{/if}}
     /* #### PLOP_MUTATION_REMOVE_VALIDATION_START #### */
-    {{schema.hooks.mutationValidation}}
-    {{schema.hooks.mutationRemoveValidation}}
+    {{~schema.hooks.mutationValidation}}
+    {{~schema.hooks.mutationRemoveValidation}}
     /* #### PLOP_MUTATION_REMOVE_VALIDATION_END #### */
 
     /* #### PLOP_MUTATION_PRE_REMOVE_START #### */
-    {{schema.hooks.mutationPreRemove}}
+    {{~schema.hooks.mutationPreRemove}}
     /* #### PLOP_MUTATION_PRE_REMOVE_END #### */
 
 {{#compare schema.collectionPermissionFilter.delete 'includes' 'self' }}
     // schema.collectionPermissionFilter.delete includes self
-    if (!{{ pascalCase pluralName }}.findOne({ {{ primaryKeyField }}: args.{{ primaryKeyField }}, {{userKeyField}}: context.user._id })) {
+    if (!{{ pascalCase pluralName }}.findOne({ {{ primaryKeyField }}: args.{{ primaryKeyField }}, {{userKeyField}}: user._id })) {
       throw new Error('Sorry, you are not the user that is has permission to remove this {{ titleCase singularName }}.');
     }
 {{/compare}}

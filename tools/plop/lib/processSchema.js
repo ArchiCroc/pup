@@ -3,8 +3,8 @@ const pluralize = require('pluralize');
 
 function processSchema(input) {
   const data = { ...input };
-  const schemaKeys = Object.keys(data.schema.fields);
-  const schemaValues = Object.values(data.schema.fields);
+  const schemaFieldKeys = Object.keys(data.schema.fields);
+  const schemaFieldValues = Object.values(data.schema.fields);
 
   // ensure permissions are an array of strings, if a single string is given, wrap it in an array
   data.schema.permissions = data.schema.permissions || {};
@@ -51,56 +51,61 @@ function processSchema(input) {
       ? data.name
       : pluralize.singular(data.name);
 
-  let primaryKeyIndex = schemaValues.findIndex((field) => field.primaryKey);
+  let primaryKeyIndex = schemaFieldValues.findIndex((field) => field.primaryKey);
   // if primary key isn't found, set it to the first key
   if (primaryKeyIndex === -1) {
     primaryKeyIndex = 0;
   }
-  data.primaryKeyField = schemaKeys[primaryKeyIndex];
+  data.primaryKeyField = schemaFieldKeys[primaryKeyIndex];
   data.primaryKeyType = data.schema.fields[data.primaryKeyField].type || 'String';
 
-  let urlKeyIndex = schemaValues.findIndex((field) => field.urlKey);
+  let urlKeyIndex = schemaFieldValues.findIndex((field) => field.urlKey);
   // if primary key isn't found, set it to the primaryKey field
   if (urlKeyIndex === -1) {
     urlKeyIndex = primaryKeyIndex;
   }
-  data.urlKeyField = schemaKeys[urlKeyIndex];
+  data.urlKeyField = schemaFieldKeys[urlKeyIndex];
   data.urlKeyType = data.schema.fields[data.urlKeyField].type || 'String';
 
-  const userKeyIndex = schemaValues.findIndex((field) => field.userKey);
+  const userKeyIndex = schemaFieldValues.findIndex((field) => field.userKey);
   // if primary key isn't found, set it to the primaryKey field
   if (userKeyIndex !== -1) {
-    data.userKeyField = schemaKeys[userKeyIndex];
+    data.userKeyField = schemaFieldKeys[userKeyIndex];
   } else {
     data.userKeyField = 'createdById';
   }
 
-  let labelKeyIndex = schemaValues.findIndex((field) => field.labelKey);
+  let labelKeyIndex = schemaFieldValues.findIndex((field) => field.labelKey);
   // if primary key isn't found, set it to the first field that is a string
   if (labelKeyIndex === -1) {
-    labelKeyIndex = schemaValues.findIndex((field) => field.type === 'String');
+    labelKeyIndex = schemaFieldValues.findIndex((field) => field.type === 'String');
   }
-  data.labelKeyField = schemaKeys[labelKeyIndex];
+  data.labelKeyField = schemaFieldKeys[labelKeyIndex];
   data.labelKeyType = data.schema.fields[data.labelKeyField].type || 'String';
 
-  data.isSearchable = !!schemaValues.find((field) => field.searchable);
-  data.isFilterable = !!schemaValues.find((field) => field.searchable);
+  data.isSearchable = !!schemaFieldValues.find((field) => field.searchable);
+  data.isFilterable = !!schemaFieldValues.find((field) => field.searchable);
 
   // clean up field permissions
-  data.hasFieldPermissions = !!schemaValues.findIndex((field) => field.permissions);
+  data.hasFieldPermissions = !!schemaFieldValues.findIndex((field) => field.permissions);
   if (data.hasFieldPermissions) {
-    // eslint-disable-next-line
-    for (let fieldKey in data.schema.fields) {
-      const permission = data.schema.fields[fieldKey];
-      if (typeof permission === 'string' && permission !== 'everyone') {
-        data.schema.fields[fieldKey] = [permission];
-      } else {
-        // remove everyone, we will assume that none == everyone
-        data.schema.fields[fieldKey] = !permission.includes('everyone') ? permission : undefined;
+    schemaFieldValues.forEach((item, index) => {
+      if (item.permissions) {
+        // eslint-disable-next-line
+        for (let permissionKey in item.permissions) {
+          const permission = item.permissions[permissionKey];
+          if (typeof permission === 'string' && permission !== 'everyone') {
+            item.permissions[permissionKey] = [permission];
+          } else {
+            // remove everyone, we will assume that none == everyone
+            item.permissions[permissionKey] = !permission.includes('everyone')
+              ? permission
+              : undefined;
+          }
+        }
       }
-    }
+    });
   }
-
   return data;
 }
 

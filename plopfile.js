@@ -1,5 +1,6 @@
 const pluralize = require('pluralize');
 const filePath = require('inquirer-parse-json-file'); // require('inquirer-file-tree-selection-prompt'); //
+const _ = require('lodash');
 
 const { readdirSync, statSync } = require('fs');
 const { join } = require('path');
@@ -56,14 +57,15 @@ function compare(v1, o1, v2, mainOperator, v3, o2, v4, opts) {
     '>=': (a, b) => a >= b,
     '&&': (a, b) => a && b,
     '||': (a, b) => a || b,
-    includes: (a, b) => a.includes(b),
-    '!includes': (a, b) => !a.includes(b),
+    includes: (a, b) => a && a.includes(b),
+    '!includes': (a, b) => a && !a.includes(b),
     in: (a, b) => b.split('|').includes(a),
     '!in': (a, b) => !b.split('|').includes(a),
     startsWith: (a, b) => a.startsWith(b),
     '!startsWith': (a, b) => !a.startsWith(b),
     typeof: (a, b) => betterTypeof(a, b), // typeof a === b,
     '!typeof': (a, b) => !betterTypeof(a, b),
+    arrayIsEqual: (a, b) => _.xor(a, b).length === 0,
   };
   const a1 = operators[o1](v1, v2);
   let isTrue;

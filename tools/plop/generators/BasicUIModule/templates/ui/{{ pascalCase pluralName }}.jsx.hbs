@@ -7,7 +7,9 @@ import queryString from 'query-string';
 import isString from 'lodash/isString';
 {{/if}}
 import Table from 'antd/lib/table';
+{{#if isSearchable}}
 import Input from 'antd/lib/input';
+{{/if}}
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
 import PrettyDate from '{{uiPathOffset}}../components/PrettyDate';
 import New{{ pascalCase singularName }}Button from './components/New{{ pascalCase singularName }}Button';
@@ -18,7 +20,6 @@ import hasRole from '{{uiPathOffset}}../../modules/hasRole';
 import Styled{{ pascalCase pluralName }} from './Styled{{ pascalCase pluralName }}';
 
 import { {{ camelCase pluralName }} as {{ camelCase pluralName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
-
 {{#if isSearchable}}
 const { Search } = Input;
 {{/if}}
@@ -250,7 +251,7 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
 {{ pascalCase pluralName }}.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  roles: PropTypes.object.isArray,
+  roles: PropTypes.array.isRequired,
 };
 
 export default {{ pascalCase pluralName }};

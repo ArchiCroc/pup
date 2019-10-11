@@ -9,9 +9,9 @@ import FormatDate from '{{uiPathOffset}}../components/FormatDate';
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
 import Loading from '{{uiPathOffset}}../components/Loading';
 import NotFound from '{{uiPathOffset}}../pages/NotFound';
-{{#if schema.permissions.update}}
+{{#compare hasFieldPermissions '||' schema.permissions.update}}
 import hasRole from '{{uiPathOffset}}../../modules/hasRole';
-{{/if}}
+{{/compare}}
 
 import Edit{{ pascalCase singularName }}Button from './components/Edit{{ pascalCase singularName }}Button'
 
@@ -19,7 +19,7 @@ import { {{ camelCase singularName }} as {{ camelCase singularName }}Query } fro
 
 import StyledView{{ pascalCase singularName }} from './StyledView{{ pascalCase singularName }}';
 
-const View{{ pascalCase singularName }} = ({ match, roles }) => {
+const View{{ pascalCase singularName }} = ({ match{{#compare hasFieldPermissions '||' schema.permissions.update}}, roles{{/compare}} }) => {
   const { loading, data: { {{ camelCase singularName }} } = {} } = useQuery({{ camelCase singularName }}Query, { variables: { {{ urlKeyField }}: match.params.{{ urlKeyField }} } });
 
   return (
@@ -31,11 +31,17 @@ const View{{ pascalCase singularName }} = ({ match, roles }) => {
         </p>
       )}
       <Row type="flex" justify="center">
-        <Col xs={24} sm={24} md={23} lg={24}>
+        <Col xs={24} sm={24} md={24} lg={24}>
           {loading ? (
             <Loading />
           ) : (
-            <>{ {{~ camelCase singularName }} ? <View{{ pascalCase singularName }}Fields {{ camelCase singularName }}={ {{~ camelCase singularName ~}} } /> : <NotFound />}</>
+            <>
+              { {{~ camelCase singularName }} ? (
+                <View{{ pascalCase singularName }}Fields {{ camelCase singularName }}={ {{~ camelCase singularName ~}} } {{#if hasFieldPermissions}}roles={roles} {{/if}} />
+              ) : (
+                <NotFound />
+              )}
+            </>
           )}
         </Col>
       </Row>
@@ -46,10 +52,12 @@ const View{{ pascalCase singularName }} = ({ match, roles }) => {
 View{{ pascalCase singularName }}.propTypes = {
   // history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
-  roles: PropTypes.object.isArray,
+{{#compare hasFieldPermissions '||' schema.permissions.update}}
+  roles: PropTypes.array.isRequired,
+{{/compare}}
 };
 
-const View{{ pascalCase singularName }}Fields = ({ {{ camelCase singularName }} }) => {
+const View{{ pascalCase singularName }}Fields = ({ {{ camelCase singularName }}{{#if hasFieldPermissions}}, roles{{/if}} }) => {
   return (
     <Descriptions bordered column={1}>
 {{#each schema.fields ~}}
@@ -62,7 +70,6 @@ const View{{ pascalCase singularName }}Fields = ({ {{ camelCase singularName }} 
         { {{~ camelCase (singular @root.name) }}.{{@key}} && i18n.__(`{{ pascalCase @root.name }}.${ {{~ camelCase (singular @root.name) }}.{{@key}}{{#if this.dataIndex}}.{{ this.dataIndex }}{{/if}}? 'yes' : 'no'}`)}
         {{/compare}}
         {{#compare this.type 'in' 'DateTime' }}
-           
         { {{~ camelCase (singular @root.name) }}.{{@key}} && <FormatDate timestamp={ {{~ camelCase (singular @root.name) }}.{{ @key }}{{#if this.dataIndex}}.{{ this.dataIndex }}{{/if ~}} }{{#compare this.input '===' 'Date' }} format="MMMM Do, YYYY"{{/compare}} />}
         {{/compare}}
         {{#compare this.type 'startsWith' '[' }}
@@ -81,6 +88,10 @@ const View{{ pascalCase singularName }}Fields = ({ {{ camelCase singularName }} 
 
 View{{ pascalCase singularName }}Fields.propTypes = {
   {{ camelCase singularName }}: PropTypes.object.isRequired,
+{{#if hasFieldPermissions}}
+  roles: PropTypes.array.isRequired,
+{{/if}}
+  
 };
 
 export default View{{ pascalCase singularName }};
