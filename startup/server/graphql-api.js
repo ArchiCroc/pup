@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import { GraphQLDate, GraphQLDateTime } from 'graphql-iso-date';
 import { makeExecutableSchema } from 'graphql-tools';
+import { ObjectID } from '../../modules/server/GraphQLObjectIdScalar';
 
 import UserTypes from '../../api/Users/types';
 import UserQueries from '../../api/Users/queries';
@@ -36,6 +37,7 @@ const schema = {
 
     scalar DateTime
     scalar Date
+    scalar ObjectID
 
     #### PLOP_SCALAR_START ####
     #### PLOP_SCALAR_END ####
