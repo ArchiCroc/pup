@@ -101,11 +101,13 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
     {
       title: i18n.__(' {{~ pascalCase @root.name ~}} .{{ snakeCase @key }}'),
       dataIndex: '{{ @key }}{{#if this.dataIndex}}{{#compare this.type '!startsWith' '['}}.{{ this.dataIndex }}{{/compare}}{{/if}}',
-      {{#compare this.type '===' 'String'}}{{#compare this.choices '!typeof' 'object'}}
+      {{#compare this.type '===' 'String'}}
+        {{#compare this.choices '!typeof' 'object'}}
       sorter: true,
       defaultSortOrder: 'ascend',
       // render: (value, record) => <Link to={`/{{ dashCase @root.name }}/${record.{{ @root.urlKeyField ~}} }/edit`}>{value}</Link>, // eslint-disable-line
-      {{/compare}}{{/compare}}
+        {{/compare}}
+      {{/compare}}
       {{#compare this.type 'in' 'Date|DateTime|Time'}}
       sorter: true,
       defaultSortOrder: 'descend',

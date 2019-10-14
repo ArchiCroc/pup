@@ -9,7 +9,7 @@ export default {
     description:
       'The `ObjectID` scalar type represents a [`BSON`](https://en.wikipedia.org/wiki/BSON) ID commonly used in `mongodb`.',
     serialize(_id) {
-      if (_id instanceof Mongo.Mongo.ObjectID) {
+      if (_id instanceof Mongo.ObjectID) {
         return _id.toHexString();
       }
       if (typeof _id === 'string') {

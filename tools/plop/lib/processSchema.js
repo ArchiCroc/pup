@@ -84,7 +84,7 @@ function processSchema(input) {
   data.labelKeyType = data.schema.fields[data.labelKeyField].type || 'String';
 
   data.isSearchable = !!schemaFieldValues.find((field) => field.searchable);
-  data.isFilterable = !!schemaFieldValues.find((field) => field.searchable);
+  data.isFilterable = !!schemaFieldValues.find((field) => field.filterable);
 
   // clean up field permissions
   data.hasFieldPermissions = !!schemaFieldValues.findIndex((field) => field.permissions);
