@@ -14,7 +14,7 @@ const Remove{{ pascalCase singularName }}Button = ({ {{ primaryKeyField }}, {{ l
     ignoreResults: true,
     onCompleted: () => {
       message.success(i18n.__('{{ pascalCase pluralName }}.{{ snakeCase singularName }}_saved'));
-      history.push('/{{ dashCase pluralName }}');
+      history.push('/{{ uiFolderName }}');
     },
     onError: (error) => {
       message.error(error.message);
