@@ -221,7 +221,7 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
     <Styled{{ pascalCase pluralName }}>
       <PageHeader title={i18n.__('{{ pascalCase pluralName }}.{{ snakeCase singularName }}_plural')} />
       <p>
-        {{#if schema.permissions.create}}{ hasRole(roles, [{{#each this.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && ({{/if}}<New{{ pascalCase singularName }}Button />{{#if schema.permissions.create}})}{{/if}}
+        {{#if schema.permissions.create}}{ hasRole(roles, [{{#each schema.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && ({{/if}}<New{{ pascalCase singularName }}Button />{{#if schema.permissions.create}})}{{/if}}
         {{#if isSearchable}}
         <span className="pull-right" style=\{{ width: 300 }}>
           <Search

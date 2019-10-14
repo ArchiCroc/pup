@@ -1,8 +1,8 @@
 { "name": "Collection/Brands",
   "permissions": {
-    "read":"admin",
+    "read": "admin",
     "save": "admin",
-    "delete":"admin"
+    "delete": "admin"
   },
   "menu": {
     "index": "admin"

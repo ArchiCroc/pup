@@ -35,7 +35,7 @@ const Edit{{ pascalCase singularName }} = ({ history, match{{#if hasFieldPermiss
             </>
           )}
           <Divider />
-          { {{~ camelCase singularName }} && {{#if schema.permissions.create}} hasRole(roles, [{{#each this.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && {{/if}}(
+          { {{~ camelCase singularName }} && {{#if schema.permissions.delete}} hasRole(roles, [{{#each schema.permissions.delete }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && {{/if}}(
               <Remove{{ pascalCase singularName }}Button 
                 {{primaryKeyField}}={ {{~ camelCase singularName }}.{{primaryKeyField ~}} } 
                 {{labelKeyField}}={ {{~ camelCase singularName}}.{{labelKeyField ~}} } 
