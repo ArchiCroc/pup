@@ -24,7 +24,7 @@ import {{ pascalCase singularName }}Schema from '{{uiPathOffset}}../../../api/{{
 
 import Styled{{ pascalCase singularName }}Editor from './Styled{{ pascalCase singularName }}Editor';
 
-const {{ pascalCase singularName }}Editor = ({ doc = {}, history{{#if hasFieldPermissions}}, roles{{/if}} }) => {
+const {{ pascalCase singularName }}Editor = ({ doc, history{{#if hasFieldPermissions}}, roles{{/if}} }) => {
   const [save{{ pascalCase singularName }}] = useMutation(save{{ pascalCase singularName }}Mutation, {
     ignoreResults: true,
     onCompleted: () => {
@@ -91,7 +91,7 @@ const {{ pascalCase singularName }}Editor = ({ doc = {}, history{{#if hasFieldPe
 };
 
 {{ pascalCase singularName }}Editor.defaultProps = {
-  doc: null,
+  doc: {},
 };
 
 {{ pascalCase singularName }}Editor.propTypes = {
