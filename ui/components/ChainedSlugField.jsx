@@ -17,9 +17,9 @@ const ChainedSlugField = (props, { uniforms }) => {
   const [prevSourceValue, setPrevSourceValue] = useState(uniforms.model[props.sourceField]);
   // console.log(`init (${prevSelfValue}), (${prevSourceValue})`);
 
-  if (uniforms.model[props.sourceField] && typeof uniforms.model[props.sourceField] === 'string') {
+  if (typeof uniforms.model[props.sourceField] === 'string') {
     if (prevSelfValue === prevSourceValue) {
-      // console.log(`should update (${prevSelfValue}), (${prevSourceValue})`);
+      //console.log(`should update (${prevSelfValue}), (${prevSourceValue})`);
       // the fields were synced so we should continue to update it
       sourceValue = slugify(uniforms.model[props.sourceField], { lower: true });
       if (sourceValue !== prevSourceValue) {
@@ -33,10 +33,6 @@ const ChainedSlugField = (props, { uniforms }) => {
   useEffect(() => {
     uniforms.onChange(props.name, prevSourceValue);
   }, [prevSourceValue]);
-
-  //console.log(props, uniforms);
-
-  // console.log('currentValue', currentValue);
 
   function handleChange(event) {
     setPrevSelfValue(event.target.value);
@@ -109,9 +105,12 @@ export default class extends ConnectedField {
   shouldComponentUpdate(props, state, context) {
     const prevContext = this.context.uniforms;
     const nextContext = context.uniforms;
-
-    if (prevContext.model[this.name] !== nextContext.model[this.name]) {
-      // console.log('shouldComponentUpdate', this, props, state, context);
+    // console.log('shouldComponentUpdate', prevContext.model, nextContext.model);
+    if (
+      nextContext.model[this.name] === '' ||
+      prevContext.model[this.name] !== nextContext.model[this.name]
+    ) {
+      // console.log('update!');
       return true;
     }
 

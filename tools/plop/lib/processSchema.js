@@ -7,21 +7,21 @@ function processSchema(input) {
   const schemaFieldValues = Object.values(data.schema.fields);
 
   // ensure permissions are an array of strings, if a single string is given, wrap it in an array
-  data.schema.permissions = data.schema.permissions || {};
-  data.schema.permissions.read = data.schema.permissions.read || 'everyone';
-  data.schema.permissions.save = data.schema.permissions.save || 'everyone';
-  data.schema.permissions.delete = data.schema.permissions.delete || 'everyone';
+  const permissions = data.schema.permissions || {};
+  permissions.read = permissions.read || 'everyone';
+  permissions.create = permissions.create || permissions.save || 'everyone';
+  permissions.update = permissions.update || permissions.save || 'everyone';
+  permissions.delete = permissions.delete || 'everyone';
   // eslint-disable-next-line
-  for (let permissionKey in data.schema.permissions) {
-    const permission = data.schema.permissions[permissionKey];
+  for (let permissionKey in permissions) {
+    let permission = permissions[permissionKey];
     if (typeof permission === 'string') {
-      data.schema.permissions[permissionKey] = [permission];
+      permission = [permission];
     }
-    data.schema.permissions[permissionKey] = !permission.includes('everyone')
-      ? permission
-      : undefined;
+    permissions[permissionKey] = !permission.includes('everyone') ? permission : undefined;
   }
 
+  data.schema.permissions = permissions;
   // turn collection/bigItem into Collection/BigItem
   data.apiFolderName = (data.schema.apiFolderName || data.name)
     .split('/')

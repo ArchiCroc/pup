@@ -1,14 +1,15 @@
 { "name": "Offices",
   "permissions": {
-    "read":"user",
-    "save": "admin",
-    "delete":"admin"
+    "read": "user",
+    "create": "admin",
+    "update": "admin",
+    "delete": "admin"
   },
   "menu": {
     "index": "admin"
   },
 
-  "schemaImports": ["import moment from 'moment-timezone';"],
+  "schemaImports": ["import moment from 'moment-timezone';", "import slugify from 'slugify';"],
     
   "fields": {
     "_id": {
@@ -31,14 +32,15 @@
     "slug": {
       "urlKey": true,
       "type": "String",
-      "input": "Text",
+      "input": "ChainedSlug",
       "validate" : {
         "max": 48
       },
-      "clean": "(item) => item.toLowerCase()",
-      "sourceField": "name",
-      "sourceModifier": "(item)=> item.dashCase()",
-      "showInTableView": false
+      "clean": "(item) => slugify(item, { lower: true});",
+      "showInTableView": false,
+      "uniforms": {
+        "sourceField": "name"
+      }
     },
     "folderName": {
       "labelKey": true,
