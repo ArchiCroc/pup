@@ -64,7 +64,7 @@ const {{ pascalCase singularName }}Editor = ({ doc, history{{#if hasFieldPermiss
   {{#compare this.permissions.create '||' this.permissions.update}}
   { hasRole(roles, 
     {{~#compare this.permissions.create 'arrayIsEqual' this.permissions.update ~}}
-      [{{#each this.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}])}
+      [{{#each this.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && (
     {{~else~}}
        doc.{{@root.primaryKeyField}} ? [{{#each this.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]:[{{#each this.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && (
     {{/compare}}
