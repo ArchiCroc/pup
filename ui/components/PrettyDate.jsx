@@ -4,6 +4,10 @@ import 'moment-timezone';
 import PropTypes from 'prop-types';
 
 const PrettyDate = (props) => {
+  if (!timestamp) {
+    return props.emptyText;
+  }
+
   let timezone = props.timezone && props.timezone;
 
   if (!timezone) {
@@ -18,12 +22,15 @@ const PrettyDate = (props) => {
 };
 
 PrettyDate.defaultProps = {
+  timestamp: undefined,
   timezone: undefined,
+  emptyText: '',
 };
 
 PrettyDate.propTypes = {
-  timestamp: PropTypes.string.isRequired,
+  timestamp: PropTypes.oneOf([PropTypes.instanceOf(Date), PropTypes.string]),
   timezone: PropTypes.string,
+  emptyText: PropTypes.node,
 };
 
 export default PrettyDate;
