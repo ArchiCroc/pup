@@ -10,6 +10,9 @@ import {{ pascalCase singularName }}Editor from './components/{{ pascalCase sing
 import Loading from '{{uiPathOffset}}../components/Loading';
 import NotFound from '{{uiPathOffset}}../pages/NotFound';
 import Remove{{ pascalCase singularName }}Button from './components/Remove{{ pascalCase singularName }}Button';
+{{#compare hasFieldPermissions '||' schema.permissions.delete}}
+import hasRole from '{{uiPathOffset}}../../modules/hasRole';
+{{/compare}}
 
 import { edit{{ pascalCase singularName }} as {{ camelCase singularName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
 
