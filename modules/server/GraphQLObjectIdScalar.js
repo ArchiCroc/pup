@@ -9,15 +9,17 @@ export default {
     description:
       'The `ObjectID` scalar type represents a [`BSON`](https://en.wikipedia.org/wiki/BSON) ID commonly used in `mongodb`.',
     serialize(_id) {
+      // value sent to the client
       if (_id instanceof Mongo.ObjectID) {
         return _id.toHexString();
       }
       if (typeof _id === 'string') {
         return _id;
       }
-      throw new Error(`${Object.getPrototypeOf(_id).constructor.name} not convertible to `);
+      throw new Error(`${Object.getPrototypeOf(_id).constructor.name} not convertible to string`);
     },
     parseValue(_id) {
+      // value from the client
       if (typeof _id === 'string') {
         return Mongo.ObjectID.createFromHexString(_id);
       }

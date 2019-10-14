@@ -99,6 +99,7 @@ const schema = {
   resolvers: {
     Date: GraphQLDate,
     DateTime: GraphQLDateTime,
+    ObjectID,
     Query: {
       ...DocumentQueries,
       ...UserQueries,

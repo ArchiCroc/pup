@@ -6,6 +6,8 @@ function processSchema(input) {
   const schemaFieldKeys = Object.keys(data.schema.fields);
   const schemaFieldValues = Object.values(data.schema.fields);
 
+  data.fieldTypes = schemaFieldValues.map((item) => item.type);
+
   // ensure permissions are an array of strings, if a single string is given, wrap it in an array
   const permissions = data.schema.permissions || {};
   permissions.read = permissions.read || 'everyone';

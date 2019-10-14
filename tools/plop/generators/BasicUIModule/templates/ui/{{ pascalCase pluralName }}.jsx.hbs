@@ -170,7 +170,7 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
 
   function handleTableChange(pagination, filters, sorter) {
 {{#if isFilterable}}
-    const { 
+    const {
   {{#each schema.fields}}
     {{#if this.filterable}}
       {{ @key }}: new{{ pascalCase @key }} = null,
@@ -186,7 +186,7 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
     setCurrentSort(sorter.field);
 {{#each schema.fields}}
   {{#if this.filterable}}
-    set{{ pascalCase @key }}(new{{ pascalCase @key }});
+    setCurrent{{ pascalCase @key }}(new{{ pascalCase @key }});
   {{/if}}
 {{/each}}  
 
