@@ -8,6 +8,11 @@ function processSchema(input) {
 
   data.fieldTypes = schemaFieldValues.map((item) => item.type);
 
+  //if we don't have a manually set name, use the one from the schema
+  if (!data.name) {
+    data.name = data.schema.name;
+  }
+
   // ensure permissions are an array of strings, if a single string is given, wrap it in an array
   const permissions = data.schema.permissions || {};
   permissions.read = permissions.read || 'everyone';

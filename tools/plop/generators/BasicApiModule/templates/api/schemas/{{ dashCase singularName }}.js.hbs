@@ -1,26 +1,4 @@
-{{#compare fieldTypes 'includes' 'ObjectID'}}
-import { Mongo } from 'meteor/mongo';
-{{/compare}}
-import Uniforms from 'uniforms';
-import SimpleSchema from 'simpl-schema';
-import i18n from 'meteor/universe:i18n';
-{{#each schema.schemaImports }}
-{{{this}}}
-{{/each}}
-/* #### PLOP_IMPORTS_START #### */
-/* #### PLOP_IMPORTS_END #### */
-
-{{#each schema.fields }}
-  {{#if this.clean}}
-const clean{{pascalCase @key}} = {{{this.clean}}};
-  {{/if}}
-{{/each}}
-
-const {{ pascalCase singularName }}Schema = new SimpleSchema({
-{{#each schema.fields ~}}
-  {{~#compare this.type '&&' this.input}}
-    {{~#compare this.type '!startsWith' '['}}
-  {{#compare @key 'includes' '.'}}'{{@key}}'{{else}}{{@key}}{{/compare}}: {
+{{#*inline "schemaFieldBody"}}
     type: {{#compare this.type '===' 'Int'}}SimpleSchema.Integer{{else}}{{#compare this.type '===' 'Float'}}Number{{else}}{{#compare this.type '===' 'DateTime'}}Date{{else}}{{#compare this.type '===' 'ObjectID'}}Mongo.ObjectID{{else}}{{this.type}}{{/compare}}{{/compare}}{{/compare}}{{/compare}},
     {{#compare this.input '!=' 'Hidden'}}
     label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_label'),
@@ -75,6 +53,31 @@ const {{ pascalCase singularName }}Schema = new SimpleSchema({
       {{/compare}}
       {{/if}}
     },
+{{/inline}}
+{{#compare fieldTypes 'includes' 'ObjectID'}}
+import { Mongo } from 'meteor/mongo';
+{{/compare}}
+import Uniforms from 'uniforms';
+import SimpleSchema from 'simpl-schema';
+import i18n from 'meteor/universe:i18n';
+{{#each schema.schemaImports }}
+{{{this}}}
+{{/each}}
+/* #### PLOP_IMPORTS_START #### */
+/* #### PLOP_IMPORTS_END #### */
+
+{{#each schema.fields }}
+  {{#if this.clean}}
+const clean{{pascalCase @key}} = {{{this.clean}}};
+  {{/if}}
+{{/each}}
+
+const {{ pascalCase singularName }}Schema = new SimpleSchema({
+{{#each schema.fields ~}}
+  {{~#compare this.type '&&' this.input}}
+    {{~#compare this.type '!startsWith' '['}}
+  {{#compare @key 'includes' '.'}}'{{@key}}'{{else}}{{@key}}{{/compare}}: {
+    {{> schemaFieldBody}}
   },
   {{else}}
   {{#compare @key 'includes' '.'}}'{{@key}}'{{else}}{{@key}}{{/compare}}: {
@@ -111,40 +114,7 @@ const {{ pascalCase singularName }}Schema = new SimpleSchema({
     },
   },
   '{{@key}}.$': {
-    type: {{stripBrackets this.type}},
-    {{#if this.validate.regEx}}
-    regEx: {{this.validate.regEx}},
-    {{/if}}
-    {{#if this.validate.max}}
-    max: {{this.validate.max}},
-    {{/if}}
-    {{#if this.validate.min}}
-    min: {{this.validate.min}},
-    {{/if}}
-    {{#if this.choices}}
-      {{#compare this.choices 'typeof' 'object' '||' this.choices 'typeof' 'array'}}
-    allowedValues: [{{#each this.choices}}{{#compare this 'typeof' 'string'}}'{{this}}'{{else}}{{this}}{{/compare}}{{#unless @last}}, {{/unless}}{{/each}}],
-      {{else}}
-    allowedValues: {{this.choices}},
-      {{/compare}}
-    {{/if}}
-    uniforms: {
-      {{#compare this.input '==' 'Hidden'  }}
-      type: 'hidden',
-      {{else}}
-        {{#compare this.type '!=' 'Boolean'  }}
-      placeholder: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_placeholder'),
-        {{/compare}}
-      {{/compare}}
-      {{#each this.uniforms}}
-      {{@key}}: {{#compare this 'typeof' 'string'}}'{{{this}}}'{{else}}{{this}}{{/compare}},
-      {{/each}}
-      {{#if this.choices}}
-      {{#compare this.choices 'typeof' 'object'}}
-      transform: (value) => i18n.__(`{{ pascalCase @root.name }}.{{snakeCase @key}}_${value}`),
-      {{/compare}}
-      {{/if}}
-    },
+    {{> schemaFieldBody}}
   },
     {{/compare}}
   {{/compare~}}
