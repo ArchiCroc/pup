@@ -6,8 +6,8 @@ mutation save{{ pascalCase singularName }}(${{ camelCase singularName }}: {{ pas
   }
 }
 
-mutation remove{{ pascalCase singularName }}(${{ primaryKeyField }}: {{ primaryKeyType }}!) {
-  remove{{ pascalCase singularName }}({{ primaryKeyField }}: ${{ primaryKeyField }}) {
-    {{ primaryKeyField }}
+mutation remove{{ pascalCase singularName }}(${{ primaryFieldKey }}: {{ primaryField.type }}!) {
+  remove{{ pascalCase singularName }}({{ primaryFieldKey }}: ${{ primaryFieldKey }}) {
+    {{ primaryFieldKey }}
   }
 }

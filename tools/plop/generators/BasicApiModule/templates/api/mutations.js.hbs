@@ -40,8 +40,8 @@ export default {
     const userId = user._id;
     const timestamp = new Date();
 
-    if (cleanDoc.{{ primaryKeyField }}) {
-      const { {{ primaryKeyField }} } = cleanDoc;
+    if (cleanDoc.{{ primaryFieldKey }}) {
+      const { {{ primaryFieldKey }} } = cleanDoc;
 
       const modifier = createMongoModifier({{ pascalCase singularName }}Schema, cleanDoc);
 
@@ -49,7 +49,7 @@ export default {
 
 {{#compare schema.collectionPermissionFilter.update 'includes' 'self' }}
       // schema.collectionPermissionFilter.update includes self
-      if (!{{ pascalCase pluralName }}.findOne({ {{ primaryKeyField }}: args.{{ primaryKeyField }}, {{userKeyField}}: user._id })) {
+      if (!{{ pascalCase pluralName }}.findOne({ {{ primaryFieldKey }}: args.{{ primaryFieldKey }}, {{userKeyField}}: user._id })) {
         throw new Error('Sorry, you are not the user that is has permission to update this {{ titleCase singularName }}.');
       }
 
@@ -61,8 +61,8 @@ export default {
       modifier.$set.updatedById = userId;
       modifier.$set.updatedAtUTC = timestamp;
 
-      {{ pascalCase pluralName }}.update({ {{ primaryKeyField }} }, modifier);
-      return {{ pascalCase pluralName }}.findOne({{ primaryKeyField }});
+      {{ pascalCase pluralName }}.update({ {{ primaryFieldKey }} }, modifier);
+      return {{ pascalCase pluralName }}.findOne({{ primaryFieldKey }});
     }
 
     cleanDoc.createdById = userId;
@@ -96,7 +96,7 @@ export default {
 
 {{#compare schema.collectionPermissionFilter.delete 'includes' 'self' }}
     // schema.collectionPermissionFilter.delete includes self
-    if (!{{ pascalCase pluralName }}.findOne({ {{ primaryKeyField }}: args.{{ primaryKeyField }}, {{userKeyField}}: user._id })) {
+    if (!{{ pascalCase pluralName }}.findOne({ {{ primaryFieldKey }}: args.{{ primaryFieldKey }}, {{userKeyField}}: user._id })) {
       throw new Error('Sorry, you are not the user that is has permission to remove this {{ titleCase singularName }}.');
     }
 {{/compare}}

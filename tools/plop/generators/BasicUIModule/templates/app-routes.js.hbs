@@ -17,7 +17,7 @@
                   />
                   <AuthenticatedRoute
                     exact
-                    path="/{{ uiFolderName }}/:{{urlKeyField}}"
+                    path="/{{ uiFolderName }}/:{{urlFieldKey}}"
                     component={View{{ pascalCase singularName ~}}}
                     setAfterLoginPath={setAfterLoginPath}
                     {...props}
@@ -25,7 +25,7 @@
                   />
                   <AuthenticatedRoute
                     exact
-                    path="/{{ uiFolderName }}/:{{urlKeyField}}/edit"
+                    path="/{{ uiFolderName }}/:{{urlFieldKey}}/edit"
                     component={Edit{{ pascalCase singularName ~}}}
                     setAfterLoginPath={setAfterLoginPath}
                     {...props}

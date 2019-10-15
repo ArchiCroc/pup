@@ -17,5 +17,5 @@
         {{/each}}
       ): {{ pascalCase pluralName }}
       my{{ pascalCase pluralName }}: [{{ pascalCase singularName }}]
-      {{ camelCase singularName }}({{ primaryKeyField }}: {{ primaryKeyType }}{{#compare primaryKeyField '!==' urlKeyField }}, {{ urlKeyField }}: {{ urlKeyType }}{{/compare}}): {{ pascalCase singularName }}
+      {{ camelCase singularName }}({{ primaryFieldKey }}: {{ primaryField.type }}{{#compare primaryFieldKey '!==' urlFieldKey }}, {{ urlFieldKey }}: {{ urlField.type }}{{/compare}}): {{ pascalCase singularName }}
       #### {{ constantCase pluralName }}_QUERY_TYPES_END ####

@@ -28,7 +28,7 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
   const {
     pageSize = 10,
     page = 1,
-    sort = '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelKeyField}}{{/if}}',
+    sort = '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelFieldKey}}{{/if}}',
     order = '{{#if schema.defaultSortOrder}}{{schema.defaultSortOrder}}{{else}}ascend{{/if}}',
 {{#if isSearchable}}
     search = null,
@@ -105,7 +105,7 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
         {{#compare this.choices '!typeof' 'object'}}
       sorter: true,
       defaultSortOrder: 'ascend',
-      // render: (value, record) => <Link to={`/{{ dashCase @root.name }}/${record.{{ @root.urlKeyField ~}} }/edit`}>{value}</Link>, // eslint-disable-line
+      // render: (value, record) => <Link to={`/{{ dashCase @root.name }}/${record.{{ @root.urlFieldKey ~}} }/edit`}>{value}</Link>, // eslint-disable-line
         {{/compare}}
       {{/compare}}
       {{#compare this.type 'in' 'Date|DateTime|Time'}}
@@ -214,7 +214,7 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
   function handleTableRow(record) {
     return {
       onClick: () => {
-        history.push(`/{{ uiFolderName }}/${record.{{ urlKeyField ~}} }`);
+        history.push(`/{{ uiFolderName }}/${record.{{ urlFieldKey ~}} }`);
       },
     };
   };
@@ -242,7 +242,7 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
         loading={loading}
         onChange={handleTableChange}
         onRow={handleTableRow}
-        rowKey="{{ primaryKeyField }}"
+        rowKey="{{ primaryFieldKey }}"
         pagination={paginationObject}
         rowClassName="clickable"
       />

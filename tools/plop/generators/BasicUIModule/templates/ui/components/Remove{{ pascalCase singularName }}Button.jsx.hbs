@@ -9,7 +9,7 @@ import message from 'antd/lib/message';
 import { {{ camelCase pluralName }} as {{ camelCase pluralName }}Query } from '../queries/{{ pascalCase pluralName }}.gql';
 import { remove{{ pascalCase singularName }} as remove{{ pascalCase singularName }}Mutation } from '../mutations/{{ pascalCase pluralName }}.gql';
 
-const Remove{{ pascalCase singularName }}Button = ({ {{ primaryKeyField }}, {{ labelKeyField }}, history, className, disabled }) => {
+const Remove{{ pascalCase singularName }}Button = ({ {{#compare primaryFieldKey '===' labelFieldKey}}{{ primaryFieldKey }}, {{ labelFieldKey }}{{else}}{{ primaryFieldKey }}{{/compare}}, history, className, disabled }) => {
   const [remove{{ pascalCase singularName }}] = useMutation(remove{{ pascalCase singularName }}Mutation, {
     ignoreResults: true,
     onCompleted: () => {
@@ -20,12 +20,12 @@ const Remove{{ pascalCase singularName }}Button = ({ {{ primaryKeyField }}, {{ l
       message.error(error.message);
     },
     refetchQueries: [{ query: {{ camelCase pluralName }}Query }],
-    variables: { {{ primaryKeyField }} },
+    variables: { {{ primaryFieldKey }} },
   });
 
   function showConfirmModal() {
     modal.confirm({
-      title: i18n.___('{{ pascalCase pluralName }}.confirm_remove_{{ snakeCase singularName }}', { {{ labelKeyField }} }),
+      title: i18n.___('{{ pascalCase pluralName }}.confirm_remove_{{ snakeCase singularName }}', { {{ labelFieldKey }}{{#if labelField.dataIndex}}.{{labelField.dataIndex}}{{/if}} }),
       onOk: remove{{ pascalCase singularName }},
       okText: i18n.__('{{ pascalCase pluralName }}.remove'),
       okType: 'danger',
@@ -35,7 +35,7 @@ const Remove{{ pascalCase singularName }}Button = ({ {{ primaryKeyField }}, {{ l
 
   return (
     <Button
-      key={ {{~ primaryKeyField ~}} }
+      key={ {{~ primaryFieldKey ~}} }
       className={className}
       type="danger"
       disabled={disabled}
@@ -55,8 +55,8 @@ Remove{{ pascalCase singularName }}Button.propTypes = {
   history: PropTypes.object.isRequired,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  {{ primaryKeyField }}: PropTypes.string.isRequired,
-  {{ labelKeyField }}: PropTypes.string.isRequired,
+  {{ primaryFieldKey }}: PropTypes.string.isRequired,
+  {{ labelFieldKey }}: PropTypes.string.isRequired,
 };
 
 export default Remove{{ pascalCase singularName }}Button;

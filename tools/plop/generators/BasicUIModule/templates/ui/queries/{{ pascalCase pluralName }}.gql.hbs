@@ -32,11 +32,11 @@ query {{ camelCase pluralName }}(
   ) {
     total
     {{ camelCase pluralName }} {
-      {{primaryKeyField}}
-      {{#compare primaryKeyField '!==' urlKeyField}}{{urlKeyField}}{{/compare}}
+      {{primaryFieldKey}}
+      {{#compare primaryFieldKey '!==' urlFieldKey}}{{urlFieldKey}}{{/compare}}
 {{#each schema.fields ~}}
-  {{~#compare this.showInTableView '!==' false '&&' @key '!==' primaryKeyField}}
-    {{~#compare this.input '||' this.showInTableView '&&' @key '!==' urlKeyField }}
+  {{~#compare this.showInTableView '!==' false '&&' @key '!==' primaryFieldKey}}
+    {{~#compare this.input '||' this.showInTableView '&&' @key '!==' urlFieldKey }}
       {{#if dataIndex}}
       {{convertDataIndexToGraphqlSubQuery (concat @key '.' dataIndex) 3}}
       {{else}}
@@ -49,14 +49,14 @@ query {{ camelCase pluralName }}(
   }
 }
 
-query edit{{ pascalCase singularName }}(${{ primaryKeyField }}: {{ primaryKeyType }}{{#compare primaryKeyField '!==' urlKeyField }}, ${{ urlKeyField }}: {{ urlKeyType }}{{/compare}}) {
-  {{ camelCase singularName }}({{ primaryKeyField }}: ${{ primaryKeyField }}{{#compare primaryKeyField '!==' urlKeyField }}, {{ urlKeyField }}: ${{ urlKeyField }}{{/compare}}) {
+query edit{{ pascalCase singularName }}(${{ primaryFieldKey }}: {{ primaryField.type }}{{#compare primaryFieldKey '!==' urlFieldKey }}, ${{ urlFieldKey }}: {{ urlField.type }}{{/compare}}) {
+  {{ camelCase singularName }}({{ primaryFieldKey }}: ${{ primaryFieldKey }}{{#compare primaryFieldKey '!==' urlFieldKey }}, {{ urlFieldKey }}: ${{ urlFieldKey }}{{/compare}}) {
     ...{{ pascalCase singularName }}Attributes
   }
 }
 
-query {{ camelCase singularName }}(${{ primaryKeyField }}: {{ primaryKeyType }}{{#compare primaryKeyField '!==' urlKeyField }}, ${{ urlKeyField }}: {{ urlKeyType }}{{/compare}}) {
-  {{ camelCase singularName }}({{ primaryKeyField }}: ${{ primaryKeyField }}{{#compare primaryKeyField '!==' urlKeyField }}, {{ urlKeyField }}: ${{ urlKeyField }}{{/compare}}) {
+query {{ camelCase singularName }}(${{ primaryFieldKey }}: {{ primaryField.type }}{{#compare primaryFieldKey '!==' urlFieldKey }}, ${{ urlFieldKey }}: {{ urlField.type }}{{/compare}}) {
+  {{ camelCase singularName }}({{ primaryFieldKey }}: ${{ primaryFieldKey }}{{#compare primaryFieldKey '!==' urlFieldKey }}, {{ urlFieldKey }}: ${{ urlFieldKey }}{{/compare}}) {
     ...{{ pascalCase singularName }}Attributes
   }
 }

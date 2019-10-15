@@ -5,11 +5,11 @@ import {{ pascalCase pluralName }} from '../{{ pascalCase pluralName }}';
   {{#if this.index}}
 createIndex({{ pascalCase @root.pluralName }}, { {{ @key }}: 1 });
   {{else}}
-    {{#compare primaryKeyField '!==' '_id' '&&' primaryKeyField '==' @key   }}
-createIndex({{ pascalCase @root.pluralName }}, { {{primaryKeyField}}: 1 });
+    {{#compare primaryFieldKey '!==' '_id' '&&' primaryFieldKey '==' @key   }}
+createIndex({{ pascalCase @root.pluralName }}, { {{primaryFieldKey}}: 1 });
     {{/compare}}
-    {{#compare primaryKeyField '!==' urlKeyField '&&' urlKeyField '===' @key  }}
-createIndex({{ pascalCase @root.pluralName }}, { {{urlKeyField}}: 1 });
+    {{#compare primaryFieldKey '!==' urlFieldKey '&&' urlFieldKey '===' @key  }}
+createIndex({{ pascalCase @root.pluralName }}, { {{urlFieldKey}}: 1 });
     {{/compare}}
   {{/if}}
 {{/each}}

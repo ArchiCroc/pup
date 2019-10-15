@@ -18,7 +18,7 @@ export default {
       _ids,
       pageSize = 10,
       page = 1,
-      sort = '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelKeyField}}{{/if}}',
+      sort = '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelFieldKey}}{{/if}}',
       order = '{{#if schema.defaultSortOrder}}{{schema.defaultSortOrder}}{{else}}ascend{{/if}}',
 {{#if isSearchable}}
       search,
@@ -128,15 +128,15 @@ export default {
     {{~schema.hooks.queryPreFind}}
     /* #### PLOP_QUERY_PRE_FIND_END #### */
 
-    const {{ primaryKeyField }} = (parent && parent.{{ camelCase singularName }}{{ pascalCase primaryKeyField}}) || args.{{ primaryKeyField }};
-    if ({{ primaryKeyField }}) {
-      query.{{ primaryKeyField }} = {{ primaryKeyField }};
+    const {{ primaryFieldKey }} = (parent && parent.{{ camelCase singularName }}{{ pascalCase primaryFieldKey}}) || args.{{ primaryFieldKey }};
+    if ({{ primaryFieldKey }}) {
+      query.{{ primaryFieldKey }} = {{ primaryFieldKey }};
       return {{ pascalCase pluralName }}.findOne(query, options);
     }
-{{#compare primaryKeyField '!==' urlKeyField }}
-    const {{ urlKeyField }} = (parent && parent.{{ camelCase singularName }}{{ pascalCase urlKeyField }}) || args.{{ urlKeyField }};
-    if ({{ urlKeyField }}) {
-      query.{{ urlKeyField }} = {{ urlKeyField }}
+{{#compare primaryFieldKey '!==' urlFieldKey }}
+    const {{ urlFieldKey }} = (parent && parent.{{ camelCase singularName }}{{ pascalCase urlFieldKey }}) || args.{{ urlFieldKey }};
+    if ({{ urlFieldKey }}) {
+      query.{{ urlFieldKey }} = {{ urlFieldKey }}
       return {{ pascalCase pluralName }}.findOne(query);
     }
 {{/compare}}

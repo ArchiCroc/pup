@@ -20,14 +20,14 @@ import { {{ camelCase singularName }} as {{ camelCase singularName }}Query } fro
 import StyledView{{ pascalCase singularName }} from './StyledView{{ pascalCase singularName }}';
 
 const View{{ pascalCase singularName }} = ({ match{{#compare hasFieldPermissions '||' schema.permissions.update}}, roles{{/compare}} }) => {
-  const { loading, data: { {{ camelCase singularName }} } = {} } = useQuery({{ camelCase singularName }}Query, { variables: { {{ urlKeyField }}: match.params.{{ urlKeyField }} } });
+  const { loading, data: { {{ camelCase singularName }} } = {} } = useQuery({{ camelCase singularName }}Query, { variables: { {{ urlFieldKey }}: match.params.{{ urlFieldKey }} } });
 
   return (
     <StyledView{{ pascalCase singularName }}>
       <PageHeader title={i18n.__('{{ pascalCase pluralName }}.view_{{ snakeCase singularName }}')} />
       { {{~ camelCase singularName }}{{#if schema.permissions.update}} && hasRole(roles, [{{#each schema.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]){{/if}} && (
         <p>
-          <Edit{{ pascalCase singularName }}Button {{urlKeyField}}={ {{~ camelCase singularName }}.{{ urlKeyField ~}} } />
+          <Edit{{ pascalCase singularName }}Button {{urlFieldKey}}={ {{~ camelCase singularName }}.{{ urlFieldKey ~}} } />
         </p>
       )}
       <Row type="flex" justify="center">

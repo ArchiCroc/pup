@@ -58,16 +58,16 @@ function processSchema(input) {
   if (primaryKeyIndex === -1) {
     primaryKeyIndex = 0;
   }
-  data.primaryKeyField = schemaFieldKeys[primaryKeyIndex];
-  data.primaryKeyType = data.schema.fields[data.primaryKeyField].type || 'String';
+  data.primaryFieldKey = schemaFieldKeys[primaryKeyIndex];
+  data.primaryField = data.schema.fields[data.primaryFieldKey];
 
   let urlKeyIndex = schemaFieldValues.findIndex((field) => field.urlKey);
   // if primary key isn't found, set it to the primaryKey field
   if (urlKeyIndex === -1) {
     urlKeyIndex = primaryKeyIndex;
   }
-  data.urlKeyField = schemaFieldKeys[urlKeyIndex];
-  data.urlKeyType = data.schema.fields[data.urlKeyField].type || 'String';
+  data.urlFieldKey = schemaFieldKeys[urlKeyIndex];
+  data.urlField = data.schema.fields[data.urlFieldKey];
 
   const userKeyIndex = schemaFieldValues.findIndex((field) => field.userKey);
   // if primary key isn't found, set it to the primaryKey field
@@ -82,8 +82,8 @@ function processSchema(input) {
   if (labelKeyIndex === -1) {
     labelKeyIndex = schemaFieldValues.findIndex((field) => field.type === 'String');
   }
-  data.labelKeyField = schemaFieldKeys[labelKeyIndex];
-  data.labelKeyType = data.schema.fields[data.labelKeyField].type || 'String';
+  data.labelFieldKey = schemaFieldKeys[labelKeyIndex];
+  data.labelField = data.schema.fields[data.labelFieldKey];
 
   data.isSearchable = !!schemaFieldValues.find((field) => field.searchable);
   data.isFilterable = !!schemaFieldValues.find((field) => field.filterable);

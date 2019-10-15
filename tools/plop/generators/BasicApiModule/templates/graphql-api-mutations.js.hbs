@@ -1,4 +1,4 @@
       #### {{ constantCase pluralName }}_MUTATION_TYPES_START ####
       save{{ pascalCase singularName }}({{ camelCase singularName }}: {{ pascalCase singularName }}Input): {{ pascalCase singularName }}
-      remove{{ pascalCase singularName }}({{ primaryKeyField }}: {{ primaryKeyType }}!): {{ pascalCase singularName }}
+      remove{{ pascalCase singularName }}({{ primaryFieldKey }}: {{ primaryField.type }}!): {{ pascalCase singularName }}
       #### {{ constantCase pluralName }}_MUTATION_TYPES_END ####

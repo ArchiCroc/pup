@@ -18,7 +18,7 @@ import { edit{{ pascalCase singularName }} as {{ camelCase singularName }}Query 
 
 const Edit{{ pascalCase singularName }} = ({ history, match{{#if hasFieldPermissions}}, roles{{/if}} }) => {
   const { loading, data: { {{ camelCase singularName }} = undefined } = {} } = useQuery({{ camelCase singularName }}Query, { 
-    variables: { {{ urlKeyField }}: match.params.{{ urlKeyField }} } 
+    variables: { {{ urlFieldKey }}: match.params.{{ urlFieldKey }} } 
   });
 
   return (
@@ -40,8 +40,8 @@ const Edit{{ pascalCase singularName }} = ({ history, match{{#if hasFieldPermiss
           <Divider />
           { {{~ camelCase singularName }} && {{#if schema.permissions.delete}} hasRole(roles, [{{#each schema.permissions.delete }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && {{/if}}(
               <Remove{{ pascalCase singularName }}Button 
-                {{primaryKeyField}}={ {{~ camelCase singularName }}.{{primaryKeyField ~}} } 
-                {{labelKeyField}}={ {{~ camelCase singularName}}.{{labelKeyField ~}} } 
+                {{primaryFieldKey}}={ {{~ camelCase singularName }}.{{primaryFieldKey ~}} } 
+                {{labelFieldKey}}={ {{~ camelCase singularName}}.{{labelFieldKey ~}} } 
                 history={history} 
               />
             )}
