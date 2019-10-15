@@ -9,7 +9,7 @@ import message from 'antd/lib/message';
 import { {{ camelCase pluralName }} as {{ camelCase pluralName }}Query } from '../queries/{{ pascalCase pluralName }}.gql';
 import { remove{{ pascalCase singularName }} as remove{{ pascalCase singularName }}Mutation } from '../mutations/{{ pascalCase pluralName }}.gql';
 
-const Remove{{ pascalCase singularName }}Button = ({ {{#compare primaryFieldKey '===' labelFieldKey}}{{ primaryFieldKey }}, {{ labelFieldKey }}{{else}}{{ primaryFieldKey }}{{/compare}}, history, className, disabled }) => {
+const Remove{{ pascalCase singularName }}Button = ({ {{#compare primaryFieldKey '!==' labelFieldKey}}{{ primaryFieldKey }}, {{ labelFieldKey }}{{else}}{{ primaryFieldKey }}{{/compare}}, history, className, disabled }) => {
   const [remove{{ pascalCase singularName }}] = useMutation(remove{{ pascalCase singularName }}Mutation, {
     ignoreResults: true,
     onCompleted: () => {
@@ -25,7 +25,7 @@ const Remove{{ pascalCase singularName }}Button = ({ {{#compare primaryFieldKey 
 
   function showConfirmModal() {
     modal.confirm({
-      title: i18n.___('{{ pascalCase pluralName }}.confirm_remove_{{ snakeCase singularName }}', { {{ labelFieldKey }}{{#if labelField.dataIndex}}.{{labelField.dataIndex}}{{/if}} }),
+      title: i18n.___('{{ pascalCase pluralName }}.confirm_remove_{{ snakeCase singularName }}', { {{#compare labelFieldKey '!==' 'name'}}name: {{/compare}}{{ labelFieldKey }}{{#if labelField.dataIndex}}.{{labelField.dataIndex}}{{/if}} }),
       onOk: remove{{ pascalCase singularName }},
       okText: i18n.__('{{ pascalCase pluralName }}.remove'),
       okType: 'danger',
