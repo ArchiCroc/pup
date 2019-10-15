@@ -4,7 +4,7 @@ import 'moment-timezone';
 import PropTypes from 'prop-types';
 
 const PrettyDate = (props) => {
-  if (!timestamp) {
+  if (!props.timestamp) {
     return props.emptyText;
   }
 
@@ -28,7 +28,7 @@ PrettyDate.defaultProps = {
 };
 
 PrettyDate.propTypes = {
-  timestamp: PropTypes.oneOf([PropTypes.instanceOf(Date), PropTypes.string]),
+  timestamp: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]),
   timezone: PropTypes.string,
   emptyText: PropTypes.node,
 };

@@ -162,4 +162,5 @@ filterDOMProps.register(
   'labelField',
   'valueField',
   'multiple',
+  'queryParameters',
 );
