@@ -3,18 +3,21 @@ const pluralize = require('pluralize');
 
 function processSchema(input) {
   const data = { ...input };
-  const schemaFieldKeys = Object.keys(data.schema.fields);
-  const schemaFieldValues = Object.values(data.schema.fields);
+
+  const schema = data.schema || {};
+  const schemaFields = schema.fields || {};
+  const schemaFieldKeys = Object.keys(schemaFields);
+  const schemaFieldValues = Object.values(schemaFields);
 
   data.fieldTypes = schemaFieldValues.map((item) => item.type);
 
   //if we don't have a manually set name, use the one from the schema
   if (!data.name) {
-    data.name = data.schema.name;
+    data.name = schema.name;
   }
 
   // ensure permissions are an array of strings, if a single string is given, wrap it in an array
-  const permissions = data.schema.permissions || {};
+  const permissions = schema.permissions || {};
   permissions.read = permissions.read || 'everyone';
   permissions.create = permissions.create || permissions.save || 'everyone';
   permissions.update = permissions.update || permissions.save || 'everyone';
@@ -28,16 +31,16 @@ function processSchema(input) {
     permissions[permissionKey] = !permission.includes('everyone') ? permission : undefined;
   }
 
-  data.schema.permissions = permissions;
+  schema.permissions = permissions;
   // turn collection/bigItem into Collection/BigItem
-  data.apiFolderName = (data.schema.apiFolderName || data.name)
+  data.apiFolderName = (schema.apiFolderName || data.name)
     .split('/')
     .map((folder) => changeCase.pascal(folder))
     .join('/');
   data.apiPathOffset = '../'.repeat(data.apiFolderName.split('/').length - 1);
 
   // turn collection/bigItem into collection/big-item
-  data.uiFolderName = (data.schema.uiFolderName || data.name)
+  data.uiFolderName = (schema.uiFolderName || data.name)
     .split('/')
     .map((folder) => changeCase.param(folder))
     .join('/');
@@ -52,9 +55,9 @@ function processSchema(input) {
   }
 
   data.pluralName =
-    data.schema.pluralName || pluralize.isPlural(data.name) ? data.name : pluralize(data.name);
+    schema.pluralName || pluralize.isPlural(data.name) ? data.name : pluralize(data.name);
   data.singularName =
-    data.schema.singularName || pluralize.isSingular(data.name)
+    schema.singularName || pluralize.isSingular(data.name)
       ? data.name
       : pluralize.singular(data.name);
 
@@ -64,7 +67,7 @@ function processSchema(input) {
     primaryKeyIndex = 0;
   }
   data.primaryFieldKey = schemaFieldKeys[primaryKeyIndex];
-  data.primaryField = data.schema.fields[data.primaryFieldKey];
+  data.primaryField = schemaFields[data.primaryFieldKey];
 
   let urlKeyIndex = schemaFieldValues.findIndex((field) => field.urlKey);
   // if primary key isn't found, set it to the primaryKey field
@@ -72,7 +75,7 @@ function processSchema(input) {
     urlKeyIndex = primaryKeyIndex;
   }
   data.urlFieldKey = schemaFieldKeys[urlKeyIndex];
-  data.urlField = data.schema.fields[data.urlFieldKey];
+  data.urlField = schemaFields[data.urlFieldKey];
 
   const userKeyIndex = schemaFieldValues.findIndex((field) => field.userKey);
   // if primary key isn't found, set it to the primaryKey field
@@ -88,7 +91,7 @@ function processSchema(input) {
     labelKeyIndex = schemaFieldValues.findIndex((field) => field.type === 'String');
   }
   data.labelFieldKey = schemaFieldKeys[labelKeyIndex];
-  data.labelField = data.schema.fields[data.labelFieldKey];
+  data.labelField = schemaFields[data.labelFieldKey];
 
   data.isSearchable = !!schemaFieldValues.find((field) => field.searchable);
   data.isFilterable = !!schemaFieldValues.find((field) => field.filterable);
