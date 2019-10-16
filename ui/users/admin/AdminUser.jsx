@@ -24,7 +24,6 @@ function AdminUser({ match, history }) {
 
   function handleTabClick(key) {
     const path = generatePath(match.path, { _id: match.params._id, tab: key });
-
     history.push(path);
   }
 
@@ -52,12 +51,6 @@ function AdminUser({ match, history }) {
           <span className={`label label-${user.oAuthProvider}`}>{user.oAuthProvider}</span>
         )}
       </Styles.AdminUserHeader>
-      {/* <Styles.AdminUserTabs
-          animation={false}
-          activeKey={this.state.activeTab}
-          onSelect={(activeTab) => this.setState({ activeTab })}
-          id="admin-user-tabs"
-        > */}
       <Tabs activeKey={match.params.tab || 'profile'} onTabClick={handleTabClick}>
         <Tabs.TabPane key="profile" tab="Profile">
           <AdminUserProfile user={user} />

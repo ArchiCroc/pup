@@ -10,12 +10,6 @@ function AdminUsers(props) {
   return (
     <StyledAdminUsers>
       <PageHeader title={i18n.__('Users.user_plural')} />
-      {/* <SearchInput
-            placeholder="Search users..."
-            value={this.state.search}
-            onChange={(event) => this.setState({ search: event.target.value })}
-          /> */}
-
       <AdminUsersList {...props} />
     </StyledAdminUsers>
   );

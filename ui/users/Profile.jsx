@@ -32,7 +32,7 @@ function Profile({ match, history }) {
 
   const client = useApolloClient();
 
-  const { loading, data } = useQuery(userQuery, {
+  const { loading, data: { user } = {} } = useQuery(userQuery, {
     fetchPolicy: 'no-cache',
     variables: {
       _id: match.params._id,
@@ -58,7 +58,7 @@ function Profile({ match, history }) {
     },
   });
 
-  const getUserType = (user) => (user.oAuthProvider ? 'oauth' : 'password');
+  const getUserType = (u) => (u.oAuthProvider ? 'oauth' : 'password');
 
   const handleExportData = async (event) => {
     event.preventDefault();
@@ -118,36 +118,36 @@ function Profile({ match, history }) {
     history.push(path);
   }
 
-  const renderOAuthUser = (user) => (
+  const renderOAuthUser = (u) => (
     <div className="OAuthProfile">
-      <div key={user.oAuthProvider} className={`LoggedInWith ${user.oAuthProvider}`}>
-        <img src={`/${user.oAuthProvider}.svg`} alt={user.oAuthProvider} />
+      <div key={u.oAuthProvider} className={`LoggedInWith ${u.oAuthProvider}`}>
+        <img src={`/${u.oAuthProvider}.svg`} alt={u.oAuthProvider} />
         <p>
           {i18n.__('Users.profile_oauth_user', {
-            provider: capitalize(user.oAuthProvider),
-            email: user.emailAddress,
+            provider: capitalize(u.oAuthProvider),
+            email: u.emailAddress,
           })}
         </p>
         <Button
-          className={`btn btn-${user.oAuthProvider}`}
+          className={`btn btn-${u.oAuthProvider}`}
           href={
             {
               facebook: 'https://www.facebook.com/settings',
               google: 'https://myaccount.google.com/privacy#personalinfo',
               github: 'https://github.com/settings/profile',
-            }[user.oAuthProvider]
+            }[u.oAuthProvider]
           }
           target="_blank"
         >
           {i18n.__('Users.edit_profile_on_o_auth_provider', {
-            oAuthProvider: capitalize(user.oAuthProvider),
+            oAuthProvider: capitalize(u.oAuthProvider),
           })}
         </Button>
       </div>
     </div>
   );
 
-  const renderPasswordUser = (user) => (
+  const renderPasswordUser = (u) => (
     <div>
       <Row gutter={50}>
         <Col xs={12}>
@@ -179,28 +179,26 @@ function Profile({ match, history }) {
     </div>
   );
 
-  const renderProfileForm = (user) =>
-    user &&
+  const renderProfileForm = (u) =>
+    u &&
     {
       password: renderPasswordUser,
       oauth: renderOAuthUser,
-    }[getUserType(user)](user);
+    }[getUserType(u)](u);
 
   // convert graphql into flat data for form
-  const model = data.user
+  const model = user
     ? {
-        firstName: data.user.profile.firstName,
-        lastName: data.user.profile.lastName,
-        emailAddress: data.user.emailAddress,
+        firstName: user.profile.firstName,
+        lastName: user.profile.lastName,
+        emailAddress: user.emailAddress,
       }
     : {};
 
-  return data.user ? (
+  return user ? (
     <StyledProfile>
       <h4 className="page-header">
-        {data.user.profile
-          ? `${data.user.profile.firstName} ${data.user.profile.lastName}`
-          : data.user.username}
+        {user.profile ? `${user.profile.firstName} ${user.profile.lastName}` : user.username}
       </h4>
       <Tabs
         // animation={false}
@@ -219,7 +217,7 @@ function Profile({ match, history }) {
                 showInlineError
                 placeholder
               >
-                {renderProfileForm(data.user)}
+                {renderProfileForm(user)}
               </AutoForm>
 
               <AccountPageFooter>
@@ -239,7 +237,7 @@ function Profile({ match, history }) {
           </Row>
         </Tabs.TabPane>
         <Tabs.TabPane key="settings" tab={i18n.__('Users.settings')}>
-          <UserSettings user={data.user} />
+          <UserSettings user={user} />
         </Tabs.TabPane>
       </Tabs>
     </StyledProfile>
