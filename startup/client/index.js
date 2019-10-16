@@ -23,6 +23,12 @@ import GlobalStyle from '../../ui/layouts/GlobalStyle';
 
 import '../../i18n';
 
+/* #### PLOP_IMPORTS_START #### */
+/* #### PLOP_IMPORTS_END #### */
+
+/* #### PLOP_PRE_STARTUP_START #### */
+/* #### PLOP_PRE_STARTUP_END #### */
+
 // i18n.setLocale('en-US');
 
 Accounts.onLogout(() => apolloClient.resetStore());

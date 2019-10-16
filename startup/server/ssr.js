@@ -36,6 +36,9 @@ onPageLoad(async (sink) => {
     cache: new InMemoryCache(),
   });
 
+  /* #### PLOP_ONPAGELOAD_BEGIN_START #### */
+  /* #### PLOP_ONPAGELOAD_BEGIN_END #### */
+
   const stylesheet = new ServerStyleSheet();
   const app = stylesheet.collectStyles(
     <ConfigProvider locale={enUS}>
@@ -65,4 +68,6 @@ onPageLoad(async (sink) => {
       window.__APOLLO_STATE__ = ${JSON.stringify(initialState).replace(/</g, '\\u003c')}
     </script>
   `);
+  /* #### PLOP_ONPAGELOAD_COMPLETE_START #### */
+  /* #### PLOP_ONPAGELOAD_COMPLETE_END #### */
 });

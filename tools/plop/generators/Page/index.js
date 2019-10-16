@@ -27,22 +27,22 @@ module.exports = {
     {
       type: 'add',
       path: 'ui/{{dashCase module}}/{{pascalCase name}}.js',
-      templateFile: 'generators/Page/Page.js.hbs',
+      templateFile: 'tools/plop/generators/Page/Page.js.hbs',
     },
     {
       type: 'add',
       path: 'ui/{{dashCase module}}/{{pascalCase name}}.test.js',
-      templateFile: 'generators/Page/Page.test.js.hbs',
+      templateFile: 'tools/plop/generators/Page/Page.test.js.hbs',
     },
     {
       type: 'add',
       path: 'ui/{{dashCase module}}/Styled{{pascalCase name}}.js',
-      templateFile: 'generators/Page/StyledPage.js.hbs',
+      templateFile: 'tools/plop/generators/Page/StyledPage.js.hbs',
     },
     {
       type: 'add',
       path: 'src/pages/{{pascalCase name}}/index.js',
-      templateFile: 'generators/Page/index.js.hbs',
+      templateFile: 'tools/plop/generators/Page/index.js.hbs',
     },
     // {
     //   type: 'add',
