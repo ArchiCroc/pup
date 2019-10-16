@@ -13,6 +13,9 @@ import { Meteor } from 'meteor/meteor';
 import ConfigProvider from 'antd/lib/config-provider';
 import enUS from 'antd/lib/locale-provider/en_US';
 
+/* #### PLOP_IMPORTS_START #### */
+/* #### PLOP_IMPORTS_END #### */
+
 import GlobalStyle from '../../ui/layouts/GlobalStyle';
 import App from '../../ui/layouts/App';
 import checkIfBlacklisted from '../../modules/server/checkIfBlacklisted';
