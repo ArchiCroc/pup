@@ -1,0 +1,25 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import i18n from 'meteor/universe:i18n';
+import Button from 'antd/lib/button';
+import { LinkContainer } from 'react-router-bootstrap';
+
+const Example{{ pascalCase singularName }}Button = (props) => (
+  <LinkContainer to="/{{ uiFolderName }}/example">
+    <Button type="primary" icon="plus" {...props} >
+      {i18n.__('{{ pascalCase pluralName }}.Example_{{ snakeCase singularName }}')}
+    </Button>
+  </LinkContainer>
+);
+
+Example{{ pascalCase singularName }}Button.defaultProps = {
+  className: undefined,
+  disabled: false,
+};
+
+Example{{ pascalCase singularName }}Button.propTypes = {
+  className: PropTypes.string,
+  disabled: PropTypes.bool,
+};
+
+export default Example{{ pascalCase singularName }}Button;

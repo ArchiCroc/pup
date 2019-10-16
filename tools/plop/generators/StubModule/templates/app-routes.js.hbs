@@ -1,0 +1,10 @@
+                  {/* #### {{ constantCase pluralName }}_ROUTES_START #### */}
+                  <AuthenticatedRoute
+                    exact
+                    path="/{{ uiFolderName }}"
+                    component={ {{~ pascalCase pluralName ~}} }
+                    setAfterLoginPath={setAfterLoginPath}
+                    {...props}
+                    {...state}
+                  />
+                  {/* #### {{ constantCase pluralName }}_ROUTES_END #### */}
