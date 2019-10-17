@@ -1,7 +1,4 @@
-const { readdirSync, statSync } = require('fs');
-const { join } = require('path');
-
-const dirs = (p) => readdirSync(p).filter((f) => statSync(join(p, f)).isDirectory());
+const listDirectories = require('../../lib/listDirectories');
 
 const regEx = /^(\w+)\(((?:\s*(?:\w+:\s*\[?\w+\]?),?)+)\):\s*(\[?\w+\]?)$/;
 
@@ -13,7 +10,7 @@ module.exports = {
       name: 'moduleName',
       message: 'Select an api module',
       choices: () => {
-        return dirs('./api');
+        return listDirectories('./api');
       },
     },
     {

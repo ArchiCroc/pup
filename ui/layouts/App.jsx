@@ -16,7 +16,8 @@ import PageErrorBoundary from '../components/PageErrorBoundary';
 
 import AuthenticatedRoute from '../components/AuthenticatedRoute';
 import AuthorizedRoute from '../components/AuthorizedRoute';
-import PublicRoute from '../components/PublicOnlyRoute';
+import PublicOnlyRoute from '../components/PublicOnlyRoute';
+import PublicRoute from '../components/PublicRoute';
 
 import Index from '../pages/Index';
 
@@ -109,8 +110,14 @@ class App extends React.Component {
             <Grid className="app-grid">
               <PageErrorBoundary>
                 <Switch>
-                  <Route exact name="index" path="/" component={Index} />
-
+                  {/* #### PLOP_ROUTES_START #### */}
+                  {/* #### ERROR_REPORTS_ROUTES_START #### */}
+                  <PublicRoute exact name="index" path="/" component={Index} />
+                  <PublicRoute name="terms" path="/terms" component={Terms} />
+                  <PublicRoute name="privacy" path="/privacy" component={Privacy} />
+                  <PublicRoute name="examplePage" path="/example-page" component={ExamplePage} />
+                  {/* #### ERROR_REPORTS_ROUTES_END #### */}
+                  {/* #### DOCUMENTS_ROUTES_START #### */}
                   <AuthenticatedRoute
                     exact
                     path="/documents"
@@ -119,7 +126,7 @@ class App extends React.Component {
                     {...props}
                     {...state}
                   />
-                  <Route exact path="/documents/:_id" component={ViewDocument} />
+                  <PublicRoute exact path="/documents/:_id" component={ViewDocument} />
                   <AuthenticatedRoute
                     exact
                     path="/documents/:_id/edit"
@@ -128,8 +135,7 @@ class App extends React.Component {
                     {...props}
                     {...state}
                   />
-
-                  {/* #### PLOP_ROUTES_START #### */}
+                  {/* #### DOCUMENTS_ROUTES_END #### */}
                   {/* #### ERROR_REPORTS_ROUTES_START #### */}
                   <AuthenticatedRoute
                     exact
@@ -164,8 +170,7 @@ class App extends React.Component {
                     {...state}
                   />
                   {/* #### ERROR_REPORTS_ROUTES_END #### */}
-                  {/* #### PLOP_ROUTES_END #### */}
-
+                  {/* #### USERS_ROUTES_START #### */}
                   <AuthenticatedRoute
                     exact
                     path="/user/:tab?"
@@ -174,8 +179,8 @@ class App extends React.Component {
                     {...props}
                     {...state}
                   />
-                  <PublicRoute path="/signup" component={Signup} {...props} {...state} />
-                  <PublicRoute path="/login" component={Login} {...props} {...state} />
+                  <PublicOnlyRoute path="/signup" component={Signup} {...props} {...state} />
+                  <PublicOnlyRoute path="/login" component={Login} {...props} {...state} />
                   <Route
                     path="/logout"
                     render={(routeProps) => (
@@ -185,22 +190,21 @@ class App extends React.Component {
                     {...state}
                   />
 
-                  <Route name="verify-email" path="/verify-email/:token" component={VerifyEmail} />
-                  <Route
+                  <PublicRoute
+                    name="verify-email"
+                    path="/verify-email/:token"
+                    component={VerifyEmail}
+                  />
+                  <PublicRoute
                     name="recover-password"
                     path="/recover-password"
                     component={RecoverPassword}
                   />
-                  <Route
+                  <PublicRoute
                     name="reset-password"
                     path="/reset-password/:token"
                     component={ResetPassword}
                   />
-
-                  <Route name="terms" path="/terms" component={Terms} />
-                  <Route name="privacy" path="/privacy" component={Privacy} />
-                  <Route name="examplePage" path="/example-page" component={ExamplePage} />
-
                   <AuthorizedRoute
                     exact
                     allowedRoles={['admin']}
@@ -211,7 +215,6 @@ class App extends React.Component {
                     {...props}
                     {...state}
                   />
-
                   <AuthorizedRoute
                     exact
                     allowedRoles={['admin']}
@@ -222,6 +225,8 @@ class App extends React.Component {
                     {...props}
                     {...state}
                   />
+                  {/* #### USERS_ROUTES_START #### */}
+                  {/* #### PLOP_ROUTES_END #### */}
                   <Route component={NotFound} />
                 </Switch>
               </PageErrorBoundary>

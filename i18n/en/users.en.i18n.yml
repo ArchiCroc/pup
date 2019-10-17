@@ -115,6 +115,10 @@ user_delete_success: User removed!
 gdpr_can_send_marketing_emails: Can we send you marketing emails?
 user_settings_submit: Save Settings
 user_settings_save_success: Settings Updated!
+
+#### PLOP_PAGES_START ####
+#### PLOP_PAGES_END ####
+
 #### PLOP_FIELDS_START ####
 #### PLOP_FIELDS_END ####
 

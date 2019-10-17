@@ -1,3 +1,6 @@
+const listDirectories = require('../../lib/listDirectories');
+const slugify = require('slugify');
+
 const requireField = (fieldName) => {
   return (value) => {
     if (String(value).length === 0) {
@@ -9,58 +12,96 @@ const requireField = (fieldName) => {
 
 module.exports = {
   description: 'Create a page',
-  prompts: [
-    {
-      type: 'input',
-      name: 'module',
-      message: 'What UI Module Should it Be Added to?',
-      validate: requireField('module'),
-    },
-    {
-      type: 'input',
-      name: 'name',
-      message: 'What is your page name?',
-      validate: requireField('name'),
-    },
-  ],
+
+  prompts: async (inquirer) => {
+    const values = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'moduleName',
+        message: 'Select an ui module',
+        choices: () => {
+          return listDirectories('./ui');
+        },
+      },
+      {
+        type: 'input',
+        name: 'name',
+        message: 'What is your page name?',
+        validate: requireField('name'),
+      },
+    ]);
+    const values2 = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'urlSlug',
+        message: `What is url for your page? ${values.moduleName}/`,
+        validate: requireField('URL Slug'),
+        default: slugify(values.name, { lower: true }),
+      },
+      {
+        type: 'list',
+        name: 'menu',
+        message: 'Select a menu to add it to',
+        choices: ['none', 'user', 'admin'],
+      },
+    ]);
+    const values3 = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'route',
+        message: 'Route Type',
+        choices: ['everyone', 'user', 'admin'],
+        default: values2.menu === 'none' ? 'user' : values2.menu,
+      },
+    ]);
+    Object.assign(values, values2, values3);
+    return values;
+  },
   actions: [
     {
       type: 'add',
-      path: 'ui/{{dashCase module}}/{{pascalCase name}}.js',
-      templateFile: 'tools/plop/generators/Page/Page.js.hbs',
+      path: 'ui/{{moduleName}}/{{pascalCase name}}.js',
+      templateFile: 'tools/plop/generators/Pages/templates/Page.js.hbs',
     },
     {
       type: 'add',
-      path: 'ui/{{dashCase module}}/{{pascalCase name}}.test.js',
-      templateFile: 'tools/plop/generators/Page/Page.test.js.hbs',
+      path: 'ui/{{moduleName}}/{{pascalCase name}}.test.js',
+      templateFile: 'tools/plop/generators/Pages/templates/Page.test.js.hbs',
     },
     {
       type: 'add',
-      path: 'ui/{{dashCase module}}/Styled{{pascalCase name}}.js',
-      templateFile: 'tools/plop/generators/Page/StyledPage.js.hbs',
+      path: 'ui/{{moduleName}}/Styled{{pascalCase name}}.js',
+      templateFile: 'tools/plop/generators/Pages/templates/StyledPage.js.hbs',
     },
     {
-      type: 'add',
-      path: 'src/pages/{{pascalCase name}}/index.js',
-      templateFile: 'tools/plop/generators/Page/index.js.hbs',
+      type: 'append',
+      path: 'ui/layouts/App.jsx',
+      pattern: '/* #### {{ constantCase moduleName }}_IMPORTS_START #### */',
+      templateFile: 'tools/plop/generators/Pages/templates/app-imports.js.hbs',
     },
-    // {
-    //   type: 'add',
-    //   path: 'src/pages/index.js',
-    //   templateFile: 'plop-templates/injectable-index.js.hbs',
-    //   skipIfExists: true,
-    // },
-    // {
-    //   type: 'append',
-    //   path: 'src/pages/index.js',
-    //   pattern: `/* PLOP_INJECT_IMPORT */`,
-    //   template: `import {{pascalCase name}} from './{{pascalCase name}}';`,
-    // },
-    // {
-    //   type: 'append',
-    //   path: 'src/pages/index.js',
-    //   pattern: `/* PLOP_INJECT_EXPORT */`,
-    //   template: `\t{{pascalCase name}},`,
-    // },
+    {
+      type: 'append',
+      path: 'ui/layouts/App.jsx',
+      pattern: '{/* #### {{ constantCase moduleName }}_ROUTES_START #### */}',
+      templateFile: 'tools/plop/generators/Pages/templates/app-routes.js.hbs',
+    },
+    {
+      type: 'append',
+      path: 'ui/components/AuthenticatedNavigation.jsx',
+      pattern: '{/* #### {{ constantCase moduleName }}_USER_MENU_ITEMS_START #### */}',
+      templateFile: 'tools/plop/generators/Pages/templates/user-menu-items.js.hbs',
+    },
+    {
+      type: 'append',
+      path: 'ui/components/AuthenticatedNavigation.jsx',
+      pattern: '{/* #### {{ constantCase moduleName }}_ADMIN_MENU_ITEMS_START #### */}',
+      templateFile: 'tools/plop/generators/Pages/templates/admin-menu-items.js.hbs',
+    },
+    {
+      type: 'append',
+      path: 'i18n/en/{{camelCase moduleName}}.en.i18n.yml',
+      pattern: '#### PLOP_PAGES_START ####',
+      template: '{{ snakeCase name }}: {{ name }}',
+    },
   ],
 };

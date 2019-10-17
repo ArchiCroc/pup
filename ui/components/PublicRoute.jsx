@@ -3,15 +3,7 @@ import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 import PageErrorBoundary from './PageErrorBoundary';
 
-const PublicRoute = ({
-  loggingIn,
-  authenticated,
-  afterLoginPath,
-  component,
-  path,
-  exact,
-  ...rest
-}) => (
+const PublicRoute = ({ component, path, exact, ...rest }) => (
   <Route
     path={path}
     exact={exact}
@@ -22,8 +14,6 @@ const PublicRoute = ({
         React.createElement(component, {
           ...props,
           ...rest,
-          loggingIn,
-          authenticated,
         }),
       )
     }
@@ -31,17 +21,12 @@ const PublicRoute = ({
 );
 
 PublicRoute.defaultProps = {
-  loggingIn: false,
   path: '',
   exact: false,
-  afterLoginPath: null,
 };
 
 PublicRoute.propTypes = {
-  loggingIn: PropTypes.bool,
-  authenticated: PropTypes.bool.isRequired,
   component: PropTypes.func.isRequired,
-  afterLoginPath: PropTypes.string,
   path: PropTypes.string,
   exact: PropTypes.bool,
 };
