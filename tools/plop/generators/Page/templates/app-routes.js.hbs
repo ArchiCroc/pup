@@ -18,12 +18,11 @@
                     {...props}
                     {...state}
                   />
-
 {{/compare}}
 {{#compare route '===' 'everyone'}}
                   <PublicRoute 
                     path="/{{ moduleName }}/{{ urlSlug }}" 
-                    component={Signup} 
+                    component={ {{~ pascalCase moduleName }}{{ pascalCase name ~}} }
                     {...props} 
                     {...state} 
                   />

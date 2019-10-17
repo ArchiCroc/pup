@@ -16,6 +16,12 @@ function processSchema(input) {
     data.name = schema.name;
   }
 
+  // if a manual menu option is set, set that to default page
+  if (data.menu) {
+    data.schema.menu = data.schema.menu || {};
+    data.schema.menu.index = data.menu;
+  }
+
   // ensure permissions are an array of strings, if a single string is given, wrap it in an array
   const permissions = schema.permissions || {};
   permissions.read = permissions.read || 'everyone';

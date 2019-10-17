@@ -1,6 +1,8 @@
 /* eslint-disable  */
 const fs = require('fs');
 const processSchema = require('../../lib/processSchema');
+const slugify = require('slugify');
+const changeCase = require('change-case');
 
 const requireField = (fieldName) => {
   return (value) => {
@@ -28,7 +30,31 @@ module.exports = {
       message: 'What is your module name?',
       validate: requireField('name'),
     });
-    Object.assign(values, name);
+    const values2 = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'urlSlug',
+        message: `What is url for your page? ${values.moduleName}/`,
+        validate: requireField('URL Slug'),
+        default: slugify(changeCase.paramCase(values.name)),
+      },
+      {
+        type: 'list',
+        name: 'menu',
+        message: 'Select a menu to add it to',
+        choices: ['none', 'user', 'admin'],
+      },
+    ]);
+    const values3 = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'route',
+        message: 'Route Type',
+        choices: ['everyone', 'user', 'admin'],
+        default: values2.menu === 'none' ? 'user' : values2.menu,
+      },
+    ]);
+    Object.assign(values, values2, values3);
     return values;
   },
   actions: (promptData) => {
