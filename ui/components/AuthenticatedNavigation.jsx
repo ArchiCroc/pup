@@ -4,10 +4,10 @@ import i18n from 'meteor/universe:i18n';
 import { withRouter, Link } from 'react-router-dom';
 // import { LinkContainer } from 'react-router-bootstrap';
 import Menu from 'antd/lib/menu';
-import { Roles } from 'meteor/alanning:roles';
+import hasRole from '../../modules/hasRole';
 
-const AuthenticatedNavigation = ({ name, history, userId, location = { pathname: '' } }) => (
-  <React.Fragment>
+const AuthenticatedNavigation = ({ name, history, roles, location = { pathname: '' } }) => (
+  <>
     <Menu
       theme="dark"
       mode="horizontal"
@@ -21,17 +21,29 @@ const AuthenticatedNavigation = ({ name, history, userId, location = { pathname:
       {/* #### PLOP_USER_MENU_ITEMS_START #### */}
       {/* #### ERROR_REPORTS_USER_MENU_ITEMS_START #### */}
       {/* #### ERROR_REPORTS_USER_MENU_ITEMS_END #### */}
+      {/* #### DOCUMENTS_USER_MENU_ITEMS_START #### */}
+      {/* #### DOCUMENTS_USER_MENU_ITEMS_END #### */}
+      {/* #### PAGES_USER_MENU_ITEMS_START #### */}
+      {/* #### PAGES_USER_MENU_ITEMS_END #### */}
+      {/* #### USERS_USER_MENU_ITEMS_START #### */}
+      {/* #### USERS_USER_MENU_ITEMS_END #### */}
       {/* #### PLOP_USER_MENU_ITEMS_END #### */}
 
-      {Roles.userIsInRole(userId, 'admin') && (
+      {hasRole(roles, 'admin') && (
         <Menu.SubMenu title={i18n.__('admin')}>
           {/* #### PLOP_ADMIN_MENU_ITEMS_START #### */}
-      {/* #### ERROR_REPORTS_ADMIN_MENU_ITEMS_START #### */}
-      <Menu.Item key="/error-reports">
-        {i18n.__('ErrorReports.error_report_plural')}
-        <Link to="/error-reports" />
-      </Menu.Item>
-      {/* #### ERROR_REPORTS_ADMIN_MENU_ITEMS_END #### */}
+          {/* #### DOCUMENTS_ADMIN_MENU_ITEMS_START #### */}
+          {/* #### DOCUMENTS_ADMIN_MENU_ITEMS_END #### */}
+          {/* #### PAGES_ADMIN_MENU_ITEMS_START #### */}
+          {/* #### PAGES_ADMIN_MENU_ITEMS_END #### */}
+          {/* #### USERS_ADMIN_MENU_ITEMS_START #### */}
+          {/* #### USERS_ADMIN_MENU_ITEMS_END #### */}
+          {/* #### ERROR_REPORTS_ADMIN_MENU_ITEMS_START #### */}
+          <Menu.Item key="/error-reports">
+            {i18n.__('ErrorReports.error_report_plural')}
+            <Link to="/error-reports" />
+          </Menu.Item>
+          {/* #### ERROR_REPORTS_ADMIN_MENU_ITEMS_END #### */}
           {/* #### PLOP_ADMIN_MENU_ITEMS_END #### */}
           <Menu.Item key="/admin/users">
             {i18n.__('Users.user_plural')}
@@ -60,7 +72,7 @@ const AuthenticatedNavigation = ({ name, history, userId, location = { pathname:
         </Menu.Item>
       </Menu.SubMenu>
     </Menu>
-  </React.Fragment>
+  </>
 );
 
 AuthenticatedNavigation.propTypes = {
@@ -68,6 +80,7 @@ AuthenticatedNavigation.propTypes = {
   history: PropTypes.object.isRequired,
   userId: PropTypes.string.isRequired,
   location: PropTypes.object.isRequired,
+  roles: PropTypes.array.isRequired,
 };
 
 export default withRouter(AuthenticatedNavigation);

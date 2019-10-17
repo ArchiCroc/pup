@@ -8,7 +8,7 @@ import AuthenticatedNavigation from './AuthenticatedNavigation';
 import { StyledBrand, StyledMenu } from './StyledNavigation';
 
 const Navigation = (props) => (
-  <React.Fragment>
+  <>
     <StyledBrand>
       <Link to="/">{Meteor.settings.public.productName}</Link>
     </StyledBrand>
@@ -19,7 +19,7 @@ const Navigation = (props) => (
     ) : (
       <AuthenticatedNavigation {...props} />
     )}
-  </React.Fragment>
+  </>
 );
 
 Navigation.defaultProps = {

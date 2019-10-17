@@ -7,22 +7,31 @@ import i18n from 'meteor/universe:i18n';
 // import AutoField from 'uniforms-antd/AutoField';
 // import { Link } from 'react-router-dom';
 // import Button from 'antd/lib/button';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
+import PageHeader from '{{uiPathOffset}}../components/PageHeader';
+import Styled{{ pascalCase name }} from './Styled{{ pascalCase name }}';
 
 const {{pascalCase name}} = (props) => {
-return (
-<>
-
-</>
-);
+  return (
+    <Styled{{ pascalCase name }}>
+      <PageHeader title={i18n.__('{{ pascalCase moduleName }}.{{ snakeCase name }}')} />
+      <Row type="flex" justify="center">
+        <Col xs={24} sm={16} md={12} lg={8}>
+          Hello World!
+        </Col>
+      </Row>
+    </Styled{{ pascalCase name }}>
+  );
 };
 
-{{pascalCase name}}.defaultProps = {
+// {{pascalCase name}}.defaultProps = {
 
-};
+// };
 
 {{pascalCase name}}.propTypes = {
-history: PropTypes.object.isRequired,
-match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 export default {{pascalCase name}};

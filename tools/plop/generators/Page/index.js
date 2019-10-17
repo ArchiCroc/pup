@@ -1,5 +1,6 @@
 const listDirectories = require('../../lib/listDirectories');
 const slugify = require('slugify');
+const changeCase = require('change-case');
 
 const requireField = (fieldName) => {
   return (value) => {
@@ -9,6 +10,8 @@ const requireField = (fieldName) => {
     return true;
   };
 };
+
+const excludeDirs = ['components', 'layouts'];
 
 module.exports = {
   description: 'Create a page',
@@ -20,7 +23,7 @@ module.exports = {
         name: 'moduleName',
         message: 'Select an ui module',
         choices: () => {
-          return listDirectories('./ui');
+          return listDirectories('./ui').filter((item) => !excludeDirs.includes(item));
         },
       },
       {
@@ -36,7 +39,7 @@ module.exports = {
         name: 'urlSlug',
         message: `What is url for your page? ${values.moduleName}/`,
         validate: requireField('URL Slug'),
-        default: slugify(values.name, { lower: true }),
+        default: slugify(changeCase.paramCase(values.name)),
       },
       {
         type: 'list',
@@ -57,51 +60,57 @@ module.exports = {
     Object.assign(values, values2, values3);
     return values;
   },
-  actions: [
-    {
-      type: 'add',
-      path: 'ui/{{moduleName}}/{{pascalCase name}}.js',
-      templateFile: 'tools/plop/generators/Pages/templates/Page.js.hbs',
-    },
-    {
-      type: 'add',
-      path: 'ui/{{moduleName}}/{{pascalCase name}}.test.js',
-      templateFile: 'tools/plop/generators/Pages/templates/Page.test.js.hbs',
-    },
-    {
-      type: 'add',
-      path: 'ui/{{moduleName}}/Styled{{pascalCase name}}.js',
-      templateFile: 'tools/plop/generators/Pages/templates/StyledPage.js.hbs',
-    },
-    {
-      type: 'append',
-      path: 'ui/layouts/App.jsx',
-      pattern: '/* #### {{ constantCase moduleName }}_IMPORTS_START #### */',
-      templateFile: 'tools/plop/generators/Pages/templates/app-imports.js.hbs',
-    },
-    {
-      type: 'append',
-      path: 'ui/layouts/App.jsx',
-      pattern: '{/* #### {{ constantCase moduleName }}_ROUTES_START #### */}',
-      templateFile: 'tools/plop/generators/Pages/templates/app-routes.js.hbs',
-    },
-    {
-      type: 'append',
-      path: 'ui/components/AuthenticatedNavigation.jsx',
-      pattern: '{/* #### {{ constantCase moduleName }}_USER_MENU_ITEMS_START #### */}',
-      templateFile: 'tools/plop/generators/Pages/templates/user-menu-items.js.hbs',
-    },
-    {
-      type: 'append',
-      path: 'ui/components/AuthenticatedNavigation.jsx',
-      pattern: '{/* #### {{ constantCase moduleName }}_ADMIN_MENU_ITEMS_START #### */}',
-      templateFile: 'tools/plop/generators/Pages/templates/admin-menu-items.js.hbs',
-    },
-    {
-      type: 'append',
-      path: 'i18n/en/{{camelCase moduleName}}.en.i18n.yml',
-      pattern: '#### PLOP_PAGES_START ####',
-      template: '{{ snakeCase name }}: {{ name }}',
-    },
-  ],
+  actions: (data) => {
+    return [
+      {
+        type: 'add',
+        path: 'ui/{{moduleName}}/{{pascalCase name}}.js',
+        templateFile: 'tools/plop/generators/Page/templates/Page.js.hbs',
+      },
+      {
+        type: 'add',
+        path: 'ui/{{moduleName}}/{{pascalCase name}}.test.js',
+        templateFile: 'tools/plop/generators/Page/templates/Page.test.js.hbs',
+      },
+      {
+        type: 'add',
+        path: 'ui/{{moduleName}}/Styled{{pascalCase name}}.js',
+        templateFile: 'tools/plop/generators/Page/templates/StyledPage.js.hbs',
+      },
+      {
+        type: 'append',
+        path: 'ui/layouts/App.jsx',
+        pattern: `/* #### ${changeCase.constantCase(data.moduleName)}_IMPORTS_START #### */`,
+        templateFile: 'tools/plop/generators/Page/templates/app-imports.js.hbs',
+      },
+      {
+        type: 'append',
+        path: 'ui/layouts/App.jsx',
+        pattern: `{/* #### ${changeCase.constantCase(data.moduleName)}_ROUTES_START #### */}`,
+        templateFile: 'tools/plop/generators/Page/templates/app-routes.js.hbs',
+      },
+      {
+        type: 'append',
+        path: 'ui/components/AuthenticatedNavigation.jsx',
+        pattern: `{/* #### ${changeCase.constantCase(
+          data.moduleName,
+        )}_USER_MENU_ITEMS_START #### */}`,
+        templateFile: 'tools/plop/generators/Page/templates/user-menu-items.js.hbs',
+      },
+      {
+        type: 'append',
+        path: 'ui/components/AuthenticatedNavigation.jsx',
+        pattern: `{/* #### ${changeCase.constantCase(
+          data.moduleName,
+        )}_ADMIN_MENU_ITEMS_START #### */}`,
+        templateFile: 'tools/plop/generators/Page/templates/admin-menu-items.js.hbs',
+      },
+      {
+        type: 'append',
+        path: 'i18n/en/{{camelCase moduleName}}.en.i18n.yml',
+        pattern: '#### PLOP_PAGES_START ####',
+        template: '{{ snakeCase name }}: {{ titleCase name }}',
+      },
+    ];
+  },
 };
