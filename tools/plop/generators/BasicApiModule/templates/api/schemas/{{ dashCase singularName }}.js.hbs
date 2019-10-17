@@ -1,5 +1,5 @@
 {{#*inline "schemaFieldBody"}}
-    type: {{#compare this.type '===' 'Int'}}SimpleSchema.Integer{{else}}{{#compare this.type '===' 'Float'}}Number{{else}}{{#compare this.type '===' 'DateTime'}}Date{{else}}{{#compare this.type '===' 'ObjectID'}}Mongo.ObjectID{{else}}{{this.type}}{{/compare}}{{/compare}}{{/compare}}{{/compare}},
+    type: {{cleanSimpleSchemeType this.type}},
     {{#compare this.input '!=' 'Hidden'}}
     label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_label'),
     {{/compare}}

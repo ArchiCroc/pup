@@ -79,16 +79,33 @@ function compare(v1, o1, v2, mainOperator, v3, o2, v4, opts) {
   return isTrue ? options.fn(this) : options.inverse(this);
 }
 
+const simpleSchemeTypeConversions = {
+  Int: 'SimpleSchema.Integer',
+  Float: 'Number',
+  DateTime: 'Date',
+  ObjectID: 'Mongo.ObjectID',
+};
+
+function cleanSimpleSchemeType(text) {
+  clean = text.replace(/\[(\w+)\]/, '$1');
+
+  if (simpleSchemeTypeConversions[clean]) {
+    return simpleSchemeTypeConversions[clean];
+  }
+  return clean;
+}
+
 module.exports = (plop) => {
   plop.setPrompt('jsonFile', filePath);
   plop.setActionType('comment', comment);
-  plop.setHelper('pluralize', (txt) => pluralize(txt));
-  plop.setHelper('singular', (txt) => pluralize.singular(txt));
+  plop.setHelper('pluralize', (text) => pluralize(text));
+  plop.setHelper('singular', (text) => pluralize.singular(text));
   plop.setHelper('compare', compare);
   plop.setHelper('log', (value) => console.log(value));
   plop.setHelper('stripBrackets', (text) => {
     return text.replace(/\[(\w+)\]/, '$1');
   });
+  plop.setHelper('cleanSimpleSchemeType', cleanSimpleSchemeType);
   plop.setHelper('truncate', (text, prefix) => {
     const regEx = new RegExp(`^${prefix}(.*)`);
     return text.replace(regEx, '$1');
