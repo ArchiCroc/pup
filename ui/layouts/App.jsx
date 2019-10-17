@@ -19,21 +19,28 @@ import AuthorizedRoute from '../components/AuthorizedRoute';
 import PublicOnlyRoute from '../components/PublicOnlyRoute';
 import PublicRoute from '../components/PublicRoute';
 
+/* #### PLOP_IMPORTS_START #### */
+/* #### PAGES_IMPORTS_START #### */
 import Index from '../pages/Index';
+import Terms from '../pages/Terms';
+import Privacy from '../pages/Privacy';
+import ExamplePage from '../pages/ExamplePage';
+/* #### PAGES_IMPORTS_END #### */
 
+/* #### DOCUMENTS_IMPORTS_START #### */
 import Documents from '../documents/Documents';
 import ViewDocument from '../documents/ViewDocument';
 import EditDocument from '../documents/EditDocument';
+/* #### DOCUMENTS_IMPORTS_END #### */
 
-/* #### PLOP_IMPORTS_START #### */
 /* #### ERROR_REPORTS_IMPORTS_START #### */
 import ErrorReports from '../error-reports/ErrorReports';
 import ViewErrorReport from '../error-reports/ViewErrorReport';
 import NewErrorReport from '../error-reports/NewErrorReport';
 import EditErrorReport from '../error-reports/EditErrorReport';
 /* #### ERROR_REPORTS_IMPORTS_END #### */
-/* #### PLOP_IMPORTS_END #### */
 
+/* #### USERS_IMPORTS_START #### */
 import Profile from '../users/Profile';
 import Signup from '../users/Signup';
 import Login from '../users/Login';
@@ -45,13 +52,11 @@ import ResetPassword from '../users/ResetPassword';
 
 import AdminUsers from '../users/admin/AdminUsers';
 import AdminUser from '../users/admin/AdminUser';
+/* #### USERS_IMPORTS_END #### */
+/* #### PLOP_IMPORTS_END #### */
 
 import NotFound from '../pages/NotFound';
 import Footer from '../components/Footer';
-
-import Terms from '../pages/Terms';
-import Privacy from '../pages/Privacy';
-import ExamplePage from '../pages/ExamplePage';
 
 import VerifyEmailAlert from '../users/components/VerifyEmailAlert';
 import GDPRConsentModal from '../users/components/GDPRConsentModal';
