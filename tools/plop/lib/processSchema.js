@@ -18,8 +18,8 @@ function processSchema(input) {
 
   // if a manual menu option is set, set that to default page
   if (data.menu) {
-    data.schema.menu = data.schema.menu || {};
-    data.schema.menu.index = data.menu;
+    schema.menu = schema.menu || {};
+    schema.menu.index = data.menu;
   }
 
   // ensure permissions are an array of strings, if a single string is given, wrap it in an array
@@ -122,6 +122,10 @@ function processSchema(input) {
       }
     });
   }
+
+  // stash these back to cover the case where they got built from scratch
+  schema.fields = schemaFields;
+  data.schema = schema;
   return data;
 }
 

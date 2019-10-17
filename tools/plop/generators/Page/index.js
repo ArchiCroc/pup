@@ -35,6 +35,13 @@ module.exports = {
     ]);
     const values2 = await inquirer.prompt([
       {
+        type: 'input',
+        name: 'urlSlug',
+        message: `What is url for your page? ${values.moduleName}/`,
+        validate: requireField('URL Slug'),
+        default: slugify(changeCase.paramCase(values.name)),
+      },
+      {
         type: 'list',
         name: 'menu',
         message: 'Select a menu to add it to',

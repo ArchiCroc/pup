@@ -16,14 +16,7 @@ const requireField = (fieldName) => {
 module.exports = {
   description: 'Create a new Stub module',
   prompts: async (inquirer) => {
-    const values = {};
-    // const values = await inquirer.prompt({
-    //   type: 'jsonFile',
-    //   name: 'schema',
-    //   message: 'Select a Schema to guide the module fields',
-    //   basePath: './tools/plop/schemas',
-    // });
-    const name = await inquirer.prompt({
+    const values = await inquirer.prompt({
       //    default: values.schema.name || null,
       type: 'input',
       name: 'name',
@@ -31,13 +24,6 @@ module.exports = {
       validate: requireField('name'),
     });
     const values2 = await inquirer.prompt([
-      {
-        type: 'input',
-        name: 'urlSlug',
-        message: `What is url for your page? ${values.moduleName}/`,
-        validate: requireField('URL Slug'),
-        default: slugify(changeCase.paramCase(values.name)),
-      },
       {
         type: 'list',
         name: 'menu',
@@ -58,6 +44,7 @@ module.exports = {
     return values;
   },
   actions: (promptData) => {
+    console.log(promptData);
     const data = processSchema(promptData);
     return [
       {
