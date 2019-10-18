@@ -94,8 +94,7 @@ module.exports = {
         type: 'append',
         path: 'startup/server/index.js',
         pattern: '/* #### PLOP_IMPORTS_START #### */',
-        template: `import '../../api/{{ apiFolderName }}/server/indexes';
-import '../../api/{{ apiFolderName }}/server/rest-api';`,
+        templateFile: 'tools/plop/generators/BasicApiModule/templates/server-index-imports.js.hbs',
         data,
       },
     ];

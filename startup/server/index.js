@@ -13,9 +13,12 @@ import './graphql';
 import './ssr';
 import './rest-api';
 
-import '../../api/Documents/server/indexes';
-
 /* #### PLOP_IMPORTS_START #### */
+/* #### ERROR_REPORTS_IMPORTS_START #### */
 import '../../api/ErrorReports/server/indexes';
 import '../../api/ErrorReports/server/rest-api';
+/* #### ERROR_REPORTS_IMPORTS_END #### */
+/* #### DOCUMENTS_IMPORTS_START #### */
+import '../../api/Documents/server/indexes';
+/* #### DOCUMENTS_IMPORTS_END #### */
 /* #### PLOP_IMPORTS_END #### */
