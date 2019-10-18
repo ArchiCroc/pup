@@ -1,58 +1,58 @@
 {{#*inline "schemaFieldBody"}}
-    type: {{cleanSimpleSchemeType this.type}},
-    {{#compare this.input '!=' 'Hidden'}}
-    label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_label'),
+type: {{cleanSimpleSchemeType this.type}},
+{{#compare this.input '!=' 'Hidden'}}
+label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_label'),
+{{/compare}}
+{{#compare this.defaultValue '!==' undefined}}
+defaultValue: {{this.defaultValue}},
+{{/compare}}
+{{~#if this.validate.optional}}
+optional: true,
+{{/if}}
+{{#if this.validate.regEx}}
+regEx: {{this.validate.regEx}},
+{{/if}}
+{{#if this.validate.max}}
+max: {{this.validate.max}},
+{{/if}}
+{{#if this.validate.min}}
+min: {{this.validate.min}},
+{{/if}}
+{{#if this.validate.blackbox}}
+blackbox: {{this.validate.blackbox}},
+{{/if}}
+{{#if this.clean}}
+autoValue() {
+  if (this.value) {
+    return clean{{pascalCase @key}}(this.value);
+  }
+  return this.value;
+},
+{{/if}}
+{{#if this.choices}}
+  {{#compare this.choices 'typeof' 'object' '||' this.choices 'typeof' 'array'}}
+allowedValues: [{{#each this.choices}}{{#compare this 'typeof' 'string'}}'{{this}}'{{else}}{{this}}{{/compare}}{{#unless @last}}, {{/unless}}{{/each}}],
+  {{else}}
+allowedValues: {{this.choices}},
+  {{/compare}}
+{{/if}}
+uniforms: {
+  {{#compare this.input '==' 'Hidden'  }}
+  type: 'hidden',
+  {{else}}
+    {{#compare this.type '!=' 'Boolean'  }}
+  placeholder: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_placeholder'),
     {{/compare}}
-    {{#compare this.defaultValue '!==' undefined}}
-    defaultValue: {{this.defaultValue}},
-    {{/compare}}
-    {{~#if this.validate.optional}}
-    optional: true,
-    {{/if}}
-    {{#if this.validate.regEx}}
-    regEx: {{this.validate.regEx}},
-    {{/if}}
-    {{#if this.validate.max}}
-    max: {{this.validate.max}},
-    {{/if}}
-    {{#if this.validate.min}}
-    min: {{this.validate.min}},
-    {{/if}}
-    {{#if this.validate.blackbox}}
-    blackbox: {{this.validate.blackbox}},
-    {{/if}}
-    {{#if this.clean}}
-    autoValue() {
-      if (this.value) {
-        return clean{{pascalCase @key}}(this.value);
-      }
-      return this.value;
-    },
-    {{/if}}
-    {{#if this.choices}}
-      {{#compare this.choices 'typeof' 'object' '||' this.choices 'typeof' 'array'}}
-    allowedValues: [{{#each this.choices}}{{#compare this 'typeof' 'string'}}'{{this}}'{{else}}{{this}}{{/compare}}{{#unless @last}}, {{/unless}}{{/each}}],
-      {{else}}
-    allowedValues: {{this.choices}},
-      {{/compare}}
-    {{/if}}
-    uniforms: {
-      {{#compare this.input '==' 'Hidden'  }}
-      type: 'hidden',
-      {{else}}
-        {{#compare this.type '!=' 'Boolean'  }}
-      placeholder: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_placeholder'),
-        {{/compare}}
-      {{/compare}}
-      {{#each uniforms}}
-      {{@key}}: {{#compare this 'typeof' 'string'}}'{{{this}}}'{{else}}{{this}}{{/compare}},
-      {{/each}}
-      {{#if this.choices}}
-      {{#compare this.choices 'typeof' 'object'}}
-      transform: (value) => i18n.__(`{{ pascalCase @root.name }}.{{snakeCase @key}}_${value}`),
-      {{/compare}}
-      {{/if}}
-    },
+  {{/compare}}
+  {{#each uniforms}}
+  {{@key}}: {{#compare this 'typeof' 'string'}}'{{{this}}}'{{else}}{{this}}{{/compare}},
+  {{/each}}
+  {{#if this.choices}}
+  {{#compare this.choices 'typeof' 'object'}}
+  transform: (value) => i18n.__(`{{ pascalCase @root.name }}.{{snakeCase @key}}_${value}`),
+  {{/compare}}
+  {{/if}}
+},
 {{/inline}}
 {{#compare fieldTypes 'includes' 'ObjectID'}}
 import { Mongo } from 'meteor/mongo';
