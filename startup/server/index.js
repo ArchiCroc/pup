@@ -21,4 +21,7 @@ import '../../api/ErrorReports/server/rest-api';
 /* #### DOCUMENTS_IMPORTS_START #### */
 import '../../api/Documents/server/indexes';
 /* #### DOCUMENTS_IMPORTS_END #### */
+/* #### USERS_IMPORTS_START #### */
+import '../../api/Users/server/rest-api';
+/* #### USERS_IMPORTS_END #### */
 /* #### PLOP_IMPORTS_END #### */
