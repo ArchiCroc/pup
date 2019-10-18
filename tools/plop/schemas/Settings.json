@@ -1,0 +1,82 @@
+{ "name": "Settings",
+    "permissions": {
+      "read": "user",
+      "create": "admin",
+      "update": "admin",
+      "delete": "admin"
+    },
+    "menu": {
+      "index": "admin"
+    },    
+    "fields": {
+      "_id": {
+        "primaryKey": true,
+        "type": "ObjectID",
+        "input": "Hidden",
+        "validate" : {
+          "optional": true
+        }
+      },
+      "module": {
+        "labelKey": true,
+        "type": "String",
+        "input": "Text",
+        "validate" : {
+            "max": 64
+        }
+      },
+      "key": {
+        "labelKey": true,
+        "type": "String",
+        "input": "Text",
+        "validate" : {
+            "max": 64
+        }
+      },
+      "value": {
+        "labelKey": true,
+        "type": "String",
+        "input": "Text",
+        "validate" : {
+            "max": 64
+        }
+      },
+      "createdAtUTC": {
+        "type": "DateTime",
+        "showInTableView": false,
+        "showInDetailView": "Created At"
+      },
+      "createdById": {
+        "userKey": true,
+        "type": "String",
+        "index": true,
+        "showInTableView": false,
+        "showInDetailView": false
+      },
+      "createdBy": {
+        "type": "User",
+        "dataIndex": "fullName",
+        "showInTableView": false,
+        "showInDetailView": false
+      },
+      "updatedAtUTC": {
+        "type": "DateTime",
+        "showInTableView": "Updated At"
+      },
+      "updatedById": {
+        "userKey": true,
+        "type": "String",
+        "index": true,
+        "showInTableView": false,
+        "showInDetailView": false
+      },
+      "updatedBy": {
+        "type": "User",
+        "dataIndex": "fullName"
+      }
+      
+    },
+    "defaultSortField": "module",
+    "defaultSortOrder": "ascend"
+  }
+  
