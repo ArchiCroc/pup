@@ -1,11 +1,8 @@
   // {{queryType}}
   {{queryName}}: (parent, args, context) => {
-    if (!context.user) {
-      throw new Error('Sorry, you must be logged in to {{queryName}} {{moduleName}}');
+    if (!user || !user._id || !checkUserRole(user._id, ['user'])) {
+      throw new Error('Sorry, you must have permission to view {{titleCase moduleName}}.');
     }
-    // if (!isAdmin(context.user._id)) {
-    //   throw new Error('[Sorry, you must be an Admin to query {{queryName}} {{moduleName}}');
-    // }
 
     const query = {
       {{#each queryParamSegments}}
@@ -13,9 +10,7 @@
       {{/each}}
     };
 
-    return {{moduleName}}.find(query, { /* sort: { createdAtUTC: 1 } */ });
+    return {{moduleName}}.find(query, { /* sort: { createdAtUTC: 1 } */ }).fetch();
     // .map((item) => {
-    //  item._id = item._id._str;
-    //  return item;
     // });
   },

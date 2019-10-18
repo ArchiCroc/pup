@@ -1,11 +1,8 @@
   // {{mutationType}}
   {{mutationName}}: (parent, args, context) => {
-    if (!context.user) {
-      throw new Error('Sorry, you must be logged in to {{mutationName}} {{moduleName}}');
+    if (!user || !user._id || !checkUserRole(user._id, ['user'])) {
+      throw new Error('Sorry, you must have permission to {{mutationName}} {{titleCase moduleName}}.');
     }
-    // if (!isAdmin(context.user._id)) {
-    //   throw new Error('[Sorry, you must be an Admin to {{mutationName}} {{moduleName}}');
-    // }
 
     const schema = {{singular moduleName}}Schema.pick({{#each mutationParamSegments}}'{{param}}'{{#unless @last}}, {{/unless}}{{/each}});
     const cleanDoc = schema.clean(args)
@@ -14,10 +11,6 @@
     const { {{mutationParamSegments.0.param}} } = cleanDoc;
 
     const {{camelCase (singular moduleName)}} = {{moduleName}}.findOne({{mutationParamSegments.0.param}});
-    // .map((item) => {
-    //  item._id = item._id._str;
-    //  return item;
-    // });
 
     if (!{{camelCase (singular moduleName)}}) {
       throw new Error('{{pascalCase (singular moduleName)}} not found');
