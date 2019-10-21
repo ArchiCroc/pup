@@ -1,3 +1,4 @@
+const changeCase = require('change-case');
 const listDirectories = require('../../lib/listDirectories');
 
 const regEx = /^(\w+)\(?((?:\s*(?:\w+:\s*\[?\w+\]?),?)*)\)?:\s*(\[?\w+\]?)$/;
@@ -44,7 +45,7 @@ module.exports = {
       {
         type: 'append',
         path: 'startup/server/graphql-api.js',
-        pattern: '#### PLOP_QUERY_TYPES_START ####',
+        pattern: `#### ${changeCase.constantCase(data.moduleName)}_QUERY_TYPES_START ####`,
         template: `      {{queryName}}{{#if queryParams}}({{#each queryParamSegments}}\${{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}}: {{returnType}}`,
         data,
       },
