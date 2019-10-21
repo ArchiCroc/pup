@@ -53,8 +53,8 @@ module.exports = {
         type: 'comment',
         comment: `Example Query:
         
-query {{queryName}}({{#if queryParams}}{{#each queryParamSegments}}\${{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}) {
-  {{queryName}}({{#each queryParamSegments}}{{param}}: \${{param}}{{#unless @last}}, {{/unless}}{{/each}}){
+query {{queryName}}{{#if queryParams}}({{#each queryParamSegments}}\${{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}} {
+  {{queryName}}{{#if queryParams}}({{#each queryParamSegments}}{{param}}: \${{param}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}}{
     ...{{ pascalCase (singular moduleName) }}Attributes
   }
 }

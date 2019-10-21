@@ -1,5 +1,5 @@
   // {{queryType}}
-  {{queryName}}: (parent, args, context) => {
+  {{queryName}}: (parent, args, { user }) => {
     if (!user || !user._id || !checkUserRole(user._id, ['user'])) {
       throw new Error('Sorry, you must have permission to view {{titleCase moduleName}}.');
     }
