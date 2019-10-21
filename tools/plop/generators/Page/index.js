@@ -64,8 +64,8 @@ module.exports = {
     return [
       {
         type: 'add',
-        path: 'ui/{{moduleName}}/{{pascalCase name}}.js',
-        templateFile: 'tools/plop/generators/Page/templates/Page.js.hbs',
+        path: 'ui/{{moduleName}}/{{pascalCase name}}.jsx',
+        templateFile: 'tools/plop/generators/Page/templates/Page.jsx.hbs',
       },
       {
         type: 'add',
