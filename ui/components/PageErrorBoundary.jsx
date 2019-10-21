@@ -51,7 +51,7 @@ class PageErrorBoundary extends React.Component {
     if (this.state.hasError) {
       // You can render any custom fallback UI
       return (
-        <React.Fragment>
+        <>
           <PageHeader title={i18n.__('page_error_title')} />
           <Row>
             <Col
@@ -63,7 +63,7 @@ class PageErrorBoundary extends React.Component {
               {i18n.__('page_error_message')}
             </Col>
           </Row>
-        </React.Fragment>
+        </>
       );
     }
 

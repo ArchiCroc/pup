@@ -95,6 +95,20 @@ function cleanSimpleSchemeType(text) {
   return clean;
 }
 
+const cleanGraphqlTypeConversions = {
+  Number: 'Float',
+  '[Number]': '[Float]',
+};
+
+function cleanGraphqlType(text) {
+  clean = text;
+
+  if (cleanGraphqlTypeConversions[clean]) {
+    return cleanGraphqlTypeConversions[clean];
+  }
+  return clean;
+}
+
 module.exports = (plop) => {
   plop.setPrompt('jsonFile', filePath);
   plop.setActionType('comment', comment);
@@ -106,6 +120,7 @@ module.exports = (plop) => {
     return text.replace(/\[(\w+)\]/, '$1');
   });
   plop.setHelper('cleanSimpleSchemeType', cleanSimpleSchemeType);
+  plop.setHelper('cleanGraphqlType', cleanGraphqlType);
   plop.setHelper('truncate', (text, prefix) => {
     const regEx = new RegExp(`^${prefix}(.*)`);
     return text.replace(regEx, '$1');

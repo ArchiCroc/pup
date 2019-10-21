@@ -54,6 +54,41 @@ uniforms: {
   {{/if}}
 },
 {{/inline}}
+{{#*inline "arrayFieldBody"}}
+type: Array,
+{{#compare this.input '!=' 'Hidden'}}
+label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_label'),
+{{/compare}}
+{{#compare this.defaultValue '!==' undefined}}
+defaultValue: {{this.defaultValue}},
+{{/compare}}
+{{~#if this.validate.optional}}
+optional: true,
+{{/if}}
+{{#if this.validate.minCount}}
+minCount: {{this.validate.minCount}},
+{{/if}}
+{{#if this.validate.maxCount}}
+maxCount: {{this.validate.maxCount}},
+{{/if}}
+uniforms: {
+  {{#compare this.input '==' 'Hidden'  }}
+  type: 'hidden',
+  {{else}}
+    {{#compare this.type '!=' 'Boolean'  }}
+  placeholder: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_placeholder'),
+    {{/compare}}
+  {{/compare}}
+  {{#each this.uniforms}}
+  {{@key}}: {{#compare this 'typeof' 'string'}}'{{{this}}}'{{else}}{{this}}{{/compare}},
+  {{/each}}
+  {{#compare this.type 'startsWith' '[' '&&' (stripBrackets this.type) 'in' 'Select|CrossReferenceSearch|CrossReferenceSelect' }}
+  multiple: true  
+  {{/compare}}
+},
+{{/inline}}
+
+
 {{#compare fieldTypes 'includes' 'ObjectID'}}
 import { Mongo } from 'meteor/mongo';
 {{/compare}}
@@ -79,39 +114,27 @@ const {{ pascalCase singularName }}Schema = new SimpleSchema({
   {{#compare @key 'includes' '.'}}'{{@key}}'{{else}}{{@key}}{{/compare}}: {
     {{> schemaFieldBody}}
   },
-  {{else}}
-  {{#compare @key 'includes' '.'}}'{{@key}}'{{else}}{{@key}}{{/compare}}: {
-    type: Array,
-    {{#compare this.input '!=' 'Hidden'}}
-    label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_label'),
-    {{/compare}}
-    {{#compare this.defaultValue '!==' undefined}}
-    defaultValue: {{this.defaultValue}},
-    {{/compare}}
-    {{~#if this.validate.optional}}
-    optional: true,
-    {{/if}}
-    {{#if this.validate.minCount}}
-    minCount: {{this.validate.minCount}},
-    {{/if}}
-    {{#if this.validate.maxCount}}
-    maxCount: {{this.validate.maxCount}},
-    {{/if}}
-    uniforms: {
-      {{#compare this.input '==' 'Hidden'  }}
-      type: 'hidden',
-      {{else}}
-        {{#compare this.type '!=' 'Boolean'  }}
-      placeholder: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_placeholder'),
+  {{#if this.fields}}
+    {{#each this.fields}}
+      {{~#compare this.type '&&' this.input}}
+        {{~#compare this.type '!startsWith' '['}}
+  '{{@../key}}.{{@key}}': {
+    {{> schemaFieldBody}}
+  },
+        {{else}}
+  '{{@../key}}.{{@key}}': {
+    {{> arrayFieldBody}}
+  },
+  '{{@../key}}.{{@key}}.$': {
+    {{> schemaFieldBody}}
+  },
         {{/compare}}
       {{/compare}}
-      {{#each this.uniforms}}
-      {{@key}}: {{#compare this 'typeof' 'string'}}'{{{this}}}'{{else}}{{this}}{{/compare}},
-      {{/each}}
-      {{#compare this.type 'startsWith' '[' '&&' (stripBrackets this.type) 'in' 'Select|CrossReferenceSearch|CrossReferenceSelect' }}
-      multiple: true  
-      {{/compare}}
-    },
+    {{/each}}
+  {{/if}}
+  {{else}}
+  {{#compare @key 'includes' '.'}}'{{@key}}'{{else}}{{@key}}{{/compare}}: {
+    {{> arrayFieldBody}}
   },
   '{{@key}}.$': {
     {{> schemaFieldBody}}
