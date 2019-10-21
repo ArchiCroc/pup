@@ -70,6 +70,8 @@ const getUsers = (options) => {
     if (options.roles) {
       query.roles = options.roles;
     }
+    // only list enabled users by default
+    query.status = 1;
     // console.log(query);
     const projection = getProjection(options);
     return Meteor.users
