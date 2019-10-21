@@ -10,7 +10,9 @@
       {{/each}}
     };
 
-    return {{moduleName}}.find(query, { /* sort: { createdAtUTC: 1 } */ }).fetch();
+    const options = { /* sort: { createdAtUTC: 1 } */ };
+
+    return {{moduleName}}.find(query, options).fetch();
     // .map((item) => {
     // });
   },
