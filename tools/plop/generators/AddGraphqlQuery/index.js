@@ -1,6 +1,7 @@
+const changeCase = require('change-case');
 const listDirectories = require('../../lib/listDirectories');
 
-const regEx = /^(\w+)\(((?:\s*(?:\w+:\s*\[?\w+\]?),?)*)\):\s*(\[?\w+\]?)$/;
+const regEx = /^(\w+)\(?((?:\s*(?:\w+:\s*\[?\w+\]?),?)*)\)?:\s*(\[?\w+\]?)$/;
 
 module.exports = {
   description: 'Add a query to an existing API Module',
@@ -44,16 +45,16 @@ module.exports = {
       {
         type: 'append',
         path: 'startup/server/graphql-api.js',
-        pattern: '#### PLOP_QUERY_TYPES_START ####',
-        template: `      {{queryType}}`,
+        pattern: `#### ${changeCase.constantCase(data.moduleName)}_QUERY_TYPES_START ####`,
+        template: `      {{queryName}}{{#if queryParams}}({{#each queryParamSegments}}\${{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}}: {{returnType}}`,
         data,
       },
       {
         type: 'comment',
         comment: `Example Query:
         
-query {{queryName}}({{#if queryParams}}{{#each queryParamSegments}}\${{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}) {
-  {{queryName}}({{#each queryParamSegments}}{{param}}: \${{param}}{{#unless @last}}, {{/unless}}{{/each}}){
+query {{queryName}}{{#if queryParams}}({{#each queryParamSegments}}\${{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}} {
+  {{queryName}}{{#if queryParams}}({{#each queryParamSegments}}{{param}}: \${{param}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}}{
     ...{{ pascalCase (singular moduleName) }}Attributes
   }
 }
