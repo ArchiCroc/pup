@@ -1,9 +1,11 @@
 /* eslint-disable  */
 const fs = require('fs');
+const path = require('path');
 const processSchema = require('../../lib/processSchema');
 const listDirectories = require('../../lib/listDirectories');
 const slugify = require('slugify');
 const changeCase = require('change-case');
+const normalizePath = require('../../lib/normalizePath');
 
 const requireField = (fieldName) => {
   return (value) => {
@@ -15,7 +17,7 @@ const requireField = (fieldName) => {
 };
 
 module.exports = {
-  description: 'Create a new Document module',
+  description: 'Add a new Route',
   prompts: async (inquirer, values) => {
     let values2 = {};
     if (!values) {
@@ -24,7 +26,7 @@ module.exports = {
         name: 'uiFolderName',
         message: 'Select an ui module',
         choices: () => {
-          return listDirectories('./ui');
+          return listDirectories('./ui', ['components']);
         },
       });
       values2 = await inquirer.prompt([
@@ -32,13 +34,35 @@ module.exports = {
           type: 'file',
           name: 'componentPath',
           message: 'choose a page component',
-          extensions: ['jsx'],
+          extensions: ['.jsx'],
+          // onlyShowMatchingExtensions: true,
           path: `./ui/${values.uiFolderName}`,
+        },
+      ]);
+
+      const rel = path.relative(`./ui/${values.uiFolderName}`, values2.componentPath);
+      const cleanPath = normalizePath(rel);
+      values2.componentPath = cleanPath;
+      console.log(cleanPath.split('.').splice(-1, 1));
+      let componentParts = cleanPath.split('.');
+      componentParts.pop();
+      componentParts = componentParts.join('').split('/');
+
+      values2.componentName = componentParts.map((item) => changeCase.pascalCase(item)).join('');
+      const defaultSlug = componentParts.map((item) => changeCase.paramCase(item)).join('/');
+
+      values3 = await inquirer.prompt([
+        {
+          type: 'input',
+          name: 'urlSlug',
+          message: `What is url for your page? ${values.uiFolderName}/`,
+          validate: requireField('URL Slug'),
+          default: defaultSlug,
         },
       ]);
     }
 
-    const values3 = await inquirer.prompt([
+    const values4 = await inquirer.prompt([
       {
         type: 'list',
         name: 'route',
@@ -47,26 +71,23 @@ module.exports = {
         default: values2.menu === 'none' ? 'user' : values2.menu,
       },
     ]);
-    Object.assign(values, values2, values3);
+    Object.assign(values, values2, values3, values4);
     return values;
   },
-  actions: (promptData) => {
-    console.log(promptData);
-    //const regEx = //
-
+  actions: (data) => {
     return [
       {
         type: 'append',
         path: 'ui/layouts/App.jsx',
-        pattern: '/* #### PLOP_IMPORTS_START #### */',
-        templateFile: 'tools/plop/generators/StubModule/templates/app-imports.js.hbs',
+        pattern: `/* #### ${changeCase.constant(data.uiFolderName)}_IMPORTS_START #### */`,
+        templateFile: 'tools/plop/generators/AddRoute/templates/app-imports.js.hbs',
         data,
       },
       {
         type: 'append',
         path: 'ui/layouts/App.jsx',
-        pattern: `{/* #### ${changeCase.constant(promptData.uiFolderName)}_ROUTES_START #### */}`,
-        templateFile: 'tools/plop/generators/StubModule/templates/app-routes.js.hbs',
+        pattern: `{/* #### ${changeCase.constant(data.uiFolderName)}_ROUTES_START #### */}`,
+        templateFile: 'tools/plop/generators/AddRoute/templates/app-routes.js.hbs',
         data,
       },
     ];

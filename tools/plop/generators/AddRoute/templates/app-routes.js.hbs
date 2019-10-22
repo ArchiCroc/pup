@@ -20,10 +20,10 @@
                   />
 {{/compare}}
 {{#compare route '===' 'everyone'}}
-                  <PublicRoute 
+                  <PublicRoute
                     path="/{{ uiFolderName }}{{#if urlSlug}}/{{ urlSlug }}{{/if}}" 
                     component={ {{~ pascalCase componentName ~}} }
-                    {...props} 
-                    {...state} 
+                    {...props}
+                    {...state}
                   />
 {{/compare}}
