@@ -3,32 +3,32 @@ import { GraphQLDate, GraphQLDateTime } from 'graphql-iso-date';
 import { makeExecutableSchema } from 'graphql-tools';
 import { ObjectID } from '../../modules/server/GraphQLObjectIdScalar';
 
+/* #### PLOP_IMPORTS_START #### */
+
+/* #### USERS_IMPORTS_START #### */
 import UserTypes from '../../api/Users/types';
 import UserQueries from '../../api/Users/queries';
 import UserMutations from '../../api/Users/mutations';
+import OAuthQueries from '../../api/OAuth/queries';
+/* #### USERS_IMPORTS_END #### */
 
-import DocumentTypes from '../../api/Documents/types';
-import DocumentQueries from '../../api/Documents/queries';
-import DocumentMutations from '../../api/Documents/mutations';
-
+/* #### COMMENTS_IMPORTS_START #### */
 import CommentTypes from '../../api/Comments/types';
 import CommentQueries from '../../api/Comments/queries';
 import CommentMutations from '../../api/Comments/mutations';
+/* #### COMMENTS_IMPORTS_END #### */
 
-import OAuthQueries from '../../api/OAuth/queries';
-
-/* #### PLOP_IMPORTS_START #### */
 /* #### ERROR_REPORTS_IMPORTS_START #### */
 import ErrorReportTypes from '../../api/ErrorReports/types';
 import ErrorReportQueries from '../../api/ErrorReports/queries';
 import ErrorReportMutations from '../../api/ErrorReports/mutations';
 /* #### ERROR_REPORTS_IMPORTS_END #### */
+
 /* #### PLOP_IMPORTS_END #### */
 
 const schema = {
   typeDefs: gql`
     ${UserTypes}
-    ${DocumentTypes}
     ${CommentTypes}
 
     #### PLOP_TYPES_START ####
@@ -43,8 +43,9 @@ const schema = {
     #### PLOP_SCALAR_END ####
 
     type Query {
-      documents: [Document]
-      document(_id: String): Document
+      #### PLOP_QUERY_TYPES_START ####
+
+      #### USERS_QUERY_TYPES_START ####
       user(_id: String): User
       resolveUser(userId: String): User
       users(
@@ -59,7 +60,8 @@ const schema = {
       resolveUsers(_ids: [String], sort: String, order: String): Users
       exportUserData: UserDataExport
       oAuthServices(services: [String]): [String]
-      #### PLOP_QUERY_TYPES_START ####
+      #### USERS_QUERY_TYPES_END ####
+
       #### ERROR_REPORTS_QUERY_TYPES_START ####
       errorReports(
         _ids: [String]
@@ -73,26 +75,31 @@ const schema = {
       myErrorReports: [ErrorReport]
       errorReport(_id: String): ErrorReport
       #### ERROR_REPORTS_QUERY_TYPES_END ####
+
       #### PLOP_QUERY_TYPES_END ####
     }
 
     type Mutation {
-      addDocument(title: String, body: String): Document
-      updateDocument(_id: String!, title: String, body: String, isPublic: Boolean): Document
-      updateDocumentKey(_id: String!, key: String!, value: String!): Document
-      removeDocument(_id: String!): Document
+      #### PLOP_MUTATION_TYPES_START ####
+
+      #### COMMENTS_REPORTS_MUTATION_TYPES_START ####
       addComment(documentId: String!, comment: String!): Comment
       removeComment(commentId: String!): Comment
+      #### COMMENTS_REPORTS_MUTATION_TYPES_END ####
+
+      #### USERS_MUTATION_TYPES_START ####
       updateUser(user: UserInput): User
       updateUserSettings(_id: String, settings: UserSettingsInput): User
       removeUser(_id: String): User
       sendVerificationEmail: User
       sendWelcomeEmail: User
-      #### PLOP_MUTATION_TYPES_START ####
+      #### USERS_MUTATION_TYPES_END ####
+
       #### ERROR_REPORTS_MUTATION_TYPES_START ####
       saveErrorReport(errorReport: ErrorReportInput): ErrorReport
       removeErrorReport(_id: String!): ErrorReport
       #### ERROR_REPORTS_MUTATION_TYPES_END ####
+
       #### PLOP_MUTATION_TYPES_END ####
     }
   `,
@@ -101,7 +108,6 @@ const schema = {
     DateTime: GraphQLDateTime,
     ObjectID,
     Query: {
-      ...DocumentQueries,
       ...UserQueries,
       //  ...UserSettingsQueries,
       ...OAuthQueries,
@@ -110,7 +116,6 @@ const schema = {
       /* #### PLOP_QUERY_RESOLVERS_END #### */
     },
     Mutation: {
-      ...DocumentMutations,
       ...CommentMutations,
       ...UserMutations,
       // ...UserSettingsMutations,
@@ -124,9 +129,6 @@ const schema = {
           user.profile.firstName &&
           `${user.profile.firstName} ${user.profile.lastName}`) ||
         user.username,
-    },
-    Document: {
-      comments: CommentQueries.comments,
     },
     Comment: {
       user: UserQueries.user,

@@ -4,7 +4,6 @@ import i18n from 'meteor/universe:i18n';
 
 import appEnI18n from './en/app.en.i18n.yml';
 import usersEnI18n from './en/users.en.i18n.yml';
-import documentsEnI18n from './en/documents.en.i18n.yml';
 
 /* #### PLOP_IMPORTS_START #### */
 import errorReportsEnI18n from './en/errorReports.en.i18n.yml';

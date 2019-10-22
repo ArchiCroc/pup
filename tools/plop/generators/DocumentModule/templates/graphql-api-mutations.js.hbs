@@ -1,0 +1,6 @@
+      #### {{ constantCase pluralName }}_MUTATION_TYPES_START ####
+      add{{ pascalCase singularName }}(title: String, body: String): Document
+      update{{ pascalCase singularName }}(_id: String!, title: String, body: String, isPublic: Boolean): {{ pascalCase singularName }}
+      update{{ pascalCase singularName }}Key(_id: String!, key: String!, value: String!): {{ pascalCase singularName }}
+      remove{{ pascalCase singularName }}(_id: String!): {{ pascalCase singularName }}
+      #### {{ constantCase pluralName }}_MUTATION_TYPES_END ####

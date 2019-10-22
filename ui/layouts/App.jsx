@@ -27,12 +27,6 @@ import Privacy from '../pages/Privacy';
 import ExamplePage from '../pages/ExamplePage';
 /* #### PAGES_IMPORTS_END #### */
 
-/* #### DOCUMENTS_IMPORTS_START #### */
-import Documents from '../documents/Documents';
-import ViewDocument from '../documents/ViewDocument';
-import EditDocument from '../documents/EditDocument';
-/* #### DOCUMENTS_IMPORTS_END #### */
-
 /* #### ERROR_REPORTS_IMPORTS_START #### */
 import ErrorReports from '../error-reports/ErrorReports';
 import ViewErrorReport from '../error-reports/ViewErrorReport';
@@ -122,25 +116,7 @@ class App extends React.Component {
                   <PublicRoute name="privacy" path="/privacy" component={Privacy} />
                   <PublicRoute name="examplePage" path="/example-page" component={ExamplePage} />
                   {/* #### ERROR_REPORTS_ROUTES_END #### */}
-                  {/* #### DOCUMENTS_ROUTES_START #### */}
-                  <AuthenticatedRoute
-                    exact
-                    path="/documents"
-                    component={Documents}
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
-                  <PublicRoute exact path="/documents/:_id" component={ViewDocument} />
-                  <AuthenticatedRoute
-                    exact
-                    path="/documents/:_id/edit"
-                    component={EditDocument}
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
-                  {/* #### DOCUMENTS_ROUTES_END #### */}
+
                   {/* #### ERROR_REPORTS_ROUTES_START #### */}
                   <AuthenticatedRoute
                     exact

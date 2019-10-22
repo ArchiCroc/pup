@@ -18,9 +18,6 @@ import './rest-api';
 import '../../api/ErrorReports/server/indexes';
 import '../../api/ErrorReports/server/rest-api';
 /* #### ERROR_REPORTS_IMPORTS_END #### */
-/* #### DOCUMENTS_IMPORTS_START #### */
-import '../../api/Documents/server/indexes';
-/* #### DOCUMENTS_IMPORTS_END #### */
 /* #### USERS_IMPORTS_START #### */
 import '../../api/Users/server/rest-api';
 /* #### USERS_IMPORTS_END #### */

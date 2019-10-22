@@ -1,6 +1,6 @@
 import seeder from '@cleverbeagle/seeder';
 import { Meteor } from 'meteor/meteor';
-import Documents from '../../api/Documents/Documents';
+// import Documents from '../../api/Documents/Documents';
 import Comments from '../../api/Comments/Comments';
 
 const commentsSeed = (userId, date, documentId) => {
@@ -23,31 +23,31 @@ const commentsSeed = (userId, date, documentId) => {
   });
 };
 
-const documentsSeed = (userId) => {
-  seeder(Documents, {
-    seedIfExistingData: true,
-    environments: ['development', 'staging'],
-    data: {
-      dynamic: {
-        count: 5,
-        seed(iteration) {
-          const date = new Date().toISOString();
-          return {
-            isPublic: false,
-            createdAt: date,
-            updatedAt: date,
-            owner: userId,
-            title: `Document #${iteration + 1}`,
-            body: `This is the body of document #${iteration + 1}`,
-            dependentData(documentId) {
-              commentsSeed(userId, date, documentId);
-            },
-          };
-        },
-      },
-    },
-  });
-};
+// const documentsSeed = (userId) => {
+//   seeder(Documents, {
+//     seedIfExistingData: true,
+//     environments: ['development', 'staging'],
+//     data: {
+//       dynamic: {
+//         count: 5,
+//         seed(iteration) {
+//           const date = new Date().toISOString();
+//           return {
+//             isPublic: false,
+//             createdAt: date,
+//             updatedAt: date,
+//             owner: userId,
+//             title: `Document #${iteration + 1}`,
+//             body: `This is the body of document #${iteration + 1}`,
+//             dependentData(documentId) {
+//               commentsSeed(userId, date, documentId);
+//             },
+//           };
+//         },
+//       },
+//     },
+//   });
+// };
 
 seeder(Meteor.users, {
   seedIfExistingData: true,
@@ -62,9 +62,9 @@ seeder(Meteor.users, {
           lastName: 'Warhol',
         },
         roles: ['admin'],
-        dependentData(userId) {
-          documentsSeed(userId);
-        },
+        // dependentData(userId) {
+        //   documentsSeed(userId);
+        // },
       },
     ],
     dynamic: {
@@ -79,9 +79,9 @@ seeder(Meteor.users, {
             lastName: faker.name.lastName(),
           },
           roles: ['user'],
-          dependentData(userId) {
-            documentsSeed(userId);
-          },
+          // dependentData(userId) {
+          //   documentsSeed(userId);
+          // },
         };
       },
     },

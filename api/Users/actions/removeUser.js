@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 
 import { Meteor } from 'meteor/meteor';
-import Documents from '../../Documents/Documents';
+// import Documents from '../../Documents/Documents';
 import checkIfAuthorized, { isAdmin } from './checkIfAuthorized';
 
 let action;
@@ -14,13 +14,13 @@ const deleteUser = ({ _id }) => {
   }
 };
 
-const deleteDocuments = ({ _id }) => {
-  try {
-    return Documents.remove({ owner: _id });
-  } catch (exception) {
-    throw new Error(`[removeUser.deleteDocuments] ${exception.message}`);
-  }
-};
+// const deleteDocuments = ({ _id }) => {
+//   try {
+//     return Documents.remove({ owner: _id });
+//   } catch (exception) {
+//     throw new Error(`[removeUser.deleteDocuments] ${exception.message}`);
+//   }
+// };
 
 const validateOptions = (options) => {
   try {
@@ -51,7 +51,7 @@ const removeUser = (options) => {
       userToRemove._id = options.currentUser._id;
     }
 
-    deleteDocuments(userToRemove);
+    // deleteDocuments(userToRemove);
     deleteUser(userToRemove);
 
     action.resolve();
