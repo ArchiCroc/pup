@@ -1,0 +1,140 @@
+{ "name": "Collection/Sets",
+  "permissions": {
+    "read": "user",
+    "save": "admin",
+    "delete": "admin"
+  },
+  "menu": {
+    "index": "admin"
+  },    
+  "schemaImports": ["import slugify from 'slugify';"],
+  "fields": {
+    "_id": {
+      "primaryKey": true,
+      "type": "ObjectID",
+      "input": "Hidden",
+      "validate" : {
+        "max": 24,
+        "optional": true
+      }
+    },
+    "name": {
+      "labelKey": true,
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+          "max": 256
+      }
+    },
+    "number": {
+      "labelKey": true,
+      "label": "Set Number",
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+          "max": 8
+      }
+    },
+    "year": {
+      "type": "Int",
+      "input": "Text",
+      "showInTableView": false
+    },
+    "themeIds": {
+      "type": "[ObjectID]",
+      "input": "CrossReferenceSearch",
+      "uniforms": {
+        "multiple": true,
+        "query": "collectionThemes",
+        "edges": "collectionThemes",
+        "labelField": "name",
+        "valueField": "_id"
+      },
+      "stripIdFromKey": "Id",
+      "showInTableView": false,
+      "showInDetailView": false
+    },
+    "themes": {
+      "type": "[CollectionTheme]",
+      "resolver": "collectionThemeQueries.collectionTheme",
+      "showInTableView": true,
+      "dataIndex": "name"
+    },
+    "partCount": {
+      "type": "Int",
+      "input": "Text",
+      "clean": "(item) => parseInt(item, 10);",
+      "showInTableView": false
+    },
+    "inventory": {
+      "type": "Object",
+      "input": "List",
+      "showInTableView": false,
+      "fields": {
+        "elementId": {
+          "type": "ObjectID",
+          "input": "CrossReferenceSearch",
+          "uniforms": {
+            "multiple": true,
+            "query": "collectionElements",
+            "edges": "collectionElements",
+            "labelField": "name",
+            "valueField": "_id"
+          },
+          "stripIdFromKey": "Id",
+          "showInTableView": false,
+          "showInDetailView": false
+        },
+        "element": {
+          "type": "CollectionElement",
+          "resolver": "collectionElementQueries.collectionElement",
+          "showInTableView": true,
+          "dataIndex": "name"
+        },
+        "partCount": {
+          "type": "Int",
+          "input": "Text",
+          "showInTableView": false
+        },
+        "spareCount": {
+          "type": "Int",
+          "input": "Text",
+          "showInTableView": false
+        }
+      }
+    },
+    "createdAtUTC": {
+      "type": "DateTime",
+      "showInTableView": "Created At"
+    },
+    "createdById": {
+      "userKey": true,
+      "type": "String",
+      "index": true,
+      "showInTableView": false,
+      "showInDetailView": false
+    },
+    "createdBy": {
+      "type": "User",
+      "dataIndex": "fullName"
+    },
+    "updatedAtUTC": {
+      "type": "DateTime",
+      "showInTableView": "Updated At"
+    },
+    "updatedById": {
+      "userKey": true,
+      "type": "String",
+      "index": true,
+      "showInTableView": false,
+      "showInDetailView": false
+    },
+    "updatedBy": {
+      "type": "User",
+      "dataIndex": "fullName"
+    }
+    
+  },
+  "defaultSortField": "name",
+  "defaultSortOrder": "ascend"
+}
