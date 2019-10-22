@@ -1,5 +1,6 @@
 const pluralize = require('pluralize');
-const filePath = require('inquirer-parse-json-file'); // require('inquirer-file-tree-selection-prompt'); //
+const jsonFilePath = require('inquirer-parse-json-file'); // require('inquirer-file-tree-selection-prompt'); //
+const filePath = require('inquirer-file-selector-prompt');
 const _ = require('lodash');
 
 const { readdirSync, statSync } = require('fs');
@@ -110,7 +111,8 @@ function cleanGraphqlType(text) {
 }
 
 module.exports = (plop) => {
-  plop.setPrompt('jsonFile', filePath);
+  plop.setPrompt('jsonFile', jsonFilePath);
+  plop.setPrompt('file', filePath);
   plop.setActionType('comment', comment);
   plop.setHelper('pluralize', (text) => pluralize(text));
   plop.setHelper('singular', (text) => pluralize.singular(text));
