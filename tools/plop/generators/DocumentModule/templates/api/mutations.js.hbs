@@ -1,0 +1,76 @@
+import sanitizeHtml from 'sanitize-html';
+import {{ pascalCase pluralName }} from './{{ pascalCase pluralName }}';
+import {{ pascalCase singularName }}Schema from './schemas/{{ camelCase singularName }}';
+
+export default {
+  add{{ pascalCase singularName }}: (root, args, context) => {
+    if (!context.user) throw new Error('Sorry, you must be logged in to add a new {{ camelCase singularName }}.');
+
+    const args2 = args;
+
+    args2.title =
+      args2.title ||
+      `Untitled {{ pascalCase singularName }} #${{{ pascalCase pluralName }}.find({ owner: context.user._id }).count() + 1}`;
+    args2.body = sanitizeHtml(args.body);
+    const cleanDoc = {{ pascalCase singularName }}Schema.clean(args2);
+    {{ pascalCase singularName }}Schema.validate(cleanDoc);
+
+    const userId = context.user._id;
+    const timestamp = new Date();
+
+    cleanDoc.owner = userId;
+    cleanDoc.updatedBy = userId;
+    cleanDoc.updatedAt = timestamp;
+    cleanDoc.createdBy = userId;
+    cleanDoc.createdAt = timestamp;
+
+    const {{ camelCase singularName }}Id = {{ pascalCase pluralName }}.insert(cleanDoc);
+    const doc = {{ pascalCase pluralName }}.findOne({{ camelCase singularName }}Id);
+    return doc;
+  },
+  update{{ pascalCase singularName }}: (root, args, context) => {
+    if (!context.user) throw new Error('Sorry, you must be logged in to update a {{ lowerCase singularName }}.');
+    const cleanDoc = {{ pascalCase singularName }}Schema.clean(args);
+    {{ pascalCase singularName }}Schema.validate(cleanDoc);
+
+    cleanDoc.updatedBy = context.user._id;
+    cleanDoc.updatedAt = new Date();
+
+    const { _id } = cleanDoc;
+    delete cleanDoc._id;
+
+    console.log(cleanDoc);
+
+    // {{ pascalCase pluralName }}.update({ _id }, { $set: cleanDoc });
+    return {{ pascalCase pluralName }}.findOne(args._id);
+  },
+  update{{ pascalCase singularName }}Key: (root, args, context) => {
+    if (!context.user) throw new Error('Sorry, you must be logged in to update a {{ camelCase lowerCase }}.');
+
+    const doc = { _id: args._id };
+    doc[args.key] = args.value;
+
+    const cleanDoc = {{ pascalCase singularName }}Schema.clean(doc);
+    {{ pascalCase singularName }}Schema.validate(cleanDoc, { keys: ['_id', args.key] });
+
+    cleanDoc.updatedBy = context.user._id;
+    cleanDoc.updatedAt = new Date();
+
+    const { _id } = cleanDoc;
+    delete cleanDoc._id;
+
+    console.log(cleanDoc);
+
+    {{ pascalCase pluralName }}.update({ _id }, { $set: cleanDoc });
+    return {{ pascalCase pluralName }}.findOne(args._id);
+  },
+  remove{{ pascalCase singularName }}: (root, args, context) => {
+    if (!context.user) throw new Error('Sorry, you must be logged in to remove a {{ camelCase lowerCase }}.');
+    if (!{{ pascalCase pluralName }}.findOne({ _id: args._id, owner: context.user._id }))
+      throw new Error('Sorry, you need to be the owner of this {{ lowerCase singularName }} to remove it.');
+    {{ pascalCase pluralName }}.remove(args);
+    return args;
+  },
+  /* #### PLOP_MUTATIONS_START #### */
+  /* #### PLOP_MUTATIONS_END #### */
+};

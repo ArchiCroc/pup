@@ -1,0 +1,90 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import i18n from 'meteor/universe:i18n';
+import { useQuery } from '@apollo/react-hooks';
+import { Meteor } from 'meteor/meteor';
+import SEO from '../components/SEO';
+import BlankState from '../components/BlankState';
+import Comments from './components/Comments';
+import { {{ camelCase singularName }} as {{ camelCase singularName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
+import parseMarkdown from '../../modules/parseMarkdown';
+import CommentComposer from './components/CommentComposer';
+
+import { StyledView{{ pascalCase singularName }}, {{ pascalCase singularName }}Body } from './StyledView{{ pascalCase singularName }}';
+
+const View{{ pascalCase singularName }} = ({ match }) => {
+  const { loading, data, subscribeToMore } = useQuery({{ camelCase singularName }}Query, {
+    variables: {
+      _id: match.params._id,
+    },
+  });
+  console.log('subscribeToMore', subscribeToMore);
+
+  // state = {
+  //   sortBy: 'newestFirst',
+  // };
+
+  // componentWillMount() {
+  //   const { data } = this.props;
+  //   if (Meteor.isClient && Meteor.userId()) data.refetch();
+  // }
+
+  // handleChangeCommentSort = (event) => {
+  //   const { data } = this.props;
+  //   event.persist();
+
+  //   this.setState({ sortBy: event.target.value }, () => {
+  //     data.refetch({ sortBy: event.target.value });
+  //   });
+  // };
+
+  if (!loading && data.{{ camelCase singularName }}) {
+    return (
+      <React.Fragment>
+        <StyledView{{ pascalCase singularName }}>
+          <SEO
+            title={data.{{ camelCase singularName }} && data.{{ camelCase singularName }}.title}
+            description={data.{{ camelCase singularName }} && data.{{ camelCase singularName }}.body}
+            url={`{{ uiFolderName }}/${data.{{ camelCase singularName }} && data.{{ camelCase singularName }}._id}`}
+            contentType="article"
+            published={data.{{ camelCase singularName }} && data.{{ camelCase singularName }}.createdAt}
+            updated={data.{{ camelCase singularName }} && data.{{ camelCase singularName }}.updatedAt}
+            twitter={Meteor.settings.public.twitterUsername}
+          />
+          <React.Fragment>
+            <h1>{data.{{ camelCase singularName }} && data.{{ camelCase singularName }}.title}</h1>
+            <{{ pascalCase singularName }}Body
+              dangerouslySetInnerHTML={{
+                __html: parseMarkdown(data.{{ camelCase singularName }} && data.{{ camelCase singularName }}.body),
+              }}
+            />
+          </React.Fragment>
+        </StyledView{{ pascalCase singularName }}>
+        {/* <Comments
+            {{ camelCase singularName }}Id={data.{{ camelCase singularName }} && data.{{ camelCase singularName }}._id}
+            comments={data.{{ camelCase singularName }} && data.{{ camelCase singularName }}.comments}
+            sortBy={sortBy}
+            onChangeSortBy={this.handleChangeCommentSort}
+          /> */}
+      </React.Fragment>
+    );
+  }
+
+  if (!data.loading && !data.{{ camelCase singularName }}) {
+    return (
+      <BlankState
+        icon={{ style: 'solid', symbol: 'file-alt' }}
+        title={i18n.__('blank_state_title')}
+        subtitle={i18n.__('blank_state_subtitle')}
+      />
+    );
+  }
+
+  return null;
+};
+
+View{{ pascalCase singularName }}.propTypes = {
+  match: PropTypes.object.isRequired,
+};
+
+export default View{{ pascalCase singularName }};

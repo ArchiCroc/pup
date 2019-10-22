@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const DocumentEditorHeader = styled.div`
+export const {{ pascalCase singularName }}EditorHeader = styled.div`
   p {
     float: right;
     margin-top: 6px;
@@ -26,7 +26,7 @@ export const DocumentEditorHeader = styled.div`
   } */
 `;
 
-export const StyledDocumentEditor = styled.div`
+export const Styled{{ pascalCase singularName }}Editor = styled.div`
   /* border: 1px solid var(--gray-lighter); */
   height: calc(100vh - 207px);
   border-radius: 3px;
@@ -55,7 +55,7 @@ export const StyledDocumentEditor = styled.div`
   }
 `;
 
-export const DocumentEditorTitle = styled.div`
+export const {{ pascalCase singularName }}EditorTitle = styled.div`
   border-bottom: 1px solid var(--gray-lighter);
 
   .form-control {
@@ -65,7 +65,7 @@ export const DocumentEditorTitle = styled.div`
   }
 `;
 
-export const DocumentEditorBody = styled.div`
+export const {{ pascalCase singularName }}EditorBody = styled.div`
   height: calc(100% - 60px);
   overflow: hidden;
 
@@ -78,7 +78,7 @@ export const DocumentEditorBody = styled.div`
   }
 `;
 
-export const DocumentEditorFooter = styled.div`
+export const {{ pascalCase singularName }}EditorFooter = styled.div`
   padding: 15px 25px;
   border: 1px solid var(--gray-lighter);
   border-top: none;

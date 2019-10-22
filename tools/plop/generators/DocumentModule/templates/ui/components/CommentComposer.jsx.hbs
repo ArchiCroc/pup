@@ -10,31 +10,31 @@ import LongTextField from 'uniforms-antd/LongTextField';
 
 import StyledCommentComposer from './StyledCommentComposer';
 
-import { document as documentQuery } from '../queries/Documents.gql';
+import { {{ camelCase singularName }} as {{ camelCase singularName }}Query } from '../queries/{{ pascalCase pluralName }}.gql';
 import addCommentMutation from '../mutations/Comments.gql';
 
 import CommentSchema from '../../../api/Comments/schemas/comment';
 
-const CommentComposer = ({ documentId }) => {
-  const defaultDoc = { documentId, comment: undefined };
+const CommentComposer = ({ {{ camelCase singularName }}Id }) => {
+  const defaultDoc = { {{ camelCase singularName }}Id, comment: undefined };
   const [doc, setDoc] = useState();
   const [addComment] = useMutation(addCommentMutation, {
     ignoreResults: true,
     refetchQueries: [
       {
-        query: documentQuery,
-        variables: { _id: documentId },
+        query: {{ camelCase singularName }}Query,
+        variables: { _id: {{ camelCase singularName }}Id },
       },
     ],
     onCompleted: () => {
       // @todo this doesn't seem to be called, is it being dismounted?
       console.log('mutation is complete');
-      message.success(i18n.__('Documents.comment_success'));
+      message.success(i18n.__('{{ pascalCase pluralName }}.comment_success'));
       // reset the form
       setDoc(defaultDoc);
     },
     onError: (error) => {
-      message.error(i18n.__('Documents.comment_error', { error: error.message }));
+      message.error(i18n.__('{{ pascalCase pluralName }}.comment_error', { error: error.message }));
     },
   });
 
@@ -42,14 +42,14 @@ const CommentComposer = ({ documentId }) => {
     const cleanForm = CommentSchema.clean(form);
     addComment({
       variables: cleanForm,
-      // refetchQueries: [{ query: editDocumentQuery }],
+      // refetchQueries: [{ query: edit{{ pascalCase singularName }}Query }],
     });
     setDoc(defaultDoc);
   };
 
   return (
     <StyledCommentComposer>
-      <header>{i18n.__('Documents.add_comment_header')}</header>
+      <header>{i18n.__('{{ pascalCase pluralName }}.add_comment_header')}</header>
       <AutoForm
         name="comment"
         model={doc}
@@ -61,11 +61,11 @@ const CommentComposer = ({ documentId }) => {
         <LongTextField
           name="comment"
           label={false}
-          placeholder={i18n.__('Documents.comment_placeholder')}
+          placeholder={i18n.__('{{ pascalCase pluralName }}.comment_placeholder')}
         />
 
         <Button htmlType="submit" type="primary">
-          {i18n.__('Documents.comment_submit')}
+          {i18n.__('{{ pascalCase pluralName }}.comment_submit')}
         </Button>
       </AutoForm>
     </StyledCommentComposer>
@@ -73,7 +73,7 @@ const CommentComposer = ({ documentId }) => {
 };
 
 CommentComposer.propTypes = {
-  documentId: PropTypes.string.isRequired,
+  {{ camelCase singularName }}Id: PropTypes.string.isRequired,
 };
 
 export default CommentComposer;

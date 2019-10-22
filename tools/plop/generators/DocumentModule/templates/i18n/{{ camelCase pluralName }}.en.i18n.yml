@@ -1,0 +1,40 @@
+_namespace: {{ titleCase pluralName }}
+
+{{ snakeCase singularName }}: {{ titleCase singularName }}
+{{ snakeCase singularName }}_plural: {{ titleCase pluralName }}
+{{ snakeCase pluralName }}: {{ titleCase pluralName }}
+saving: Saving...
+last_edit_time: Last edit was ${timeago}
+view_{{ snakeCase singularName }}: View {{ titleCase singularName }}
+new_{{ snakeCase singularName }}: New {{ titleCase singularName }}
+visibility: Visibility
+public: Public
+private: Private
+confirm_remove_{{ snakeCase singularName }}: 'Are you sure? This is permanent!'
+{{ snakeCase singularName }}_removed_success: {{ titleCase singularName }} removed!
+
+delete_{{ snakeCase singularName }}: Delete {{ titleCase singularName }}
+
+title: Title
+title_placeholder: {{ titleCase singularName }} Title
+body: Body
+body_placeholder: This is my {{ snakeCase singularName }}. There are many like it, but this one is mine.
+body_help: Markdown Supported
+
+blank_state_title: No {{ snakeCase singularName }} here, friend!
+blank_state_subtitle: Make sure to double check the URL! If it's correct, this is probably a private {{ snakeCase singularName }}.
+
+add_comment_header: Add a Comment
+comment_placeholder: Have a comment about this?
+comment_error: Sorry, you need to be logged in to comment!
+comment_success: Your comment was posted!
+comment_required: What's your comment?
+comment_submit: Share
+
+#blank state
+no_{{ snakeCase pluralName }}_title: You're plum out of {{ lowerCase pluralName }}, friend!
+no_{{ snakeCase pluralName }}_subtitle: Add your first {{ snakeCase singularName }} by clicking the button below.
+add_first_{{ snakeCase singularName }}: Create Your First {{ titleCase singularName }}
+
+#### PLOP_PAGES_START ####
+#### PLOP_PAGES_END ####

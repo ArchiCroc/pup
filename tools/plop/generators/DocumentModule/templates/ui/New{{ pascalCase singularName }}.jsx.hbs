@@ -1,0 +1,15 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import {{ pascalCase singularName }}Editor from './components/{{ pascalCase singularName }}Editor';
+
+const New{{ pascalCase singularName }} = ({ history }) => (
+  <div className="New{{ pascalCase singularName }}">
+    <{{ pascalCase singularName }}Editor history={history} />
+  </div>
+);
+
+New{{ pascalCase singularName }}.propTypes = {
+  history: PropTypes.object.isRequired,
+};
+
+export default New{{ pascalCase singularName }};

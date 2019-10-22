@@ -1,0 +1,73 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import Button from 'antd/lib/button';
+import { Link } from 'react-router-dom';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import i18n from 'meteor/universe:i18n';
+import { timeago } from '../../modules/dates';
+import BlankState from '../components/BlankState';
+import Loading from '../components/Loading';
+import { Styled{{ pascalCase pluralName }}, {{ pascalCase pluralName }}List, {{ pascalCase singularName }} } from './Styled{{ pascalCase pluralName }}';
+import { {{ camelCase singularName }} as {{ camelCase singularName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
+import { add{{ pascalCase singularName }} as add{{ pascalCase singularName }}Mutation } from './mutations/{{ pascalCase pluralName }}.gql';
+
+const {{ pascalCase pluralName }} = ({ history }) => {
+  const { loading, data } = useQuery({{ camelCase singularName }}Query);
+  const [add{{ pascalCase singularName }}] = useMutation(add{{ pascalCase singularName }}Mutation, {
+    onCompleted: (result) => {
+      history.push(`/{{ uiFolderName }}/${result.add{{ pascalCase singularName }}._id}/edit`);
+    },
+    refetchQueries: [{ query: {{ camelCase singularName }}Query }],
+  });
+
+  return (
+    <Styled{{ pascalCase pluralName }}>
+      <header className="clearfix">
+        <Button type="primary" onClick={add{{ pascalCase singularName }}}>
+          {i18n.__('{{ pascalCase pluralName }}.new_{{ snakeCase singularName }}')}
+        </Button>
+      </header>
+      {loading ? (
+        <Loading />
+      ) : (
+        <React.Fragment>
+          {data.{{ camelCase singularName }} && data.{{ camelCase singularName }}.length ? (
+            <{{ pascalCase pluralName }}List>
+              {data.{{ camelCase singularName }}.map(({ _id, isPublic, title, updatedAt }) => (
+                <{{ pascalCase singularName }} key={_id}>
+                  <Link to={`/{{ uiFolderName }}/${_id}/edit`} />
+                  <header>
+                    {isPublic ? (
+                      <span className="label label-success">{i18n.__('{{ pascalCase pluralName }}.public')}</span>
+                    ) : (
+                      <span className="label label-default">{i18n.__('{{ pascalCase pluralName }}.private')}</span>
+                    )}
+                    <h2>{title}</h2>
+                    <p>{timeago(updatedAt)}</p>
+                  </header>
+                </{{ pascalCase singularName }}>
+              ))}
+            </{{ pascalCase pluralName }}List>
+          ) : (
+            <BlankState
+              icon={{ style: 'solid', symbol: 'file-alt' }}
+              title={i18n.__('{{ pascalCase pluralName }}.no_{{ snakeCase singularName }}_title')}
+              subtitle={i18n.__('{{ pascalCase pluralName }}.no_{{ snakeCase singularName }}_subtitle')}
+              action={{
+                style: 'success',
+                onClick: add{{ pascalCase singularName }},
+                label: i18n.__('{{ pascalCase pluralName }}.add_first_{{ snakeCase singularName }}'),
+              }}
+            />
+          )}
+        </React.Fragment>
+      )}
+    </Styled{{ pascalCase pluralName }}>
+  );
+};
+
+{{ pascalCase pluralName }}.propTypes = {
+  history: PropTypes.object.isRequired,
+};
+
+export default {{ pascalCase pluralName }};

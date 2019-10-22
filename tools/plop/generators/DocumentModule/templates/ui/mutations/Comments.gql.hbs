@@ -1,0 +1,15 @@
+mutation addComment(${{ camelCase singularName }}Id: String!, $comment: String!) {
+  addComment({{ camelCase singularName }}Id: ${{ camelCase singularName }}Id, comment: $comment) {
+    _id
+    {{ camelCase singularName }}Id
+    comment
+    createdAt
+    user {
+      _id
+      name {
+        first
+        last
+      }
+    }
+  }
+}

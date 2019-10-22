@@ -1,0 +1,41 @@
+mutation add{{ pascalCase singularName }}($title: String, $body: String) {
+  add{{ pascalCase singularName }}(title: $title, body: $body) {
+    _id
+    isPublic
+    title
+    body
+    createdAt
+    updatedAt
+    owner
+  }
+}
+
+mutation update{{ pascalCase singularName }}($_id: String!, $title: String, $body: String, $isPublic: Boolean) {
+  update{{ pascalCase singularName }}(_id: $_id, title: $title, body: $body, isPublic: $isPublic) {
+    _id
+    isPublic
+    title
+    body
+    createdAt
+    updatedAt
+    owner
+  }
+}
+
+mutation update{{ pascalCase singularName }}Key($_id: String!, $key: String!, $value: String!) {
+  update{{ pascalCase singularName }}Key(_id: $_id, key: $key, value: $value) {
+    _id
+    isPublic
+    title
+    body
+    createdAt
+    updatedAt
+    owner
+  }
+}
+
+mutation remove{{ pascalCase singularName }}($_id: String!) {
+  remove{{ pascalCase singularName }}(_id: $_id) {
+    _id
+  }
+}

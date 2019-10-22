@@ -1,0 +1,15 @@
+import {{ pascalCase pluralName }} from './{{ pascalCase pluralName }}';
+
+export default {
+  {{ camelCase pluralName }}: (parent, args, context) =>
+    context.user && context.user._id ? {{ pascalCase pluralName }}.find({ owner: context.user._id }).fetch() : [],
+  {{ camelCase singularName }}: (parent, args, context) =>
+    {{ pascalCase pluralName }}.findOne({
+      $or: [
+        { _id: args._id, owner: context.user && context.user._id ? context.user._id : null },
+        { _id: args._id, isPublic: true },
+      ],
+    }),
+  /* #### PLOP_QUERIES_START #### */
+  /* #### PLOP_QUERIES_END #### */
+};

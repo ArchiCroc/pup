@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const StyledDocuments = styled.div`
+export const Styled{{ pascalCase pluralName }} = styled.div`
   header {
     margin: 0px 0 20px;
   }
@@ -12,7 +12,7 @@ export const StyledDocuments = styled.div`
   }
 `;
 
-export const DocumentsList = styled.div`
+export const {{ pascalCase pluralName }}List = styled.div`
   @media screen and (min-width: 768px) {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -26,7 +26,7 @@ export const DocumentsList = styled.div`
   }
 `;
 
-export const Document = styled.div`
+export const {{ pascalCase singularName }} = styled.div`
   position: relative;
   border: 1px solid var(--gray-lighter);
   border-top: 5px solid var(--gray-lighter);

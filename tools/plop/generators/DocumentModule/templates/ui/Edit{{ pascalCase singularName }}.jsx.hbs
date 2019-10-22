@@ -1,0 +1,34 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { useQuery } from '@apollo/react-hooks';
+import {{ pascalCase singularName }}Editor from './components/{{ pascalCase singularName }}Editor';
+import Loading from '../components/Loading';
+import NotFound from '../pages/NotFound';
+import { edit{{ pascalCase singularName }} as edit{{ pascalCase singularName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
+
+const Edit{{ pascalCase singularName }} = ({ match, history }) => {
+  const { loading, data } = useQuery(edit{{ pascalCase singularName }}Query, {
+    variables: {
+      _id: match.params._id,
+    },
+  });
+
+  return (
+    <React.Fragment>
+      {loading ? (
+        <Loading />
+      ) : (
+        <React.Fragment>
+          {data.{{ camelCase singularName }} ? <{{ pascalCase singularName }}Editor doc={data.{{ camelCase singularName }}} history={history} /> : <NotFound />}
+        </React.Fragment>
+      )}
+    </React.Fragment>
+  );
+};
+
+Edit{{ pascalCase singularName }}.propTypes = {
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+};
+
+export default Edit{{ pascalCase singularName }};

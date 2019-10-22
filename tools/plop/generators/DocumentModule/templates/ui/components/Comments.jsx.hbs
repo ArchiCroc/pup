@@ -5,9 +5,9 @@ import { timeago } from '../../../modules/dates';
 
 import { StyledComments, CommentsList, CommentsListHeader, Comment } from './StyledComments';
 
-const Comments = ({ sortBy, onChangeSortBy, documentId, comments }) => (
+const Comments = ({ sortBy, onChangeSortBy, {{ camelCase singularName }}Id, comments }) => (
   <StyledComments>
-    <CommentComposer documentId={documentId} />
+    <CommentComposer {{ camelCase singularName }}Id={{{ camelCase singularName }}Id} />
     {comments.length > 0 && (
       <CommentsList>
         <CommentsListHeader>
@@ -40,7 +40,7 @@ const Comments = ({ sortBy, onChangeSortBy, documentId, comments }) => (
 );
 
 Comments.propTypes = {
-  documentId: PropTypes.string.isRequired,
+  {{ camelCase singularName }}Id: PropTypes.string.isRequired,
   comments: PropTypes.array.isRequired,
   sortBy: PropTypes.string.isRequired,
   onChangeSortBy: PropTypes.func.isRequired,
