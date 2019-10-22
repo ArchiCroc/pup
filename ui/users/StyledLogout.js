@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { lighten } from 'polished';
+import lighten from 'polished/lib/color/lighten';
 
 const StyledLogout = styled.div`
   padding: 20px;

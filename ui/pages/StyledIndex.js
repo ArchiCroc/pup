@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { lighten, darken } from 'polished';
+import darken from 'polished/lib/color/darken';
+import lighten from 'polished/lib/color/lighten';
 
 const textColor = '#4285F4';
 
