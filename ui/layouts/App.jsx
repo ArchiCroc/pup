@@ -110,12 +110,13 @@ class App extends React.Component {
               <PageErrorBoundary>
                 <Switch>
                   {/* #### PLOP_ROUTES_START #### */}
-                  {/* #### ERROR_REPORTS_ROUTES_START #### */}
+
+                  {/* #### PAGES_ROUTES_START #### */}
                   <PublicRoute exact name="index" path="/" component={Index} />
                   <PublicRoute name="terms" path="/terms" component={Terms} />
                   <PublicRoute name="privacy" path="/privacy" component={Privacy} />
                   <PublicRoute name="examplePage" path="/example-page" component={ExamplePage} />
-                  {/* #### ERROR_REPORTS_ROUTES_END #### */}
+                  {/* #### PAGES_ROUTES_END #### */}
 
                   {/* #### ERROR_REPORTS_ROUTES_START #### */}
                   <AuthenticatedRoute
@@ -151,6 +152,7 @@ class App extends React.Component {
                     {...state}
                   />
                   {/* #### ERROR_REPORTS_ROUTES_END #### */}
+
                   {/* #### USERS_ROUTES_START #### */}
                   <AuthenticatedRoute
                     exact
@@ -207,6 +209,7 @@ class App extends React.Component {
                     {...state}
                   />
                   {/* #### USERS_ROUTES_START #### */}
+
                   {/* #### PLOP_ROUTES_END #### */}
                   <Route component={NotFound} />
                 </Switch>

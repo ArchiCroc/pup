@@ -1,6 +1,8 @@
-const listDirectories = require('../../lib/listDirectories');
 const slugify = require('slugify');
 const changeCase = require('change-case');
+const listDirectories = require('../../lib/listDirectories');
+const addMenuItem = require('../AddMenuItem');
+const addRoute = require('../AddRoute');
 
 const requireField = (fieldName) => {
   return (value) => {
@@ -20,7 +22,7 @@ module.exports = {
     const values = await inquirer.prompt([
       {
         type: 'list',
-        name: 'moduleName',
+        name: 'uiFolderName',
         message: 'Select an ui module',
         choices: () => {
           return listDirectories('./ui').filter((item) => !excludeDirs.includes(item));
@@ -37,80 +39,47 @@ module.exports = {
       {
         type: 'input',
         name: 'urlSlug',
-        message: `What is url for your page? ${values.moduleName}/`,
+        message: `What is url for your page? ${values.uiFolderName}/`,
         validate: requireField('URL Slug'),
         default: slugify(changeCase.paramCase(values.name)),
       },
-      {
-        type: 'list',
-        name: 'menu',
-        message: 'Select a menu to add it to',
-        choices: ['none', 'user', 'admin'],
-      },
     ]);
-    const values3 = await inquirer.prompt([
-      {
-        type: 'list',
-        name: 'route',
-        message: 'Route Type',
-        choices: ['everyone', 'user', 'admin'],
-        default: values2.menu === 'none' ? 'user' : values2.menu,
-      },
-    ]);
-    Object.assign(values, values2, values3);
+    Object.assign(values, values2);
+    const values3 = await addRoute.prompts(inquirer, values);
+    Object.assign(values, values3);
+    const values4 = await addMenuItem.prompts(inquirer, values);
+    Object.assign(values, values4);
     return values;
   },
   actions: (data) => {
-    return [
+    let actions = [
       {
         type: 'add',
-        path: 'ui/{{moduleName}}/{{pascalCase name}}.jsx',
+        path: 'ui/{{uiFolderName}}/{{pascalCase name}}.jsx',
         templateFile: 'tools/plop/generators/Page/templates/Page.jsx.hbs',
       },
       {
         type: 'add',
-        path: 'ui/{{moduleName}}/{{pascalCase name}}.test.js',
+        path: 'ui/{{uiFolderName}}/{{pascalCase name}}.test.js',
         templateFile: 'tools/plop/generators/Page/templates/Page.test.js.hbs',
       },
       {
         type: 'add',
-        path: 'ui/{{moduleName}}/Styled{{pascalCase name}}.js',
+        path: 'ui/{{uiFolderName}}/Styled{{pascalCase name}}.js',
         templateFile: 'tools/plop/generators/Page/templates/StyledPage.js.hbs',
       },
       {
         type: 'append',
-        path: 'ui/layouts/App.jsx',
-        pattern: `/* #### ${changeCase.constantCase(data.moduleName)}_IMPORTS_START #### */`,
-        templateFile: 'tools/plop/generators/Page/templates/app-imports.js.hbs',
-      },
-      {
-        type: 'append',
-        path: 'ui/layouts/App.jsx',
-        pattern: `{/* #### ${changeCase.constantCase(data.moduleName)}_ROUTES_START #### */}`,
-        templateFile: 'tools/plop/generators/Page/templates/app-routes.js.hbs',
-      },
-      {
-        type: 'append',
-        path: 'ui/components/AuthenticatedNavigation.jsx',
-        pattern: `{/* #### ${changeCase.constantCase(
-          data.moduleName,
-        )}_USER_MENU_ITEMS_START #### */}`,
-        templateFile: 'tools/plop/generators/Page/templates/user-menu-items.js.hbs',
-      },
-      {
-        type: 'append',
-        path: 'ui/components/AuthenticatedNavigation.jsx',
-        pattern: `{/* #### ${changeCase.constantCase(
-          data.moduleName,
-        )}_ADMIN_MENU_ITEMS_START #### */}`,
-        templateFile: 'tools/plop/generators/Page/templates/admin-menu-items.js.hbs',
-      },
-      {
-        type: 'append',
-        path: 'i18n/en/{{camelCase moduleName}}.en.i18n.yml',
+        path: 'i18n/en/{{camelCase uiFolderName}}.en.i18n.yml',
         pattern: '#### PLOP_PAGES_START ####',
         template: '{{ snakeCase name }}: {{ titleCase name }}',
       },
     ];
+    actions = actions.concat(
+      addRoute.actions({ ...data, componentPath: `${changeCase.pascalCase(data.name)}.jsx` }),
+    );
+    actions = actions.concat(addMenuItem.actions(data));
+
+    return actions;
   },
 };

@@ -1,4 +1,4 @@
-{{#compare route '===' 'user'}}
+{{#compare routeType '===' 'user'}}
                   <AuthenticatedRoute
                     exact
                     path="/{{ uiFolderName }}{{#if urlSlug}}/{{ urlSlug }}{{/if}}"
@@ -8,7 +8,7 @@
                     {...state}
                   />
 {{/compare}}
-{{#compare route '===' 'admin'}}
+{{#compare routeType '===' 'admin'}}
                   <AuthorizedRoute
                     exact
                     allowedRoles={['admin']}
@@ -19,7 +19,7 @@
                     {...state}
                   />
 {{/compare}}
-{{#compare route '===' 'everyone'}}
+{{#compare routeType '===' 'everyone'}}
                   <PublicRoute
                     path="/{{ uiFolderName }}{{#if urlSlug}}/{{ urlSlug }}{{/if}}" 
                     component={ {{~ pascalCase componentName ~}} }

@@ -19,7 +19,6 @@ const requireField = (fieldName) => {
 module.exports = {
   description: 'Add a new Route',
   prompts: async (inquirer, values) => {
-    let values2 = {};
     if (!values) {
       values = await inquirer.prompt({
         type: 'list',
@@ -43,7 +42,6 @@ module.exports = {
       const rel = path.relative(`./ui/${values.uiFolderName}`, values2.componentPath);
       const cleanPath = normalizePath(rel);
       values2.componentPath = cleanPath;
-      console.log(cleanPath.split('.').splice(-1, 1));
       let componentParts = cleanPath.split('.');
       componentParts.pop();
       componentParts = componentParts.join('').split('/');
@@ -60,21 +58,35 @@ module.exports = {
           default: defaultSlug,
         },
       ]);
+      Object.assign(values, values2, values3);
     }
 
     const values4 = await inquirer.prompt([
       {
         type: 'list',
-        name: 'route',
+        name: 'routeType',
         message: 'Route Type',
         choices: ['everyone', 'user', 'admin'],
-        default: values2.menu === 'none' ? 'user' : values2.menu,
+        default: 'user',
       },
     ]);
-    Object.assign(values, values2, values3, values4);
+    Object.assign(values, values4);
     return values;
   },
   actions: (data) => {
+    if (!data.componentName) {
+      let componentParts = normalizePath(data.componentPath).split('.');
+      componentParts.pop();
+      componentParts = componentParts.join('').split('/');
+
+      data.componentName = componentParts.map((item) => changeCase.pascalCase(item)).join('');
+    }
+
+    data.urlSlug = data.urlSlug
+      .split('/')
+      .map((item) => slugify(data.urlSlug, { lower: true }))
+      .join('/');
+
     return [
       {
         type: 'append',

@@ -15,61 +15,73 @@ const requireField = (fieldName) => {
 };
 
 module.exports = {
-  description: 'Create a new Document module',
+  description: 'Add a new Menu Item',
   prompts: async (inquirer, values) => {
-    let values2 = {};
     if (!values) {
-      values = await inquirer.prompt({
-        type: 'list',
-        name: 'uiFolderName',
-        message: 'Select an ui module',
-        choices: () => {
-          return listDirectories('./ui');
-        },
-      });
-      values2 = await inquirer.prompt([
+      values = await inquirer.prompt([
         {
-          type: 'file',
-          name: 'componentPath',
-          message: 'choose a page component',
-          extensions: ['jsx'],
-          path: `./ui/${values.uiFolderName}`,
+          type: 'list',
+          name: 'uiFolderName',
+          message: 'Select an ui module',
+          choices: () => {
+            return listDirectories('./ui', ['components', 'layouts']);
+          },
         },
       ]);
+
+      const values2 = await inquirer.prompt([
+        {
+          type: 'input',
+          name: 'urlSlug',
+          message: `What is url for your page? ${values.uiFolderName}/`,
+          validate: requireField('URL Slug'),
+        },
+      ]);
+
+      const values3 = await inquirer.prompt([
+        {
+          type: 'input',
+          name: 'name',
+          message: `What should the menu label say?`,
+          validate: requireField('URL Slug'),
+          default: changeCase.titleCase(values2.urlSlug),
+        },
+      ]);
+      // values.routeType == 'user';
+      Object.assign(values, values3);
     }
 
-    const values3 = await inquirer.prompt([
+    const values4 = await inquirer.prompt([
       {
         type: 'list',
-        name: 'route',
-        message: 'Route Type',
-        choices: ['everyone', 'user', 'admin'],
-        default: values2.menu === 'none' ? 'user' : values2.menu,
+        name: 'menuItemType',
+        message: 'Select a menu to add it to',
+        choices: ['none', 'user', 'admin'],
+        default: values.routeType === 'everyone' ? 'user' : values.routeType,
       },
     ]);
-    Object.assign(values, values2, values3);
+    Object.assign(values, values4);
     return values;
   },
-  actions: (promptData) => {
-    console.log(promptData);
-    //const regEx = //
-
+  actions: (data) => {
     return [
       {
         type: 'append',
         path: 'ui/components/AuthenticatedNavigation.jsx',
         pattern: `{/* #### ${changeCase.constantCase(
-          data.moduleName,
+          data.uiFolderName,
         )}_USER_MENU_ITEMS_START #### */}`,
-        templateFile: 'tools/plop/generators/Page/templates/user-menu-items.js.hbs',
+        templateFile: 'tools/plop/generators/AddMenuItem/templates/user-menu-items.js.hbs',
+        data,
       },
       {
         type: 'append',
         path: 'ui/components/AuthenticatedNavigation.jsx',
         pattern: `{/* #### ${changeCase.constantCase(
-          data.moduleName,
+          data.uiFolderName,
         )}_ADMIN_MENU_ITEMS_START #### */}`,
-        templateFile: 'tools/plop/generators/Page/templates/admin-menu-items.js.hbs',
+        templateFile: 'tools/plop/generators/AddMenuItem/templates/admin-menu-items.js.hbs',
+        data,
       },
     ];
   },

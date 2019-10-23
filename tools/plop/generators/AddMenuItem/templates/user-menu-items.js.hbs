@@ -1,6 +1,6 @@
-      {{#compare menu '===' 'user'}}
-      <Menu.Item key="/{{ moduleName }}/{{ urlSlug }}">
-        {i18n.__('{{ pascalCase moduleName }}.{{ snakeCase name ~}}')}
-        <Link to="/{{ moduleName }}/{{ urlSlug }}" />
+{{#compare menuItemType '===' 'user'}}
+      <Menu.Item key="/{{ uiFolderName }}/{{ urlSlug }}">
+        {i18n.__('{{ pascalCase uiFolderName }}.{{ snakeCase name ~}}')}
+        <Link to="/{{ uiFolderName }}/{{ urlSlug }}" />
       </Menu.Item>
-      {{/compare}}
+{{/compare}}
