@@ -64,25 +64,32 @@ module.exports = {
     return values;
   },
   actions: (data) => {
-    return [
-      {
-        type: 'append',
-        path: 'ui/components/AuthenticatedNavigation.jsx',
-        pattern: `{/* #### ${changeCase.constantCase(
-          data.uiFolderName,
-        )}_USER_MENU_ITEMS_START #### */}`,
-        templateFile: 'tools/plop/generators/AddMenuItem/templates/user-menu-items.js.hbs',
-        data,
-      },
-      {
-        type: 'append',
-        path: 'ui/components/AuthenticatedNavigation.jsx',
-        pattern: `{/* #### ${changeCase.constantCase(
-          data.uiFolderName,
-        )}_ADMIN_MENU_ITEMS_START #### */}`,
-        templateFile: 'tools/plop/generators/AddMenuItem/templates/admin-menu-items.js.hbs',
-        data,
-      },
-    ];
+    if (data.menuItemType === 'user') {
+      return [
+        {
+          type: 'append',
+          path: 'ui/components/AuthenticatedNavigation.jsx',
+          pattern: `{/* #### ${changeCase.constantCase(
+            data.uiFolderName,
+          )}_USER_MENU_ITEMS_START #### */}`,
+          templateFile: 'tools/plop/generators/AddMenuItem/templates/user-menu-items.js.hbs',
+          data,
+        },
+      ];
+    }
+    if (data.menuItemType === 'admin') {
+      return [
+        {
+          type: 'append',
+          path: 'ui/components/AuthenticatedNavigation.jsx',
+          pattern: `{/* #### ${changeCase.constantCase(
+            data.uiFolderName,
+          )}_ADMIN_MENU_ITEMS_START #### */}`,
+          templateFile: 'tools/plop/generators/AddMenuItem/templates/admin-menu-items.js.hbs',
+          data,
+        },
+      ];
+    }
+    return [];
   },
 };

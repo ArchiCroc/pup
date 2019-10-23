@@ -1,6 +1,4 @@
-{{#compare menuItemType '===' 'admin'}}
-      <Menu.Item key="/{{ dashCase uiFolderName }}/{{ urlSlug }}">
-        {i18n.__('{{ pascalCase uiFolderName }}.{{ snakeCase name }}')}
-        <Link to="/{{ uiFolderName }}/{{ urlSlug }}" />
-      </Menu.Item>
-{{/compare}}
+          <Menu.Item key="/{{ dashCase uiFolderName }}/{{ urlSlug }}">
+            {i18n.__('{{ pascalCase uiFolderName }}.{{ snakeCase name }}')}
+            <Link to="/{{ uiFolderName }}/{{ urlSlug }}" />
+          </Menu.Item>

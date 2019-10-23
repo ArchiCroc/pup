@@ -1,9 +1,9 @@
       
-      {/* #### {{ constantCase pluralName }}_ADMIN_MENU_ITEMS_START #### */}
-      {{#compare schema.menu.index '===' 'admin'}}
-      <Menu.Item key="/{{ dashCase uiFolderName }}">
-        {i18n.__('{{ pascalCase pluralName }}.{{ snakeCase singularName ~}}_plural')}
-        <Link to="/{{ uiFolderName }}" />
-      </Menu.Item>
-      {{/compare}}
-      {/* #### {{ constantCase pluralName }}_ADMIN_MENU_ITEMS_END #### */}
+        {/* #### {{ constantCase pluralName }}_ADMIN_MENU_ITEMS_START #### */}
+        {{#compare schema.menu.index '===' 'admin'}}
+        <Menu.Item key="/{{ dashCase uiFolderName }}">
+          {i18n.__('{{ pascalCase pluralName }}.{{ snakeCase singularName ~}}_plural')}
+          <Link to="/{{ uiFolderName }}" />
+        </Menu.Item>
+        {{/compare}}
+        {/* #### {{ constantCase pluralName }}_ADMIN_MENU_ITEMS_END #### */}
