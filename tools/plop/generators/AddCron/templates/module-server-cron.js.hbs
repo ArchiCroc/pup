@@ -1,0 +1,13 @@
+import { SyncedCron } from 'meteor/littledata:synced-cron';
+
+SyncedCron.add({
+  name: 'Crunch some data for {{titleCase apiFolderName}}',
+    schedule(parser) {
+    // parser is a later.parse object
+    return parser.text('every 2 hours');
+  },
+  job() {
+    // var numbersCrunched = CrushSomeNumbers();
+    // return numbersCrunched;
+  },
+});
