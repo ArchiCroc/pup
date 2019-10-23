@@ -1,32 +1,3 @@
                   {/* #### {{ constantCase pluralName }}_ROUTES_START #### */}
-{{#compare route '===' 'user'}}
-                  <AuthenticatedRoute
-                    exact
-                    path="/{{ uiFolderName }}"
-                    component={ {{~ pascalCase pluralName ~}} }
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
-{{/compare}}
-{{#compare route '===' 'admin'}}
-                  <AuthorizedRoute
-                    exact
-                    allowedRoles={['admin']}
-                    path="/{{ uiFolderName }}"
-                    component={ {{~ pascalCase pluralName ~}} }
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
-{{/compare}}
-{{#compare route '===' 'everyone'}}
-                  <PublicRoute 
-                    path="/{{ uiFolderName }}" 
-                    component={ {{~ pascalCase pluralName ~}} }
-                    {...props} 
-                    {...state} 
-                  />
-{{/compare}}
                   {/* #### {{ constantCase pluralName }}_ROUTES_END #### */}
 

@@ -1,8 +1,10 @@
 /* eslint-disable  */
 const fs = require('fs');
-const processSchema = require('../../lib/processSchema');
 const slugify = require('slugify');
 const changeCase = require('change-case');
+const processSchema = require('../../lib/processSchema');
+const addMenuItem = require('../AddMenuItem');
+const addRoute = require('../AddRoute');
 
 const requireField = (fieldName) => {
   return (value) => {
@@ -23,30 +25,14 @@ module.exports = {
       message: 'What is your module name?',
       validate: requireField('name'),
     });
-    const values2 = await inquirer.prompt([
-      {
-        type: 'list',
-        name: 'menu',
-        message: 'Select a menu to add it to',
-        choices: ['none', 'user', 'admin'],
-      },
-    ]);
-    const values3 = await inquirer.prompt([
-      {
-        type: 'list',
-        name: 'route',
-        message: 'Route Type',
-        choices: ['everyone', 'user', 'admin'],
-        default: values2.menu === 'none' ? 'user' : values2.menu,
-      },
-    ]);
-    Object.assign(values, values2, values3);
+    Object.assign(values, await addRoute.prompts(inquirer, values));
+    Object.assign(values, await addMenuItem.prompts(inquirer, values));
     return values;
   },
   actions: (promptData) => {
-    console.log(promptData);
     const data = processSchema(promptData);
-    return [
+
+    const actions = [
       {
         type: 'addMany',
         destination: 'api/{{ apiFolderName }}/',
@@ -166,5 +152,13 @@ import '../../api/{{ apiFolderName }}/server/rest-api';`,
         data,
       },
     ];
+    actions.push(
+      ...addRoute.actions({
+        ...data,
+        componentPath: `${changeCase.pascalCase(data.pluralName)}.jsx`,
+      }),
+    );
+    actions.push(...addMenuItem.actions(data));
+    return actions;
   },
 };

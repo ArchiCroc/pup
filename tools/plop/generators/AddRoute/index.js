@@ -82,10 +82,12 @@ module.exports = {
       data.componentName = componentParts.map((item) => changeCase.pascalCase(item)).join('');
     }
 
-    data.urlSlug = data.urlSlug
-      .split('/')
-      .map((item) => slugify(data.urlSlug, { lower: true }))
-      .join('/');
+    if (data.urlSlug) {
+      data.urlSlug = data.urlSlug
+        .split('/')
+        .map((item) => slugify(data.urlSlug, { lower: true }))
+        .join('/');
+    }
 
     return [
       {
