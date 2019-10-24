@@ -74,6 +74,11 @@ import './cron';
           path: 'startup/server/cron.js',
           templateFile: 'tools/plop/generators/AddCron/templates/startup-server-cron.js.hbs',
         },
+        {
+          type: 'comment',
+          comment: `Be sure to add the sync cron module to meteor by running:
+  meteor add littledata:synced-cron`,
+        },
       ];
     }
     if (data.plopType === 'add') {
