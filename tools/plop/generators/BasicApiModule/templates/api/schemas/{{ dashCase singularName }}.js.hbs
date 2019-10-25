@@ -4,7 +4,7 @@ type: {{cleanSimpleSchemeType this.type}},
 label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_label'),
 {{/compare}}
 {{#compare this.defaultValue '!==' undefined}}
-defaultValue: {{this.defaultValue}},
+defaultValue: {{#compare this.defaultValue 'typeof' 'string'}}'{{this.defaultValue}}'{{else}}{{this.defaultValue}}{{/compare}},
 {{/compare}}
 {{~#if this.validate.optional}}
 optional: true,
