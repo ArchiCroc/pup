@@ -13,7 +13,7 @@ const getEmailOptions = (user) => {
       to: user.emails[0].address,
       from: Meteor.settings.private.supportEmail,
       subject: `[${Meteor.settings.public.productName}] Welcome, ${firstName}!`,
-      template: 'welcome',
+      template: 'users/welcome',
       templateVars: {
         title: `Welcome, ${firstName}!`,
         subtitle: `Here's how to get started with ${productName}.`,

@@ -15,7 +15,7 @@ emailTemplates.verifyEmail = {
     return `[${productName}] Verify Your Email Address`;
   },
   html(user, url) {
-    return templateToHtml(getPrivateFile('email-templates/verify-email.html'), {
+    return templateToHtml(getPrivateFile('email-templates/users/verify-email.html'), {
       title: "Let's Verify Your Email",
       subtitle: `Verify your email to start using ${productName}.`,
       productName,
@@ -26,7 +26,7 @@ emailTemplates.verifyEmail = {
   text(user, url) {
     const urlWithoutHash = url.replace('#/', '');
     if (Meteor.isDevelopment) console.info(`[Pup] Verify Email Link: ${urlWithoutHash}`); // eslint-disable-line
-    return templateToText(getPrivateFile('email-templates/verify-email.txt'), {
+    return templateToText(getPrivateFile('email-templates/users/verify-email.txt'), {
       productName,
       firstName: user.profile.firstName,
       verifyUrl: urlWithoutHash,
@@ -39,7 +39,7 @@ emailTemplates.resetPassword = {
     return `[${productName}] Reset Your Password`;
   },
   html(user, url) {
-    return templateToHtml(getPrivateFile('email-templates/reset-password.html'), {
+    return templateToHtml(getPrivateFile('email-templates/users/reset-password.html'), {
       title: "Let's Reset Your Password",
       subtitle: 'A password reset was requested for this email address.',
       firstName: user.profile.firstName,
@@ -51,7 +51,7 @@ emailTemplates.resetPassword = {
   text(user, url) {
     const urlWithoutHash = url.replace('#/', '');
     if (Meteor.isDevelopment) console.info(`Reset Password Link: ${urlWithoutHash}`); // eslint-disable-line
-    return templateToText(getPrivateFile('email-templates/reset-password.txt'), {
+    return templateToText(getPrivateFile('email-templates/users/reset-password.txt'), {
       firstName: user.profile.firstName,
       productName,
       emailAddress: user.emails[0].address,
