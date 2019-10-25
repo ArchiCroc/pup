@@ -32,9 +32,9 @@ module.exports = {
           {
             type: 'list',
             name: 'apiFolderName',
-            message: 'Select an ui module',
+            message: 'Select an api module',
             choices: () => {
-              return listDirectories('./api', ['components', 'layouts']);
+              return listDirectories('./api');
             },
           },
         ]),
