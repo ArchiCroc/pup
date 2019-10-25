@@ -1,0 +1,36 @@
+import { Meteor } from 'meteor/meteor';
+// import { Mongo } from 'meteor/mongo';
+// import { graphql } from 'graphql';
+// import gql from 'graphql-tag';
+// import { getGraphqlSchema } from '../../../startup/server/graphql-api';
+import {{pascalCase apiFolderName }} from '../{{pascalCase apiFolderName }}';
+import sendEmail from '../../../modules/server/sendEmail';
+
+const send{{pascalCase name }}Email = ({ userId, {{camelCase apiFolderName }}Id }, context) => {
+  const {{ singular (camelCase apiFolderName) }} = {{pascalCase apiFolderName }}.findOne({ {{camelCase apiFolderName }}Id });
+  if (!{{ singular (camelCase apiFolderName) }}) {
+    throw new Error('[send{{pascalCase name }}Email] Could not find {{titleCase name }}');
+  }
+
+  const user = Meteor.users.findOne({ _id: userId });
+  if (!user) {
+    throw new Error('[send{{pascalCase name }}Email] Could not find user');
+  }
+
+  const email = {
+    to: user.emails[0].address,
+    subject: `{{titleCase name}}`,
+    template: '{{dashCase apiFolderName }}/{{dashCase name }}',
+    templateVars: {
+      {{ singular (camelCase apiFolderName) }},
+      {{ singular (camelCase apiFolderName) }}Url: Meteor.absoluteUrl(`/{{dashCase apiFolderName }}/${ {{ singular (camelCase apiFolderName) }}._id}`),
+      firstName: user.profile.firstName,
+    },
+  };
+
+  sendEmail(email).catch((error) => {
+    throw new Error(error);
+  });
+};
+
+export default send{{pascalCase name }}Email;
