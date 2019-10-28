@@ -1,6 +1,6 @@
 const changeCase = require('change-case');
 // const listDirectories = require('../../libs/listDirectories');
-const relativePath = require('../../../libs/relativePath');
+const relativePath = require('../../libs/relativePath');
 
 const regEx = /^(\w+)\(?((?:\s*(?:\w+:\s*\[?\w+\]?),?)*)\)?:\s*(\[?\w+\]?)$/;
 
