@@ -30,7 +30,10 @@ autoValue() {
 },
 {{else}}
   {{#compare (cleanSimpleSchemeType this.type) '===' 'ObjectID'}}
-autoValue: () => parseObjectID(this.value),
+autoValue() {
+  return parseObjectID(this.value);
+},
+blackbox: true,
   {{/compare}}
 {{/if}}
 {{#if this.choices}}

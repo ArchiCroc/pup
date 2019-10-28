@@ -23,6 +23,9 @@ export const ObjectID = new GraphQLScalarType({
     if (typeof _id === 'string') {
       return new Mongo.ObjectID(_id);
     }
+    if (typeof _id === 'object' && _id._str) {
+      return new Mongo.ObjectID(_id._str);
+    }
     throw new Error(`${typeof _id} not convertible to ObjectID`);
   },
   parseLiteral(ast) {

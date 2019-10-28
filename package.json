@@ -184,6 +184,7 @@
             "___",
             "_id",
             "_ids",
+            "_str",
             "_ensureIndex",
             "_verifyEmailToken",
             "_resetPasswordToken",
