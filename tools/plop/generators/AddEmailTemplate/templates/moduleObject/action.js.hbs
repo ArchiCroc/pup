@@ -2,9 +2,9 @@ import { Meteor } from 'meteor/meteor';
 // import { Mongo } from 'meteor/mongo';
 // import { graphql } from 'graphql';
 // import gql from 'graphql-tag';
-// import { getGraphqlSchema } from '../../../startup/server/graphql-api';
+// import { getGraphqlSchema } from '{{pathOffset apiFolderName}}../../../startup/server/graphql-api';
 import {{pascalCase apiFolderName }} from '../{{pascalCase apiFolderName }}';
-import sendEmail from '../../../modules/server/sendEmail';
+import sendEmail from '{{pathOffset apiFolderName}}../../../modules/server/sendEmail';
 
 const send{{pascalCase name }}Email = ({ userId, {{camelCase apiFolderName }}Id }, context) => {
   const {{ singular (camelCase apiFolderName) }} = {{pascalCase apiFolderName }}.findOne({ {{camelCase apiFolderName }}Id });
@@ -20,7 +20,7 @@ const send{{pascalCase name }}Email = ({ userId, {{camelCase apiFolderName }}Id 
   const email = {
     to: user.emails[0].address,
     subject: `{{titleCase name}}`,
-    template: '{{dashCase apiFolderName }}/{{dashCase name }}',
+    template: '{{uiDirCase apiFolderName }}/{{dashCase name }}',
     templateVars: {
       {{ singular (camelCase apiFolderName) }},
       {{ singular (camelCase apiFolderName) }}Url: Meteor.absoluteUrl(`/{{dashCase apiFolderName }}/${ {{ singular (camelCase apiFolderName) }}._id}`),

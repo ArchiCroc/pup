@@ -15,12 +15,17 @@ const sendEmail = (options, { resolve, reject }) => {
   }
 };
 
-export default ({ text, html, template, templateVars, ...rest }) => {
+export default ({ text, html, template, templateVars = {}, ...rest }) => {
   if (text || html || template) {
     return new Promise((resolve, reject) => {
       const textTemplate = template && getPrivateFile(`email-templates/${template}.txt`);
       const htmlTemplate = template && getPrivateFile(`email-templates/${template}.html`);
-      const context = templateVars || {};
+
+      const context = {
+        productName: Meteor.settings.public.productName,
+        productUrl: Meteor.absoluteUrl(), // e.g., returns http://localhost:3000/
+        ...templateVars,
+      };
 
       sendEmail(
         {

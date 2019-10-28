@@ -1,0 +1,17 @@
+  // {{mutationType}}
+  {{mutationName}}: (parent, args, { user }) => {
+{{#compare role '!==' 'everyone' }}
+    if (!user || !user._id || !checkUserRole(user._id, ['{{role}}'])) {
+      throw new Error('Sorry, you must have permission to {{mutationName}} {{titleCase apiFolderName}}.');
+    }
+    {{else}}
+    // if (!user || !user._id || !checkUserRole(user._id, ['user'])) {
+    //   throw new Error('Sorry, you must have permission to {{mutationName}} {{titleCase apiFolderName}}.');
+    // }
+    {{/compare}}
+
+    console.log('Do something!');
+
+    return true;
+ 
+  },

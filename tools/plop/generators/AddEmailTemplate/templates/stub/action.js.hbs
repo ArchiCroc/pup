@@ -15,7 +15,7 @@ const send{{pascalCase name }}Email = ({ userId }, context) => {
   const email = {
     to: user.emails[0].address,
     subject: `{{titleCase name}}`,
-    template: '{{dashCase apiFolderName }}/{{dashCase name }}',
+    template: '{{uiDirCase apiFolderName }}/{{dashCase name }}',
     templateVars: {
       firstName: user.profile.firstName,
     },

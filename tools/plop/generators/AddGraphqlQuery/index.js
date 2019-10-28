@@ -15,6 +15,13 @@ module.exports = {
       path: './api',
     },
     {
+      type: 'list',
+      name: 'role',
+      message: 'Access Permissions',
+      choices: ['everyone', 'user', 'admin'],
+      default: 'user',
+    },
+    {
       type: 'input',
       name: 'queryType',
       message: 'Query Type. Example: queryName(var1: Type1, var2: Type2): ReturnType\n',

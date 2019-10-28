@@ -1,4 +1,5 @@
 const changeCase = require('change-case');
+const listDirectories = require('../../libs/listDirectories');
 const relativePath = require('../../libs/relativePath');
 
 const regEx = /^(\w+)\(?((?:\s*(?:\w+:\s*\[?\w+\]?),?)*)\)?:\s*(\[?\w+\]?)$/;
@@ -14,10 +15,25 @@ module.exports = {
       path: './api',
     },
     {
+      type: 'list',
+      name: 'role',
+      message: 'Access Permissions',
+      choices: ['everyone', 'user', 'admin'],
+      default: 'user',
+    },
+    {
       type: 'input',
       name: 'mutationType',
       message: 'Mutation Type. Example: mutationName(var1: Type1, var2: Type2): ReturnType\n',
       validate: (value) => regEx.test(value),
+    },
+    {
+      type: 'list',
+      name: 'template',
+      message: 'Select an mutation template',
+      choices: () => {
+        return listDirectories('tools/plop/generators/AddGraphqlMutation/templates');
+      },
     },
   ],
   actions: (data) => {
@@ -39,21 +55,22 @@ module.exports = {
         type: 'append',
         path: 'api/{{apiDirCase apiFolderName}}/mutations.js',
         pattern: '/* #### PLOP_MUTATIONS_START #### */',
-        templateFile: 'tools/plop/generators/AddGraphqlMutation/templates/mutation.js.hbs',
+        templateFile:
+          'tools/plop/generators/AddGraphqlMutation/templates/{{template}}/mutation.js.hbs',
         data,
       },
       {
         type: 'append',
         path: 'startup/server/graphql-api.js',
         pattern: `#### ${changeCase.constantCase(data.apiFolderName)}_MUTATION_TYPES_START ####`,
-        template: `      {{mutationType}}`,
+        template: `     {{mutationName}}{{#if mutationParams}}({{#each mutationParamSegments}}\${{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}}: {{returnType}}`,
         data,
       },
       {
         type: 'comment',
         comment: `Example Mutation:
         
-mutation {{mutationName}}({{#each mutationParamSegments}}\${{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}) {
+mutation {{mutationName}}{{#if mutationParamSegments}}({{#each mutationParamSegments}}\${{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}} {
   {{mutationName}}({{#each mutationParamSegments}}{{param}}: \${{param}}{{#unless @last}}, {{/unless}}{{/each}}){
     ...{{ pascalCase (singular apiFolderName) }}Attributes
   }

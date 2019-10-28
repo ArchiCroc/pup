@@ -2,12 +2,12 @@ import { Meteor } from 'meteor/meteor';
 // import { Mongo } from 'meteor/mongo';
 // import { graphql } from 'graphql';
 // import gql from 'graphql-tag';
-// import { getGraphqlSchema } from '../../../startup/server/graphql-api';
+// import { getGraphqlSchema } from '{{pathOffset apiFolderName}}../../../startup/server/graphql-api';
 // import {{pascalCase apiFolderName }} from '../{{pascalCase apiFolderName }}';
-import sendEmail from '../../../modules/server/sendEmail';
+import sendEmail from '{{pathOffset apiFolderName}}../../../modules/server/sendEmail';
 
 const send{{pascalCase name }}Email = (data, context) => {
-  Meteor.users.find({ role: ['admin'] }).forEach((user) => {
+  Meteor.users.find({ roles: 'admin' }).forEach((user) => {
 
     if (!user.emails[0] || !user.emails[0].address) {
       console.log('[send{{pascalCase name }}Email] Could not find user');
@@ -17,7 +17,7 @@ const send{{pascalCase name }}Email = (data, context) => {
     const email = {
       to: user.emails[0].address,
       subject: `{{titleCase name}}`,
-      template: '{{dashCase apiFolderName }}/{{dashCase name }}',
+      template: '{{uiDirCase apiFolderName }}/{{dashCase name }}',
       templateVars: {
         firstName: user.profile.firstName,
         error: data,
