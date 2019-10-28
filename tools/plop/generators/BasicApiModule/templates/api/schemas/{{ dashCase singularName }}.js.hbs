@@ -28,6 +28,10 @@ autoValue() {
   }
   return this.value;
 },
+{{else}}
+  {{#compare (cleanSimpleSchemeType this.type) '===' 'ObjectID'}}
+autoValue: () => parseObjectID(this.value),
+  {{/compare}}
 {{/if}}
 {{#if this.choices}}
   {{#compare this.choices 'typeof' 'object' '||' this.choices 'typeof' 'array'}}
@@ -91,6 +95,7 @@ uniforms: {
 
 {{#compare fieldTypes 'includes' 'ObjectID'}}
 import { Mongo } from 'meteor/mongo';
+import parseObjectID from '{{apiPathOffset}}../../../modules/parseObjectID';
 {{/compare}}
 import Uniforms from 'uniforms';
 import SimpleSchema from 'simpl-schema';
