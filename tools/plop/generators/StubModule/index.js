@@ -2,7 +2,7 @@
 const fs = require('fs');
 const slugify = require('slugify');
 const changeCase = require('change-case');
-const processSchema = require('../../lib/processSchema');
+const processSchema = require('../../libs/processSchema');
 const addMenuItem = require('../AddMenuItem');
 const addRoute = require('../AddRoute');
 

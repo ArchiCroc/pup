@@ -1,11 +1,11 @@
 /* eslint-disable  */
 const fs = require('fs');
 const path = require('path');
-const processSchema = require('../../lib/processSchema');
-const listDirectories = require('../../lib/listDirectories');
+const processSchema = require('../../libs/processSchema');
+const listDirectories = require('../../libs/listDirectories');
 const slugify = require('slugify');
 const changeCase = require('change-case');
-const normalizePath = require('../../lib/normalizePath');
+const normalizePath = require('../../libs/normalizePath');
 
 const requireField = (fieldName) => {
   return (value) => {

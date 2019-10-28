@@ -1,5 +1,5 @@
 const changeCase = require('change-case');
-const listDirectories = require('../../lib/listDirectories');
+const relativePath = require('../../libs/relativePath');
 
 const regEx = /^(\w+)\(((?:\s*(?:\w+:\s*\[?\w+\]?),?)+)\):\s*(\[?\w+\]?)$/;
 
@@ -7,12 +7,11 @@ module.exports = {
   description: 'Add a mutation to an existing API Module',
   prompts: [
     {
-      type: 'list',
-      name: 'moduleName',
+      type: 'file',
+      name: 'apiFolderName',
       message: 'Select an api module',
-      choices: () => {
-        return listDirectories('./api');
-      },
+      selectionType: 'folder',
+      path: './api',
     },
     {
       type: 'input',
@@ -22,6 +21,7 @@ module.exports = {
     },
   ],
   actions: (data) => {
+    data.apiFolderName = relativePath('./api', data.apiFolderName);
     const mutationParts = data.mutationType.match(regEx);
     // data.mutationName = mutationParts[1];
     // data.mutationParams = mutationParts[2];
@@ -37,15 +37,15 @@ module.exports = {
     return [
       {
         type: 'append',
-        path: 'api/{{moduleName}}/mutations.js',
+        path: 'api/{{apiDirCase apiFolderName}}/mutations.js',
         pattern: '/* #### PLOP_MUTATIONS_START #### */',
-        templateFile: 'tools/plop/generators/AddGraphqlMutation/mutation.js.hbs',
+        templateFile: 'tools/plop/generators/AddGraphqlMutation/templates/mutation.js.hbs',
         data,
       },
       {
         type: 'append',
         path: 'startup/server/graphql-api.js',
-        pattern: `#### ${changeCase.constantCase(data.moduleName)}_MUTATION_TYPES_START ####`,
+        pattern: `#### ${changeCase.constantCase(data.apiFolderName)}_MUTATION_TYPES_START ####`,
         template: `      {{mutationType}}`,
         data,
       },
@@ -55,10 +55,11 @@ module.exports = {
         
 mutation {{mutationName}}({{#each mutationParamSegments}}\${{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}) {
   {{mutationName}}({{#each mutationParamSegments}}{{param}}: \${{param}}{{#unless @last}}, {{/unless}}{{/each}}){
-    ...{{ pascalCase (singular moduleName) }}Attributes
+    ...{{ pascalCase (singular apiFolderName) }}Attributes
   }
 }
       `,
+        data,
       },
     ];
   },

@@ -1,4 +1,5 @@
 const pluralize = require('pluralize');
+const changeCase = require('change-case');
 const jsonFilePath = require('inquirer-parse-json-file'); // require('inquirer-file-tree-selection-prompt'); //
 const filePath = require('inquirer-file-selector-prompt');
 const _ = require('lodash');
@@ -110,6 +111,20 @@ function cleanGraphqlType(text) {
   return clean;
 }
 
+function apiDirCase(text) {
+  return text
+    .split('/')
+    .map((item) => changeCase.pascalCase(item))
+    .join('/');
+}
+
+function uiDirCase(text) {
+  return text
+    .split('/')
+    .map((item) => changeCase.paramCase(item))
+    .join('/');
+}
+
 module.exports = (plop) => {
   plop.setPrompt('jsonFile', jsonFilePath);
   plop.setPrompt('file', filePath);
@@ -127,6 +142,9 @@ module.exports = (plop) => {
     const regEx = new RegExp(`^${prefix}(.*)`);
     return text.replace(regEx, '$1');
   });
+
+  plop.setHelper('apiDirCase', apiDirCase);
+  plop.setHelper('uiDirCase', uiDirCase);
 
   plop.setHelper('stripId', (text, idText) => {
     if (!(typeof idText === 'string')) {

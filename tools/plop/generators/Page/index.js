@@ -1,6 +1,6 @@
 const slugify = require('slugify');
 const changeCase = require('change-case');
-const listDirectories = require('../../lib/listDirectories');
+const relativePath = require('../../libs/relativePath');
 const addMenuItem = require('../AddMenuItem');
 const addRoute = require('../AddRoute');
 
@@ -21,12 +21,11 @@ module.exports = {
   prompts: async (inquirer) => {
     const values = await inquirer.prompt([
       {
-        type: 'list',
+        type: 'file',
         name: 'uiFolderName',
         message: 'Select an ui module',
-        choices: () => {
-          return listDirectories('./ui').filter((item) => !excludeDirs.includes(item));
-        },
+        selectionType: 'folder',
+        path: './ui',
       },
       {
         type: 'input',
@@ -52,27 +51,32 @@ module.exports = {
     return values;
   },
   actions: (data) => {
+    data.uiFolderName = relativePath('./ui', data.uiFolderName);
     let actions = [
       {
         type: 'add',
         path: 'ui/{{uiFolderName}}/{{pascalCase name}}.jsx',
         templateFile: 'tools/plop/generators/Page/templates/Page.jsx.hbs',
+        data,
       },
       {
         type: 'add',
         path: 'ui/{{uiFolderName}}/{{pascalCase name}}.test.js',
         templateFile: 'tools/plop/generators/Page/templates/Page.test.js.hbs',
+        data,
       },
       {
         type: 'add',
         path: 'ui/{{uiFolderName}}/Styled{{pascalCase name}}.js',
         templateFile: 'tools/plop/generators/Page/templates/StyledPage.js.hbs',
+        data,
       },
       {
         type: 'append',
         path: 'i18n/en/{{camelCase uiFolderName}}.en.i18n.yml',
         pattern: '#### PLOP_PAGES_START ####',
         template: '{{ snakeCase name }}: {{ titleCase name }}',
+        data,
       },
     ];
     actions = actions.concat(

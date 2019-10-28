@@ -1,4 +1,4 @@
-const processSchema = require('../../lib/processSchema');
+const processSchema = require('../../libs/processSchema');
 
 const requireField = (fieldName) => {
   return (value) => {
@@ -34,7 +34,7 @@ module.exports = {
       {
         type: 'add',
         path: 'i18n/en/{{camelCase name}}.en.i18n.yml',
-        templateFile: 'tools/plop/generators/BasicI18nFile/en.i18n.yml.hbs',
+        templateFile: 'tools/plop/generators/BasicI18nFile/templates/en.i18n.yml.hbs',
         data,
       },
       {

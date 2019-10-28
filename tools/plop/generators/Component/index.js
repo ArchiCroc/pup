@@ -1,4 +1,4 @@
-const listDirectories = require('../../lib/listDirectories');
+const listDirectories = require('../../libs/listDirectories');
 
 const requireField = (fieldName) => {
   return (value) => {
@@ -31,12 +31,12 @@ module.exports = {
     {
       type: 'add',
       path: 'ui/{{moduleName}}/components/{{pascalCase name}}.js',
-      templateFile: 'tools/plop/generators/Component/Component.js.hbs',
+      templateFile: 'tools/plop/generators/Component/templates/Component.js.hbs',
     },
     {
       type: 'add',
       path: 'ui/{{moduleName}}/components/{{pascalCase name}}.test.js',
-      templateFile: 'tools/plop/generators/Component/Component.test.js.hbs',
+      templateFile: 'tools/plop/generators/Component/templates/Component.test.js.hbs',
     },
   ],
 };

@@ -1,6 +1,6 @@
 /* eslint-disable  */
 const fs = require('fs');
-const processSchema = require('../../lib/processSchema');
+const processSchema = require('../../libs/processSchema');
 const slugify = require('slugify');
 const changeCase = require('change-case');
 

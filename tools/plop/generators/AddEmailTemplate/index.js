@@ -1,4 +1,5 @@
-const listDirectories = require('../../lib/listDirectories');
+const listDirectories = require('../../libs/listDirectories');
+const relativePath = require('../../libs/relativePath');
 
 const requireField = (fieldName) => {
   return (value) => {
@@ -14,12 +15,11 @@ module.exports = {
   prompts: async (inquirer) => {
     const data = await inquirer.prompt([
       {
-        type: 'list',
+        type: 'file',
         name: 'apiFolderName',
         message: 'Select an api module',
-        choices: () => {
-          return listDirectories('./api');
-        },
+        selectionType: 'folder',
+        path: './api',
       },
       {
         type: 'list',
@@ -40,23 +40,27 @@ module.exports = {
     return data;
   },
   actions: (data) => {
+    data.apiFolderName = relativePath('./api', data.apiFolderName);
     return [
       {
         type: 'add',
-        path: 'private/email-templates/{{dashCase apiFolderName}}/{{dashCase name}}.html',
+        path: 'private/email-templates/{{uiDirCase apiFolderName}}/{{dashCase name}}.html',
         templateFile:
           'tools/plop/generators/AddEmailTemplate/templates/{{template}}/emailTemplate.html.hbs',
+        data,
       },
       {
         type: 'add',
-        path: 'private/email-templates/{{dashCase apiFolderName}}/{{dashCase name}}.txt',
+        path: 'private/email-templates/{{uiDirCase apiFolderName}}/{{dashCase name}}.txt',
         templateFile:
           'tools/plop/generators/AddEmailTemplate/templates/{{template}}/emailTemplate.txt.hbs',
+        data,
       },
       {
         type: 'add',
         path: 'api/{{apiFolderName}}/actions/send{{pascalCase name}}Email.js',
         templateFile: 'tools/plop/generators/AddEmailTemplate/templates/{{template}}/action.js.hbs',
+        data,
       },
     ];
   },

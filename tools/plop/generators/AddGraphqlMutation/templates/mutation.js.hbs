@@ -1,0 +1,31 @@
+  // {{mutationType}}
+  {{mutationName}}: (parent, args, context) => {
+    if (!user || !user._id || !checkUserRole(user._id, ['user'])) {
+      throw new Error('Sorry, you must have permission to {{mutationName}} {{titleCase apiFolderName}}.');
+    }
+
+    const schema = {{singular (pascaleCase apiFolderName)}}Schema.pick({{#each mutationParamSegments}}'{{param}}'{{#unless @last}}, {{/unless}}{{/each}});
+    const cleanDoc = schema.clean(args)
+    schema.validate(cleanDoc);
+
+    const { {{mutationParamSegments.0.param}} } = cleanDoc;
+
+    const {{singular (camelCase apiFolderName)}} = {{pascalCase apiFolderName}}.findOne({{mutationParamSegments.0.param}});
+
+    if (!{{singular (camelCase apiFolderName)}}) {
+      throw new Error('{{singular (pascalCase apiFolderName)}} not found');
+    }
+
+  
+    const updateDoc = {
+      {{#each mutationParamSegments}}
+      // {{param}}: cleanDoc.{{param}},
+      {{/each}}
+      updatedById: context.user._id,
+      updatedAtUTC: new Date(),
+    };
+
+    {{apiFolderName}}.update({ {{mutationParamSegments.0.param}} }, { $set: updateDoc });
+    return Object.assign({{singular (camelCase apiFolderName)}}, updateDoc);
+ 
+  },

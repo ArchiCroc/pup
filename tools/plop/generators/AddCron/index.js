@@ -1,4 +1,4 @@
-const listDirectories = require('../../lib/listDirectories');
+const relativePath = require('../../libs/relativePath');
 
 const requireField = (fieldName) => {
   return (value) => {
@@ -30,12 +30,11 @@ module.exports = {
         data,
         await inquirer.prompt([
           {
-            type: 'list',
+            type: 'file',
             name: 'apiFolderName',
             message: 'Select an api module',
-            choices: () => {
-              return listDirectories('./api');
-            },
+            selectionType: 'folder',
+            path: './api',
           },
         ]),
       );
@@ -82,17 +81,20 @@ import './cron';
       ];
     }
     if (data.plopType === 'add') {
+      data.apiFolderName = relativePath('./api', data.apiFolderName);
       return [
         {
           type: 'add',
-          path: 'api/{{apiFolderName}}/server/cron.js',
+          path: 'api/{{apiDirCase apiFolderName}}/server/cron.js',
           templateFile: 'tools/plop/generators/AddCron/templates/module-server-cron.js.hbs',
+          data,
         },
         {
           type: 'append',
           path: 'startup/server/cron.js',
           pattern: `/* #### PLOP_IMPORTS_START #### */`,
-          template: `import '../../api/{{apiFolderName}}/server/cron.js';`,
+          template: `import '../../api/{{apiDirCase apiFolderName}}/server/cron.js';`,
+          data,
         },
       ];
     }

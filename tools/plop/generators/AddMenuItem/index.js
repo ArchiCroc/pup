@@ -1,7 +1,7 @@
 /* eslint-disable  */
 const fs = require('fs');
-const processSchema = require('../../lib/processSchema');
-const listDirectories = require('../../lib/listDirectories');
+const processSchema = require('../../libs/processSchema');
+const listDirectories = require('../../libs/listDirectories');
 const slugify = require('slugify');
 const changeCase = require('change-case');
 

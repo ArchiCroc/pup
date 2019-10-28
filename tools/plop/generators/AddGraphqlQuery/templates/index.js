@@ -1,5 +1,6 @@
 const changeCase = require('change-case');
-const listDirectories = require('../../lib/listDirectories');
+// const listDirectories = require('../../libs/listDirectories');
+const relativePath = require('../../../libs/relativePath');
 
 const regEx = /^(\w+)\(?((?:\s*(?:\w+:\s*\[?\w+\]?),?)*)\)?:\s*(\[?\w+\]?)$/;
 
@@ -7,12 +8,11 @@ module.exports = {
   description: 'Add a query to an existing API Module',
   prompts: [
     {
-      type: 'list',
-      name: 'moduleName',
+      type: 'file',
+      name: 'apiFolderName',
       message: 'Select an api module',
-      choices: () => {
-        return listDirectories('./api');
-      },
+      selectionType: 'folder',
+      path: './api',
     },
     {
       type: 'input',
@@ -22,6 +22,7 @@ module.exports = {
     },
   ],
   actions: (data) => {
+    data.apiFolderName = relativePath('./api', data.apiFolderName);
     const queryParts = data.queryType.match(regEx);
     // data.queryName = queryParts[1];
     // data.queryParams = queryParts[2];
@@ -37,15 +38,15 @@ module.exports = {
     return [
       {
         type: 'append',
-        path: 'api/{{moduleName}}/queries.js',
+        path: 'api/{{apiFolderName}}/queries.js',
         pattern: '/* #### PLOP_QUERIES_START #### */',
-        templateFile: 'tools/plop/generators/AddGraphqlQuery/query.js.hbs',
+        templateFile: 'tools/plop/generators/AddGraphqlQuery/templates/query.js.hbs',
         data,
       },
       {
         type: 'append',
         path: 'startup/server/graphql-api.js',
-        pattern: `#### ${changeCase.constantCase(data.moduleName)}_QUERY_TYPES_START ####`,
+        pattern: `#### ${changeCase.constantCase(data.apiFolderName)}_QUERY_TYPES_START ####`,
         template: `      {{queryName}}{{#if queryParams}}({{#each queryParamSegments}}\${{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}}: {{returnType}}`,
         data,
       },
@@ -55,10 +56,11 @@ module.exports = {
         
 query {{queryName}}{{#if queryParams}}({{#each queryParamSegments}}\${{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}} {
   {{queryName}}{{#if queryParams}}({{#each queryParamSegments}}{{param}}: \${{param}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}}{
-    ...{{ pascalCase (singular moduleName) }}Attributes
+    ...{{ pascalCase (singular apiFolderName) }}Attributes
   }
 }
       `,
+        data,
       },
     ];
   },

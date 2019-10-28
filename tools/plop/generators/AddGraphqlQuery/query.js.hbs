@@ -1,7 +1,7 @@
   // {{queryType}}
   {{queryName}}: (parent, args, { user }) => {
     if (!user || !user._id || !checkUserRole(user._id, ['user'])) {
-      throw new Error('Sorry, you must have permission to view {{titleCase moduleName}}.');
+      throw new Error('Sorry, you must have permission to view {{titleCase apiFolderName}}.');
     }
 
     const query = {
@@ -12,7 +12,7 @@
 
     const options = { /* sort: { createdAtUTC: 1 } */ };
 
-    return {{moduleName}}.find(query, options).fetch();
+    return {{pascalCase apiFolderName}}.find(query, options).fetch();
     // .map((item) => {
     // });
   },

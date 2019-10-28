@@ -1,7 +1,7 @@
 /* eslint-disable  */
 const fs = require('fs');
 const _ = require('lodash');
-const processSchema = require('../../lib/processSchema');
+const processSchema = require('../../libs/processSchema');
 
 const requireField = (fieldName) => {
   return (value) => {
