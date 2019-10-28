@@ -4,7 +4,7 @@
       throw new Error('Sorry, you must have permission to {{mutationName}} {{titleCase apiFolderName}}.');
     }
 
-    const schema = {{singular (pascaleCase apiFolderName)}}Schema.pick({{#each mutationParamSegments}}'{{param}}'{{#unless @last}}, {{/unless}}{{/each}});
+    const schema = {{singular (pascalCase apiFolderName)}}Schema.pick({{#each mutationParamSegments}}'{{param}}'{{#unless @last}}, {{/unless}}{{/each}});
     const cleanDoc = schema.clean(args)
     schema.validate(cleanDoc);
 
@@ -25,7 +25,7 @@
       updatedAtUTC: new Date(),
     };
 
-    {{apiFolderName}}.update({ {{mutationParamSegments.0.param}} }, { $set: updateDoc });
+    {{pascalCase apiFolderName}}.update({ {{mutationParamSegments.0.param}} }, { $set: updateDoc });
     return Object.assign({{singular (camelCase apiFolderName)}}, updateDoc);
  
   },

@@ -1,7 +1,7 @@
 const changeCase = require('change-case');
 const relativePath = require('../../libs/relativePath');
 
-const regEx = /^(\w+)\(((?:\s*(?:\w+:\s*\[?\w+\]?),?)+)\):\s*(\[?\w+\]?)$/;
+const regEx = /^(\w+)\(?((?:\s*(?:\w+:\s*\[?\w+\]?),?)*)\)?:\s*(\[?\w+\]?)$/;
 
 module.exports = {
   description: 'Add a mutation to an existing API Module',

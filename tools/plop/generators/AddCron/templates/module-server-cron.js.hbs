@@ -2,9 +2,10 @@ import { SyncedCron } from 'meteor/littledata:synced-cron';
 
 SyncedCron.add({
   name: 'Crunch some data for {{titleCase apiFolderName}}',
-    schedule(parser) {
+  schedule(parser) {
     // parser is a later.parse object
-    return parser.text('every 2 hours');
+    // return parser.text('every 2 hours'); 
+    return parser.text('at 2:00 pm every 1 day'); // remember it's UTC time so this is like 9am CDT
   },
   job() {
     // var numbersCrunched = CrushSomeNumbers();

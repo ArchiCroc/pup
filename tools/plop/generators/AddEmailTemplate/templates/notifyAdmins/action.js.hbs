@@ -7,11 +7,11 @@ import { Meteor } from 'meteor/meteor';
 import sendEmail from '../../../modules/server/sendEmail';
 
 const send{{pascalCase name }}Email = (data, context) => {
-  
-  const user = Meteor.users.find({ role: ['admin'] }).forEach((user) => {
+  Meteor.users.find({ role: ['admin'] }).forEach((user) => {
 
     if (!user.emails[0] || !user.emails[0].address) {
       console.log('[send{{pascalCase name }}Email] Could not find user');
+      return;
     }
 
     const email = {
