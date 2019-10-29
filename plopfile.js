@@ -125,6 +125,13 @@ function uiDirCase(text) {
     .join('/');
 }
 
+function mongoCollectionCase(text) {
+  return text
+    .split('/')
+    .map((item) => changeCase.camelCase(item))
+    .join('_');
+}
+
 function pathOffset(text) {
   return '../'.repeat(text.split('/').length - 1);
 }
@@ -149,6 +156,7 @@ module.exports = (plop) => {
 
   plop.setHelper('apiDirCase', apiDirCase);
   plop.setHelper('uiDirCase', uiDirCase);
+  plop.setHelper('mongoCollectionCase', mongoCollectionCase);
   plop.setHelper('pathOffset', pathOffset);
 
   plop.setHelper('stripId', (text, idText) => {
