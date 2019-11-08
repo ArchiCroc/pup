@@ -9,29 +9,38 @@ import joinName from 'uniforms/joinName';
 import wrapField from 'uniforms-antd/wrapField';
 import slugify from 'slugify';
 
+function toSlug(text) {
+  return text && slugify(text, { lower: true });
+}
+
 const ChainedSlugField = (props, { uniforms }) => {
   let currentValue = props.value || undefined;
   let sourceValue;
 
   const [prevSelfValue, setPrevSelfValue] = useState(currentValue);
-  const [prevSourceValue, setPrevSourceValue] = useState(uniforms.model[props.sourceField]);
+  const [prevSourceValue, setPrevSourceValue] = useState(toSlug(uniforms.model[props.sourceField]));
   // console.log(`init (${prevSelfValue}), (${prevSourceValue})`);
 
   if (typeof uniforms.model[props.sourceField] === 'string') {
+    sourceValue = toSlug(uniforms.model[props.sourceField]);
     if (prevSelfValue === prevSourceValue) {
       //console.log(`should update (${prevSelfValue}), (${prevSourceValue})`);
       // the fields were synced so we should continue to update it
-      sourceValue = slugify(uniforms.model[props.sourceField], { lower: true });
+
       if (sourceValue !== prevSourceValue) {
-        setPrevSourceValue(sourceValue);
         setPrevSelfValue(sourceValue);
       }
       currentValue = sourceValue;
     }
+    if (sourceValue !== prevSourceValue) {
+      setPrevSourceValue(sourceValue);
+    }
   }
 
   useEffect(() => {
-    uniforms.onChange(props.name, prevSourceValue);
+    if (!currentValue) {
+      uniforms.onChange(props.name, prevSourceValue);
+    }
   }, [prevSourceValue]);
 
   function handleChange(event) {
