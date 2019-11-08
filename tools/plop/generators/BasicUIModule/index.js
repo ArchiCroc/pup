@@ -122,7 +122,7 @@ module.exports = {
     actions.push(
       ...addMenuItem.actions({
         ...data,
-        label: data.shortPluralName,
+        label: `${data.shortSingularName}_plural`,
         menuItemType: data.schema.menu.index,
         addWrapper: true,
       }),
