@@ -123,42 +123,15 @@ import '../../api/{{ apiFolderName }}/server/rest-api';`,
         verbose: true,
         data,
       },
-      {
-        type: 'append',
-        path: 'ui/layouts/App.jsx',
-        pattern: '/* #### PLOP_IMPORTS_START #### */',
-        templateFile: 'tools/plop/generators/StubModule/templates/app-imports.js.hbs',
-        data,
-      },
-      {
-        type: 'append',
-        path: 'ui/layouts/App.jsx',
-        pattern: '{/* #### PLOP_ROUTES_START #### */}',
-        templateFile: 'tools/plop/generators/StubModule/templates/app-routes.js.hbs',
-        data,
-      },
-      {
-        type: 'append',
-        path: 'ui/components/AuthenticatedNavigation.jsx',
-        pattern: '{/* #### PLOP_USER_MENU_ITEMS_START #### */}',
-        templateFile: 'tools/plop/generators/StubModule/templates/user-menu-items.js.hbs',
-        data,
-      },
-      {
-        type: 'append',
-        path: 'ui/components/AuthenticatedNavigation.jsx',
-        pattern: '{/* #### PLOP_ADMIN_MENU_ITEMS_START #### */}',
-        templateFile: 'tools/plop/generators/StubModule/templates/admin-menu-items.js.hbs',
-        data,
-      },
     ];
     actions.push(
       ...addRoute.actions({
         ...data,
         componentPath: `${changeCase.pascalCase(data.pluralName)}.jsx`,
+        addWrapper: true,
       }),
     );
-    actions.push(...addMenuItem.actions(data));
+    actions.push(...addMenuItem.actions({ ...data, addWrapper: true }));
     return actions;
   },
 };

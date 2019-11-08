@@ -136,6 +136,10 @@ function pathOffset(text) {
   return '../'.repeat(text.split('/').length - 1);
 }
 
+function lastUrlSegment(text) {
+  return text.split('/').pop();
+}
+
 module.exports = (plop) => {
   plop.setPrompt('jsonFile', jsonFilePath);
   plop.setPrompt('file', filePath);
@@ -158,6 +162,8 @@ module.exports = (plop) => {
   plop.setHelper('uiDirCase', uiDirCase);
   plop.setHelper('mongoCollectionCase', mongoCollectionCase);
   plop.setHelper('pathOffset', pathOffset);
+  plop.setHelper('lastUrlSegment', lastUrlSegment);
+  plop.setHelper('short', lastUrlSegment);
 
   plop.setHelper('stripId', (text, idText) => {
     if (!(typeof idText === 'string')) {

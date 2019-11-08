@@ -38,26 +38,30 @@ function processSchema(input) {
   }
 
   schema.permissions = permissions;
+  data.rawName = data.name;
   // turn collection/bigItem into Collection/BigItem
-  data.apiFolderName = (schema.apiFolderName || data.name)
+  data.apiFolderName = (schema.apiFolderName || data.rawName)
     .split('/')
     .map((folder) => changeCase.pascal(folder))
     .join('/');
   data.apiPathOffset = '../'.repeat(data.apiFolderName.split('/').length - 1);
 
   // turn collection/bigItem into collection/big-item
-  data.uiFolderName = (schema.uiFolderName || data.name)
+  data.uiFolderName = (schema.uiFolderName || data.rawName)
     .split('/')
     .map((folder) => changeCase.param(folder))
     .join('/');
   data.uiPathOffset = '../'.repeat(data.uiFolderName.split('/').length - 1);
 
   // clean the name. collection/bigItem into Collection/BigItem
-  if (data.name.includes('/')) {
-    data.name = data.name
+  // if (data.rawName.includes('/')) {
+  data.shortName = changeCase.pascal(data.rawName.split('/').pop());
+
+  if (data.rawName.includes('/')) {
+    data.name = data.rawName
       .split('/')
       .map((folder) => changeCase.pascal(folder))
-      .join('');
+      .join('/');
   }
 
   data.pluralName =
@@ -66,6 +70,16 @@ function processSchema(input) {
     schema.singularName || pluralize.isSingular(data.name)
       ? data.name
       : pluralize.singular(data.name);
+
+  data.shortPluralName =
+    schema.shortPluralName || pluralize.isPlural(data.shortName)
+      ? data.shortName
+      : pluralize(data.shortName);
+
+  data.shortSingularName =
+    schema.shortSingularName || pluralize.isSingular(data.shortName)
+      ? data.shortName
+      : pluralize.singular(data.shortName);
 
   let primaryKeyIndex = schemaFieldValues.findIndex((field) => field.primaryKey);
   // if primary key isn't found, set it to the first key

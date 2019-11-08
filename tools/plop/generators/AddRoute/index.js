@@ -89,21 +89,43 @@ module.exports = {
         .join('/');
     }
 
-    return [
+    const actions = [];
+
+    if (data.addWrapper) {
+      actions.push(
+        {
+          type: 'append',
+          path: 'ui/layouts/App.jsx',
+          pattern: '/* #### PLOP_IMPORTS_START #### */',
+          templateFile: 'tools/plop/generators/AddRoute/templates/app-imports-wrapper.js.hbs',
+          data,
+        },
+        {
+          type: 'append',
+          path: 'ui/layouts/App.jsx',
+          pattern: '{/* #### PLOP_ROUTES_START #### */}',
+          templateFile: 'tools/plop/generators/AddRoute/templates/app-routes-wrapper.js.hbs',
+          data,
+        },
+      );
+    }
+
+    actions.push(
       {
         type: 'append',
         path: 'ui/layouts/App.jsx',
         pattern: `/* #### ${changeCase.constant(data.uiFolderName)}_IMPORTS_START #### */`,
-        templateFile: 'tools/plop/generators/AddRoute/templates/app-imports.js.hbs',
+        templateFile: 'tools/plop/generators/AddRoute/templates/app-import.js.hbs',
         data,
       },
       {
         type: 'append',
         path: 'ui/layouts/App.jsx',
         pattern: `{/* #### ${changeCase.constant(data.uiFolderName)}_ROUTES_START #### */}`,
-        templateFile: 'tools/plop/generators/AddRoute/templates/app-routes.js.hbs',
+        templateFile: 'tools/plop/generators/AddRoute/templates/app-route.js.hbs',
         data,
       },
-    ];
+    );
+    return actions;
   },
 };
