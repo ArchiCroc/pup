@@ -131,7 +131,9 @@ import '../../api/{{ apiFolderName }}/server/rest-api';`,
         addWrapper: true,
       }),
     );
-    actions.push(...addMenuItem.actions({ ...data, addWrapper: true }));
+    actions.push(
+      ...addMenuItem.actions({ ...data, label: data.shortPluralName, addWrapper: true }),
+    );
     return actions;
   },
 };

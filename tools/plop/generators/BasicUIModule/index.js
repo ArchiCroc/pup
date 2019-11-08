@@ -2,6 +2,7 @@
 const fs = require('fs');
 const _ = require('lodash');
 const processSchema = require('../../libs/processSchema');
+const addMenuItem = require('../AddMenuItem');
 
 const requireField = (fieldName) => {
   return (value) => {
@@ -80,7 +81,7 @@ module.exports = {
       });
     }
 
-    return [
+    const actions = [
       {
         type: 'addMany',
         destination: 'ui/{{ uiFolderName }}/',
@@ -103,21 +104,26 @@ module.exports = {
         templateFile: 'tools/plop/generators/BasicUIModule/templates/app-routes.js.hbs',
         data,
       },
-      {
-        type: 'append',
-        path: 'ui/components/AuthenticatedNavigation.jsx',
-        pattern: '{/* #### PLOP_USER_MENU_ITEMS_START #### */}',
-        templateFile: 'tools/plop/generators/BasicUIModule/templates/user-menu-items.js.hbs',
-        data,
-      },
-      {
-        type: 'append',
-        path: 'ui/components/AuthenticatedNavigation.jsx',
-        pattern: '{/* #### PLOP_ADMIN_MENU_ITEMS_START #### */}',
-        templateFile: 'tools/plop/generators/BasicUIModule/templates/admin-menu-items.js.hbs',
-        data,
-      },
+      // {
+      //   type: 'append',
+      //   path: 'ui/components/AuthenticatedNavigation.jsx',
+      //   pattern: '{/* #### PLOP_USER_MENU_ITEMS_START #### */}',
+      //   templateFile: 'tools/plop/generators/BasicUIModule/templates/user-menu-items.js.hbs',
+      //   data,
+      // },
+      // {
+      //   type: 'append',
+      //   path: 'ui/components/AuthenticatedNavigation.jsx',
+      //   pattern: '{/* #### PLOP_ADMIN_MENU_ITEMS_START #### */}',
+      //   templateFile: 'tools/plop/generators/BasicUIModule/templates/admin-menu-items.js.hbs',
+      //   data,
+      // },
     ];
+    actions.push(
+      ...addMenuItem.actions({ ...data, label: data.shortPluralName, addWrapper: true }),
+    );
+
+    return actions;
   },
 };
 

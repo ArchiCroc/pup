@@ -41,7 +41,7 @@ module.exports = {
       const values3 = await inquirer.prompt([
         {
           type: 'input',
-          name: 'name',
+          name: 'label',
           message: `What should the menu label say?`,
           validate: requireField('URL Slug'),
           default: changeCase.titleCase(values2.urlSlug),

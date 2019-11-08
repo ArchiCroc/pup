@@ -1,4 +1,4 @@
           <Menu.Item key="/{{ dashCase uiFolderName }}/{{ urlSlug }}">
-            {i18n.__('{{ pascalCase uiFolderName }}.{{ snakeCase name }}')}
-            <Link to="/{{ uiFolderName }}/{{ urlSlug }}" />
+            {i18n.__('{{ pascalCase uiFolderName }}.{{ snakeCase label }}')}
+            <Link to="/{{ uiFolderName }}{{#if urlSlug}}/{{ urlSlug }}{{/if}}" />
           </Menu.Item>
