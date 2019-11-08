@@ -8,7 +8,7 @@ import {{ pascalCase singularName }}Editor from './components/{{ pascalCase sing
 
 const New{{ pascalCase singularName }} = ({ history{{#if hasFieldPermissions}}, roles{{/if}} }) => (
   <>
-    <PageHeader title={i18n.__('{{ pascalCase pluralName }}.new_{{ snakeCase singularName }}')} />
+    <PageHeader title={i18n.__('{{ pascalCase pluralName }}.new_{{ snakeCase shortSingularName }}')} />
     <Row type="flex" justify="center">
       <Col xs={24} sm={16} md={12} lg={8}>
         <{{ pascalCase singularName }}Editor history={history} roles={roles} />

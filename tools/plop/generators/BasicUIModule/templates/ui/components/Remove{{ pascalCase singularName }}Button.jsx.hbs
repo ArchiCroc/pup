@@ -13,7 +13,7 @@ const Remove{{ pascalCase singularName }}Button = ({ {{#compare primaryFieldKey 
   const [remove{{ pascalCase singularName }}] = useMutation(remove{{ pascalCase singularName }}Mutation, {
     ignoreResults: true,
     onCompleted: () => {
-      message.success(i18n.__('{{ pascalCase pluralName }}.{{ snakeCase singularName }}_saved'));
+      message.success(i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_saved'));
       history.push('/{{ uiFolderName }}');
     },
     onError: (error) => {
@@ -25,7 +25,7 @@ const Remove{{ pascalCase singularName }}Button = ({ {{#compare primaryFieldKey 
 
   function showConfirmModal() {
     modal.confirm({
-      title: i18n.___('{{ pascalCase pluralName }}.confirm_remove_{{ snakeCase singularName }}', { {{#compare labelFieldKey '!==' 'name'}}name: {{/compare}}{{ labelFieldKey }}{{#if labelField.dataIndex}}.{{labelField.dataIndex}}{{/if}} }),
+      title: i18n.___('{{ pascalCase pluralName }}.confirm_remove_{{ snakeCase shortSingularName }}', { {{#compare labelFieldKey '!==' 'name'}}name: {{/compare}}{{ labelFieldKey }}{{#if labelField.dataIndex}}.{{labelField.dataIndex}}{{/if}} }),
       onOk: remove{{ pascalCase singularName }},
       okText: i18n.__('{{ pascalCase pluralName }}.remove'),
       okType: 'danger',
@@ -41,7 +41,7 @@ const Remove{{ pascalCase singularName }}Button = ({ {{#compare primaryFieldKey 
       disabled={disabled}
       onClick={showConfirmModal}
     >
-      {i18n.__('{{ pascalCase pluralName }}.remove_{{ snakeCase singularName }}')}
+      {i18n.__('{{ pascalCase pluralName }}.remove_{{ snakeCase shortSingularName }}')}
     </Button>
   );
 };

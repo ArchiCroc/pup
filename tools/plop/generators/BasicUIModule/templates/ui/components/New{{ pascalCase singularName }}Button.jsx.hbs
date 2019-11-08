@@ -7,7 +7,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 const New{{ pascalCase singularName }}Button = (props) => (
   <LinkContainer to="/{{ uiFolderName }}/new">
     <Button type="primary" icon="plus" {...props} >
-      {i18n.__('{{ pascalCase pluralName }}.new_{{ snakeCase singularName }}')}
+      {i18n.__('{{ pascalCase pluralName }}.new_{{ snakeCase shortSingularName }}')}
     </Button>
   </LinkContainer>
 );

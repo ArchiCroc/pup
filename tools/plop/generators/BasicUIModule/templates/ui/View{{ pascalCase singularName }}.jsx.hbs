@@ -24,7 +24,7 @@ const View{{ pascalCase singularName }} = ({ match{{#compare hasFieldPermissions
 
   return (
     <StyledView{{ pascalCase singularName }}>
-      <PageHeader title={i18n.__('{{ pascalCase pluralName }}.view_{{ snakeCase singularName }}')} />
+      <PageHeader title={i18n.__('{{ pascalCase pluralName }}.view_{{ snakeCase shortSingularName }}')} />
       { {{~ camelCase singularName }}{{#if schema.permissions.update}} && hasRole(roles, [{{#each schema.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]){{/if}} && (
         <p>
           <Edit{{ pascalCase singularName }}Button {{urlFieldKey}}={ {{~ camelCase singularName }}.{{ urlFieldKey ~}} } />

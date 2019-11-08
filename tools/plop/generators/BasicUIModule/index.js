@@ -120,7 +120,12 @@ module.exports = {
       // },
     ];
     actions.push(
-      ...addMenuItem.actions({ ...data, label: data.shortPluralName, addWrapper: true }),
+      ...addMenuItem.actions({
+        ...data,
+        label: data.shortPluralName,
+        menuItemType: data.schema.menu.index,
+        addWrapper: true,
+      }),
     );
 
     return actions;
