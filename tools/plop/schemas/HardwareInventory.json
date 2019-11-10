@@ -19,61 +19,51 @@
         "optional": true
       }
     },
-    "hardwareTypeId": {
-      "type": "String",
-      "input": "CrossReferenceSelect",
-      "uniforms": {
+    "hardwareType": {
+      "type": "CrossReference",
+      "input": {
+        "name": "hardwareTypeId",
+        "type": "String",
+        "input": "CrossReferenceSelect"
+      },
+      "reference":{
+        "type": "HardwareType",
         "query": "hardwareTypes",
         "edges": "hardwareTypes",
         "labelField": "name",
         "valueField": "_id"
       },
-      "stripIdFromKey": true,
-      "showInTableView": false,
-      "showInDetailView": false
+      "resolver": "HardwareTypeQueries.hardwareType"
     },
-    "hardwareType": {
-      "type": "HardwareType",
-      "resolver": "HardwareTypeQueries.hardwareType",
-      "showInTableView": true,
-      "dataIndex": "name"
-    },
-    "assignedToId": {
-      "type": "String",
-      "input": "CrossReferenceSearch",
-      "uniforms": {
-        "query": "users",
+    "assignedTo": {
+      "input": {
+        "name": "assignedToId",
+        "type": "String",
+        "input": "CrossReferenceSearch"
+      },
+      "reference":{
+      "type": "User",
+      "query": "users",
         "edges": "users",
         "labelField": "fullName",
         "valueField": "_id"
       },
-      "stripIdFromKey": true,
-      "showInTableView": false,
-      "showInDetailView": false
-    },
-    "assignedTo": {
-      "type": "User",
-      "dataIndex": "fullName",
       "showInTableView": true
     },
-    "officeSlug": {
-      "type": "String",
-      "input": "CrossReferenceSelect",
-      "uniforms": {
+    "office": {
+      "type": "CrossReference",
+      "input": {
+        "name": "officeSlug",
+        "type": "String",
+        "input": "CrossReferenceSelect"
+      },
+      "reference": {
+        "type": "Office",
         "query": "offices",
         "edges": "offices",
         "labelField": "name",
         "valueField": "slug"
-      },
-      "stripIdFromKey": "Slug",
-      "showInTableView": false,
-      "showInDetailView": false
-    },
-    "office": {
-      "type": "Office",
-      "resolver": "OfficeQueries.office",
-      "showInTableView": true,
-      "dataIndex": "name"
+      }
     },
     "brand": {
       "type": "String",
@@ -111,31 +101,35 @@
       "type": "DateTime",
       "showInTableView": "Created At"
     },
-    "createdById": {
-      "userKey": true,
-      "type": "String",
-      "index": true,
-      "showInTableView": false,
-      "showInDetailView": false
-    },
     "createdBy": {
-      "type": "User",
-      "dataIndex": "fullName"
+      "type": "CrossReference",
+      "input": {
+        "name": "createdById",
+        "type": "String"
+      },
+      "reference": {
+        "type": "User",
+        "labelField": "fullName",
+        "valueField": "_id"
+      },
+      "showInTableView": false
     },
     "updatedAtUTC": {
       "type": "DateTime",
       "showInTableView": "Updated At"
     },
-    "updatedById": {
-      "userKey": true,
-      "type": "String",
-      "index": true,
-      "showInTableView": false,
-      "showInDetailView": false
-    },
     "updatedBy": {
-      "type": "User",
-      "dataIndex": "fullName"
+      "type": "CrossReference",
+      "input": {
+        "name": "updatedById",
+        "type": "String"
+      },
+      "reference": {
+        "type": "User",
+        "labelField": "fullName",
+        "valueField": "_id"
+      },
+      "showInTableView": false
     }
   },
   "defaultSortField": "updatedAtUTC",

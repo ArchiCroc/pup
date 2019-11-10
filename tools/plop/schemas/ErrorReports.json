@@ -42,7 +42,7 @@
       "type": "String",
       "input": "Text",
       "validate" : {
-          "max": 1024
+          "max": 2048
       },
       "searchable": true
     },
@@ -86,16 +86,18 @@
       "type": "DateTime",
       "showInTableView": "Created At"
     },
-    "createdById": {
-      "userKey": true,
-      "type": "String",
-      "index": true,
-      "showInTableView": false,
-      "showInDetailView": false
-    },
     "createdBy": {
-      "type": "User",
-      "dataIndex": "fullName"
+      "type": "CrossReference",
+      "input": {
+        "name": "createdById",
+        "type": "String"
+      },
+      "reference": {
+        "type": "User",
+        "labelField": "fullName",
+        "valueField": "_id"
+      },
+      "showInTableView": false
     }
   },
   "defaultSortField": "createdAtUTC",

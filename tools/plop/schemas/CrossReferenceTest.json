@@ -19,57 +19,53 @@
         "optional": true
       }
     },
-    "errorReportId": {
-      "type": "String",
-      "input": "CrossReferenceSelect",
-      "uniforms": {
+    "errorReport": {
+      "type": "CrossReference",
+      "input": {
+        "name": "errorReportId",
+        "type": "String",
+        "input": "CrossReferenceSelect"
+      },
+      "reference": {
+        "type": "ErrorReport",
         "query": "errorReports",
         "edges": "errorReports",
         "labelField": "message",
         "valueField": "_id"
       },
-      "showInTableView": false,
-      "showInDetailView": false
-    },
-    "errorReport": {
-      "type": "ErrorReport",
       "resolver": "ErrorReportQueries.errorReport",
-      "showInTableView": true,
-      "dataIndex": "message"
-
+      "showInTableView": true
     },
-    "assignedToId": {
-      "type": "String",
-      "input": "CrossReferenceSearch",
-      "uniforms": {
+    "assignedTo": {
+      "type": "CrossReference",
+      "input": {
+        "name": "assignedToId",
+        "type": "String",
+        "input": "CrossReferenceSearch"
+      },
+      "reference": {
+        "type": "User",
         "query": "users",
         "edges": "users",
         "labelField": "fullName",
         "valueField": "_id"
       },
-      "showInTableView": false,
-      "showInDetailView": false
-    },
-    "assignedTo": {
-      "type": "User",
-      "dataIndex": "fullName",
       "showInTableView": true
     },
-    "preparedByIds": {
-      "type": "[String]",
-      "input": "CrossReferenceSearch",
-      "uniforms": {
+    "preparedBy": {
+      "type": "CrossReference",
+      "input": {
+        "name": "preparedByIds",
+        "type": "[String]",
+        "input": "CrossReferenceSearch"
+      },
+      "reference": {
+        "type": "[User]",
         "query": "users",
         "edges": "users",
         "labelField": "fullName",
-        "valueField": "_id",
-        "multiple": true
+        "valueField": "_id"
       },
-      "showInTableView": false,
-      "showInDetailView": false
-    },
-    "preparedBy": {
-      "type": "[User]",
       "dataIndex": "fullName",
       "showInTableView": true
     },
@@ -93,16 +89,18 @@
       "type": "DateTime",
       "showInTableView": "Created At"
     },
-    "createdById": {
-      "userKey": true,
-      "type": "String",
-      "index": true,
-      "showInTableView": false,
-      "showInDetailView": false
-    },
     "createdBy": {
-      "type": "User",
-      "dataIndex": "fullName"
+      "type": "CrossReference",
+      "input": {
+        "name": "createdById",
+        "type": "String"
+      },
+      "reference": {
+        "type": "User",
+        "labelField": "fullName",
+        "valueField": "_id"
+      },
+      "showInTableView": false
     }
   }
 }

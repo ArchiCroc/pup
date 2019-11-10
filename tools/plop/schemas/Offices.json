@@ -135,33 +135,36 @@
       "type": "DateTime",
       "showInTableView": "Created At"
     },
-    "createdById": {
-      "userKey": true,
-      "type": "String",
-      "index": true,
-      "showInTableView": false,
-      "showInDetailView": false
-    },
     "createdBy": {
-      "type": "User",
-      "dataIndex": "fullName"
+      "type": "CrossReference",
+      "input": {
+        "name": "createdById",
+        "type": "String"
+      },
+      "reference": {
+        "type": "User",
+        "labelField": "fullName",
+        "valueField": "_id"
+      },
+      "showInTableView": false
     },
     "updatedAtUTC": {
       "type": "DateTime",
       "showInTableView": "Updated At"
     },
-    "updatedById": {
-      "userKey": true,
-      "type": "String",
-      "index": true,
-      "showInTableView": false,
-      "showInDetailView": false
-    },
     "updatedBy": {
-      "type": "User",
-      "dataIndex": "fullName"
+      "type": "CrossReference",
+      "input": {
+        "name": "updatedById",
+        "type": "String"
+      },
+      "reference": {
+        "type": "User",
+        "labelField": "fullName",
+        "valueField": "_id"
+      },
+      "showInTableView": false
     }
-    
   },
   "defaultSortField": "name",
   "defaultSortOrder": "ascend"

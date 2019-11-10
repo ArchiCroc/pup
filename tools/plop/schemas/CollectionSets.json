@@ -40,25 +40,25 @@
       "input": "Text",
       "showInTableView": false
     },
-    "themeIds": {
-      "type": "[ObjectID]",
-      "input": "CrossReferenceSearch",
-      "uniforms": {
-        "multiple": true,
+    "themes": {
+      "type": "CrossReference",
+      "input": {
+        "name": "themeIds",
+        "type": "[ObjectID]",
+        "input": "CrossReferenceSearch",
+        "uniforms": {
+          "multiple": true
+        }
+      },
+      "reference": {
+        "type": "[CollectionTheme]",
         "query": "collectionThemes",
         "edges": "collectionThemes",
         "labelField": "name",
         "valueField": "_id"
       },
-      "stripIdFromKey": "Id",
-      "showInTableView": false,
-      "showInDetailView": false
-    },
-    "themes": {
-      "type": "[CollectionTheme]",
       "resolver": "collectionThemeQueries.collectionTheme",
-      "showInTableView": true,
-      "dataIndex": "name"
+      "showInTableView": true
     },
     "partCount": {
       "type": "Int",
@@ -71,22 +71,23 @@
       "input": "List",
       "showInTableView": false,
       "fields": {
-        "elementId": {
-          "type": "ObjectID",
-          "input": "CrossReferenceSearch",
-          "uniforms": {
-            "multiple": true,
+        "element": {
+          "type": "CrossReference",
+          "input": {
+            "name": "elementId",
+            "type": "ObjectID",
+              "input": "CrossReferenceSearch",
+              "uniforms": {
+                "multiple": true
+              }
+          },
+          "reference": {
+            "type": "CollectionElement",
             "query": "collectionElements",
             "edges": "collectionElements",
             "labelField": "name",
             "valueField": "_id"
           },
-          "stripIdFromKey": "Id",
-          "showInTableView": false,
-          "showInDetailView": false
-        },
-        "element": {
-          "type": "CollectionElement",
           "resolver": "collectionElementQueries.collectionElement",
           "showInTableView": true,
           "dataIndex": "name"
@@ -107,33 +108,36 @@
       "type": "DateTime",
       "showInTableView": "Created At"
     },
-    "createdById": {
-      "userKey": true,
-      "type": "String",
-      "index": true,
-      "showInTableView": false,
-      "showInDetailView": false
-    },
-    "createdBy": {
-      "type": "User",
-      "dataIndex": "fullName"
+     "createdBy": {
+      "type": "CrossReference",
+      "input": {
+        "name": "createdById",
+        "type": "String"
+      },
+      "reference": {
+        "type": "User",
+        "labelField": "fullName",
+        "valueField": "_id"
+      },
+      "showInTableView": false
     },
     "updatedAtUTC": {
       "type": "DateTime",
       "showInTableView": "Updated At"
     },
-    "updatedById": {
-      "userKey": true,
-      "type": "String",
-      "index": true,
-      "showInTableView": false,
-      "showInDetailView": false
-    },
     "updatedBy": {
-      "type": "User",
-      "dataIndex": "fullName"
+      "type": "CrossReference",
+      "input": {
+        "name": "updatedById",
+        "type": "String"
+      },
+      "reference": {
+        "type": "User",
+        "labelField": "fullName",
+        "valueField": "_id"
+      },
+      "showInTableView": false
     }
-    
   },
   "defaultSortField": "name",
   "defaultSortOrder": "ascend"

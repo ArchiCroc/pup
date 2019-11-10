@@ -77,21 +77,35 @@
       "type": "DateTime",
       "showInTableView": "Created At"
     },
-    "createdById": {
-      "userKey": true,
-      "type": "String"
-    },
     "createdBy": {
-      "type": "User"
+      "type": "CrossReference",
+      "input": {
+        "name": "createdById",
+        "type": "String"
+      },
+      "reference": {
+        "type": "User",
+        "labelField": "fullName",
+        "valueField": "_id"
+      },
+      "showInTableView": false
     },
     "updatedAtUTC": {
-      "type": "DateTime"
-    },
-    "updatedById": {
-      "type": "String"
+      "type": "DateTime",
+      "showInTableView": "Updated At"
     },
     "updatedBy": {
-      "type": "User"
+      "type": "CrossReference",
+      "input": {
+        "name": "updatedById",
+        "type": "String"
+      },
+      "reference": {
+        "type": "User",
+        "labelField": "fullName",
+        "valueField": "_id"
+      },
+      "showInTableView": false
     },
     "comments": {
       "type": "[Comment]"
