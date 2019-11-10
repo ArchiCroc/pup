@@ -169,7 +169,7 @@ const clean{{pascalCase @key}} = {{{this.clean}}};
 const {{ pascalCase singularName }}Schema = new SimpleSchema({
 {{#each schema.fields ~}}
   {{~#if this.type }}
-    {{#compare this.input 'typeof' 'Object'}}
+    {{#compare this.input 'typeof' 'object'}}
   {{> schemaField this.input reference=this.reference}}
     {{else}}
   {{> schemaField this name=@key}}

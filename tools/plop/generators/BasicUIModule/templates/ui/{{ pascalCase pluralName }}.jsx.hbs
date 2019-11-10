@@ -99,7 +99,7 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
 {{/if}}
 {{#each schema.fields}}
   {{#if this.filterable}}
-    {{#compare this.input 'typeof' 'Object'}}
+    {{#compare this.input 'typeof' 'object'}}
   {{> filterableFieldHook this.input}}
     {{else}}
   {{> filterableFieldHook name=@key}}
