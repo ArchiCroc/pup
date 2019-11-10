@@ -1,11 +1,12 @@
 // import { Meteor } from 'meteor/meteor';
 // import { Mongo } from 'meteor/mongo';
-// import {{ pascalCase pluralName }} from '../{{ pascalCase pluralName }}';
 // import { JsonRoutes as ApiRoutes } from 'meteor/simple:json-routes';
+// import {{ pascalCase pluralName }} from '../{{ pascalCase pluralName }}';
 // import {{ pascalCase singularName }}Schema from '../schemas/{{ dashCase singularName }}';
 
 /*
-ApiRoutes.add('post', '/api/v1/{{ dashCase apiFolderName }}', async (request, response) => {
+ApiRoutes.add('post', '/api/v1/{{ apiFolderName }}', async (request, response) => {
+  // console.log('/api/v1/{{ apiFolderName }}');
   if (!request.body) {
     throw ApiRoutes.Error('Api Error', 'Missing Post Data');
   }
@@ -18,5 +19,5 @@ ApiRoutes.add('post', '/api/v1/{{ dashCase apiFolderName }}', async (request, re
   // return success
   response.writeHead(204);
   response.end();
-}
+});
 */
