@@ -1,3 +1,7 @@
+{{#*inline "inputLabel" ~}}
+{{#if this.label}}{{this.label}}{{else}}{{titleCase @key}}{{/if}}
+{{~/inline~}}
+
 _namespace: {{ pascalCase pluralName }}
 
 {{ snakeCase shortSingularName }}: {{ titleCase shortSingularName }}
@@ -31,19 +35,26 @@ blank_state_subtitle: ""
 {{#each schema.fields}}
   {{!-- {{#compare this.showInTableView '!==' false '||' this.showInDetailView '!==' false}} --}}
     {{#compare this.input '!=' 'Hidden'}}
-{{snakeCase @key}}: {{#compare this.showInTableView 'typeof' 'string'}}{{this.showInTableView}}{{else}}{{#compare this.showInDetailView 'typeof' 'string'}}{{this.showInDetailView}}{{else}}{{ titleCase @key}}{{/compare}}{{/compare}}
+{{#compare (snakeCase @key) '==' (snakeCase @root.shortSingularName) '||' (snakeCase @key) 'in' 'save|yes|no|cancel|remove'  }}# {{/compare}}
+{{~ snakeCase @key}}: {{#compare this.showInTableView 'typeof' 'string'}}{{this.showInTableView}}{{else}}{{#compare this.showInDetailView 'typeof' 'string'}}{{this.showInDetailView}}{{else}}{{ titleCase @key}}{{/compare}}{{/compare}}
       {{#if this.input}}
-{{snakeCase @key}}_label: {{#if this.stripIdFromKey}}{{titleCase (stripId @key this.stripIdFromKey)}}{{else}}{{titleCase @key}}{{/if}}
+{{snakeCase @key}}_label: {{> inputLabel}}
         {{#compare this.type '!=' 'Boolean'  }}
-          {{#compare this.input 'in' 'Array|Select|Options|Dropdown|CrossReferenceSelect|CrossReferenceSearch'  }}
-{{snakeCase @key}}_placeholder: Select {{#if this.stripIdFromKey}}{{titleCase (stripId @key this.stripIdFromKey)}}{{else}}{{titleCase @key}}{{/if}}
+          {{#compare this.input 'in' 'Array|Select|Options|Dropdown|CrossReferenceSelect|CrossReferenceSearch|Checkboxes'  }}
+{{snakeCase @key}}_placeholder: Select {{> inputLabel}}
             {{#compare this.choices 'typeof' 'object'}}
               {{#each this.choices}}
 {{snakeCase @../key}}_{{this}}: {{@key}}
               {{/each}}
+            {{else}}
+              {{#compare this.choices 'typeof' 'array'}}
+                {{#each this.choices}}
+{{snakeCase @../key}}_{{this}}: {{titleCase this}}
+                {{/each}}
+              {{/compare}}
             {{/compare}}
           {{else}}
-{{snakeCase @key}}_placeholder: {{#if this.stripIdFromKey}}{{titleCase (stripId @key this.stripIdFromKey)}}{{else}}{{titleCase @key}}{{/if}}
+{{snakeCase @key}}_placeholder: {{> inputLabel}}
           {{/compare}}
         {{/compare}}
       {{/if}}

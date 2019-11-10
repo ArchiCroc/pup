@@ -1,6 +1,6 @@
-{ "name": "Collection/Brands",
+{ "name": "Collection/Colors",
   "permissions": {
-    "read": "admin",
+    "read": "user",
     "save": "admin",
     "delete": "admin"
   },
@@ -11,7 +11,7 @@
   "fields": {
     "_id": {
       "primaryKey": true,
-      "type": "String",
+      "type": "ObjectID",
       "input": "Hidden",
       "validate" : {
         "max": 24,
@@ -26,24 +26,43 @@
           "max": 64
       }
     },
-    "slug": {
-      "urlKey": true,
+    "color": {
       "type": "String",
-      "input": "ChainedSlug",
+      "input": "Text",
       "validate" : {
-        "max": 48
-      },
-      "clean": "(item) => slugify(item, { lower: true});",
-      "showInTableView": false,
-      "uniforms": {
-        "sourceField": "name"
+          "max": 64
       }
+    },
+    "properties": {
+      "type": "[String]",
+      "input": "Select",
+      "defaultValue": "solid",
+      "choices": ["solid", "transparent", "flexible", "glow", "speckle","pearl","modulex","milky","metallic","glitter","chrome"],
+      "filterable": true
+    },
+    "collectionBrand": {
+      "type": "CrossReference",
+      "input" : {
+        "type": "String",
+        "input": "CrossReferenceSelect",
+        "name": "collectionBrandSlug"
+      },
+      "reference": {
+        "type": "CollectionBrand",
+        "query": "collectionBrands",
+        "edges": "collectionBrands",
+        "labelField": "name",
+        "valueField": "slug"
+      },      
+      "resolver": "CollectionBrandQueries.collectionBrand",
+      "showInTableView": true,
+      "filterable": true
     },
     "createdAtUTC": {
       "type": "DateTime",
       "showInTableView": "Created At"
     },
-    "createdBy": {
+     "createdBy": {
       "type": "CrossReference",
       "input": {
         "name": "createdById",

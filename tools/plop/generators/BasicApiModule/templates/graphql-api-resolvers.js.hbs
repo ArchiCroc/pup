@@ -4,14 +4,14 @@
   {{#if this.resolver}}
       {{@key}}: {{this.resolver}},
   {{else}}
-    {{#compare this.type '===' 'User'}}
+    {{#compare this.type '===' 'User' '||' this.reference.type '===' 'User'}}
       {{@key}}: (parent, args, context) =>
-        UserQueries.resolveUser(parent, { _id: parent.{{#if parentKey}}{{parentKey}}{{else}}{{@key}}Id{{/if}} }, context),
+        UserQueries.resolveUser(parent, { _id: parent.{{#if this.input.name}}{{this.input.name}}{{else}}{{@key}}Id{{/if}} }, context),
     {{/compare}}
-     {{#compare this.type '===' '[User]'}}
+     {{#compare this.type '===' '[User]' '||' this.reference.type '===' '[User]'}}
       {{@key}}: (parent, args, context) =>
         parent.preparedByIds
-          ? UserQueries.resolveUsers(parent, { _ids: parent.{{#if parentKey}}{{parentKey}}{{else}}{{@key}}Ids{{/if}} }, context)
+          ? UserQueries.resolveUsers(parent, { _ids: parent.{{#if this.input.name}}{{this.input.name}}{{else}}{{@key}}Ids{{/if}} }, context)
           : [],
     {{/compare}}
   {{/if}}

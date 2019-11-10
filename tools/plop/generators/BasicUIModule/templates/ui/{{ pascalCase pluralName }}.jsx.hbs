@@ -16,6 +16,9 @@ import New{{ pascalCase singularName }}Button from './components/New{{ pascalCas
 {{#if schema.permissions.create}}
 import hasRole from '{{uiPathOffset}}../../modules/hasRole';
 {{/if}}
+{{#if hasGraphqlFilterable}}
+import useQueryForFilters from '{{uiPathOffset}}../../modules/hooks/useQueryForFilters';
+{{/if}}
 
 import Styled{{ pascalCase pluralName }} from './Styled{{ pascalCase pluralName }}';
 
@@ -23,6 +26,19 @@ import { {{ camelCase pluralName }} as {{ camelCase pluralName }}Query } from '.
 {{#if isSearchable}}
 const { Search } = Input;
 {{/if}}
+
+{{#each schema.fields}}
+  {{#if this.filterable}}
+function get{{pascalCase @key}}Filters() {
+  const choices = [{{#each this.choices}}{{#compare this 'typeof' 'string'}}'{{this}}'{{else}}{{this}}{{/compare}}{{#unless @last}}, {{/unless}}{{/each}}];
+  const filters = [];
+  for (const choice of choices) {
+    filters.push({ text: i18n.__(`{{ pascalCase @root.pluralName }}.{{snakeCase @key}}_${choice}`), value: choice },)
+  }
+  return filters;
+}
+  {{/if}}
+{{/each}}
 
 const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
   const {
@@ -34,9 +50,9 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
     search = null,
 {{/if}}
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '===' true}}
     {{ @key }},
-  {{/if}}
+  {{/compare}}
 {{/each}}
   } = queryString.parse(location.search, { arrayFormat: 'comma' });
 
@@ -52,7 +68,7 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
   const [currentSearch, setCurrentSearch] = useState(search);
 {{/if}}
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '===' true}}
      {{#compare (stripBrackets this.type) '===' 'Int' }}
   const [current{{ pascalCase @key }}, setCurrent{{ pascalCase @key }}] = useState(
     {{ @key }} && isString({{ @key }}) ? [parseInt({{ @key }}, 10)] : {{ @key }} && {{ @key }}.map(parseInt),
@@ -73,7 +89,7 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
     {{ @key }} && isString({{ @key }}) ? !!({{ @key }}.toLowerCase() === 'true') : {{ @key }},
   );
     {{/compare}}
-  {{/if}}
+  {{/compare}}
 {{/each}}
 
   const { loading, data: { {{ camelCase pluralName }} } = {} } = useQuery({{ camelCase pluralName }}Query, {
@@ -86,14 +102,25 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
 {{#if isSearchable}}
       search: currentSearch,
 {{/if}}
-  {{#each schema.fields}}
-    {{#if this.filterable}}
+{{#each schema.fields}}
+  {{#compare this.filterable '===' true}}
       {{ @key }}: current{{ pascalCase @key }},
-    {{/if}}
-  {{/each}}
+  {{/compare}}
+{{/each}}
     },
   });
-
+{{#each schema.fields}}
+  {{#if this.filterable.query}}
+    const { filters: {{camelCase @key}}Filters } = useQueryForFilters({
+    query: '{{this.filterable.query}}',
+    {{#if this.filterable.edges}}
+    edges: '{{this.filterable.edges}}',
+    {{/if}}
+    labelField: '{{this.filterable.labelField}}',
+    valueField: '{{this.filterable.valueField}}',
+  });
+  {{/if}}
+{{/each}}
   const columns = [
 {{#each schema.fields ~}}
   {{#compare this.input '!==' 'Hidden' '&&' this.showInTableView '!==' false}}
@@ -130,8 +157,17 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
       {{/compare}}
       {{#compare this.type 'startsWith' '['}}
       sorter: true,
-      render: (value) => value{{#if this.dataIndex}}.map((item) => item.{{ this.dataIndex }}){{/if}}.join(', '),
+      render: (value) => value && value{{#if this.dataIndex}}.map((item) => item && item.{{ this.dataIndex }}){{/if}}
+      {{~#compare this.type '===' '[String]'}}.map((item) => i18n.__(`{{ pascalCase @root.name }}.{{@key}}_${item}`)){{/compare}}.join(', '),
       {{/compare}}
+      {{#compare this.filterable '&&' this.choices}}
+      filteredValue: current{{ pascalCase @key }},
+      filters: get{{pascalCase @key}}Filters(),
+      {{/compare}}
+      {{#if this.filterable.query}}
+      filteredValue: current{{ pascalCase @key }},
+      filters: get{{pascalCase @key}}Filters(),
+      {{/if}}
     },
     {{/compare}}
   {{/compare}}

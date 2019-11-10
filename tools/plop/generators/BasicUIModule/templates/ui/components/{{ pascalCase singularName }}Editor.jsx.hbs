@@ -70,7 +70,7 @@ const {{ pascalCase singularName }}Editor = ({ doc, history{{#if hasFieldPermiss
     {{/compare}}
   {{/compare}}
   {{#compare this.type '&&' this.input}}
-    {{#compare this.type 'in' 'Object|[String]|[Int]|[Number]' '&&' this.input '!in' 'CrossReferenceSelect|CrossReferenceSearch'}}
+    {{#compare this.type 'in' 'Object|[String]|[Int]|[Number]' '&&' this.input '!in' 'CrossReferenceSelect|CrossReferenceSearch|Select|Checkboxes'}}
         <ListField name="{{ camelCase @key }}">
           <ListItemField name="$" />
         </ListField>

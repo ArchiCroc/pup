@@ -1,3 +1,6 @@
+{{#*inline "inputFieldName" ~}}
+{{#if this.input.name}}{{this.input.name}}{{else}}{{ @key }}{{/if}}
+{{~/inline}}
 import isArray from 'lodash/isArray';
 import {{ pascalCase pluralName }} from './{{ pascalCase pluralName }}';
 import checkUserRole from '{{apiPathOffset}}../Users/actions/checkUserRole';
@@ -13,7 +16,7 @@ export default {
     /* #### PLOP_QUERY_VALIDATION_START #### */
     {{~schema.hooks.queryValidation}}
     /* #### PLOP_QUERY_VALIDATION_END #### */
-    
+
     const {
       _ids,
       pageSize = 10,
@@ -25,7 +28,7 @@ export default {
 {{/if}}
 {{#each schema.fields}}
   {{#if this.filterable}}
-      {{ @key }},
+      {{> inputFieldName ~}},
   {{/if}}
 {{/each}}
     } = args;
@@ -44,7 +47,7 @@ export default {
     options.sort[sort] = orderDirection;
 
     const query = {};
-    
+
 {{#compare schema.collectionPermissionFilter.read 'includes' 'self' }}
     // schema.collectionPermissionFilter.read includes self
     query.{{userKeyField}} = user._id;
@@ -56,10 +59,12 @@ export default {
 
 {{#each schema.fields}}
   {{#if this.filterable}}
-    if (isArray({{ @key }})) {
-      query.{{ @key }} = { $in: {{ @key }} };
+    if (isArray({{> inputFieldName ~}})) {
+      query.{{> inputFieldName }} = { $in: {{> inputFieldName }} };
+    } else if({{> inputFieldName }}) {
+      query.{{> inputFieldName }} = {{> inputFieldName }};
     }
-  {{/if}}
+  {{~/if}}
 {{/each}}
 
 {{#if isSearchable}}
@@ -93,7 +98,7 @@ export default {
     }
 {{/if}}
     /* #### PLOP_QUERY_VALIDATION_START #### */
-    {{schema.hooks.queryValidation}}
+    {{~schema.hooks.queryValidation}}
     /* #### PLOP_QUERY_VALIDATION_END #### */
 
     const query = { {{userKeyField}}: user._id };
@@ -115,7 +120,7 @@ export default {
     /* #### PLOP_QUERY_VALIDATION_START #### */
     {{~schema.hooks.queryValidation}}
     /* #### PLOP_QUERY_VALIDATION_END #### */
-     
+
     const query = {};
     const options = {};
 

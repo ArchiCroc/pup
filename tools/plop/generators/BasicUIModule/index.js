@@ -28,6 +28,8 @@ const uniformsFields = [
   'Text',
 ];
 
+const nonListFields = ['Select', 'CheckBoxes', 'CrossReferenceSelect', 'CrossReferenceSearch'];
+
 module.exports = {
   description: 'Create a new Basic UI module from a predefined Schema',
   prompts: async (inquirer) => {
@@ -58,7 +60,7 @@ module.exports = {
       schemaValues
         .filter((field) => field.input)
         .map(({ input, type }) => {
-          if (type.startsWith('[') || type === 'Object') {
+          if ((type.startsWith('[') || type === 'Object') && !nonListFields.includes(input)) {
             hasList = true;
           }
           return {
@@ -80,6 +82,7 @@ module.exports = {
         path: `uniforms-antd/ListItemField`,
       });
     }
+    data.hasListField = hasList;
 
     const actions = [
       {

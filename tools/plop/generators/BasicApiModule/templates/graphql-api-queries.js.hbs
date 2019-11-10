@@ -9,9 +9,9 @@
         {{#each schema.fields}}
           {{#if this.filterable}}
             {{#compare this.type 'in' 'String|Int|Float|Number'}}
-        {{ @key }}: [{{#compare this.type '===' 'Number'}}Float{{else}}{{this.type}}{{/compare}}]
+        {{#if this.input.name}}{{this.input.name}}{{else}}{{ @key }}{{/if}}: [{{cleanGraphqlType this.type}}]
              {{else}}
-        {{ @key }}: {{#compare this.type '===' 'Number'}}Float{{else}}{{this.type}}{{/compare}}
+        {{#if this.input.name}}{{this.input.name}}{{else}}{{ @key }}{{/if}}: {{cleanGraphqlType this.type}}
              {{/compare}}
           {{/if}}
         {{/each}}

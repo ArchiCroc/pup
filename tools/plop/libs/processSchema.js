@@ -115,9 +115,12 @@ function processSchema(input) {
 
   data.isSearchable = !!schemaFieldValues.find((field) => field.searchable);
   data.isFilterable = !!schemaFieldValues.find((field) => field.filterable);
+  data.hasGraphqlFilterable = !!schemaFieldValues.find(
+    (field) => field.filterable && field.filterable.query,
+  );
 
   // clean up field permissions
-  data.hasFieldPermissions = !!schemaFieldValues.findIndex((field) => field.permissions);
+  data.hasFieldPermissions = schemaFieldValues.findIndex((field) => field.permissions) !== -1;
   if (data.hasFieldPermissions) {
     schemaFieldValues.forEach((item, index) => {
       if (item.permissions) {

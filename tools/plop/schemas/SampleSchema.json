@@ -1,60 +1,127 @@
 { "fields": {
-  "_id": {
-    "primaryKey": true,
-    "type": "String",
-    "input": "Hidden",
-    "validate" : {
-      "max": 50,
-      "optional": true
+    "_id": {
+      "primaryKey": true,
+      "type": "String",
+      "input": "Hidden",
+      "validate" : {
+        "max": 50,
+        "optional": true
+      }
+    },
+    "slug": {
+      "urlKey": true,
+      "type": "String",
+      "input": "Text"
+    },
+    "isPublic": {
+      "type": "Boolean",
+      "input": "Bool",
+      "defaultValue": false
+    },
+    "title": {
+      "labelKey": true,
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+          "max": 100
+      }
+    },
+    "body": {
+      "type": "String",
+      "input": "LongText",
+      "validate": {
+        "optional": true
+      }
+    },
+    "createdAtUTC": {
+      "type": "DateTime",
+      "showInTableView": "Created At"
+    },
+    "createdById": {
+      "userKey": true,
+      "type": "String"
+    },
+    "createdBy": {
+      "type": "User"
+    },
+    "updatedAtUTC": {
+      "type": "DateTime"
+    },
+    "updatedById": {
+      "type": "String"
+    },
+    "updatedBy": {
+      "type": "User"
+    },
+    "comments": {
+      "type": "[Comment]"
+    },
+  "collectionBrand": {
+    "type": "CrossReference",
+    "input": {
+      "input": "CrossReferenceSelect", 
+      "name": "collectionBrandSlug",
+      "type": "String"
+    },
+    "reference": {
+      "type": "CollectionBrand",
+      "labelField": "name",
+      "valueField": "slug",
+      "query": "collectionBrands",
+      "edges": "collectionBrands",
+      "resolver": "CollectionBrandQueries.collectionBrand",
+    }, 
+    "showInDetailView": false,
+    "showInTableView": true,
+    "filterable": true
+    }
+ "updatedById": {
+      "userKey": true,
+      "type": "String",
+      "index": true,
+      "showInTableView": false,
+      "showInDetailView": false
+    },
+    "updatedBy": {
+      
+      "type": "CrossReference",
+      "inputName": "collectionBrandSlug",
+      "inputType": "String",
+      "referenceType": "User",
+      "referenceType": "CollectionBrand",
+      "referenceLabelField": "fullName",
+      "referenceValueField": "_id",
+      "userKey": true
     }
   },
-  "slug": {
-    "urlKey": true,
-    "type": "String",
-    "input": "Text"
-  },
-  "isPublic": {
-    "type": "Boolean",
-    "input": "Bool",
-    "defaultValue": false
-  },
-  "title": {
-    "labelKey": true,
-    "type": "String",
-    "input": "Text",
-    "validate" : {
-        "max": 100
+
+
+  "collectionBrandSlug": {
+      "type": "String",
+      "input": "CrossReferenceSelect",
+      "uniforms": {
+        "query": "collectionBrands",
+        "edges": "collectionBrands",
+        "labelField": "name",
+        "valueField": "slug"
+      },
+      "stripIdFromKey": "Slug",
+      "showInTableView": false,
+      "showInDetailView": false,
+      "filterable": true
+    },
+    "collectionBrand": {
+      "type": "CollectionBrand",
+      "resolver": "CollectionBrandQueries.collectionBrand",
+      "showInTableView": true,
+      "dataIndex": "name",
+      "filterable":{
+        "query": "collectionBrands",
+        "edges": "collectionBrands",
+        "labelField": "name",
+        "valueField": "slug",
+        "key": "collectionBrandSlug"
+      }
     }
-  },
-  "body": {
-    "type": "String",
-    "input": "LongText",
-    "validate": {
-      "optional": true
-    }
-  },
-  "createdAtUTC": {
-    "type": "DateTime",
-    "showInTableView": "Created At"
-  },
-  "createdById": {
-    "userKey": true,
-    "type": "String"
-  },
-  "createdBy": {
-    "type": "User"
-  },
-  "updatedAtUTC": {
-    "type": "DateTime"
-  },
-  "updatedById": {
-    "type": "String"
-  },
-  "updatedBy": {
-    "type": "User"
-  },
-  "comments": {
-    "type": "[Comment]"
-  }
 }
 }

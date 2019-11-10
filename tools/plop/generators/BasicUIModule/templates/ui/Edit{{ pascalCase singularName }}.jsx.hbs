@@ -10,13 +10,11 @@ import {{ pascalCase singularName }}Editor from './components/{{ pascalCase sing
 import Loading from '{{uiPathOffset}}../components/Loading';
 import NotFound from '{{uiPathOffset}}../pages/NotFound';
 import Remove{{ pascalCase singularName }}Button from './components/Remove{{ pascalCase singularName }}Button';
-{{#compare hasFieldPermissions '||' schema.permissions.delete}}
 import hasRole from '{{uiPathOffset}}../../modules/hasRole';
-{{/compare}}
 
 import { edit{{ pascalCase singularName }} as {{ camelCase singularName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
 
-const Edit{{ pascalCase singularName }} = ({ history, match{{#if hasFieldPermissions}}, roles{{/if}} }) => {
+const Edit{{ pascalCase singularName }} = ({ history, match, roles }) => {
   const { loading, data: { {{ camelCase singularName }} = undefined } = {} } = useQuery({{ camelCase singularName }}Query, { 
     variables: { {{ urlFieldKey }}: match.params.{{ urlFieldKey }} } 
   });
@@ -54,9 +52,7 @@ const Edit{{ pascalCase singularName }} = ({ history, match{{#if hasFieldPermiss
 Edit{{ pascalCase singularName }}.propTypes = {
   history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
-{{#if hasFieldPermissions}}
   roles: PropTypes.array.isRequired,
-{{/if}}
 };
 
 export default Edit{{ pascalCase singularName }};
