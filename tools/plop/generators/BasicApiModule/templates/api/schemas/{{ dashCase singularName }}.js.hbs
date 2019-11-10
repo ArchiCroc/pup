@@ -29,7 +29,7 @@ autoValue() {
   return this.value;
 },
 {{else}}
-  {{#compare (cleanSimpleSchemeType this.type) '===' 'ObjectID'}}
+  {{#compare (cleanSimpleSchemeType this.type) '===' 'Mongo.ObjectID'}}
 autoValue() {
   return parseObjectID(this.value);
 },
@@ -98,11 +98,13 @@ uniforms: {
 
 {{#compare fieldTypes 'includes' 'ObjectID'}}
 import { Mongo } from 'meteor/mongo';
-import parseObjectID from '{{apiPathOffset}}../../../modules/parseObjectID';
 {{/compare}}
 import Uniforms from 'uniforms';
 import SimpleSchema from 'simpl-schema';
 import i18n from 'meteor/universe:i18n';
+{{#compare fieldTypes 'includes' 'ObjectID'}}
+import parseObjectID from '{{apiPathOffset}}../../../modules/parseObjectID';
+{{/compare}}
 {{#each schema.schemaImports }}
 {{{this}}}
 {{/each}}
