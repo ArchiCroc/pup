@@ -1,42 +1,46 @@
 {{#*inline "schemaField"}}
-  {{~#compare this.type '!startsWith' '['}}
+  {{#if this.input}}
+    {{~#compare this.type '!startsWith' '['}}
 {{#compare name 'includes' '.'}}'{{name}}'{{else}}{{name}}{{/compare}}: {
   {{> schemaFieldBody}}
 },
-    {{#if this.fields}}
-      {{#each this.fields}}
-        {{~#compare this.type '&&' this.input}}
-          {{~#compare this.type '!startsWith' '['}}
+      {{#if this.fields}}
+        {{#each this.fields}}
+          {{~#compare this.type '&&' this.input}}
+            {{~#compare this.type '!startsWith' '['}}
 '{{@../name}}.{{@key}}': {
   {{> schemaFieldBody}}
 },
-        {{else}}
+          {{else}}
 '{{@../name}}.{{@key}}': {
   {{> arrayFieldBody}}
 },
 '{{@../name}}.{{@key}}.$': {
-  {{> schemaFieldBody}}
+  {{> schemaFieldBody isArrayKey=true}}
 },
+            {{/compare}}
           {{/compare}}
-        {{/compare}}
-      {{/each}}
-    {{/if}}
+        {{/each}}
+      {{/if}}
     {{else}}
 {{#compare name 'includes' '.'}}'{{name}}'{{else}}{{name}}{{/compare}}: {
   {{> arrayFieldBody}}
 },
 '{{name}}.$': {
-  {{> schemaFieldBody}}
+  {{> schemaFieldBody  isArrayKey=true}}
 },
-  {{/compare}}
+    {{/compare}}
+  {{/if}}
 {{/inline}}
 {{#*inline "schemaFieldBody"}}
 type: {{cleanSimpleSchemeType this.type}},
 {{#compare this.input '!=' 'Hidden'}}
 label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_label'),
 {{/compare}}
-{{#compare this.type '!==' '[Object]' '&&' this.defaultValue '!==' undefined}}
+{{#compare this.type '!==' '[Object]' '&&' this.defaultValue '!typeof' 'undefined'}}
+{{#unless isArrayKey}}
 defaultValue: {{#compare this.defaultValue 'typeof' 'string'}}'{{this.defaultValue}}'{{else}}{{this.defaultValue}}{{/compare}},
+{{/unless}}
 {{/compare}}
 {{~#if this.validate.optional}}
 optional: true,
@@ -93,16 +97,16 @@ uniforms: {
   {{/if}}
   {{!-- for cross references --}}
   {{#if this.reference.query}}
-   query: '{{this.reference.query}}',
+  query: '{{this.reference.query}}',
   {{/if}}
   {{#if this.reference.edges}}
-   edges: '{{this.reference.edges}}',
+  edges: '{{this.reference.edges}}',
   {{/if}}
   {{#if this.reference.labelField}}
-   labelField: '{{this.reference.labelField}}',
+  labelField: '{{this.reference.labelField}}',
   {{/if}}
   {{#if this.reference.valueField}}
-   valueField: '{{this.reference.valueField}}',
+  valueField: '{{this.reference.valueField}}',
   {{/if}}
 },
 {{/inline}}
@@ -164,13 +168,13 @@ const clean{{pascalCase @key}} = {{{this.clean}}};
 
 const {{ pascalCase singularName }}Schema = new SimpleSchema({
 {{#each schema.fields ~}}
-  {{~#compare this.type '&&' this.input}}
+  {{~#if this.type }}
     {{#compare this.type '===' 'CrossReference'}}
   {{> schemaField this.input reference=this.reference}}
     {{else}}
   {{> schemaField this name=@key}}
     {{/compare}}
-  {{/compare~}}
+  {{/if~}}
 {{~/each}}
   /* #### PLOP_SCHEMA_START #### */
   /* #### PLOP_SCHEMA_END #### */

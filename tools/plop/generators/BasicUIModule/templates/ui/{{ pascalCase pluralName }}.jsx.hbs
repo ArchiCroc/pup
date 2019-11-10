@@ -1,3 +1,32 @@
+{{#*inline "fieldName" ~}}
+{{#if this.input.name}}{{camelCase this.input.name}}{{else}}{{ @key }}{{/if}}
+{{~/inline~}}
+{{#*inline "pascalFieldName" ~}}
+{{#if this.input.name}}{{pascalCase this.input.name}}{{else}}{{pascalCase @key}}{{/if}}
+{{~/inline~}}
+{{#*inline "filterableFieldHook" ~}}
+  {{#compare (stripBrackets this.type) '===' 'Int' }}
+const [current{{ pascalCase name }}, setCurrent{{ pascalCase name }}] = useState(
+  {{ name }} && isString({{ name }}) ? [parseInt({{ name }}, 10)] : {{ name }} && {{ name }}.map(parseInt),
+);
+  {{/compare}}
+  {{#compare (stripBrackets this.type) 'in' 'Float|Number' }}
+const [current{{ pascalCase name }}, setCurrent{{ pascalCase name }}] = useState(
+  {{ name }} && isString({{ name }}) ? [parseFloat({{ name }}, 10)] : {{ name }} && {{ name }}.map(parseFloat),
+);
+  {{/compare}}
+  {{#compare (stripBrackets this.type) 'in' 'String|ObjectId' }}
+const [current{{ pascalCase name }}, setCurrent{{ pascalCase name }}] = useState(
+  {{ name }} && isString({{ name }}) ? [{{ name }}] : {{ name }},
+);
+  {{/compare}}
+  {{#compare this.type '===' 'Boolean' }}
+const [current{{ pascalCase name }}, setCurrent{{ pascalCase name }}] = useState(
+  {{ name }} && isString({{ name }}) ? !!({{ name }}.toLowerCase() === 'true') : {{ name }},
+);
+  {{/compare}}
+{{~/inline~}}
+
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
@@ -27,8 +56,9 @@ import { {{ camelCase pluralName }} as {{ camelCase pluralName }}Query } from '.
 const { Search } = Input;
 {{/if}}
 
+{{!-- if a filterable field has choices create a function to generate the correct object for antd Table  --}}
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '&&' this.choices}}
 function get{{pascalCase @key}}Filters() {
   const choices = [{{#each this.choices}}{{#compare this 'typeof' 'string'}}'{{this}}'{{else}}{{this}}{{/compare}}{{#unless @last}}, {{/unless}}{{/each}}];
   const filters = [];
@@ -37,7 +67,7 @@ function get{{pascalCase @key}}Filters() {
   }
   return filters;
 }
-  {{/if}}
+  {{/compare}}
 {{/each}}
 
 const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
@@ -50,9 +80,9 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
     search = null,
 {{/if}}
 {{#each schema.fields}}
-  {{#compare this.filterable '===' true}}
-    {{ @key }},
-  {{/compare}}
+  {{#if this.filterable}}
+    {{> fieldName }},
+  {{/if}}
 {{/each}}
   } = queryString.parse(location.search, { arrayFormat: 'comma' });
 
@@ -68,28 +98,13 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
   const [currentSearch, setCurrentSearch] = useState(search);
 {{/if}}
 {{#each schema.fields}}
-  {{#compare this.filterable '===' true}}
-     {{#compare (stripBrackets this.type) '===' 'Int' }}
-  const [current{{ pascalCase @key }}, setCurrent{{ pascalCase @key }}] = useState(
-    {{ @key }} && isString({{ @key }}) ? [parseInt({{ @key }}, 10)] : {{ @key }} && {{ @key }}.map(parseInt),
-  );
+  {{#if this.filterable}}
+    {{#compare this.type '===' 'CrossReference'}}
+  {{> filterableFieldHook this.input}}
+    {{else}}
+  {{> filterableFieldHook name=@key}}
     {{/compare}}
-    {{#compare (stripBrackets this.type) 'in' 'Float|Number' }}
-  const [current{{ pascalCase @key }}, setCurrent{{ pascalCase @key }}] = useState(
-    {{ @key }} && isString({{ @key }}) ? [parseFloat({{ @key }}, 10)] : {{ @key }} && {{ @key }}.map(parseFloat),
-  );
-    {{/compare}}
-    {{#compare (stripBrackets this.type) '===' 'String' }}
-  const [current{{ pascalCase @key }}, setCurrent{{ pascalCase @key }}] = useState(
-    {{ @key }} && isString({{ @key }}) ? [{{ @key }}] : {{ @key }},
-  );
-    {{/compare}}
-    {{#compare this.type '===' 'Boolean' }}
-  const [current{{ pascalCase @key }}, setCurrent{{ pascalCase @key }}] = useState(
-    {{ @key }} && isString({{ @key }}) ? !!({{ @key }}.toLowerCase() === 'true') : {{ @key }},
-  );
-    {{/compare}}
-  {{/compare}}
+  {{/if}}
 {{/each}}
 
   const { loading, data: { {{ camelCase pluralName }} } = {} } = useQuery({{ camelCase pluralName }}Query, {
@@ -103,23 +118,23 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
       search: currentSearch,
 {{/if}}
 {{#each schema.fields}}
-  {{#compare this.filterable '===' true}}
-      {{ @key }}: current{{ pascalCase @key }},
-  {{/compare}}
+  {{#if this.filterable}}
+      {{> fieldName }}: current{{> pascalFieldName}},
+  {{/if}}
 {{/each}}
     },
   });
 {{#each schema.fields}}
-  {{#if this.filterable.query}}
-    const { filters: {{camelCase @key}}Filters } = useQueryForFilters({
-    query: '{{this.filterable.query}}',
-    {{#if this.filterable.edges}}
-    edges: '{{this.filterable.edges}}',
+  {{#compare this.filterable '&&' this.reference}}
+  const { filters: {{camelCase @key}}Filters } = useQueryForFilters({
+    query: '{{this.reference.query}}',
+    {{#if this.reference.edges}}
+    edges: '{{this.reference.edges}}',
     {{/if}}
-    labelField: '{{this.filterable.labelField}}',
-    valueField: '{{this.filterable.valueField}}',
+    labelField: '{{this.reference.labelField}}',
+    valueField: '{{this.reference.valueField}}',
   });
-  {{/if}}
+  {{/compare}}
 {{/each}}
   const columns = [
 {{#each schema.fields ~}}
@@ -161,13 +176,13 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
       {{~#compare this.type '===' '[String]'}}.map((item) => i18n.__(`{{ pascalCase @root.name }}.{{@key}}_${item}`)){{/compare}}.join(', '),
       {{/compare}}
       {{#compare this.filterable '&&' this.choices}}
-      filteredValue: current{{ pascalCase @key }},
-      filters: get{{pascalCase @key}}Filters(),
+      filteredValue: current{{> pascalFieldName }},
+      filters: get{{> pascalFieldName }}Filters(),
       {{/compare}}
-      {{#if this.filterable.query}}
-      filteredValue: current{{ pascalCase @key }},
-      filters: get{{pascalCase @key}}Filters(),
-      {{/if}}
+      {{#compare this.filterable '&&' this.reference}}
+      filteredValue: current{{> pascalFieldName }},
+      filters: {{camelCase @key}}Filters,
+      {{/compare}}
     },
     {{/compare}}
   {{/compare}}
@@ -194,7 +209,7 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
       {{/if}}
       {{#each schema.fields}}
         {{#if this.filterable}}
-          {{ @key }}: current{{ pascalCase @key }},
+          {{> fieldName }}: current{{> pascalFieldName }},
         {{/if}}
       {{/each}}  
         },
@@ -209,7 +224,7 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
     const {
   {{#each schema.fields}}
     {{#if this.filterable}}
-      {{ @key }}: new{{ pascalCase @key }} = null,
+      {{#if this.dataIndex}}'{{@key}}.{{this.dataIndex}}'{{else}}{{> fieldName }}{{/if}}: new{{> pascalFieldName }} = null,
     {{/if}}
   {{/each}}  
     } = filters;
@@ -222,7 +237,7 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
     setCurrentSort(sorter.field);
 {{#each schema.fields}}
   {{#if this.filterable}}
-    setCurrent{{ pascalCase @key }}(new{{ pascalCase @key }});
+    setCurrent{{> pascalFieldName }}(new{{> pascalFieldName }});
   {{/if}}
 {{/each}}  
 
@@ -238,7 +253,7 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
       {{/if}}
       {{#each schema.fields}}
         {{#if this.filterable}}
-          {{ @key }}: new{{ pascalCase @key }},
+          {{> fieldName }}: new{{> pascalFieldName }},
         {{/if}}
       {{/each}}  
         },

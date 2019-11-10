@@ -1,3 +1,10 @@
+{{#*inline "schemaField"}}
+  {{#compare this.type 'in' 'String|Int|Float|Number'}}
+{{ name }}: [{{cleanGraphqlType this.type}}]
+  {{else}}
+{{ name }}: {{cleanGraphqlType this.type}}
+  {{/compare}}
+{{/inline }}
       #### {{ constantCase pluralName }}_QUERY_TYPES_START ####
       {{ camelCase pluralName }}(
         _ids: [String]
@@ -8,10 +15,10 @@
         search: String
         {{#each schema.fields}}
           {{#if this.filterable}}
-            {{#compare this.type 'in' 'String|Int|Float|Number'}}
-        {{#if this.input.name}}{{this.input.name}}{{else}}{{ @key }}{{/if}}: [{{cleanGraphqlType this.type}}]
+            {{#compare this.input 'typeof' 'object'}}
+        {{> schemaField this.input}}
              {{else}}
-        {{#if this.input.name}}{{this.input.name}}{{else}}{{ @key }}{{/if}}: {{cleanGraphqlType this.type}}
+        {{> schemaField name=@key}}
              {{/compare}}
           {{/if}}
         {{/each}}

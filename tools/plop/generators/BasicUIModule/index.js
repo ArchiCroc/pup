@@ -58,8 +58,16 @@ module.exports = {
     let hasList = false;
     data.fieldImports = _.uniqBy(
       schemaValues
-        .filter((field) => field.input)
+        .filter(
+          (field) =>
+            (typeof field.input === 'object' && field.input.input) ||
+            typeof field.input === 'string',
+        )
         .map(({ input, type }) => {
+          if (typeof input === 'object') {
+            type = input.type;
+            input = input.input;
+          }
           if ((type.startsWith('[') || type === 'Object') && !nonListFields.includes(input)) {
             hasList = true;
           }

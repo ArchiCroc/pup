@@ -1,13 +1,17 @@
 fragment {{ pascalCase singularName }}Attributes on {{ pascalCase singularName }} {
-  {{#each schema.fields ~}}
+{{#each schema.fields ~}}
     {{!-- {{~#compare this.showInTableView '||' this.input }} --}}
-      {{#if dataIndex}}
-  {{convertDataIndexToGraphqlSubQuery (concat @key '.' dataIndex) 1}}
-      {{else}}
+  {{#if this.dataIndex}}
+  {{convertDataIndexToGraphqlSubQuery (concat @key '.' this.dataIndex) 3}}
+  {{else}}
+    {{#if this.reference.labelField}}
+  {{convertDataIndexToGraphqlSubQuery (concat @key '.' this.reference.labelField) 3}}
+    {{else}}
   {{@key}}
-      {{/if}}
+  {{/if}}
+  {{/if}}
     {{!-- {{/compare~}} --}}
-  {{~/each}}
+{{~/each}}
 }
 
 

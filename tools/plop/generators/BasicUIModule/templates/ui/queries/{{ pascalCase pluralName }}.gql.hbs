@@ -1,3 +1,14 @@
+{{#*inline "filterParameter"}}
+  {{#compare this.type 'in' 'String|Int|Float|Number'}}
+${{ name }}: [{{cleanGraphqlType this.type}}],
+  {{else}}
+${{ name }}: {{cleanGraphqlType this.type}},
+  {{/compare}}
+{{/inline}}
+{{#*inline "queryParameter"}}
+{{ name }}: ${{name}},
+{{/inline~}}
+
 #import "../fragments/{{ pascalCase pluralName }}.gql"
 
 query {{ camelCase pluralName }}(
@@ -9,10 +20,10 @@ query {{ camelCase pluralName }}(
   $order: String,
 {{#each schema.fields}}
   {{#if this.filterable}}
-    {{#compare this.type 'in' 'String|Int|Float|Number'}}
-  ${{ @key }}: [{{#compare this.type '===' 'Number'}}Float{{else}}{{this.type}}{{/compare}}],
+    {{#compare this.input 'typeof' 'object'}}
+  {{> filterParameter this.input}}
     {{else}}
-  ${{ @key }}: {{#compare this.type '===' 'Number'}}Float{{else}}{{this.type}}{{/compare}},
+  {{> filterParameter name=@key}}
     {{/compare}}
   {{/if}}
 {{/each}}
@@ -26,7 +37,11 @@ query {{ camelCase pluralName }}(
     order: $order,
 {{#each schema.fields}}
   {{#if this.filterable}}
-    {{ @key }}: ${{@key}},
+    {{#compare this.input 'typeof' 'object'}}
+    {{> queryParameter this.input}}
+    {{else}}
+    {{> queryParameter name=@key}}
+    {{/compare}}
   {{/if}}
 {{/each}}
   ) {
@@ -35,12 +50,16 @@ query {{ camelCase pluralName }}(
       {{primaryFieldKey}}
       {{#compare primaryFieldKey '!==' urlFieldKey}}{{urlFieldKey}}{{/compare}}
 {{#each schema.fields ~}}
-  {{~#compare this.showInTableView '!==' false '&&' @key '!==' primaryFieldKey}}
-    {{~#compare this.input '||' this.showInTableView '&&' @key '!==' urlFieldKey }}
-      {{#if dataIndex}}
-      {{convertDataIndexToGraphqlSubQuery (concat @key '.' dataIndex) 3}}
+  {{~#compare this.showInTableView '!==' false '&&' @key '!==' @root.primaryFieldKey}}
+    {{~#compare this.input '||' this.showInTableView '&&' @key '!==' @root.urlFieldKey }}
+      {{#if this.dataIndex}}
+      {{convertDataIndexToGraphqlSubQuery (concat @key '.' this.dataIndex) 3}}
       {{else}}
+        {{#if this.reference.labelField}}
+      {{convertDataIndexToGraphqlSubQuery (concat @key '.' this.reference.labelField) 3}}
+        {{else}}
       {{@key}}
+        {{/if}}
       {{/if}}
     {{/compare~}}
   {{/compare~}}
@@ -52,6 +71,11 @@ query {{ camelCase pluralName }}(
 query edit{{ pascalCase singularName }}(${{ primaryFieldKey }}: {{ primaryField.type }}{{#compare primaryFieldKey '!==' urlFieldKey }}, ${{ urlFieldKey }}: {{ urlField.type }}{{/compare}}) {
   {{ camelCase singularName }}({{ primaryFieldKey }}: ${{ primaryFieldKey }}{{#compare primaryFieldKey '!==' urlFieldKey }}, {{ urlFieldKey }}: ${{ urlFieldKey }}{{/compare}}) {
     ...{{ pascalCase singularName }}Attributes
+{{#each schema.fields ~}}
+  {{~#compare this.input 'typeof' 'object' '&&' this.input.input 'typeof' 'string'}}
+  {{this.input.name}}
+  {{/compare}}
+{{/each}}
   }
 }
 

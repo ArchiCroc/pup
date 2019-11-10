@@ -61,10 +61,10 @@ export default {
   {{#if this.filterable}}
     if (isArray({{> inputFieldName ~}})) {
       query.{{> inputFieldName }} = { $in: {{> inputFieldName }} };
-    } else if({{> inputFieldName }}) {
+    } else if ({{> inputFieldName }}) {
       query.{{> inputFieldName }} = {{> inputFieldName }};
     }
-  {{~/if}}
+  {{/if}}
 {{/each}}
 
 {{#if isSearchable}}

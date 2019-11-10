@@ -1,3 +1,16 @@
+
+{{#*inline "fieldInput" }}
+{{#compare this.type '&&' this.input}}
+  {{#compare this.type 'in' 'Object|[String]|[Int]|[Number]' '&&' this.input '!in' 'CrossReferenceSelect|CrossReferenceSearch|Select|Checkboxes'}}
+<ListField name="{{name }}">
+  <ListItemField name="$" />
+</ListField>
+  {{else}}
+<{{ pascalCase this.input }}Field name="{{name }}" />
+  {{/compare}}
+{{/compare}}
+{{/inline~}}
+
 /* eslint-disable max-len, no-return-assign */
 
 import React from 'react';
@@ -28,7 +41,7 @@ const {{ pascalCase singularName }}Editor = ({ doc, history{{#if hasFieldPermiss
   const [save{{ pascalCase singularName }}] = useMutation(save{{ pascalCase singularName }}Mutation, {
     ignoreResults: true,
     onCompleted: () => {
-      message.success(i18n.__('{{ pascalCase pluralName }}.{{ snakeCase singularName }}_saved'));
+      message.success(i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_saved'));
       history.push('/{{ uiFolderName }}');
     },
     onError: (error) => {
@@ -69,16 +82,12 @@ const {{ pascalCase singularName }}Editor = ({ doc, history{{#if hasFieldPermiss
        doc.{{@root.primaryFieldKey}} ? [{{#each this.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]:[{{#each this.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && (
     {{/compare}}
   {{/compare}}
-  {{#compare this.type '&&' this.input}}
-    {{#compare this.type 'in' 'Object|[String]|[Int]|[Number]' '&&' this.input '!in' 'CrossReferenceSelect|CrossReferenceSearch|Select|Checkboxes'}}
-        <ListField name="{{ camelCase @key }}">
-          <ListItemField name="$" />
-        </ListField>
-    {{else}}
-        <{{ pascalCase this.input }}Field name="{{ @key }}" />
-    {{/compare}}
+  {{#compare this.input 'typeof' 'object'}}
+    {{> fieldInput this.input}}
+  {{else}}
+    {{> fieldInput name=@key}}
   {{/compare}}
-    {{#compare this.permissions.create '||' this.permissions.update}}
+  {{#compare this.permissions.create '||' this.permissions.update}}
   )}
   {{/compare}}
 {{~/each}}

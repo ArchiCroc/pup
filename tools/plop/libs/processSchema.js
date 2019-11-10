@@ -116,29 +116,32 @@ function processSchema(input) {
   data.isSearchable = !!schemaFieldValues.find((field) => field.searchable);
   data.isFilterable = !!schemaFieldValues.find((field) => field.filterable);
   data.hasGraphqlFilterable = !!schemaFieldValues.find(
-    (field) => field.filterable && field.filterable.query,
+    (field) => field.filterable && field.type === 'CrossReference',
   );
 
   // clean up field permissions
   data.hasFieldPermissions = schemaFieldValues.findIndex((field) => field.permissions) !== -1;
-  if (data.hasFieldPermissions) {
-    schemaFieldValues.forEach((item, index) => {
-      if (item.permissions) {
-        // eslint-disable-next-line
-        for (let permissionKey in item.permissions) {
-          const permission = item.permissions[permissionKey];
-          if (typeof permission === 'string' && permission !== 'everyone') {
-            item.permissions[permissionKey] = [permission];
-          } else {
-            // remove everyone, we will assume that none == everyone
-            item.permissions[permissionKey] = !permission.includes('everyone')
-              ? permission
-              : undefined;
-          }
+  // if (data.hasFieldPermissions) {
+  schemaFieldValues.forEach((item, index) => {
+    if (item.permissions) {
+      // eslint-disable-next-line
+      for (let permissionKey in item.permissions) {
+        const permission = item.permissions[permissionKey];
+        if (typeof permission === 'string' && permission !== 'everyone') {
+          item.permissions[permissionKey] = [permission];
+        } else {
+          // remove everyone, we will assume that none == everyone
+          item.permissions[permissionKey] = !permission.includes('everyone')
+            ? permission
+            : undefined;
         }
       }
-    });
-  }
+    }
+    if (!item.dataIndex && item.reference && item.reference.labelField) {
+      item.dataIndex = item.reference.labelField;
+    }
+  });
+  //}
 
   // stash these back to cover the case where they got built from scratch
   schema.fields = schemaFields;
