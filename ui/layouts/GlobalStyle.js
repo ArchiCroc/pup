@@ -28,6 +28,7 @@ const GlobalStyle = createGlobalStyle`
     position: relative;
     min-height: 100%;
     height: auto;
+    background: #f0f2f5;
   }
 
   body {
