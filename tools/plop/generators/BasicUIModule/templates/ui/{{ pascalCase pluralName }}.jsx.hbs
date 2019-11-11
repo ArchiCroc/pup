@@ -15,7 +15,7 @@ const [current{{ pascalCase name }}, setCurrent{{ pascalCase name }}] = useState
   {{ name }} && isString({{ name }}) ? [parseFloat({{ name }}, 10)] : {{ name }} && {{ name }}.map(parseFloat),
 );
   {{/compare}}
-  {{#compare (stripBrackets this.type) 'in' 'String|ObjectId' }}
+  {{#compare (stripBrackets this.type) 'in' 'String|ObjectID' }}
 const [current{{ pascalCase name }}, setCurrent{{ pascalCase name }}] = useState(
   {{ name }} && isString({{ name }}) ? [{{ name }}] : {{ name }},
 );

@@ -2,7 +2,7 @@
     {{ pascalCase singularName }}: {
 {{#each schema.fields }}
   {{#if this.resolver}}
-      {{@key}}: {{this.resolver}},
+      {{@key}}: {{{this.resolver}}},
   {{else}}
     {{#compare this.type '===' 'User' '||' this.reference.type '===' 'User'}}
       {{@key}}: (parent, args, context) =>

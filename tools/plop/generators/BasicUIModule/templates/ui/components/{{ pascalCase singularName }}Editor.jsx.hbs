@@ -83,9 +83,9 @@ const {{ pascalCase singularName }}Editor = ({ doc, history{{#if hasFieldPermiss
     {{/compare}}
   {{/compare}}
   {{#compare this.input 'typeof' 'object'}}
-    {{> fieldInput this.input}}
+      {{> fieldInput this.input}}
   {{else}}
-    {{> fieldInput name=@key}}
+      {{> fieldInput name=@key}}
   {{/compare}}
   {{#compare this.permissions.create '||' this.permissions.update}}
   )}

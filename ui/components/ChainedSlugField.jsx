@@ -24,7 +24,7 @@ const ChainedSlugField = (props, { uniforms }) => {
   if (typeof uniforms.model[props.sourceField] === 'string') {
     sourceValue = toSlug(uniforms.model[props.sourceField]);
     if (prevSelfValue === prevSourceValue) {
-      //console.log(`should update (${prevSelfValue}), (${prevSourceValue})`);
+      // console.log(`should update (${prevSelfValue}), (${prevSourceValue})`);
       // the fields were synced so we should continue to update it
 
       if (sourceValue !== prevSourceValue) {
@@ -38,7 +38,7 @@ const ChainedSlugField = (props, { uniforms }) => {
   }
 
   useEffect(() => {
-    if (!currentValue) {
+    if (currentValue) {
       uniforms.onChange(props.name, prevSourceValue);
     }
   }, [prevSourceValue]);
