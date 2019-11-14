@@ -1,36 +1,83 @@
-{ "fields": {
+{ "name": "Samples",
+  "permissions": {
+    "read": "user",
+    "save": "admin",
+    "delete": "admin"
+  },
+  "menu": {
+    "index": "admin"
+  },    
+  "schemaImports": ["import slugify from 'slugify';"],
+  "fields": {
     "_id": {
       "primaryKey": true,
-      "type": "String",
+      "type": "ObjectID",
       "input": "Hidden",
       "validate" : {
-        "max": 50,
+        "max": 24,
         "optional": true
+      }
+    },
+    "name": {
+      "labelKey": true,
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+          "max": 64
       }
     },
     "slug": {
       "urlKey": true,
       "type": "String",
-      "input": "Text"
-    },
-    "isPublic": {
-      "type": "Boolean",
-      "input": "Bool",
-      "defaultValue": false
-    },
-    "title": {
-      "labelKey": true,
-      "type": "String",
-      "input": "Text",
+      "input": "ChainedSlug",
       "validate" : {
-          "max": 100
+        "max": 48
+      },
+      "clean": "(item) => slugify(item, { lower: true});",
+      "showInTableView": false,
+      "uniforms": {
+        "sourceField": "name"
       }
     },
-    "body": {
-      "type": "String",
-      "input": "LongText",
-      "validate": {
-        "optional": true
+    "weight": {
+      "type": "Float",
+      "input": "Text",
+      "showInTableView": false,
+      "validate" : {
+          "optional": true
+      }
+    },
+    "dimensions": {
+      "type": "Object",
+      "showInTableView": false,
+      "validate" : {
+          "optional": true
+      },
+      "fields": {
+        "width": {
+          "type": "Float",
+          "input": "Text",
+          "showInTableView": false,
+          "validate" : {
+              "optional": true
+          }
+        },
+        "height": {
+          "type": "Float",
+          "input": "Text",
+          "showInTableView": false,  
+          "validate" : {
+              "optional": true
+          }
+        },
+        "depth": {
+          "type": "Float",
+          "input": "Text",
+          "showInTableView": false,
+          "validate" : {
+              "optional": true
+          }
+        }
       }
     },
     "createdAtUTC": {
@@ -67,5 +114,7 @@
       },
       "showInTableView": false
     }
-  }
+  },
+  "defaultSortField": "name",
+  "defaultSortOrder": "ascend"
 }

@@ -1,6 +1,6 @@
 { "name": "Collection/Brands",
   "permissions": {
-    "read": "admin",
+    "read": "user",
     "save": "admin",
     "delete": "admin"
   },
@@ -11,7 +11,7 @@
   "fields": {
     "_id": {
       "primaryKey": true,
-      "type": "String",
+      "type": "ObjectID",
       "input": "Hidden",
       "validate" : {
         "max": 24,

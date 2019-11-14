@@ -58,6 +58,18 @@ const GlobalStyle = createGlobalStyle`
     cursor: pointer
   }
 
+  form fieldset {
+    padding-left: 24px;
+  }
+  form legend {
+    font-size: 14px;
+    margin-left: -24px;
+  }
+
+  form fieldset .ant-form-item {
+    font-size: 12px;
+  }
+
   form label {
     display: block;
   }

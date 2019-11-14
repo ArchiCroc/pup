@@ -1,7 +1,31 @@
 {{#*inline "inputLabel" ~}}
 {{#if this.label}}{{this.label}}{{else}}{{titleCase @key}}{{/if}}
-{{~/inline~}}
-
+{{~/inline}}
+{{#*inline "inputField" ~}}
+{{#compare (snakeCase name) '==' (snakeCase @root.shortSingularName) '||' (snakeCase name) 'in' 'save|yes|no|cancel|remove'  }}# {{/compare}}
+{{~ snakeCase name}}: {{#compare this.showInTableView 'typeof' 'string'}}{{this.showInTableView}}{{else}}{{#compare this.showInDetailView 'typeof' 'string'}}{{this.showInDetailView}}{{else}}{{ titleCase @key}}{{/compare}}{{/compare}}
+  {{#if this.input}}
+{{snakeCase name}}_label: {{> inputLabel}}
+  {{#compare this.type '!=' 'Boolean'  }}
+    {{#compare this.input 'in' 'Array|Select|Options|Dropdown|CrossReferenceSelect|CrossReferenceSearch|Checkboxes'  }}
+{{snakeCase name}}_placeholder: Select {{> inputLabel}}
+      {{#compare this.choices 'typeof' 'object'}}
+        {{#each this.choices}}
+{{snakeCase ../name}}_{{this}}: {{name}}
+        {{/each}}
+      {{else}}
+        {{#compare this.choices 'typeof' 'array'}}
+          {{#each this.choices}}
+{{snakeCase ../name}}_{{this}}: {{titleCase this}}
+          {{/each}}
+        {{/compare}}
+      {{/compare}}
+    {{else}}
+{{snakeCase name}}_placeholder: {{> inputLabel}}
+    {{/compare}}
+  {{/compare}}
+  {{/if}}
+{{/inline~}}
 _namespace: {{ pascalCase pluralName }}
 
 {{ snakeCase shortSingularName }}: {{ titleCase shortSingularName }}
@@ -34,31 +58,14 @@ blank_state_subtitle: ""
 #### PLOP_FIELDS_START ####
 {{#each schema.fields}}
   {{!-- {{#compare this.showInTableView '!==' false '||' this.showInDetailView '!==' false}} --}}
-    {{#compare this.input '!=' 'Hidden'}}
-{{#compare (snakeCase @key) '==' (snakeCase @root.shortSingularName) '||' (snakeCase @key) 'in' 'save|yes|no|cancel|remove'  }}# {{/compare}}
-{{~ snakeCase @key}}: {{#compare this.showInTableView 'typeof' 'string'}}{{this.showInTableView}}{{else}}{{#compare this.showInDetailView 'typeof' 'string'}}{{this.showInDetailView}}{{else}}{{ titleCase @key}}{{/compare}}{{/compare}}
-      {{#if this.input}}
-{{snakeCase @key}}_label: {{> inputLabel}}
-        {{#compare this.type '!=' 'Boolean'  }}
-          {{#compare this.input 'in' 'Array|Select|Options|Dropdown|CrossReferenceSelect|CrossReferenceSearch|Checkboxes'  }}
-{{snakeCase @key}}_placeholder: Select {{> inputLabel}}
-            {{#compare this.choices 'typeof' 'object'}}
-              {{#each this.choices}}
-{{snakeCase @../key}}_{{this}}: {{@key}}
-              {{/each}}
-            {{else}}
-              {{#compare this.choices 'typeof' 'array'}}
-                {{#each this.choices}}
-{{snakeCase @../key}}_{{this}}: {{titleCase this}}
-                {{/each}}
-              {{/compare}}
-            {{/compare}}
-          {{else}}
-{{snakeCase @key}}_placeholder: {{> inputLabel}}
-          {{/compare}}
-        {{/compare}}
-      {{/if}}
-    {{/compare}}
+  {{#compare this.input '!=' 'Hidden'}}
+{{> inputField name=@key}}
+    {{#if this.fields}}
+      {{#each this.fields}}
+{{> inputField this name=(concat @../key "_" @key) }}
+      {{/each}}
+    {{/if}}
+  {{/compare}}
   {{!-- {{/compare}} --}}
 {{/each}}
 #### PLOP_FIELDS_END ####

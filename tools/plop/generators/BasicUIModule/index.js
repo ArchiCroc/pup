@@ -68,7 +68,7 @@ module.exports = {
             type = input.type;
             input = input.input;
           }
-          if ((type.startsWith('[') || type === 'Object') && !nonListFields.includes(input)) {
+          if ((type.startsWith('[') && !nonListFields.includes(input)) || input === 'list') {
             hasList = true;
           }
           return {

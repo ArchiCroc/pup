@@ -39,6 +39,49 @@
       "type": "Int",
       "input": "Text",
       "showInTableView": false
+      
+    },
+    "weight": {
+      "type": "Float",
+      "input": "Text",
+      "showInTableView": false,
+      "validate" : {
+          "optional": true
+      }
+    },
+    "dimensions": {
+      "type": "Object",
+      "input": "Text",
+      "showInTableView": false,
+      "validate" : {
+          "optional": true
+      },
+      "fields": {
+        "width": {
+          "type": "Float",
+          "input": "Text",
+          "showInTableView": false,
+          "validate" : {
+              "optional": true
+          }
+        },
+        "height": {
+          "type": "Float",
+          "input": "Text",
+          "showInTableView": false,  
+          "validate" : {
+              "optional": true
+          }
+        },
+        "depth": {
+          "type": "Float",
+          "input": "Text",
+          "showInTableView": false,
+          "validate" : {
+              "optional": true
+          }
+        }
+      }
     },
     "themes": {
       "type": "CrossReference",
@@ -57,7 +100,7 @@
         "labelField": "name",
         "valueField": "_id"
       },
-      "resolver": "collectionThemeQueries.collectionTheme",
+      "resolver": "(parent, args, context) => CollectionThemeQueries.collectionTheme(parent, { _id: parent.themeIds }, context)",
       "showInTableView": true
     },
     "partCount": {
@@ -88,18 +131,19 @@
             "labelField": "name",
             "valueField": "_id"
           },
-          "resolver": "collectionElementQueries.collectionElement",
+          "resolver": "(parent, args, context) =>CollectionElementQueries.collectionElement(parent, { _id: parent.elementId }, context)",
           "showInTableView": true,
           "dataIndex": "name"
         },
-        "partCount": {
+        "quantity": {
           "type": "Int",
           "input": "Text",
           "showInTableView": false
         },
-        "spareCount": {
+        "spareQuantity": {
           "type": "Int",
           "input": "Text",
+          "defaultValue": 0,
           "showInTableView": false
         }
       }

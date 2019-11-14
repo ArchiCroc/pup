@@ -1,12 +1,21 @@
 
 {{#*inline "fieldInput" }}
-{{#compare this.type '&&' this.input}}
-  {{#compare this.type 'in' 'Object|[String]|[Int]|[Number]' '&&' this.input '!in' 'CrossReferenceSelect|CrossReferenceSearch|Select|Checkboxes'}}
+{{#compare this.input '||' this.fields}}
+  {{#compare this.type 'in' '[Object]|[String]|[Int]|[Number]' '&&' this.input '!in' 'CrossReferenceSelect|CrossReferenceSearch|Select|Checkboxes'}}
 <ListField name="{{name }}">
   <ListItemField name="$" />
 </ListField>
   {{else}}
-<{{ pascalCase this.input }}Field name="{{name }}" />
+    {{#compare this.type 'in' 'Object' '&&' this.fields 'typeof' 'object'}}
+<fieldset>
+  <legend>{i18n.__('{{pascalCase @root.pluralName}}.{{name}}')}:</legend>
+      {{#each this.fields}}
+  <{{ pascalCase this.input }}Field name="{{../name}}.{{@key}}" />
+      {{/each}}
+</fieldset>
+    {{else}}
+<{{ pascalCase this.input }}Field name="{{name}}" />
+    {{/compare}}
   {{/compare}}
 {{/compare}}
 {{/inline~}}
@@ -82,11 +91,13 @@ const {{ pascalCase singularName }}Editor = ({ doc, history{{#if hasFieldPermiss
        doc.{{@root.primaryFieldKey}} ? [{{#each this.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]:[{{#each this.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && (
     {{/compare}}
   {{/compare}}
+  {{#if this.type}}
   {{#compare this.input 'typeof' 'object'}}
-      {{> fieldInput this.input}}
+        {{> fieldInput this.input}}
   {{else}}
-      {{> fieldInput name=@key}}
+        {{> fieldInput name=@key}}
   {{/compare}}
+  {{/if}}
   {{#compare this.permissions.create '||' this.permissions.update}}
   )}
   {{/compare}}
