@@ -136,7 +136,7 @@ uniforms: {
     {{/compare}}
   {{/compare}}
   {{#each this.uniforms}}
-  {{name}}: {{#compare this 'typeof' 'string'}}'{{{this}}}'{{else}}{{this}}{{/compare}},
+  {{@key}}: {{#compare this 'typeof' 'string'}}'{{{this}}}'{{else}}{{this}}{{/compare}},
   {{/each}}
   {{#compare this.type 'startsWith' '[' '&&' (stripBrackets this.type) 'in' 'Select|CrossReferenceSearch|CrossReferenceSelect' }}
   multiple: true  
