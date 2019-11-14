@@ -112,6 +112,9 @@ function processSchema(input) {
   }
   data.labelFieldKey = schemaFieldKeys[labelKeyIndex];
   data.labelField = schemaFields[data.labelFieldKey];
+  if (data.labelField.searchable !== false) {
+    data.labelField.searchable = true;
+  }
 
   data.isSearchable = !!schemaFieldValues.find((field) => field.searchable);
   data.isFilterable = !!schemaFieldValues.find((field) => field.filterable);

@@ -9,7 +9,11 @@
           {{~#compare this.type '&&' this.input}}
             {{~#compare this.type '!startsWith' '['}}
 '{{../name}}.{{@key}}': {
+              {{#compare this.input 'typeof' 'object'}}
+  {{> schemaFieldBody this.input name=(concat ../name "_" @key)}}
+              {{else}}
   {{> schemaFieldBody name=(concat ../name "_" @key)}}
+              {{/compare}}
 },
           {{else}}
 '{{../name}}.{{@key}}': {

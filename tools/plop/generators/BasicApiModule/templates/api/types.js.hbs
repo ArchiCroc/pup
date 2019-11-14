@@ -50,9 +50,9 @@ input {{ pascalCase @root.singularName }}{{ pascalCase @key }}Input {
   {{#each this.fields ~}}
     {{~#compare this.type '&&' this.input}}
       {{#compare this.input 'typeof' 'object'}}
-  {{> schemaFieldType this.input }}
+  {{> schemaFieldInput this.input }}
       {{else}}
-  {{> schemaFieldType name=@key}}
+  {{> schemaFieldInput name=@key}}
       {{/compare}}
     {{/compare~}}
   {{/each}}
@@ -65,9 +65,9 @@ input {{ pascalCase singularName }}Input {
 {{#each schema.fields }}
   {{~#compare this.type '&&' this.input '&&' this.input.input '!typeof' undefined}}
     {{#compare this.input 'typeof' 'object'}}
-  {{> schemaFieldType this.input }}
+  {{> schemaFieldInput this.input }}
     {{else}}
-  {{> schemaFieldType name=@key}}
+  {{> schemaFieldInput name=@key}}
     {{/compare}}
   {{/compare~}}
 {{/each~}}
