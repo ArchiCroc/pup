@@ -54,9 +54,37 @@ module.exports = {
 
     const schemaKeys = Object.keys(data.schema.fields);
     const schemaValues = Object.values(data.schema.fields);
+    // push all the sub fields to the schemaValues
+    schemaValues.forEach((field) => {
+      if (field.fields) {
+        for (let currentField of Object.values(field.fields)) {
+          schemaValues.push(currentField);
+        }
+      }
+    });
 
-    let hasList = false;
-    data.fieldImports = _.uniqBy(
+    let hasList = schemaValues.find(({ input, type }) => {
+      if (typeof input === 'object') {
+        type = input.type;
+        input = input.input;
+      }
+      return (type.startsWith('[') && !nonListFields.includes(input)) || input === 'list';
+    });
+
+    let fieldImports = [];
+
+    if (hasList) {
+      fieldImports.push({
+        variable: `ListField`,
+        path: `uniforms-antd/ListField`,
+      });
+      fieldImports.push({
+        variable: `ListItemField`,
+        path: `uniforms-antd/ListItemField`,
+      });
+    }
+
+    fieldImports = fieldImports.concat(
       schemaValues
         .filter(
           (field) =>
@@ -68,9 +96,7 @@ module.exports = {
             type = input.type;
             input = input.input;
           }
-          if ((type.startsWith('[') && !nonListFields.includes(input)) || input === 'list') {
-            hasList = true;
-          }
+
           return {
             variable: `${input}Field`,
             path: uniformsFields.includes(input)
@@ -78,18 +104,9 @@ module.exports = {
               : `${data.uiPathOffset}../../components/${input}Field`,
           };
         }),
-      'variable',
     );
-    if (hasList) {
-      data.fieldImports.push({
-        variable: `ListField`,
-        path: `uniforms-antd/ListField`,
-      });
-      data.fieldImports.push({
-        variable: `ListItemField`,
-        path: `uniforms-antd/ListItemField`,
-      });
-    }
+
+    data.fieldImports = _.uniqBy(fieldImports, 'variable');
     data.hasListField = hasList;
 
     const actions = [

@@ -1,3 +1,61 @@
+{{#*inline "renderObject"}}
+
+{{/inline}}
+{{#*inline "renderArray"}}
+
+{{/inline}}
+{{#*inline "fieldKey" ~}}
+  {{~ name }}.{{@key~}}
+{{~/inline}}
+{{#*inline "fieldKeyAndDataIndex" ~}}
+  {{~#if this.dataIndex}}{{~> fieldKey }} && {{/if}}{{~> fieldKey }}{{#if this.dataIndex}}.{{ this.dataIndex }}{{/if ~}}
+{{~/inline}}
+{{#*inline "fieldKeyDataIndex" ~}}
+  {{~> fieldKey }}{{#if this.dataIndex}}.{{ this.dataIndex }}{{/if ~}}
+{{~/inline}}
+{{#*inline "renderValue"}}
+  {{#compare this.choices 'typeof' 'object'}}
+{ {{~> fieldKeyAndDataIndex }} && i18n.__(`{{ pascalCase @root.pluralName }}.{{ snakeCase @key }}_${ {{> fieldKeyDataIndex ~}} }`)}
+  {{else}}
+    {{#compare this.type '===' 'Object'}}
+{ {{~> fieldKeyAndDataIndex }} && (
+  <>
+{{#each this.fields}}
+    <div>
+      {i18n.__('{{pascalCase @root.pluralName}}.{{@../key}}_{{@key}}_label')}: {{> renderValue name=(concat ../name '.' @../key)}}
+    </div>
+{{/each}}
+  </>
+)}
+    {{/compare}}
+    {{#compare this.type '===' '[Object]'}}
+{ {{~> fieldKeyAndDataIndex }} && {{> fieldKeyDataIndex}}.map((item, index) => {
+  return (
+    <React.Fragment key={index}>
+{{#each this.fields}}
+      <div>
+        {i18n.__('{{pascalCase @root.pluralName}}.{{@../key}}_{{@key}}_label')}: {{> renderValue name="item"}}
+      </div>
+{{/each}}
+    </React.Fragment>
+   )
+})}
+    {{/compare}}
+    {{#compare this.type '===' 'Boolean'}}
+{ {{~> fieldKeyAndDataIndex }} && i18n.__(`{{ pascalCase name }}.${ {{~> fieldKeyDataIndex}}? 'yes' : 'no'}`)}
+    {{/compare}}
+    {{#compare this.type 'in' 'DateTime' }}
+{ {{~> fieldKeyAndDataIndex }} && <FormatDate timestamp={ {{~> fieldKeyDataIndex ~}} }{{#compare this.input '===' 'Date' }} format="MMMM Do, YYYY"{{/compare}} />}
+    {{/compare}}
+    {{#compare this.type '!in' '[Object]' '&&' this.type 'startsWith' '[' }}
+{ {{~> fieldKeyAndDataIndex }} && {{ camelCase (singular name) }}{{#if this.dataIndex}}.map((item) => item.{{ this.dataIndex }}){{/if}}.join(', ')}
+    {{/compare}}
+    {{#compare this.type '!in' 'Object|DateTime|Boolean' '&&' this.type '!startsWith' '[' }}
+{ {{~> fieldKeyAndDataIndex ~}} }
+    {{/compare ~}}
+  {{~/compare~}}
+{{/inline ~}}
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
@@ -63,22 +121,7 @@ const View{{ pascalCase singularName }}Fields = ({ {{ camelCase singularName }}{
 {{#each schema.fields ~}}
   {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
       <Descriptions.Item label={i18n.__('{{ pascalCase @root.name }}.{{ snakeCase @key }}')}>
-      {{#compare this.choices 'typeof' 'object'}}
-        {i18n.__(`{{ pascalCase @root.name }}.{{ snakeCase @key }}_${ {{~#if this.dataIndex}}{{ this.dataIndex }} && {{/if}}{{ camelCase (singular @root.name) }}.{{#if this.dataIndex}}{{ this.dataIndex }}{{else}}{{ @key }}{{/if ~}} }`)}
-      {{else}}
-        {{#compare this.type '===' 'Boolean'}}
-        { {{~ camelCase (singular @root.name) }}.{{@key}} && i18n.__(`{{ pascalCase @root.name }}.${ {{~ camelCase (singular @root.name) }}.{{@key}}{{#if this.dataIndex}}.{{ this.dataIndex }}{{/if}}? 'yes' : 'no'}`)}
-        {{/compare}}
-        {{#compare this.type 'in' 'DateTime' }}
-        { {{~ camelCase (singular @root.name) }}.{{@key}} && <FormatDate timestamp={ {{~ camelCase (singular @root.name) }}.{{ @key }}{{#if this.dataIndex}}.{{ this.dataIndex }}{{/if ~}} }{{#compare this.input '===' 'Date' }} format="MMMM Do, YYYY"{{/compare}} />}
-        {{/compare}}
-        {{#compare this.type 'startsWith' '[' }}
-        { {{~ camelCase (singular @root.name) }}.{{ @key }} && {{ camelCase (singular @root.name) }}.{{ @key }}{{#if this.dataIndex}}.map((item) => item.{{ this.dataIndex }}){{/if}}.join(', ')}
-        {{/compare}}
-        {{#compare this.type '!in' 'DateTime|Boolean' '&&' this.type '!startsWith' '[' }}
-        { {{~#if this.dataIndex}}{{ camelCase (singular @root.name) }}.{{ @key }} && {{/if}}{{ camelCase (singular @root.name) }}.{{ @key }}{{#if this.dataIndex}}.{{ this.dataIndex }}{{/if ~}} }
-        {{/compare}}
-      {{/compare}}
+        {{> renderValue name=(camelCase @root.singularName)}}
       </Descriptions.Item>
   {{/compare~}}
 {{~/each}}
@@ -91,7 +134,6 @@ View{{ pascalCase singularName }}Fields.propTypes = {
 {{#if hasFieldPermissions}}
   roles: PropTypes.array.isRequired,
 {{/if}}
-  
 };
 
 export default View{{ pascalCase singularName }};

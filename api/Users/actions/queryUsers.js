@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import checkIfAuthorized from './checkIfAuthorized';
 import mapMeteorUserToSchema from './mapMeteorUserToSchema';
+import hasRole from '../../../modules/hasRole';
 
 /* eslint-disable consistent-return */
 
@@ -13,6 +14,9 @@ const getTotalUserCount = (options) => {
 
   if (options.roles) {
     query.roles = options.roles;
+  }
+  if (options.status) {
+    query.status = options.status;
   }
 
   try {
@@ -71,7 +75,9 @@ const getUsers = (options) => {
       query.roles = options.roles;
     }
     // only list enabled users by default
-    query.status = 1;
+    if (options.status) {
+      query.status = options.status;
+    }
     // console.log(query);
     const projection = getProjection(options);
     return Meteor.users

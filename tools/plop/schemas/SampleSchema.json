@@ -7,7 +7,7 @@
   "menu": {
     "index": "admin"
   },    
-  "schemaImports": ["import slugify from 'slugify';"],
+  "schemaImports": ["import slugify from 'slugify'"],
   "fields": {
     "_id": {
       "primaryKey": true,
@@ -33,7 +33,7 @@
       "validate" : {
         "max": 48
       },
-      "clean": "(item) => slugify(item, { lower: true});",
+      "clean": "(item) => slugify(item, { lower: true})",
       "showInTableView": false,
       "uniforms": {
         "sourceField": "name"
@@ -41,6 +41,14 @@
     },
     "weight": {
       "type": "Float",
+      "input": "Text",
+      "showInTableView": false,
+      "validate" : {
+          "optional": true
+      }
+    },
+    "year": {
+      "type": "Int",
       "input": "Text",
       "showInTableView": false,
       "validate" : {
@@ -80,18 +88,48 @@
         }
       }
     },
+    "invites": {
+      "type": "[Object]",
+      "showInTableView": false,
+      "validate" : {
+          "optional": true
+      },
+      "fields": {
+        "user": {
+          "type": "User",
+          "input": {
+            "name": "userId",
+            "type": "String",
+            "input": "CrossReferenceSearch"
+          },
+          "reference": {
+            "query": "users",
+            "edges": "users",
+            "labelField": "fullName",
+            "valueField": "_id"
+          }
+        },
+        "quantity": {
+          "type": "Int",
+          "input": "Text",
+          "validate" : {
+              "optional": true
+          }
+        }
+      }
+    },
     "createdAtUTC": {
       "type": "DateTime",
-      "showInTableView": "Created At"
+      "showInTableView": false,
+      "label": "Created At"
     },
     "createdBy": {
-      "type": "CrossReference",
+      "type": "User",
       "input": {
         "name": "createdById",
         "type": "String"
       },
       "reference": {
-        "type": "User",
         "labelField": "fullName",
         "valueField": "_id"
       },
@@ -102,13 +140,12 @@
       "showInTableView": "Updated At"
     },
     "updatedBy": {
-      "type": "CrossReference",
+      "type": "User",
       "input": {
         "name": "updatedById",
         "type": "String"
       },
       "reference": {
-        "type": "User",
         "labelField": "fullName",
         "valueField": "_id"
       },

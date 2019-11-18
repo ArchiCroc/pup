@@ -1,38 +1,33 @@
+{{#*inline "schemaFields"}}
+{{#each this ~}}
+  {{~#if this.type }}
+    {{#compare this.input 'typeof' 'object'}}
+{{> schemaField this.input reference=this.reference namePrefix=../namePrefix keyPrefix=../keyPrefix }}
+    {{else}}
+{{> schemaField this name=@key  namePrefix=../namePrefix keyPrefix=../keyPrefix}}
+    {{/compare}}
+  {{/if~}}
+{{~/each}}
+{{/inline}}
 {{#*inline "schemaField"}}
   {{#compare this.input '||' this.fields}}
     {{~#compare this.type '!startsWith' '['}}
-{{#compare name 'includes' '.'}}'{{name}}'{{else}}{{name}}{{/compare}}: {
-  {{> schemaFieldBody name=@key}}
+{{#compare name 'includes' '.' '||' keyPrefix 'includes' '.'}}'{{keyPrefix}}{{name}}'{{else}}{{keyPrefix}}{{name}}{{/compare}}: {
+  {{> schemaFieldBody name=(concat namePrefix @key)}}
 },
       {{#if this.fields}}
-        {{#each this.fields}}
-          {{~#compare this.type '&&' this.input}}
-            {{~#compare this.type '!startsWith' '['}}
-'{{../name}}.{{@key}}': {
-              {{#compare this.input 'typeof' 'object'}}
-  {{> schemaFieldBody this.input name=(concat ../name "_" @key)}}
-              {{else}}
-  {{> schemaFieldBody name=(concat ../name "_" @key)}}
-              {{/compare}}
-},
-          {{else}}
-'{{../name}}.{{@key}}': {
-  {{> arrayFieldBody name=(concat ../name "_" @key)}}
-},
-'{{../name}}.{{@key}}.$': {
-  {{> schemaFieldBody name=(concat ../name "_" @key) isArrayKey=true}}
-},
-            {{/compare}}
-          {{/compare}}
-        {{/each}}
+{{> schemaFields this.fields namePrefix=(concat name "_") keyPrefix=(concat name ".") }}      
       {{/if}}
     {{else}}
-{{#compare name 'includes' '.'}}'{{name}}'{{else}}{{name}}{{/compare}}: {
-  {{> arrayFieldBody name=@key}}
+{{#compare name 'includes' '.' '||' keyPrefix 'includes' '.'}}'{{keyPrefix}}{{name}}'{{else}}{{keyPrefix}}{{name}}{{/compare}}: {
+  {{> arrayFieldBody name=(concat namePrefix @key)}}
 },
 '{{name}}.$': {
-  {{> schemaFieldBody name=@key isArrayKey=true}}
+  {{> schemaFieldBody name=(concat namePrefix @key) isArrayKey=true}}
 },
+      {{#if this.fields}}
+{{> schemaFields this.fields namePrefix=(concat name "_") keyPrefix=(concat name ".$.") }}      
+      {{/if}}
     {{/compare}}
   {{/compare}}
 {{/inline}}
@@ -155,14 +150,14 @@ import { Mongo } from 'meteor/mongo';
 import Uniforms from 'uniforms';
 import SimpleSchema from 'simpl-schema';
 import i18n from 'meteor/universe:i18n';
+/* #### PLOP_IMPORTS_START #### */
+{{#each schema.schemaImports }}
+{{{this}}};
+{{/each}}
+/* #### PLOP_IMPORTS_END #### */
 {{#compare fieldTypes 'includes' 'ObjectID'}}
 import parseObjectID from '{{apiPathOffset}}../../../modules/parseObjectID';
 {{/compare}}
-{{#each schema.schemaImports }}
-{{{this}}}
-{{/each}}
-/* #### PLOP_IMPORTS_START #### */
-/* #### PLOP_IMPORTS_END #### */
 
 {{#each schema.fields }}
   {{#if this.clean}}
@@ -171,17 +166,33 @@ const clean{{pascalCase @key}} = {{{this.clean}}};
 {{/each}}
 
 const {{ pascalCase singularName }}Schema = new SimpleSchema({
-{{#each schema.fields ~}}
-  {{~#if this.type }}
-    {{#compare this.input 'typeof' 'object'}}
-  {{> schemaField this.input reference=this.reference}}
-    {{else}}
-  {{> schemaField this name=@key}}
-    {{/compare}}
-  {{/if~}}
-{{~/each}}
+  {{> schemaFields schema.fields}}
   /* #### PLOP_SCHEMA_START #### */
   /* #### PLOP_SCHEMA_END #### */
 });
 
 export default {{ pascalCase singularName }}Schema;
+
+
+
+
+{{!-- {{#each this.fields}}
+          {{~#compare this.type '&&' this.input}}
+            {{~#compare this.type '!startsWith' '['}}
+'{{../name}}.{{@key}}': {
+              {{#compare this.input 'typeof' 'object'}}
+  {{> schemaFieldBody this.input name=(concat ../name "_" @key)}}
+              {{else}}
+  {{> schemaFieldBody name=(concat ../name "_" @key)}}
+              {{/compare}}
+},
+          {{else}}
+'{{../name}}.{{@key}}': {
+  {{> arrayFieldBody name=(concat ../name "_" @key)}}
+},
+'{{../name}}.{{@key}}.$': {
+  {{> schemaFieldBody name=(concat ../name "_" @key) isArrayKey=true}}
+},
+            {{/compare}}
+          {{/compare}}
+        {{/each}} --}}

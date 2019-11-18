@@ -1,20 +1,43 @@
-
+{{#*inline "fieldInputs" }}
+  {{#each this ~}}
+    {{#compare this.permissions.create '||' this.permissions.update}}
+{ hasRole(roles, 
+      {{~#compare this.permissions.create 'arrayIsEqual' this.permissions.update ~}}
+  [{{#each this.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && (
+      {{~else~}}
+  doc.{{@root.primaryFieldKey}} ? [{{#each this.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]:[{{#each this.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && (
+      {{/compare}}
+    {{/compare}}
+    {{#if this.type}}
+      {{#compare this.input 'typeof' 'object'}}
+{{> fieldInput this.input keyPrefix=../keyPrefix}}
+      {{else}}
+{{> fieldInput name=@key keyPrefix=../keyPrefix}}
+      {{/compare}}
+    {{/if}}
+    {{#compare this.permissions.create '||' this.permissions.update}}
+)}
+    {{/compare}}
+  {{~/each}}
+{{/inline}}
 {{#*inline "fieldInput" }}
 {{#compare this.input '||' this.fields}}
-  {{#compare this.type 'in' '[Object]|[String]|[Int]|[Number]' '&&' this.input '!in' 'CrossReferenceSelect|CrossReferenceSearch|Select|Checkboxes'}}
-<ListField name="{{name }}">
+  {{#compare this.type 'startsWith' '[' '&&' this.input '!in' 'CrossReferenceSelect|CrossReferenceSearch|Select|Checkboxes'}}
+<ListField name="{{keyPrefix}}{{name }}">
+    {{#if this.fields}}
+  {{> fieldInputs this.fields keyPrefix=(concat '$.')}}
+    {{else}}
   <ListItemField name="$" />
+    {{/if}}
 </ListField>
   {{else}}
-    {{#compare this.type 'in' 'Object' '&&' this.fields 'typeof' 'object'}}
+    {{#compare (stripBrackets this.type) 'in' 'Object' '&&' this.fields 'typeof' 'object'}}
 <fieldset>
   <legend>{i18n.__('{{pascalCase @root.pluralName}}.{{name}}')}:</legend>
-      {{#each this.fields}}
-  <{{ pascalCase this.input }}Field name="{{../name}}.{{@key}}" />
-      {{/each}}
+  {{> fieldInputs this.fields keyPrefix=(concat name '.')}}
 </fieldset>
     {{else}}
-<{{ pascalCase this.input }}Field name="{{name}}" />
+<{{ pascalCase this.input }}Field name="{{keyPrefix}}{{name}}" />
     {{/compare}}
   {{/compare}}
 {{/compare}}
@@ -82,26 +105,7 @@ const {{ pascalCase singularName }}Editor = ({ doc, history{{#if hasFieldPermiss
         showInlineError
         placeholder
       >
-{{#each schema.fields ~}}
-  {{#compare this.permissions.create '||' this.permissions.update}}
-  { hasRole(roles, 
-    {{~#compare this.permissions.create 'arrayIsEqual' this.permissions.update ~}}
-      [{{#each this.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && (
-    {{~else~}}
-       doc.{{@root.primaryFieldKey}} ? [{{#each this.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]:[{{#each this.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && (
-    {{/compare}}
-  {{/compare}}
-  {{#if this.type}}
-  {{#compare this.input 'typeof' 'object'}}
-        {{> fieldInput this.input}}
-  {{else}}
-        {{> fieldInput name=@key}}
-  {{/compare}}
-  {{/if}}
-  {{#compare this.permissions.create '||' this.permissions.update}}
-  )}
-  {{/compare}}
-{{~/each}}
+        {{> fieldInputs schema.fields }}
         <Button htmlType="submit" type="primary" block>
           {i18n.__('{{ pascalCase pluralName }}.save')}
         </Button>

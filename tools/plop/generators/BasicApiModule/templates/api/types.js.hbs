@@ -1,23 +1,32 @@
 {{#*inline "schemaFieldType"}}
-{{name}}: {{#compare this.type '===' 'Object'}}{{ pascalCase @root.singularName }}{{ pascalCase name }}{{else}}{{cleanGraphqlType type}}{{/compare}}
+{{#compare this.type '===' '[Object]'}}
+{{name}}: [{{ pascalCase @root.singularName }}{{ pascalCase name }}]
+{{else}}
+{{name}}: {{#compare this.type '===' 'Object'}}{{ pascalCase @root.singularName }}{{ pascalCase name }}{{else}}{{ cleanGraphqlType type}}{{/compare}}
+{{/compare}}
 {{/inline}}
 {{#*inline "schemaFieldInput"}}
-{{name}}: {{#compare this.type '===' 'Object'}}{{ pascalCase @root.singularName }}{{ pascalCase name }}Input{{else}}{{cleanGraphqlType this.type}}{{/compare}}{{#compare this.validate.optional '==' undefined '||' this.validate.optional '==' false}}{{#compare this.defaultValue '==' undefined}}!{{/compare}}{{/compare}}
+  {{#compare this.input '||' this.fields}}
+    {{#compare this.type '===' '[Object]'}}
+{{name}}: [{{ pascalCase @root.singularName }}{{ pascalCase name }}Input]
+    {{~else~}}
+{{name}}: {{#compare this.type '===' 'Object'}}{{ pascalCase @root.singularName }}{{ pascalCase name }}Input{{else}}{{cleanGraphqlType this.type}}{{/compare~}}
+    {{~/compare ~}}
+{{~#compare this.validate.optional '==' undefined '||' this.validate.optional '==' false}}{{#compare this.defaultValue '==' undefined}}!{{/compare}}{{/compare}}
+  {{/compare}}
 {{/inline ~}}
 
 export default `
 {{#each schema.fields ~}}
-{{#compare this.type '===' 'Object'}}
+{{#compare (stripBrackets this.type) '===' 'Object'}}
 {{#if this.fields}}
 type {{ pascalCase @root.singularName }}{{ pascalCase @key }} {
   {{#each this.fields ~}}
     {{#if this.type}}
-      {{#compare this.type '===' 'CrossReference'}}
+      {{#compare this.input 'typeof' 'object'}}
   {{> schemaFieldType this.input }}
-  {{> schemaFieldType this.reference name=@key }}
-      {{else}}
-  {{> schemaFieldType name=@key}}
       {{/compare}}
+  {{> schemaFieldType name=@key}}
     {{/if}}
   {{/each}}
 }
@@ -28,12 +37,10 @@ type {{ pascalCase @root.singularName }}{{ pascalCase @key }} {
 type {{ pascalCase singularName }} {
 {{#each schema.fields ~}}
   {{~#if this.type}}
-    {{#compare this.type '===' 'CrossReference'}}
+    {{#compare this.input 'typeof' 'object'}}
   {{> schemaFieldType this.input }}
-  {{> schemaFieldType this.reference name=@key }}
-    {{else}}
-  {{> schemaFieldType name=@key}}
     {{/compare}}
+  {{> schemaFieldType name=@key}}
   {{/if~}}
 {{~/each}}
 }
@@ -44,7 +51,7 @@ type {{ pascalCase pluralName }} {
 }
 
 {{#each schema.fields ~}}
-{{#compare this.type '===' 'Object'}}{{!-- this may need to be extended to subtypes too --}}
+{{#compare (stripBrackets this.type) '===' 'Object'}}{{!-- this may need to be extended to subtypes too --}}
 {{#if this.fields}}
 input {{ pascalCase @root.singularName }}{{ pascalCase @key }}Input {
   {{#each this.fields ~}}
@@ -63,8 +70,8 @@ input {{ pascalCase @root.singularName }}{{ pascalCase @key }}Input {
 
 input {{ pascalCase singularName }}Input {
 {{#each schema.fields }}
-  {{~#compare this.type '&&' this.input '&&' this.input.input '!typeof' undefined}}
-    {{#compare this.input 'typeof' 'object'}}
+  {{~#compare this.type '&&' this.input '||' this.type '&&' this.fields}}
+    {{#compare this.input 'typeof' 'object' }}
   {{> schemaFieldInput this.input }}
     {{else}}
   {{> schemaFieldInput name=@key}}

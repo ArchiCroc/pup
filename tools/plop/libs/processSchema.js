@@ -1,6 +1,27 @@
 const changeCase = require('change-case');
 const pluralize = require('pluralize');
 
+function processFields(item, index) {
+  if (item.permissions) {
+    // eslint-disable-next-line
+    for (let permissionKey in item.permissions) {
+      const permission = item.permissions[permissionKey];
+      if (typeof permission === 'string' && permission !== 'everyone') {
+        item.permissions[permissionKey] = [permission];
+      } else {
+        // remove everyone, we will assume that none == everyone
+        item.permissions[permissionKey] = !permission.includes('everyone') ? permission : undefined;
+      }
+    }
+  }
+  if (!item.dataIndex && item.reference && item.reference.labelField) {
+    item.dataIndex = item.reference.labelField;
+  }
+  if (item.fields) {
+    Object.values(item.fields).forEach(processFields);
+  }
+}
+
 function processSchema(input) {
   const data = { ...input };
 
@@ -125,25 +146,7 @@ function processSchema(input) {
   // clean up field permissions
   data.hasFieldPermissions = schemaFieldValues.findIndex((field) => field.permissions) !== -1;
   // if (data.hasFieldPermissions) {
-  schemaFieldValues.forEach((item, index) => {
-    if (item.permissions) {
-      // eslint-disable-next-line
-      for (let permissionKey in item.permissions) {
-        const permission = item.permissions[permissionKey];
-        if (typeof permission === 'string' && permission !== 'everyone') {
-          item.permissions[permissionKey] = [permission];
-        } else {
-          // remove everyone, we will assume that none == everyone
-          item.permissions[permissionKey] = !permission.includes('everyone')
-            ? permission
-            : undefined;
-        }
-      }
-    }
-    if (!item.dataIndex && item.reference && item.reference.labelField) {
-      item.dataIndex = item.reference.labelField;
-    }
-  });
+  schemaFieldValues.forEach(processFields);
   //}
 
   // stash these back to cover the case where they got built from scratch

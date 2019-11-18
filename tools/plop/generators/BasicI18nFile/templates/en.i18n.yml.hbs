@@ -24,6 +24,10 @@
 {{snakeCase name}}_placeholder: {{> inputLabel}}
     {{/compare}}
   {{/compare}}
+  {{else}}
+    {{#if this.fields}}
+{{snakeCase name}}_label: {{> inputLabel}}{{!-- would it be better to add this as a condition above? or force subfields to have input set to list? --}}
+    {{/if}}
   {{/if}}
 {{/inline~}}
 _namespace: {{ pascalCase pluralName }}

@@ -1,3 +1,26 @@
+{{#*inline "schemaFields"}}
+{{#each this ~}}
+  {{~#compare this.showInTableView '!==' false '&&' @key '!==' @root.primaryFieldKey}}
+    {{~#compare this.input '||' this.showInTableView '&&' @key '!==' @root.urlFieldKey }}
+      {{#if this.dataIndex}}
+{{convertDataIndexToGraphqlSubQuery (concat @key '.' this.dataIndex) 3}}
+      {{else}}
+        {{#if this.reference.labelField}}
+{{convertDataIndexToGraphqlSubQuery (concat @key '.' this.reference.labelField) 3}}
+        {{else}}
+          {{#compare this.fields 'typeof' 'object'}}
+{{@key}} {
+  {{> schemaFields this.fields}}
+}
+          {{else}}
+{{@key}}
+          {{/compare}}  
+        {{/if}}
+      {{/if}}
+    {{/compare~}}
+  {{/compare~}}
+{{/each}}
+{{/inline}}
 {{#*inline "filterParameter"}}
   {{#compare this.type 'in' 'String|Int|Float|Number'}}
 ${{ name }}: [{{cleanGraphqlType this.type}}],
@@ -49,21 +72,7 @@ query {{ camelCase pluralName }}(
     {{ camelCase pluralName }} {
       {{primaryFieldKey}}
       {{#compare primaryFieldKey '!==' urlFieldKey}}{{urlFieldKey}}{{/compare}}
-{{#each schema.fields ~}}
-  {{~#compare this.showInTableView '!==' false '&&' @key '!==' @root.primaryFieldKey}}
-    {{~#compare this.input '||' this.showInTableView '&&' @key '!==' @root.urlFieldKey }}
-      {{#if this.dataIndex}}
-      {{convertDataIndexToGraphqlSubQuery (concat @key '.' this.dataIndex) 3}}
-      {{else}}
-        {{#if this.reference.labelField}}
-      {{convertDataIndexToGraphqlSubQuery (concat @key '.' this.reference.labelField) 3}}
-        {{else}}
-      {{@key}}
-        {{/if}}
-      {{/if}}
-    {{/compare~}}
-  {{/compare~}}
-{{/each}}
+      {{> schemaFields schema.fields }} 
     }
   }
 }

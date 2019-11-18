@@ -1,20 +1,31 @@
-    /* #### {{ constantCase pluralName }}_RESOLVERS_START #### */
-    {{ pascalCase singularName }}: {
-{{#each schema.fields }}
+{{#*inline "resolverFields"}} 
+{{#each this }}
   {{#if this.resolver}}
-      {{@key}}: {{{this.resolver}}},
+{{@key}}: {{{this.resolver}}},
   {{else}}
     {{#compare this.type '===' 'User' '||' this.reference.type '===' 'User'}}
-      {{@key}}: (parent, args, context) =>
-        UserQueries.resolveUser(parent, { _id: parent.{{#if this.input.name}}{{this.input.name}}{{else}}{{@key}}Id{{/if}} }, context),
+{{@key}}: (parent, args, context) =>
+  UserQueries.resolveUser(parent, { _id: parent.{{#if this.input.name}}{{this.input.name}}{{else}}{{@key}}Id{{/if}} }, context),
     {{/compare}}
      {{#compare this.type '===' '[User]' '||' this.reference.type '===' '[User]'}}
-      {{@key}}: (parent, args, context) =>
-        parent.preparedByIds
-          ? UserQueries.resolveUsers(parent, { _ids: parent.{{#if this.input.name}}{{this.input.name}}{{else}}{{@key}}Ids{{/if}} }, context)
-          : [],
+{{@key}}: (parent, args, context) =>
+  parent.preparedByIds
+    ? UserQueries.resolveUsers(parent, { _ids: parent.{{#if this.input.name}}{{this.input.name}}{{else}}{{@key}}Ids{{/if}} }, context)
+    : [],
     {{/compare}}
   {{/if}}
 {{/each~}}
+{{/inline ~}}
+    
+    /* #### {{ constantCase pluralName }}_RESOLVERS_START #### */
+    {{ pascalCase singularName }}: {
+      {{> resolverFields schema.fields }}
     },
+{{#each schema.fields}}
+  {{#if this.fields}}
+    {{ pascalCase @root.singularName }}{{ pascalCase @key }}: {
+      {{> resolverFields this.fields }}
+    },
+  {{/if}}
+{{/each}}
     /* #### {{ constantCase pluralName }}_RESOLVERS_END #### */

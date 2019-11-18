@@ -14,6 +14,7 @@ export default {
       order = 'ascend',
       search,
       role,
+      status,
     } = args;
 
     const query = {
@@ -48,6 +49,11 @@ export default {
       query.roles = { $in: role };
     }
 
+    if (isArray(status) && status.length > 0) {
+      query.status = { $in: status };
+    } else if (status) {
+      query.status = status;
+    }
     return queryUsers(query);
   },
   user: (parent, args, context) => {
