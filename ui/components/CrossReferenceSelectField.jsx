@@ -10,7 +10,7 @@ import gql from 'graphql-tag';
 const { Option } = Select;
 
 const CrossReferenceSelectField = (props) => {
-  const { query, labelField, valueField, value: initalValue, placeholder, disabled, edges } = props;
+  const { query, labelKey, valueKey, value: initalValue, placeholder, disabled, edges } = props;
 
   const [value, setValue] = useState(initalValue);
 
@@ -18,8 +18,8 @@ const CrossReferenceSelectField = (props) => {
   // query selectData {
   //   ${query}(pageSize: 100) {
   //     ${edges ? edges + ' {' : ''}
-  //       ${labelField}
-  //       ${valueField}
+  //       ${labelKey}
+  //       ${valueKey}
   //     ${edges ? '}' : ''}
   //   }
   // }`);
@@ -29,12 +29,12 @@ const CrossReferenceSelectField = (props) => {
         query selectData {
           ${query}(pageSize: 100) {
             ${edges ? edges + ' {' : ''}
-              ${labelField}
-              ${valueField}
+              ${labelKey}
+              ${valueKey}
             ${edges ? '}' : ''}
           }
         }`;
-  }, [query, labelField, valueField]);
+  }, [query, labelKey, valueKey]);
 
   const { loading, error, data } = useQuery(gqlQuery);
 
@@ -63,7 +63,7 @@ const CrossReferenceSelectField = (props) => {
       }
     >
       {selectData.map((item) => (
-        <Option key={item[valueField]}>{item[labelField]}</Option>
+        <Option key={item[valueKey]}>{item[labelKey]}</Option>
       ))}
     </Select>,
   );
@@ -88,17 +88,10 @@ CrossReferenceSelectField.propTypes = {
   disabled: PropTypes.bool,
   query: PropTypes.string.isRequired,
   edges: PropTypes.string.isRequired,
-  labelField: PropTypes.string.isRequired,
-  valueField: PropTypes.string.isRequired,
+  labelKey: PropTypes.string.isRequired,
+  valueKey: PropTypes.string.isRequired,
 };
 
 export default connectField(CrossReferenceSelectField);
 
-filterDOMProps.register(
-  'query',
-  'edges',
-  'primaryKeyField',
-  'labelField',
-  'valueField',
-  'multiple',
-);
+filterDOMProps.register('query', 'edges', 'primaryKeyField', 'labelKey', 'valueKey', 'multiple');

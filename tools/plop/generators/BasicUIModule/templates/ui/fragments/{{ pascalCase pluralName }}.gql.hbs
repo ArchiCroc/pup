@@ -4,9 +4,6 @@
     {{#if this.dataIndex}}
 {{convertDataIndexToGraphqlSubQuery (concat @key '.' this.dataIndex) 0}}
     {{else}}
-      {{#if this.reference.labelField}}
-{{convertDataIndexToGraphqlSubQuery (concat @key '.' this.reference.labelField) 0}}
-      {{else}}
         {{#compare this.fields 'typeof' 'object'}}
 {{@key}} {
   {{> schemaFields this.fields}}
@@ -15,8 +12,9 @@
 {{@key}}
         {{/compare}}  
       {{/if}}
-    {{/if}}
-    {{!-- {{/compare~}} --}}
+      {{~#compare this.input 'typeof' 'object' '&&' this.input.input 'typeof' 'string'}}
+{{this.input.name}}
+      {{/compare}}
   {{~/each}}
 {{/inline}}
 fragment {{ pascalCase singularName }}Attributes on {{ pascalCase singularName }} {

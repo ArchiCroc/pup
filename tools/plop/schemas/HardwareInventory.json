@@ -30,8 +30,8 @@
         "type": "HardwareType",
         "query": "hardwareTypes",
         "edges": "hardwareTypes",
-        "labelField": "name",
-        "valueField": "_id"
+        "labelKey": "name",
+        "valueKey": "_id"
       },
       "resolver": "HardwareTypeQueries.hardwareType"
     },
@@ -45,8 +45,8 @@
       "type": "User",
       "query": "users",
         "edges": "users",
-        "labelField": "fullName",
-        "valueField": "_id"
+        "labelKey": "fullName",
+        "valueKey": "_id"
       },
       "showInTableView": true
     },
@@ -61,8 +61,8 @@
         "type": "Office",
         "query": "offices",
         "edges": "offices",
-        "labelField": "name",
-        "valueField": "slug"
+        "labelKey": "name",
+        "valueKey": "slug"
       }
     },
     "brand": {
@@ -109,8 +109,8 @@
       },
       "reference": {
         "type": "User",
-        "labelField": "fullName",
-        "valueField": "_id"
+        "labelKey": "fullName",
+        "valueKey": "_id"
       },
       "showInTableView": false
     },
@@ -126,8 +126,8 @@
       },
       "reference": {
         "type": "User",
-        "labelField": "fullName",
-        "valueField": "_id"
+        "labelKey": "fullName",
+        "valueKey": "_id"
       },
       "showInTableView": false
     }

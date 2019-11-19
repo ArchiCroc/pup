@@ -39,7 +39,7 @@ const Edit{{ pascalCase singularName }} = ({ history, match, roles }) => {
           { {{~ camelCase singularName }} && {{#if schema.permissions.delete}} hasRole(roles, [{{#each schema.permissions.delete }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && {{/if}}(
               <Remove{{ pascalCase singularName }}Button 
                 {{primaryFieldKey}}={ {{~ camelCase singularName }}.{{primaryFieldKey ~}} } 
-                {{labelFieldKey}}={ {{~ camelCase singularName}}.{{labelFieldKey ~}} } 
+                {{labelKeyKey}}={ {{~ camelCase singularName}}.{{labelKeyKey ~}} } 
                 history={history} 
               />
             )}

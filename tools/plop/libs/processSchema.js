@@ -14,8 +14,8 @@ function processFields(item, index) {
       }
     }
   }
-  if (!item.dataIndex && item.reference && item.reference.labelField) {
-    item.dataIndex = item.reference.labelField;
+  if (!item.dataIndex && item.reference && item.reference.labelKey) {
+    item.dataIndex = item.reference.labelKey;
   }
   if (item.fields) {
     Object.values(item.fields).forEach(processFields);
@@ -131,10 +131,10 @@ function processSchema(input) {
   if (labelKeyIndex === -1) {
     labelKeyIndex = schemaFieldValues.findIndex((field) => field.type === 'String');
   }
-  data.labelFieldKey = schemaFieldKeys[labelKeyIndex];
-  data.labelField = schemaFields[data.labelFieldKey];
-  if (data.labelField.searchable !== false) {
-    data.labelField.searchable = true;
+  data.labelKeyKey = schemaFieldKeys[labelKeyIndex];
+  data.labelKey = schemaFields[data.labelKeyKey];
+  if (data.labelKey.searchable !== false) {
+    data.labelKey.searchable = true;
   }
 
   data.isSearchable = !!schemaFieldValues.find((field) => field.searchable);

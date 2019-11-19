@@ -92,8 +92,8 @@ Starts default dev server at http://localhost:3000
       "uniforms": {
         "query": "users", // graphqlQuery to uses
         "edges": "users", //if the query returns like { total: 100, users: [User]}, the name of the subfield that holds the values. Leave undefined if the results are returned directly like [Users]
-        "labelField": "fullName", // label field to query to show for each item in the Input
-        "valueField": "_id" // value field to query to return when an item is selected
+        "labelKey": "fullName", // label field to query to show for each item in the Input
+        "valueKey": "_id" // value field to query to return when an item is selected
       },
       "showInTableView": false, // Show this field in the table of items on the index page. Possible Values: true (default)| false | String (will be used as the label)
       "showInDetailView": false // Show this field in the table of items on the detail page. Possible Values: true (default)| false  | String (will be used as the label)

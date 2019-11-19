@@ -105,8 +105,8 @@
           "reference": {
             "query": "users",
             "edges": "users",
-            "labelField": "fullName",
-            "valueField": "_id"
+            "labelKey": "fullName",
+            "valueKey": "_id"
           }
         },
         "quantity": {
@@ -130,8 +130,8 @@
         "type": "String"
       },
       "reference": {
-        "labelField": "fullName",
-        "valueField": "_id"
+        "labelKey": "fullName",
+        "valueKey": "_id"
       },
       "showInTableView": false
     },
@@ -146,8 +146,8 @@
         "type": "String"
       },
       "reference": {
-        "labelField": "fullName",
-        "valueField": "_id"
+        "labelKey": "fullName",
+        "valueKey": "_id"
       },
       "showInTableView": false
     }

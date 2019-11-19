@@ -74,7 +74,7 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
   const {
     pageSize = 10,
     page = 1,
-    sort = '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelFieldKey}}{{/if}}',
+    sort = '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelKeyKey}}{{/if}}',
     order = '{{#if schema.defaultSortOrder}}{{schema.defaultSortOrder}}{{else}}ascend{{/if}}',
 {{#if isSearchable}}
     search = null,
@@ -131,8 +131,8 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
     {{#if this.reference.edges}}
     edges: '{{this.reference.edges}}',
     {{/if}}
-    labelField: '{{this.reference.labelField}}',
-    valueField: '{{this.reference.valueField}}',
+    labelKey: '{{this.reference.labelKey}}',
+    valueKey: '{{this.reference.valueKey}}',
   });
   {{/compare}}
 {{/each}}

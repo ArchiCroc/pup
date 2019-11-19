@@ -97,8 +97,8 @@
         "type": "[CollectionTheme]",
         "query": "collectionThemes",
         "edges": "collectionThemes",
-        "labelField": "name",
-        "valueField": "_id"
+        "labelKey": "name",
+        "valueKey": "_id"
       },
       "resolver": "(parent, args, context) => CollectionThemeQueries.collectionTheme(parent, { _id: parent.themeIds }, context)",
       "showInTableView": true
@@ -128,8 +128,8 @@
             "type": "CollectionElement",
             "query": "collectionElements",
             "edges": "collectionElements",
-            "labelField": "name",
-            "valueField": "_id"
+            "labelKey": "name",
+            "valueKey": "_id"
           },
           "resolver": "(parent, args, context) =>CollectionElementQueries.collectionElement(parent, { _id: parent.elementId }, context)",
           "showInTableView": true,
@@ -160,8 +160,8 @@
       },
       "reference": {
         "type": "User",
-        "labelField": "fullName",
-        "valueField": "_id"
+        "labelKey": "fullName",
+        "valueKey": "_id"
       },
       "showInTableView": false
     },
@@ -177,8 +177,8 @@
       },
       "reference": {
         "type": "User",
-        "labelField": "fullName",
-        "valueField": "_id"
+        "labelKey": "fullName",
+        "valueKey": "_id"
       },
       "showInTableView": false
     }

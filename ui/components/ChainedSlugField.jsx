@@ -88,8 +88,8 @@ ChainedSlugField.propTypes = {
   seperator: PropTypes.string,
   // query: PropTypes.string.isRequired,
   // edges: PropTypes.string.isRequired,
-  // labelField: PropTypes.string.isRequired,
-  // valueField: PropTypes.string.isRequired,
+  // labelKey: PropTypes.string.isRequired,
+  // valueKey: PropTypes.string.isRequired,
 };
 
 ChainedSlugField.contextTypes = BaseField.contextTypes;

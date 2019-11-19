@@ -3,18 +3,18 @@ import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 function useQueryForFilters(props) {
-  const { query, labelField, valueField, edges } = props;
+  const { query, labelKey, valueKey, edges } = props;
   const gqlQuery = useMemo(() => {
     return gql`
         query selectData {
           ${query}(pageSize: 100) {
             ${edges ? edges + ' {' : ''}
-              ${labelField}
-              ${valueField}
+              ${labelKey}
+              ${valueKey}
             ${edges ? '}' : ''}
           }
         }`;
-  }, [query, labelField, valueField]);
+  }, [query, labelKey, valueKey]);
 
   const { loading, error, data } = useQuery(gqlQuery, props);
   // eslint-disable-next-line
@@ -23,8 +23,8 @@ function useQueryForFilters(props) {
   const filters = [];
   for (const item of edgeData) {
     filters.push({
-      text: item[labelField],
-      value: item[valueField],
+      text: item[labelKey],
+      value: item[valueKey],
     });
   }
 

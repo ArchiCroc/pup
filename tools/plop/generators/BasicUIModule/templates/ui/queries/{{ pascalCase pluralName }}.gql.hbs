@@ -5,8 +5,8 @@
       {{#if this.dataIndex}}
 {{convertDataIndexToGraphqlSubQuery (concat @key '.' this.dataIndex) 3}}
       {{else}}
-        {{#if this.reference.labelField}}
-{{convertDataIndexToGraphqlSubQuery (concat @key '.' this.reference.labelField) 3}}
+        {{#if this.reference.labelKey}}
+{{convertDataIndexToGraphqlSubQuery (concat @key '.' this.reference.labelKey) 3}}
         {{else}}
           {{#compare this.fields 'typeof' 'object'}}
 {{@key}} {
@@ -80,11 +80,6 @@ query {{ camelCase pluralName }}(
 query edit{{ pascalCase singularName }}(${{ primaryFieldKey }}: {{ primaryField.type }}{{#compare primaryFieldKey '!==' urlFieldKey }}, ${{ urlFieldKey }}: {{ urlField.type }}{{/compare}}) {
   {{ camelCase singularName }}({{ primaryFieldKey }}: ${{ primaryFieldKey }}{{#compare primaryFieldKey '!==' urlFieldKey }}, {{ urlFieldKey }}: ${{ urlFieldKey }}{{/compare}}) {
     ...{{ pascalCase singularName }}Attributes
-{{#each schema.fields ~}}
-  {{~#compare this.input 'typeof' 'object' '&&' this.input.input 'typeof' 'string'}}
-  {{this.input.name}}
-  {{/compare}}
-{{/each}}
   }
 }
 

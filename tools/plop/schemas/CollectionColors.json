@@ -51,8 +51,8 @@
         "type": "CollectionBrand",
         "query": "collectionBrands",
         "edges": "collectionBrands",
-        "labelField": "name",
-        "valueField": "slug"
+        "labelKey": "name",
+        "valueKey": "slug"
       },      
       "resolver": "CollectionBrandQueries.collectionBrand",
       "showInTableView": true,
@@ -70,8 +70,8 @@
       },
       "reference": {
         "type": "User",
-        "labelField": "fullName",
-        "valueField": "_id"
+        "labelKey": "fullName",
+        "valueKey": "_id"
       },
       "showInTableView": false
     },
@@ -87,8 +87,8 @@
       },
       "reference": {
         "type": "User",
-        "labelField": "fullName",
-        "valueField": "_id"
+        "labelKey": "fullName",
+        "valueKey": "_id"
       },
       "showInTableView": false
     }

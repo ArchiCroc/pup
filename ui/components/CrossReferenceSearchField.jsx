@@ -14,8 +14,8 @@ const { Option } = Select;
 const CrossReferenceSearchField = (props) => {
   const {
     query,
-    labelField,
-    valueField,
+    labelKey,
+    valueKey,
     value: initialValue,
     placeholder,
     disabled,
@@ -32,8 +32,8 @@ const CrossReferenceSearchField = (props) => {
   // query searchData($search: String) {
   //   ${query}(pageSize: 10, search: $search) {
   //     ${edges ? edges + ' {' : ''}
-  //       ${labelField}
-  //       ${valueField}
+  //       ${labelKey}
+  //       ${valueKey}
   //     ${edges ? '}' : ''}
   //   }
   // }`);
@@ -44,8 +44,8 @@ const CrossReferenceSearchField = (props) => {
         query searchData($search: String) {
           ${query}(pageSize: 10, search: $search) {
             ${edges ? edges + ' {' : ''}
-              ${labelField}
-              ${valueField}
+              ${labelKey}
+              ${valueKey}
             ${edges ? '}' : ''}
           }
         }`,
@@ -53,13 +53,13 @@ const CrossReferenceSearchField = (props) => {
         query searchData($_ids: [String]) {
           ${query}(_ids: $_ids) {
             ${edges ? edges + ' {' : ''}
-              ${labelField}
-              ${valueField}
+              ${labelKey}
+              ${valueKey}
             ${edges ? '}' : ''}
           }
         }`,
     };
-  }, [query, labelField, valueField]);
+  }, [query, labelKey, valueKey]);
 
   const { loading, error, data } = useQuery(gqlQueries.search, {
     variables: { search },
@@ -77,8 +77,8 @@ const CrossReferenceSearchField = (props) => {
       const resultEdges = edges ? result[query][edges] : result[query];
       if (resultEdges && resultEdges.length) {
         const values = resultEdges.map((item) => ({
-          key: item[valueField],
-          label: item[labelField],
+          key: item[valueKey],
+          label: item[labelKey],
         }));
         setValue(multiple ? values : values[0]);
         console.log('complete2', multiple ? values : values[0]);
@@ -122,7 +122,7 @@ const CrossReferenceSearchField = (props) => {
       value={value || undefined}
     >
       {searchData.map((item) => (
-        <Option key={item[valueField]}>{item[labelField]}</Option>
+        <Option key={item[valueKey]}>{item[labelKey]}</Option>
       ))}
     </Select>,
   );
@@ -148,8 +148,8 @@ CrossReferenceSearchField.propTypes = {
   disabled: PropTypes.bool,
   query: PropTypes.string.isRequired,
   edges: PropTypes.string.isRequired,
-  labelField: PropTypes.string.isRequired,
-  valueField: PropTypes.string.isRequired,
+  labelKey: PropTypes.string.isRequired,
+  valueKey: PropTypes.string.isRequired,
   multiple: PropTypes.bool,
 };
 
@@ -159,8 +159,9 @@ filterDOMProps.register(
   'query',
   'edges',
   'primaryKeyField',
-  'labelField',
-  'valueField',
+  'labelKey',
+  'valueKey',
   'multiple',
   'queryParameters',
+  'initalValueObjec',
 );

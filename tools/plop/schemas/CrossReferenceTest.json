@@ -30,8 +30,8 @@
         "type": "ErrorReport",
         "query": "errorReports",
         "edges": "errorReports",
-        "labelField": "message",
-        "valueField": "_id"
+        "labelKey": "message",
+        "valueKey": "_id"
       },
       "resolver": "ErrorReportQueries.errorReport",
       "showInTableView": true
@@ -47,8 +47,8 @@
         "type": "User",
         "query": "users",
         "edges": "users",
-        "labelField": "fullName",
-        "valueField": "_id"
+        "labelKey": "fullName",
+        "valueKey": "_id"
       },
       "showInTableView": true
     },
@@ -63,8 +63,8 @@
         "type": "[User]",
         "query": "users",
         "edges": "users",
-        "labelField": "fullName",
-        "valueField": "_id"
+        "labelKey": "fullName",
+        "valueKey": "_id"
       },
       "dataIndex": "fullName",
       "showInTableView": true
@@ -97,8 +97,8 @@
       },
       "reference": {
         "type": "User",
-        "labelField": "fullName",
-        "valueField": "_id"
+        "labelKey": "fullName",
+        "valueKey": "_id"
       },
       "showInTableView": false
     }

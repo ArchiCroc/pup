@@ -53,8 +53,8 @@
         },
         "reference": {
           "type": "User",
-          "labelField": "fullName",
-          "valueField": "_id"
+          "labelKey": "fullName",
+          "valueKey": "_id"
         },
         "showInTableView": false
       },
@@ -70,8 +70,8 @@
         },
         "reference": {
           "type": "User",
-          "labelField": "fullName",
-          "valueField": "_id"
+          "labelKey": "fullName",
+          "valueKey": "_id"
         },
         "showInTableView": false
       }
