@@ -102,7 +102,7 @@ uniforms: {
   edges: '{{this.reference.edges}}',
   {{/if}}
   {{#if this.reference.labelKey}}
-  initialValueKey: '{{name}}',
+  initialLabelKey: '{{@key}}',
   labelKey: '{{this.reference.labelKey}}',
   {{/if}}
   {{#if this.reference.valueKey}}

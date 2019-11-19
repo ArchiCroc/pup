@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
+import BaseField from 'uniforms/BaseField';
 import Select from 'antd/lib/select';
 import connectField from 'uniforms/connectField';
 import filterDOMProps from 'uniforms/filterDOMProps';
@@ -11,11 +12,13 @@ import gql from 'graphql-tag';
 
 const { Option } = Select;
 
-const CrossReferenceSearchField = (props) => {
+const CrossReferenceSearchField = (props, { uniforms }) => {
   const {
     query,
     labelKey,
     valueKey,
+    initialLabelKey,
+    name,
     value: initialValue,
     placeholder,
     disabled,
@@ -23,8 +26,40 @@ const CrossReferenceSearchField = (props) => {
     multiple,
   } = props;
 
+  console.log(uniforms, props);
+
+  let initialValueFromReference = null;
+  if (initialLabelKey && initialValue) {
+    const nameParts = name.split('.');
+    nameParts.pop();
+    nameParts.push(initialLabelKey);
+
+    let label = uniforms.model;
+    for (let i = 0; i < nameParts.length; i++) {
+      const namePart = nameParts[i];
+      if (label[namePart]) {
+        label = label[namePart];
+      } else {
+        label = null;
+        break;
+      }
+    }
+    if (label instanceof Array) {
+      initialValueFromReference = label.map((item, index) => ({
+        key: initialValue[index],
+        label: item[labelKey],
+      }));
+    } else if (label[labelKey]) {
+      initialValueFromReference = {
+        key: initialValue,
+        label: label[labelKey],
+      };
+    }
+  }
+  // console.log('initialValueFromReference', initialValueFromReference);
+
   const [search, setSearch] = useState('');
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(initialValueFromReference);
   const [loadingComplete, setLoadingComplete] = useState(false);
   const selectRef = useRef(null);
 
@@ -70,7 +105,7 @@ const CrossReferenceSearchField = (props) => {
 
   const { loading: loading2 } = useQuery(gqlQueries.initialValue, {
     variables: { _ids: initialValue },
-    skip: !initialValue || loadingComplete,
+    skip: initialValueFromReference || !initialValue || loadingComplete,
     // fetchPolicy: 'cache-and-network', // network-only
     onCompleted: (result) => {
       setLoadingComplete(true);
@@ -81,7 +116,7 @@ const CrossReferenceSearchField = (props) => {
           label: item[labelKey],
         }));
         setValue(multiple ? values : values[0]);
-        console.log('complete2', multiple ? values : values[0]);
+        console.log('finished Query for Label', multiple ? values : values[0]);
       }
     },
   });
@@ -152,6 +187,8 @@ CrossReferenceSearchField.propTypes = {
   valueKey: PropTypes.string.isRequired,
   multiple: PropTypes.bool,
 };
+
+CrossReferenceSearchField.contextTypes = BaseField.contextTypes;
 
 export default connectField(CrossReferenceSearchField);
 
