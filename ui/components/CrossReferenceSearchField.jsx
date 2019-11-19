@@ -163,5 +163,5 @@ filterDOMProps.register(
   'valueKey',
   'multiple',
   'queryParameters',
-  'initalValueObjec',
+  'initalValueKey',
 );
