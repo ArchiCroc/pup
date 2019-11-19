@@ -149,13 +149,19 @@ module.exports = (plop) => {
   plop.setHelper('compare', compare);
   plop.setHelper('log', (value) => console.log(value));
   plop.setHelper('stripBrackets', (text) => {
-    return text.replace(/\[(\w+)\]/, '$1');
+    if (typeof text === 'string') {
+      return text.replace(/\[(\w+)\]/, '$1');
+    }
+    return text;
   });
   plop.setHelper('cleanSimpleSchemeType', cleanSimpleSchemeType);
   plop.setHelper('cleanGraphqlType', cleanGraphqlType);
   plop.setHelper('truncate', (text, prefix) => {
-    const regEx = new RegExp(`^${prefix}(.*)`);
-    return text.replace(regEx, '$1');
+    if (typeof text === 'string') {
+      const regEx = new RegExp(`^${prefix}(.*)`);
+      return text.replace(regEx, '$1');
+    }
+    return text;
   });
 
   plop.setHelper('apiDirCase', apiDirCase);
@@ -169,8 +175,11 @@ module.exports = (plop) => {
     if (!(typeof idText === 'string')) {
       idText = 'Id';
     }
-    const regEx = new RegExp(`^(.*)${idText}`);
-    return text.replace(regEx, '$1');
+    if (typeof text === 'string') {
+      const regEx = new RegExp(`^(.*)${idText}`);
+      return text.replace(regEx, '$1');
+    }
+    return text;
   });
 
   plop.setHelper('concat', function() {
