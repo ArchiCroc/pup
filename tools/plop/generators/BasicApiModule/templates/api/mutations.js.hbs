@@ -43,7 +43,15 @@ export default {
     if (cleanDoc.{{ primaryFieldKey }}) {
       const { {{ primaryFieldKey }} } = cleanDoc;
 
-      const modifier = createMongoModifier({{ pascalCase singularName }}Schema, cleanDoc);
+      cleanDoc.updatedById = userId;
+      cleanDoc.updatedAtUTC = timestamp;
+
+      const currentDoc = Samples.findOne(_id, { fields: { createdById: 0, createdAtUTC: 0 } });
+      if (!currentDoc) {
+        throw new Error('Cannot find {{ titleCase singularName }} to update');
+      }
+
+      const modifier = createMongoModifier(currentDoc, cleanDoc);
 
       delete modifier.$set._id;
 
@@ -58,8 +66,7 @@ export default {
       {{~schema.hooks.mutationPreUpdate}}
       /* #### PLOP_MUTATION_PRE_UPDATE_END #### */
 
-      modifier.$set.updatedById = userId;
-      modifier.$set.updatedAtUTC = timestamp;
+ 
 
       {{ pascalCase pluralName }}.update({ {{ primaryFieldKey }} }, modifier);
       return {{ pascalCase pluralName }}.findOne({{ primaryFieldKey }});
