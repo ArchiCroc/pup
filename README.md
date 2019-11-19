@@ -76,7 +76,7 @@ Starts default dev server at http://localhost:3000
     
   "fields": { // data fields for the module
     "_id": { // fields keys are the name of the field and column to be created
-      "primaryKey": true, // primary key for the database. Only one per schema. first one found is used.
+      "primaryKey": true, // primary key for the database. Only one per schema. First one found is used.
       "urlKey": true, // key to use in item in URLs, defaults to primaryKey. Only one per schema. first one found is used.
       "type": "String", // The Graphql Type. String|Int|Float|DateTime|Boolean|<custom type>, wrap in [] for arrays
       "input": "Hidden", // Unforms Type See below for full list of supported values
@@ -85,11 +85,14 @@ Starts default dev server at http://localhost:3000
         "optional": true
       }
     },
-    "userId": {
-      "userKey": true,
-      "type": "String",
-      "input": "CrossReferenceSearch", // CrossReferenceSelect|CrossReferenceSearch are two special input types to pull in data from other modules
-      "uniforms": {
+    "user": {
+      "type": "User",
+      "input": {
+        "name": "userId", // fieldname to store the input value for the crossreference
+        "type": "String"
+        "input": "CrossReferenceSearch", // CrossReferenceSelect|CrossReferenceSearch are two special input types to pull in data from other modules
+      },
+      "reference": {
         "query": "users", // graphqlQuery to uses
         "edges": "users", //if the query returns like { total: 100, users: [User]}, the name of the subfield that holds the values. Leave undefined if the results are returned directly like [Users]
         "labelKey": "fullName", // label field to query to show for each item in the Input
@@ -97,11 +100,7 @@ Starts default dev server at http://localhost:3000
       },
       "showInTableView": false, // Show this field in the table of items on the index page. Possible Values: true (default)| false | String (will be used as the label)
       "showInDetailView": false // Show this field in the table of items on the detail page. Possible Values: true (default)| false  | String (will be used as the label)
-    },
-    "user": {
-      "type": "User", // Example of a custom type, has a built in 
-      "dataIndex": "fullName" // which field in the object to display
-    },
+    }
     "level": {
       "type": "Int",
       "input": "Select",
@@ -131,16 +130,18 @@ Starts default dev server at http://localhost:3000
       "type": "DateTime",
       "showInTableView": "Created At"
     },
-    "createdById": {
-      "userKey": true,
-      "type": "String",
-      "index": true,
-      "showInTableView": false,
-      "showInDetailView": false
-    },
     "createdBy": {
-      "type": "User",
-      "dataIndex": "fullName"
+      "type": "CrossReference",
+      "input": {
+        "name": "createdById",
+        "type": "String"
+      },
+      "reference": {
+        "type": "User",
+        "labelKey": "fullName",
+        "valueKey": "_id"
+      },
+      "showInTableView": false
     }
   },
   "defaultSortField": "createdAtUTC", // in the table and search, default field to sort by
