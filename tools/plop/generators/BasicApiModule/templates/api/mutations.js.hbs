@@ -46,7 +46,7 @@ export default {
       cleanDoc.updatedById = userId;
       cleanDoc.updatedAtUTC = timestamp;
 
-      const currentDoc = Samples.findOne(_id, { fields: { createdById: 0, createdAtUTC: 0 } });
+      const currentDoc = {{ pascalCase pluralName }}.findOne(_id, { fields: { createdById: 0, createdAtUTC: 0 } });
       if (!currentDoc) {
         throw new Error('Cannot find {{ titleCase singularName }} to update');
       }
