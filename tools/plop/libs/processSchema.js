@@ -140,7 +140,7 @@ function processSchema(input) {
   data.isSearchable = !!schemaFieldValues.find((field) => field.searchable);
   data.isFilterable = !!schemaFieldValues.find((field) => field.filterable);
   data.hasGraphqlFilterable = !!schemaFieldValues.find(
-    (field) => field.filterable && field.type === 'CrossReference',
+    (field) => field.filterable && field.reference,
   );
 
   // clean up field permissions
