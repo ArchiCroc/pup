@@ -26,7 +26,7 @@ const CrossReferenceSearchField = (props, { uniforms }) => {
     multiple,
   } = props;
 
-  console.log(uniforms, props);
+  // console.log(uniforms, props);
 
   const [search, setSearch] = useState('');
   const [value, setValue] = useState(null);
@@ -118,7 +118,7 @@ const CrossReferenceSearchField = (props, { uniforms }) => {
   }
 
   function handleChange(newValue) {
-    console.log(newValue);
+    // console.log(newValue);
     setValue(newValue);
     setSearch('');
     if (newValue) {
