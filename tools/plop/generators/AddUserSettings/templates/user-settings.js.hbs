@@ -31,7 +31,7 @@
     {{/if}}
     {{#if this.choices}}
       {{#compare this.choices 'typeof' 'object'}}
-    allowedValues: [{{#each this.choices}}{{#compare this 'typeof' 'string'}}'{{this}}'{{else}}{{this}}{{/compare}}{{#unless @last}}, {{/unless}}{{/each}}],
+    allowedValues: [{{#each this.choices}}{{quoteIfString this}}{{#unless @last}}, {{/unless}}{{/each}}],
       {{else}}
     allowedValues: {{this.choices}},
       {{/compare}}

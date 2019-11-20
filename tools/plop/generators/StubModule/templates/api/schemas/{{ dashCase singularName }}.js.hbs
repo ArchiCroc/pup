@@ -1,71 +1,168 @@
-{{#*inline "schemaFieldBody"}}
-    type: {{#compare this.type '===' 'Int'}}SimpleSchema.Integer{{else}}{{#compare this.type '===' 'Float'}}Number{{else}}{{#compare this.type '===' 'DateTime'}}Date{{else}}{{#compare this.type '===' 'ObjectID'}}Mongo.ObjectID{{else}}{{this.type}}{{/compare}}{{/compare}}{{/compare}}{{/compare}},
-    {{#compare this.input '!=' 'Hidden'}}
-    label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_label'),
+{{#*inline "schemaFields"}}
+{{#each this ~}}
+  {{~#if this.type }}
+    {{#compare this.input 'typeof' 'object'}}
+{{> schemaField this.input reference=this.reference namePrefix=../namePrefix keyPrefix=../keyPrefix }}
+    {{else}}
+{{> schemaField this name=@key  namePrefix=../namePrefix keyPrefix=../keyPrefix}}
     {{/compare}}
-    {{#compare this.defaultValue '!==' undefined}}
-    defaultValue: {{this.defaultValue}},
-    {{/compare}}
-    {{~#if this.validate.optional}}
-    optional: true,
-    {{/if}}
-    {{#if this.validate.regEx}}
-    regEx: {{this.validate.regEx}},
-    {{/if}}
-    {{#if this.validate.max}}
-    max: {{this.validate.max}},
-    {{/if}}
-    {{#if this.validate.min}}
-    min: {{this.validate.min}},
-    {{/if}}
-    {{#if this.validate.blackbox}}
-    blackbox: {{this.validate.blackbox}},
-    {{/if}}
-    {{#if this.clean}}
-    autoValue() {
-      if (this.value) {
-        return clean{{pascalCase @key}}(this.value);
-      }
-      return this.value;
-    },
-    {{/if}}
-    {{#if this.choices}}
-      {{#compare this.choices 'typeof' 'object' '||' this.choices 'typeof' 'array'}}
-    allowedValues: [{{#each this.choices}}{{#compare this 'typeof' 'string'}}'{{this}}'{{else}}{{this}}{{/compare}}{{#unless @last}}, {{/unless}}{{/each}}],
-      {{else}}
-    allowedValues: {{this.choices}},
-      {{/compare}}
-    {{/if}}
-    uniforms: {
-      {{#compare this.input '==' 'Hidden'  }}
-      type: 'hidden',
-      {{else}}
-        {{#compare this.type '!=' 'Boolean'  }}
-      placeholder: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_placeholder'),
-        {{/compare}}
-      {{/compare}}
-      {{#each uniforms}}
-      {{@key}}: {{#compare this 'typeof' 'string'}}'{{{this}}}'{{else}}{{this}}{{/compare}},
-      {{/each}}
-      {{#if this.choices}}
-      {{#compare this.choices 'typeof' 'object'}}
-      transform: (value) => i18n.__(`{{ pascalCase @root.name }}.{{snakeCase @key}}_${value}`),
-      {{/compare}}
-      {{/if}}
-    },
+  {{/if~}}
+{{~/each}}
 {{/inline}}
-{{#compare fieldTypes 'includes' 'ObjectID'}}
-// import { Mongo } from 'meteor/mongo';
+{{#*inline "schemaField"}}
+  {{#compare this.input '||' this.fields}}
+    {{~#compare this.type '!startsWith' '['}}
+{{#compare name 'includes' '.' '||' keyPrefix 'includes' '.'}}'{{keyPrefix}}{{name}}'{{else}}{{keyPrefix}}{{name}}{{/compare}}: {
+  {{> schemaFieldBody name=(concat namePrefix @key)}}
+},
+      {{#if this.fields}}
+{{> schemaFields this.fields namePrefix=(concat name "_") keyPrefix=(concat name ".") }}      
+      {{/if}}
+    {{else}}
+{{#compare name 'includes' '.' '||' keyPrefix 'includes' '.'}}'{{keyPrefix}}{{name}}'{{else}}{{keyPrefix}}{{name}}{{/compare}}: {
+  {{> arrayFieldBody name=(concat namePrefix @key)}}
+},
+'{{name}}.$': {
+  {{> schemaFieldBody name=(concat namePrefix @key) isArrayKey=true}}
+},
+      {{#if this.fields}}
+{{> schemaFields this.fields namePrefix=(concat name "_") keyPrefix=(concat name ".$.") }}      
+      {{/if}}
+    {{/compare}}
+  {{/compare}}
+{{/inline}}
+{{#*inline "schemaFieldBody"}}
+type: {{cleanSimpleSchemeType this.type}},
+{{#compare this.input '!=' 'Hidden'}}
+label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase name}}_label'),
 {{/compare}}
-// import Uniforms from 'uniforms';
-// import SimpleSchema from 'simpl-schema';
-// import i18n from 'meteor/universe:i18n';
-{{#each schema.schemaImports }}
-{{{this}}}
-{{/each}}
+
+{{~#if this.validate.optional}}
+optional: true,
+{{/if}}
+{{#if this.validate.regEx}}
+regEx: {{this.validate.regEx}},
+{{/if}}
+{{#if this.validate.max}}
+max: {{this.validate.max}},
+{{/if}}
+{{#if this.validate.min}}
+min: {{this.validate.min}},
+{{/if}}
+{{#if this.validate.blackbox}}
+blackbox: {{this.validate.blackbox}},
+{{/if}}
+{{#if this.clean}}
+autoValue() {
+  if (this.value !== undefined && this.value !== null) {
+    return clean{{pascalCase name}}(this.value);
+  }
+  return {{#if this.defaultValue}}{{quoteIfString this.defaultValue }}{{else}}this.value{{/if}};
+},
+{{else}}
+  {{#compare (cleanSimpleSchemeType this.type) '===' 'Mongo.ObjectID'}}
+autoValue() {
+  return parseObjectID(this.value);
+},
+blackbox: true,
+  {{/compare}}
+{{/if}}
+{{#compare this.type '!==' '[Object]' '&&' this.defaultValue '!typeof' 'undefined'}}
+{{#unless isArrayKey}}
+{{#unless this.clean}}
+defaultValue: {{quoteIfString this.defaultValue }},
+{{/unless}}
+{{/unless}}
+{{/compare}}
+{{#if this.choices}}
+  {{#compare this.choices 'typeof' 'object' '||' this.choices 'typeof' 'array'}}
+allowedValues: [{{#each this.choices}}{{quoteIfString this}}{{#unless @last}}, {{/unless}}{{/each}}],
+  {{else}}
+allowedValues: {{this.choices}},
+  {{/compare}}
+{{/if}}
+uniforms: {
+  {{#compare this.input '==' 'Hidden'}}
+  type: 'hidden',
+  {{else}}
+    {{#compare this.type '!=' 'Boolean'}}
+  placeholder: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase name}}_placeholder'),
+    {{/compare}}
+  {{/compare}}
+  {{#each uniforms}}
+  {{@key}}: {{quoteIfString this }},
+  {{/each}}
+  {{#if this.choices}}
+    {{#compare this.choices 'typeof' 'object'}}
+  transform: (value) => i18n.__(`{{ pascalCase @root.name }}.{{snakeCase name}}_${value}`),
+    {{/compare}}
+  {{/if}}
+  {{!-- for cross references --}}
+  {{#if this.reference.query}}
+  query: '{{this.reference.query}}',
+  {{/if}}
+  {{#if this.reference.edges}}
+  edges: '{{this.reference.edges}}',
+  {{/if}}
+  {{#if this.reference.labelKey}}
+  initialLabelKey: '{{@key}}',
+  labelKey: '{{this.reference.labelKey}}',
+  {{/if}}
+  {{#if this.reference.valueKey}}
+  valueKey: '{{this.reference.valueKey}}',
+  {{/if}}
+},
+{{/inline}}
+{{#*inline "arrayFieldBody"}}
+type: Array,
+{{#compare this.input '!=' 'Hidden'}}
+label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase name}}_label'),
+{{/compare}}
+{{#compare this.defaultValue '!==' undefined }}
+defaultValue: {{quoteIfString this.defaultValue }},
+{{/compare}}
+{{~#if this.validate.optional}}
+optional: true,
+{{/if}}
+{{#if this.validate.minCount}}
+minCount: {{this.validate.minCount}},
+{{/if}}
+{{#if this.validate.maxCount}}
+maxCount: {{this.validate.maxCount}},
+{{/if}}
+uniforms: {
+  {{#compare this.input '==' 'Hidden'}}
+  type: 'hidden',
+  {{else}}
+    {{#compare this.type '!=' 'Boolean'}}
+  placeholder: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase name}}_placeholder'),
+    {{/compare}}
+  {{/compare}}
+  {{#each this.uniforms}}
+  {{@key}}: {{quoteIfString this.defaultValue }},
+  {{/each}}
+  {{#compare this.type 'startsWith' '[' '&&' (stripBrackets this.type) 'in' 'Select|CrossReferenceSearch|CrossReferenceSelect' }}
+  multiple: true  
+  {{/compare}}
+},
+{{/inline~}}
+
+
+{{#compare fieldTypes 'includes' 'ObjectID'}}
+import { Mongo } from 'meteor/mongo';
+{{/compare}}
+import Uniforms from 'uniforms';
+import SimpleSchema from 'simpl-schema';
+import i18n from 'meteor/universe:i18n';
 /* #### PLOP_IMPORTS_START #### */
+{{#each schema.schemaImports }}
+{{{this}}};
+{{/each}}
 /* #### PLOP_IMPORTS_END #### */
-/*
+{{#compare fieldTypes 'includes' 'ObjectID'}}
+import parseObjectID from '{{apiPathOffset}}../../../modules/parseObjectID';
+{{/compare}}
+
 {{#each schema.fields }}
   {{#if this.clean}}
 const clean{{pascalCase @key}} = {{{this.clean}}};
@@ -73,56 +170,9 @@ const clean{{pascalCase @key}} = {{{this.clean}}};
 {{/each}}
 
 const {{ pascalCase singularName }}Schema = new SimpleSchema({
-{{#each schema.fields ~}}
-  {{~#compare this.type '&&' this.input}}
-    {{~#compare this.type '!startsWith' '['}}
-  {{#compare @key 'includes' '.'}}'{{@key}}'{{else}}{{@key}}{{/compare}}: {
-    {{> schemaFieldBody}}
-  },
-  {{else}}
-  {{#compare @key 'includes' '.'}}'{{@key}}'{{else}}{{@key}}{{/compare}}: {
-    type: Array,
-    {{#compare this.input '!=' 'Hidden'}}
-    label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_label'),
-    {{/compare}}
-    {{#compare this.defaultValue '!==' undefined}}
-    defaultValue: {{this.defaultValue}},
-    {{/compare}}
-    {{~#if this.validate.optional}}
-    optional: true,
-    {{/if}}
-    {{#if this.validate.minCount}}
-    minCount: {{this.validate.minCount}},
-    {{/if}}
-    {{#if this.validate.maxCount}}
-    maxCount: {{this.validate.maxCount}},
-    {{/if}}
-    uniforms: {
-      {{#compare this.input '==' 'Hidden'  }}
-      type: 'hidden',
-      {{else}}
-        {{#compare this.type '!=' 'Boolean'  }}
-      placeholder: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase @key}}_placeholder'),
-        {{/compare}}
-      {{/compare}}
-      {{#each this.uniforms}}
-      {{@key}}: {{#compare this 'typeof' 'string'}}'{{{this}}}'{{else}}{{this}}{{/compare}},
-      {{/each}}
-      {{#compare this.type 'startsWith' '[' '&&' (stripBrackets this.type) 'in' 'Select|CrossReferenceSearch|CrossReferenceSelect' }}
-      multiple: true  
-      {{/compare}}
-    },
-  },
-  '{{@key}}.$': {
-    {{> schemaFieldBody}}
-  },
-    {{/compare}}
-  {{/compare~}}
-{{~/each}}
-*/
+  {{> schemaFields schema.fields}}
   /* #### PLOP_SCHEMA_START #### */
   /* #### PLOP_SCHEMA_END #### */
-//});
+});
 
-//export default {{ pascalCase singularName }}Schema;
-
+export default {{ pascalCase singularName }}Schema;

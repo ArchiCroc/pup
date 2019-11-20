@@ -60,7 +60,7 @@ const { Search } = Input;
 {{#each schema.fields}}
   {{#compare this.filterable '&&' this.choices}}
 function get{{pascalCase @key}}Filters() {
-  const choices = [{{#each this.choices}}{{#compare this 'typeof' 'string'}}'{{this}}'{{else}}{{this}}{{/compare}}{{#unless @last}}, {{/unless}}{{/each}}];
+  const choices = [{{#each this.choices}}{{quoteIfString this}}{{#unless @last}}, {{/unless}}{{/each}}];
   const filters = [];
   for (const choice of choices) {
     filters.push({ text: i18n.__(`{{ pascalCase @root.pluralName }}.{{snakeCase @key}}_${choice}`), value: choice },)

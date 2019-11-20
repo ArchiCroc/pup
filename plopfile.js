@@ -3,6 +3,7 @@ const changeCase = require('change-case');
 const jsonFilePath = require('inquirer-parse-json-file'); // require('inquirer-file-tree-selection-prompt'); //
 const filePath = require('inquirer-file-selector-prompt');
 const _ = require('lodash');
+const Handlebars = require('handlebars');
 
 const { readdirSync, statSync } = require('fs');
 const { join } = require('path');
@@ -140,6 +141,14 @@ function lastUrlSegment(text) {
   return text.split('/').pop();
 }
 
+function quoteIfString(text) {
+  if (typeof text === 'string') {
+    const string = Handlebars.Utils.escapeExpression(text);
+    return new Handlebars.SafeString(`'${string}'`); // mark as already escaped
+  }
+  return text;
+}
+
 module.exports = (plop) => {
   plop.setPrompt('jsonFile', jsonFilePath);
   plop.setPrompt('file', filePath);
@@ -163,8 +172,9 @@ module.exports = (plop) => {
     }
     return text;
   });
-
+  plop.setHelper('quoteIfString', quoteIfString);
   plop.setHelper('apiDirCase', apiDirCase);
+
   plop.setHelper('uiDirCase', uiDirCase);
   plop.setHelper('mongoCollectionCase', mongoCollectionCase);
   plop.setHelper('pathOffset', pathOffset);
