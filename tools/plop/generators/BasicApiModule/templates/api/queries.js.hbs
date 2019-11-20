@@ -58,13 +58,13 @@ export default {
     }
 
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '||' this.queryable}}
     if (isArray({{> inputFieldName ~}})) {
       query.{{> inputFieldName }} = { $in: {{> inputFieldName }} };
     } else if ({{> inputFieldName }}) {
       query.{{> inputFieldName }} = {{> inputFieldName }};
     }
-  {{/if}}
+  {{/compare}}
 {{/each}}
 
 {{#if isSearchable}}

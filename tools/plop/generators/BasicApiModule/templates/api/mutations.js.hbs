@@ -66,8 +66,6 @@ export default {
       {{~schema.hooks.mutationPreUpdate}}
       /* #### PLOP_MUTATION_PRE_UPDATE_END #### */
 
- 
-
       {{ pascalCase pluralName }}.update({ {{ primaryFieldKey }} }, modifier);
       return {{ pascalCase pluralName }}.findOne({{ primaryFieldKey }});
     }
