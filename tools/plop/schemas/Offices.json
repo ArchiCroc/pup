@@ -136,13 +136,12 @@
       "showInTableView": "Created At"
     },
     "createdBy": {
-      "type": "CrossReference",
+      "type": "User",
       "input": {
         "name": "createdById",
         "type": "String"
       },
       "reference": {
-        "type": "User",
         "labelKey": "fullName",
         "valueKey": "_id"
       },
@@ -153,13 +152,12 @@
       "showInTableView": "Updated At"
     },
     "updatedBy": {
-      "type": "CrossReference",
+      "type": "User",
       "input": {
         "name": "updatedById",
         "type": "String"
       },
       "reference": {
-        "type": "User",
         "labelKey": "fullName",
         "valueKey": "_id"
       },

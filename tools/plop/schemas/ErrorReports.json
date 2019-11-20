@@ -20,15 +20,20 @@
         "optional": true
       }
     },
-    "userId": {
-      "userKey": true,
-      "type": "String",
-      "showInTableView": false,
-      "showInDetailView": false
-    },
     "user": {
       "type": "User",
-      "dataIndex": "fullName"
+      "input": {
+        "name": "userId",
+        "type": "String",
+        "input": "CrossReferenceSearch"
+      },
+      "reference":{
+        "query": "users",
+        "edges": "users",
+        "labelKey": "fullName",
+        "valueKey": "_id"
+      },
+      "showInTableView": true
     },
     "level": {
       "type": "Int",
@@ -87,13 +92,12 @@
       "showInTableView": "Created At"
     },
     "createdBy": {
-      "type": "CrossReference",
+      "type": "User",
       "input": {
         "name": "createdById",
         "type": "String"
       },
       "reference": {
-        "type": "User",
         "labelKey": "fullName",
         "valueKey": "_id"
       },

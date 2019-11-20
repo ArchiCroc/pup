@@ -20,14 +20,13 @@
       }
     },
     "hardwareType": {
-      "type": "CrossReference",
+      "type": "HardwareType",
       "input": {
         "name": "hardwareTypeId",
         "type": "String",
         "input": "CrossReferenceSelect"
       },
       "reference":{
-        "type": "HardwareType",
         "query": "hardwareTypes",
         "edges": "hardwareTypes",
         "labelKey": "name",
@@ -36,14 +35,14 @@
       "resolver": "HardwareTypeQueries.hardwareType"
     },
     "assignedTo": {
+      "type": "User",
       "input": {
         "name": "assignedToId",
         "type": "String",
         "input": "CrossReferenceSearch"
       },
       "reference":{
-      "type": "User",
-      "query": "users",
+        "query": "users",
         "edges": "users",
         "labelKey": "fullName",
         "valueKey": "_id"
@@ -51,14 +50,13 @@
       "showInTableView": true
     },
     "office": {
-      "type": "CrossReference",
+      "type": "Office",
       "input": {
         "name": "officeSlug",
         "type": "String",
         "input": "CrossReferenceSelect"
       },
       "reference": {
-        "type": "Office",
         "query": "offices",
         "edges": "offices",
         "labelKey": "name",
@@ -102,13 +100,12 @@
       "showInTableView": "Created At"
     },
     "createdBy": {
-      "type": "CrossReference",
+      "type": "User",
       "input": {
         "name": "createdById",
         "type": "String"
       },
       "reference": {
-        "type": "User",
         "labelKey": "fullName",
         "valueKey": "_id"
       },
@@ -119,13 +116,12 @@
       "showInTableView": "Updated At"
     },
     "updatedBy": {
-      "type": "CrossReference",
+      "type": "User",
       "input": {
         "name": "updatedById",
         "type": "String"
       },
       "reference": {
-        "type": "User",
         "labelKey": "fullName",
         "valueKey": "_id"
       },
