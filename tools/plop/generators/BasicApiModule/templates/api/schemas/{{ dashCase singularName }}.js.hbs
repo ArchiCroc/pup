@@ -1,3 +1,6 @@
+{{#*inline "schemaFields" ~}}
+{{#compare this 'typeof' 'string'}}'{{this}}'{{else}}{{this}}{{/compare}}
+{{~/inline}}
 {{#*inline "schemaFields"}}
 {{#each this ~}}
   {{~#if this.type }}
@@ -36,11 +39,7 @@ type: {{cleanSimpleSchemeType this.type}},
 {{#compare this.input '!=' 'Hidden'}}
 label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase name}}_label'),
 {{/compare}}
-{{#compare this.type '!==' '[Object]' '&&' this.defaultValue '!typeof' 'undefined'}}
-{{#unless isArrayKey}}
-defaultValue: {{#compare this.defaultValue 'typeof' 'string'}}'{{this.defaultValue}}'{{else}}{{this.defaultValue}}{{/compare}},
-{{/unless}}
-{{/compare}}
+
 {{~#if this.validate.optional}}
 optional: true,
 {{/if}}
@@ -58,10 +57,10 @@ blackbox: {{this.validate.blackbox}},
 {{/if}}
 {{#if this.clean}}
 autoValue() {
-  if (this.value) {
+  if (this.value !== undefined && this.value !== null) {
     return clean{{pascalCase name}}(this.value);
   }
-  return this.value;
+  return {{#if this.defaultValue}}{{> quoteIfString this.defaultValue }}{{else}}this.value{{/if}};
 },
 {{else}}
   {{#compare (cleanSimpleSchemeType this.type) '===' 'Mongo.ObjectID'}}
@@ -71,6 +70,13 @@ autoValue() {
 blackbox: true,
   {{/compare}}
 {{/if}}
+{{#compare this.type '!==' '[Object]' '&&' this.defaultValue '!typeof' 'undefined'}}
+{{#unless isArrayKey}}
+{{#unless this.clean}}
+defaultValue: {{> quoteIfString this.defaultValue }},
+{{/unless}}
+{{/unless}}
+{{/compare}}
 {{#if this.choices}}
   {{#compare this.choices 'typeof' 'object' '||' this.choices 'typeof' 'array'}}
 allowedValues: [{{#each this.choices}}{{#compare this 'typeof' 'string'}}'{{this}}'{{else}}{{this}}{{/compare}}{{#unless @last}}, {{/unless}}{{/each}}],
@@ -87,7 +93,7 @@ uniforms: {
     {{/compare}}
   {{/compare}}
   {{#each uniforms}}
-  {{@key}}: {{#compare this 'typeof' 'string'}}'{{{this}}}'{{else}}{{this}}{{/compare}},
+  {{@key}}: {{> quoteIfString this }},
   {{/each}}
   {{#if this.choices}}
     {{#compare this.choices 'typeof' 'object'}}
@@ -115,8 +121,8 @@ type: Array,
 {{#compare this.input '!=' 'Hidden'}}
 label: () => i18n.__('{{ pascalCase @root.name }}.{{snakeCase name}}_label'),
 {{/compare}}
-{{#compare this.defaultValue '!==' undefined}}
-defaultValue: {{#compare this.defaultValue 'typeof' 'string'}}'{{{this.defaultValue}}}'{{else}}{{this.defaultValue}}{{/compare}},
+{{#compare this.defaultValue '!==' undefined }}
+defaultValue: {{> quoteIfString this.defaultValue }},
 {{/compare}}
 {{~#if this.validate.optional}}
 optional: true,
@@ -136,7 +142,7 @@ uniforms: {
     {{/compare}}
   {{/compare}}
   {{#each this.uniforms}}
-  {{@key}}: {{#compare this 'typeof' 'string'}}'{{{this}}}'{{else}}{{this}}{{/compare}},
+  {{@key}}: {{> quoteIfString this.defaultValue }},
   {{/each}}
   {{#compare this.type 'startsWith' '[' '&&' (stripBrackets this.type) 'in' 'Select|CrossReferenceSearch|CrossReferenceSelect' }}
   multiple: true  
