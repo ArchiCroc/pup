@@ -28,8 +28,12 @@ const CrossReferenceSearchField = (props, { uniforms }) => {
 
   console.log(uniforms, props);
 
-  let initialValueFromReference = null;
-  if (initialLabelKey && initialValue) {
+  const [search, setSearch] = useState('');
+  const [value, setValue] = useState(null);
+  const [loadingComplete, setLoadingComplete] = useState(false);
+  const selectRef = useRef(null);
+
+  if (!value && initialLabelKey && initialValue) {
     const nameParts = name.split('.');
     nameParts.pop();
     nameParts.push(initialLabelKey);
@@ -45,33 +49,21 @@ const CrossReferenceSearchField = (props, { uniforms }) => {
       }
     }
     if (label instanceof Array) {
-      initialValueFromReference = label.map((item, index) => ({
-        key: initialValue[index],
-        label: item[labelKey],
-      }));
+      setLoadingComplete(true);
+      setValue(
+        label.map((item, index) => ({
+          key: initialValue[index],
+          label: item[labelKey],
+        })),
+      );
     } else if (label[labelKey]) {
-      initialValueFromReference = {
+      setLoadingComplete(true);
+      setValue({
         key: initialValue,
         label: label[labelKey],
-      };
+      });
     }
   }
-  // console.log('initialValueFromReference', initialValueFromReference);
-
-  const [search, setSearch] = useState('');
-  const [value, setValue] = useState(initialValueFromReference);
-  const [loadingComplete, setLoadingComplete] = useState(false);
-  const selectRef = useRef(null);
-
-  // console.log(`
-  // query searchData($search: String) {
-  //   ${query}(pageSize: 10, search: $search) {
-  //     ${edges ? edges + ' {' : ''}
-  //       ${labelKey}
-  //       ${valueKey}
-  //     ${edges ? '}' : ''}
-  //   }
-  // }`);
 
   const gqlQueries = useMemo(() => {
     return {
@@ -105,7 +97,7 @@ const CrossReferenceSearchField = (props, { uniforms }) => {
 
   const { loading: loading2 } = useQuery(gqlQueries.initialValue, {
     variables: { _ids: initialValue },
-    skip: initialValueFromReference || !initialValue || loadingComplete,
+    skip: value || !initialValue || loadingComplete,
     // fetchPolicy: 'cache-and-network', // network-only
     onCompleted: (result) => {
       setLoadingComplete(true);
