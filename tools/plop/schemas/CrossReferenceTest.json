@@ -20,14 +20,13 @@
       }
     },
     "errorReport": {
-      "type": "CrossReference",
+      "type": "ErrorReport",
       "input": {
         "name": "errorReportId",
         "type": "String",
         "input": "CrossReferenceSelect"
       },
       "reference": {
-        "type": "ErrorReport",
         "query": "errorReports",
         "edges": "errorReports",
         "labelKey": "message",
@@ -37,14 +36,13 @@
       "showInTableView": true
     },
     "assignedTo": {
-      "type": "CrossReference",
+      "type": "User",
       "input": {
         "name": "assignedToId",
         "type": "String",
         "input": "CrossReferenceSearch"
       },
       "reference": {
-        "type": "User",
         "query": "users",
         "edges": "users",
         "labelKey": "fullName",
@@ -53,14 +51,13 @@
       "showInTableView": true
     },
     "preparedBy": {
-      "type": "CrossReference",
+      "type": "[User]",
       "input": {
         "name": "preparedByIds",
         "type": "[String]",
         "input": "CrossReferenceSearch"
       },
       "reference": {
-        "type": "[User]",
         "query": "users",
         "edges": "users",
         "labelKey": "fullName",

@@ -84,7 +84,7 @@
       }
     },
     "themes": {
-      "type": "CrossReference",
+      "type": "[CollectionTheme]",
       "input": {
         "name": "themeIds",
         "type": "[ObjectID]",
@@ -94,7 +94,6 @@
         }
       },
       "reference": {
-        "type": "[CollectionTheme]",
         "query": "collectionThemes",
         "edges": "collectionThemes",
         "labelKey": "name",
@@ -115,7 +114,7 @@
       "showInTableView": false,
       "fields": {
         "element": {
-          "type": "CrossReference",
+          "type": "CollectionElement",
           "input": {
             "name": "elementId",
             "type": "ObjectID",
@@ -125,13 +124,12 @@
               }
           },
           "reference": {
-            "type": "CollectionElement",
             "query": "collectionElements",
             "edges": "collectionElements",
             "labelKey": "name",
             "valueKey": "_id"
           },
-          "resolver": "(parent, args, context) =>CollectionElementQueries.collectionElement(parent, { _id: parent.elementId }, context)",
+          "resolver": "(parent, args, context) => CollectionElementQueries.collectionElement(parent, { _id: parent.elementId }, context)",
           "showInTableView": true,
           "dataIndex": "name"
         },
@@ -153,13 +151,12 @@
       "showInTableView": "Created At"
     },
      "createdBy": {
-      "type": "CrossReference",
+      "type": "User",
       "input": {
         "name": "createdById",
         "type": "String"
       },
       "reference": {
-        "type": "User",
         "labelKey": "fullName",
         "valueKey": "_id"
       },
@@ -170,13 +167,12 @@
       "showInTableView": "Updated At"
     },
     "updatedBy": {
-      "type": "CrossReference",
+      "type": "User",
       "input": {
         "name": "updatedById",
         "type": "String"
       },
       "reference": {
-        "type": "User",
         "labelKey": "fullName",
         "valueKey": "_id"
       },
