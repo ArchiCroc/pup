@@ -1,14 +1,11 @@
 import { BrowserPolicy } from 'meteor/browser-policy-common';
 
-// AntD
-BrowserPolicy.content.allowOriginForAll('cdnjs.cloudflare.com');
-
 // FontAwesome
 BrowserPolicy.content.allowOriginForAll('use.fontawesome.com');
 
 // GraphQL Playground
 BrowserPolicy.content.allowOriginForAll('graphcool-playground.netlify.com');
-BrowserPolicy.content.allowOriginForAll('cdn.jsdelivr.net');
+BrowserPolicy.content.allowOriginForAll('cdn.jsdelivr.net'); // Also for antd css
 
 // Replace these with your own content URLs
 BrowserPolicy.content.allowOriginForAll('cleverbeagle-assets.s3.amazonaws.com');
