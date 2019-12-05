@@ -13,6 +13,14 @@
     "mainModule": {
       "client": "startup/client/index.js",
       "server": "startup/server/index.js"
+    },
+    "nodeModules": {
+      "recompile": {
+        "simpl-schema": "legacy",
+        "query-string": "legacy",
+        "strict-uri-encode": "legacy",
+        "split-on-first":"legacy"
+      }
     }
   },
   "scripts": {
