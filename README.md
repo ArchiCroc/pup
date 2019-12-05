@@ -42,6 +42,13 @@ Testing Coverage still sucks
     meteor npm install
     meteor npm run dev
 ```
+If you get errors about installing the bcrypt module on windows,
+install these packages too. It may take a while to install the build tools
+```shell
+    npm install --global node-gyp
+    npm install --global --production windows-build-tools
+```
+
 Starts default dev server at http://localhost:3000
 
 ### Running plop
