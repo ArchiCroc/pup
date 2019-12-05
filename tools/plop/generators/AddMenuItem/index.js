@@ -32,8 +32,10 @@ module.exports = {
       const values2 = await inquirer.prompt([
         {
           type: 'input',
-          name: 'name',
-          message: `What is the Module Name for i18n? ${changeCase.pascal(values.uiFolderName)}/`,
+          name: 'pluralName',
+          message: `What is the Module Name for i18n? Should be Plural ${changeCase.pascal(
+            values.uiFolderName,
+          )}/`,
           validate: requireField('i18n Module Name'),
         },
         {
@@ -94,9 +96,7 @@ module.exports = {
       actions.push({
         type: 'append',
         path: 'ui/components/AuthenticatedNavigation.jsx',
-        pattern: `{/* #### ${changeCase.constantCase(
-          data.uiFolderName,
-        )}_USER_MENU_ITEMS_START #### */}`,
+        pattern: `{/* #### ${changeCase.constantCase(data.name)}_USER_MENU_ITEMS_START #### */}`,
         templateFile: 'tools/plop/generators/AddMenuItem/templates/user-menu-item.js.hbs',
         data,
       });
@@ -105,9 +105,7 @@ module.exports = {
       actions.push({
         type: 'append',
         path: 'ui/components/AuthenticatedNavigation.jsx',
-        pattern: `{/* #### ${changeCase.constantCase(
-          data.uiFolderName,
-        )}_ADMIN_MENU_ITEMS_START #### */}`,
+        pattern: `{/* #### ${changeCase.constantCase(data.name)}_ADMIN_MENU_ITEMS_START #### */}`,
         templateFile: 'tools/plop/generators/AddMenuItem/templates/admin-menu-item.js.hbs',
         data,
       });
