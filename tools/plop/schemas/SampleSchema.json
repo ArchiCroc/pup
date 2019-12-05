@@ -1,4 +1,5 @@
 { "name": "Samples",
+  "uiFolderName": "demo/samples",
   "permissions": {
     "read": "user",
     "save": "admin",
@@ -54,6 +55,13 @@
       "validate" : {
           "optional": true
       }
+    },
+    "status": {
+      "type": "Int",
+      "input": "Select",
+      "choices": { "Denied": -1, "Draft": 0, "Ready": 1, "Assigned": 2, "Approved": 3, "In Process": 4, "Processing Error": 5, "Complete": 10, "Canceled": -10 },
+      "clean": "(item) => parseInt(item, 10);",
+      "filterable": true
     },
     "dimensions": {
       "type": "Object",
