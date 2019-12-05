@@ -23,7 +23,7 @@ const uniformsFields = [
   'LongText',
   'Num',
   'Radio',
-  'Select',
+  // 'Select', // use our own component
   'Submit',
   'Text',
 ];
