@@ -9,19 +9,19 @@
   {{#compare this.type '!=' 'Boolean'  }}
     {{#compare this.input 'in' 'Array|Select|Options|Dropdown|CrossReferenceSelect|CrossReferenceSearch|Checkboxes'  }}
 {{snakeCase name}}_placeholder: Select {{> inputLabel}}
-      {{#compare this.choices 'typeof' 'object'}}
-        {{#each this.choices}}
-{{snakeCase ../name}}_{{this}}: {{name}}
-        {{/each}}
-      {{else}}
-        {{#compare this.choices 'typeof' 'array'}}
-          {{#each this.choices}}
-{{snakeCase ../name}}_{{this}}: {{titleCase this}}
-          {{/each}}
-        {{/compare}}
-      {{/compare}}
     {{else}}
 {{snakeCase name}}_placeholder: {{> inputLabel}}
+    {{/compare}}
+    {{#compare this.choices 'typeof' 'object'}}
+      {{#each this.choices}}
+{{snakeCase ../name}}_{{this}}: {{name}}
+      {{/each}}
+    {{else}}
+      {{#compare this.choices 'typeof' 'array'}}
+        {{#each this.choices}}
+{{snakeCase ../name}}_{{this}}: {{titleCase this}}
+        {{/each}}
+      {{/compare}}
     {{/compare}}
   {{/compare}}
   {{else}}

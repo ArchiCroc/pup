@@ -32,6 +32,12 @@ module.exports = {
       const values2 = await inquirer.prompt([
         {
           type: 'input',
+          name: 'name',
+          message: `What is the Module Name for i18n? ${changeCase.pascal(values.uiFolderName)}/`,
+          validate: requireField('i18n Module Name'),
+        },
+        {
+          type: 'input',
           name: 'urlSlug',
           message: `What is url for your page? ${values.uiFolderName}/`,
           validate: requireField('URL Slug'),
