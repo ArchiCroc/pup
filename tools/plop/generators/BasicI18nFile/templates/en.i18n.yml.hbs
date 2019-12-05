@@ -14,7 +14,7 @@
     {{/compare}}
     {{#compare this.choices 'typeof' 'object'}}
       {{#each this.choices}}
-{{snakeCase ../name}}_{{this}}: {{name}}
+{{snakeCase ../name}}_{{this}}: {{@key}}
       {{/each}}
     {{else}}
       {{#compare this.choices 'typeof' 'array'}}
