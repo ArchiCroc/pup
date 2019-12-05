@@ -1,10 +1,10 @@
 {
-  "name": "pup",
-  "version": "2.1.0",
-  "description": "The Ultimate Boilerplate for Products.",
+  "name": "pup-plus",
+  "version": "2.2.0",
+  "description": "Get to the Fun Part Faster",
   "private": true,
   "repository": {
-    "url": "git@cleverbeagle:cleverbeagle/pup.git",
+    "url": "git@archicroc:archicroc/pup-plus.git",
     "type": "git"
   },
   "author": "cleverbeagle <business@cleverbeagle.com>",
