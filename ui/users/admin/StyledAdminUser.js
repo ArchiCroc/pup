@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-// import { Tabs } from 'react-bootstrap';
+import PageWrapper from '../../components/PageWrapper';
 
-const AdminUserHeader = styled.h4`
+const StyledAdminUser = styled(PageWrapper)`
   .label {
     position: relative;
     top: -2px;
@@ -30,7 +30,4 @@ const AdminUserHeader = styled.h4`
 //   }
 // `;
 
-export default {
-  AdminUserHeader,
-  //  AdminUserTabs,
-};
+export default StyledAdminUser;

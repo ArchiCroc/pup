@@ -33,11 +33,6 @@ const StyledApp = styled.div`
     padding: 10px 0 70px 0;
   }
 
-  .app-grid {
-    padding: 20px 40px;
-    background-color: #fff;
-  }
-
   .footer {
     position: absolute;
     bottom: 0;

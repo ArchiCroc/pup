@@ -1,35 +1,35 @@
                   
-                  {/* #### {{ constantCase pluralName }}_ROUTES_START #### */}
-                  <AuthenticatedRoute
-                    exact
-                    path="/{{ uiFolderName }}"
-                    component={ {{~ pascalCase pluralName ~}} }
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
-                  <AuthenticatedRoute
-                    exact
-                    path="/{{ uiFolderName }}/new"
-                    component={New{{ pascalCase singularName ~}} }
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
-                  <AuthenticatedRoute
-                    exact
-                    path="/{{ uiFolderName }}/:{{urlFieldKey}}"
-                    component={View{{ pascalCase singularName ~}}}
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
-                  <AuthenticatedRoute
-                    exact
-                    path="/{{ uiFolderName }}/:{{urlFieldKey}}/edit"
-                    component={Edit{{ pascalCase singularName ~}}}
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
-                  {/* #### {{ constantCase pluralName }}_ROUTES_END #### */}
+                    {/* #### {{ constantCase pluralName }}_ROUTES_START #### */}
+                    <AuthenticatedRoute
+                      exact
+                      path="/{{ uiFolderName }}"
+                      component={ {{~ pascalCase pluralName ~}} }
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    <AuthenticatedRoute
+                      exact
+                      path="/{{ uiFolderName }}/new"
+                      component={New{{ pascalCase singularName ~}} }
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    <AuthenticatedRoute
+                      exact
+                      path="/{{ uiFolderName }}/:{{urlFieldKey}}"
+                      component={View{{ pascalCase singularName ~}}}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    <AuthenticatedRoute
+                      exact
+                      path="/{{ uiFolderName }}/:{{urlFieldKey}}/edit"
+                      component={Edit{{ pascalCase singularName ~}}}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    {/* #### {{ constantCase pluralName }}_ROUTES_END #### */}

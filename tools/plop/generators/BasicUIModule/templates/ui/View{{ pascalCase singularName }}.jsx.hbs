@@ -60,8 +60,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/react-hooks';
-import Row from 'antd/lib/row';
-import Col from 'antd/lib/col';
 import Descriptions from 'antd/lib/descriptions';
 import FormatDate from '{{uiPathOffset}}../components/FormatDate';
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
@@ -75,21 +73,19 @@ import Edit{{ pascalCase singularName }}Button from './components/Edit{{ pascalC
 
 import { {{ camelCase singularName }} as {{ camelCase singularName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
 
-import StyledView{{ pascalCase singularName }} from './StyledView{{ pascalCase singularName }}';
+import Styled{{ pascalCase pluralName }} from './Styled{{ pascalCase pluralName }}';
 
 const View{{ pascalCase singularName }} = ({ match{{#compare hasFieldPermissions '||' schema.permissions.update}}, roles{{/compare}} }) => {
   const { loading, data: { {{ camelCase singularName }} } = {} } = useQuery({{ camelCase singularName }}Query, { variables: { {{ urlFieldKey }}: match.params.{{ urlFieldKey }} } });
 
   return (
-    <StyledView{{ pascalCase singularName }}>
+    <Styled{{ pascalCase pluralName }}>
       <PageHeader title={i18n.__('{{ pascalCase pluralName }}.view_{{ snakeCase shortSingularName }}')} />
       { {{~ camelCase singularName }}{{#if schema.permissions.update}} && hasRole(roles, [{{#each schema.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]){{/if}} && (
         <p>
           <Edit{{ pascalCase singularName }}Button {{urlFieldKey}}={ {{~ camelCase singularName }}.{{ urlFieldKey ~}} } />
         </p>
       )}
-      <Row type="flex" justify="center">
-        <Col xs={24} sm={24} md={24} lg={24}>
           {loading ? (
             <Loading />
           ) : (
@@ -101,9 +97,7 @@ const View{{ pascalCase singularName }} = ({ match{{#compare hasFieldPermissions
               )}
             </>
           )}
-        </Col>
-      </Row>
-    </StyledView{{ pascalCase singularName }}>
+    </Styled{{ pascalCase pluralName }}>
   );
 };
 

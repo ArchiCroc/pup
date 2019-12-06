@@ -1,29 +1,29 @@
 {{#compare routeType '===' 'user'}}
-                  <AuthenticatedRoute
-                    exact
-                    path="/{{ uiFolderName }}{{#if urlSlug}}/{{ urlSlug }}{{/if}}"
-                    component={ {{~ pascalCase componentName ~}} }
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
+                    <AuthenticatedRoute
+                      exact
+                      path="/{{ uiFolderName }}{{#if urlSlug}}/{{ urlSlug }}{{/if}}"
+                      component={ {{~ pascalCase componentName ~}} }
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
 {{/compare}}
 {{#compare routeType '===' 'admin'}}
-                  <AuthorizedRoute
-                    exact
-                    allowedRoles={['admin']}
-                    path="/{{ uiFolderName }}{{#if urlSlug}}/{{ urlSlug }}{{/if}}"
-                    component={ {{~ pascalCase componentName ~}} }
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
+                    <AuthorizedRoute
+                      exact
+                      allowedRoles={['admin']}
+                      path="/{{ uiFolderName }}{{#if urlSlug}}/{{ urlSlug }}{{/if}}"
+                      component={ {{~ pascalCase componentName ~}} }
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
 {{/compare}}
 {{#compare routeType '===' 'everyone'}}
-                  <PublicRoute
-                    path="/{{ uiFolderName }}{{#if urlSlug}}/{{ urlSlug }}{{/if}}" 
-                    component={ {{~ pascalCase componentName ~}} }
-                    {...props}
-                    {...state}
-                  />
+                    <PublicRoute
+                      path="/{{ uiFolderName }}{{#if urlSlug}}/{{ urlSlug }}{{/if}}" 
+                      component={ {{~ pascalCase componentName ~}} }
+                      {...props}
+                      {...state}
+                    />
 {{/compare}}

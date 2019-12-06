@@ -196,7 +196,7 @@ function Profile({ match, history }) {
     : {};
 
   return user ? (
-    <StyledProfile>
+    <StyledProfile md={16} lg={12} xl={10} xxl={8}>
       <h4 className="page-header">
         {user.profile ? `${user.profile.firstName} ${user.profile.lastName}` : user.username}
       </h4>
@@ -208,33 +208,29 @@ function Profile({ match, history }) {
         onTabClick={handleTabClick}
       >
         <Tabs.TabPane key="profile" tab={i18n.__('Users.profile')}>
-          <Row>
-            <Col xs={24} sm={18} md={12}>
-              <AutoForm
-                schema={ProfileSchema}
-                model={model}
-                onSubmit={handleSubmit}
-                showInlineError
-                placeholder
-              >
-                {renderProfileForm(user)}
-              </AutoForm>
+          <AutoForm
+            schema={ProfileSchema}
+            model={model}
+            onSubmit={handleSubmit}
+            showInlineError
+            placeholder
+          >
+            {renderProfileForm(user)}
+          </AutoForm>
 
-              <AccountPageFooter>
-                <p>
-                  <Button type="link" className="btn-export" onClick={handleExportData}>
-                    {i18n.__('Users.export_user_data_button')}
-                  </Button>
-                  {i18n.__('Users.export_user_data_help')}
-                </p>
-              </AccountPageFooter>
-              <AccountPageFooter>
-                <Button type="danger" onClick={handleDeleteAccount}>
-                  {i18n.__('Users.delete_my_account_button')}
-                </Button>
-              </AccountPageFooter>
-            </Col>
-          </Row>
+          <AccountPageFooter>
+            <p>
+              <Button type="link" className="btn-export" onClick={handleExportData}>
+                {i18n.__('Users.export_user_data_button')}
+              </Button>
+              {i18n.__('Users.export_user_data_help')}
+            </p>
+          </AccountPageFooter>
+          <AccountPageFooter>
+            <Button type="danger" onClick={handleDeleteAccount}>
+              {i18n.__('Users.delete_my_account_button')}
+            </Button>
+          </AccountPageFooter>
         </Tabs.TabPane>
         <Tabs.TabPane key="settings" tab={i18n.__('Users.settings')}>
           <UserSettings user={user} />

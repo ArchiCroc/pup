@@ -132,20 +132,6 @@ module.exports = {
         templateFile: 'tools/plop/generators/BasicUIModule/templates/app-routes.js.hbs',
         data,
       },
-      // {
-      //   type: 'append',
-      //   path: 'ui/components/AuthenticatedNavigation.jsx',
-      //   pattern: '{/* #### PLOP_USER_MENU_ITEMS_START #### */}',
-      //   templateFile: 'tools/plop/generators/BasicUIModule/templates/user-menu-items.js.hbs',
-      //   data,
-      // },
-      // {
-      //   type: 'append',
-      //   path: 'ui/components/AuthenticatedNavigation.jsx',
-      //   pattern: '{/* #### PLOP_ADMIN_MENU_ITEMS_START #### */}',
-      //   templateFile: 'tools/plop/generators/BasicUIModule/templates/admin-menu-items.js.hbs',
-      //   data,
-      // },
     ];
     actions.push(
       ...addMenuItem.actions({

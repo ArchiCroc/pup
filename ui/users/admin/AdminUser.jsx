@@ -12,7 +12,7 @@ import { user as userQuery } from '../queries/Users.gql';
 import Loading from '../../components/Loading';
 import NotFound from '../../pages/NotFound';
 
-import Styles from './StyledAdminUser';
+import StyledAdminUser from './StyledAdminUser';
 
 function AdminUser({ match, history }) {
   const { loading, data: { user } = {} } = useQuery(userQuery, {
@@ -38,19 +38,19 @@ function AdminUser({ match, history }) {
   const { profile: { firstName, lastName } = {}, username } = user;
 
   return (
-    <div className="AdminUser">
+    <StyledAdminUser>
       <Breadcrumb>
         <Breadcrumb.Item>
           <Link to="/admin/users">Users</Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>{name ? `${firstName} ${lastName}` : username}</Breadcrumb.Item>
       </Breadcrumb>
-      <Styles.AdminUserHeader className="page-header">
+      <h4>
         {name ? `${firstName} ${lastName}` : username}
         {user.oAuthProvider && (
           <span className={`label label-${user.oAuthProvider}`}>{user.oAuthProvider}</span>
         )}
-      </Styles.AdminUserHeader>
+      </h4>
       <Tabs activeKey={match.params.tab || 'profile'} onTabClick={handleTabClick}>
         <Tabs.TabPane key="profile" tab="Profile">
           <AdminUserProfile user={user} />
@@ -59,7 +59,7 @@ function AdminUser({ match, history }) {
           <UserSettings isAdmin user={user} />
         </Tabs.TabPane>
       </Tabs>
-    </div>
+    </StyledAdminUser>
   );
 }
 

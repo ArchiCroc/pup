@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { useQuery /* , useMutation */ } from '@apollo/react-hooks';
-import Row from 'antd/lib/row';
-import Col from 'antd/lib/col';
 import Divider from 'antd/lib/divider';
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
 import {{ pascalCase singularName }}Editor from './components/{{ pascalCase singularName }}Editor';
@@ -14,16 +12,16 @@ import hasRole from '{{uiPathOffset}}../../modules/hasRole';
 
 import { edit{{ pascalCase singularName }} as {{ camelCase singularName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
 
+import Styled{{ pascalCase pluralName }} from './Styled{{ pascalCase pluralName }}';
+
 const Edit{{ pascalCase singularName }} = ({ history, match, roles }) => {
   const { loading, data: { {{ camelCase singularName }} = undefined } = {} } = useQuery({{ camelCase singularName }}Query, { 
     variables: { {{ urlFieldKey }}: match.params.{{ urlFieldKey }} } 
   });
 
   return (
-    <>
+    <Styled{{ pascalCase pluralName }} md={16} lg={12} xl={10} xxl={8}>
       <PageHeader title={i18n.__('{{ pascalCase pluralName }}.edit_{{ snakeCase shortSingularName }}')} />
-      <Row type="flex" justify="center">
-        <Col xs={24} sm={16} md={12} lg={8}>
           {loading ? (
             <Loading />
           ) : (
@@ -43,9 +41,8 @@ const Edit{{ pascalCase singularName }} = ({ history, match, roles }) => {
                 history={history} 
               />
             )}
-        </Col>
-      </Row>
-    </>
+
+    </Styled{{ pascalCase pluralName }}>
   );
 };
 

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import PageWrapper from '../../components/PageWrapper';
 
-export default styled.div`
+export default styled(PageWrapper)`
   h4 span {
     display: inline-block;
     padding: 2px 6px;
