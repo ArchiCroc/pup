@@ -42,13 +42,13 @@
 })}
     {{/compare}}
     {{#compare this.type '===' 'Boolean'}}
-{ {{~> fieldKeyAndDataIndex }} && i18n.__(`{{ pascalCase name }}.${ {{~> fieldKeyDataIndex}}? 'yes' : 'no'}`)}
+{ {{~> fieldKeyAndDataIndex }} && i18n.__(`{{ pascalCase pluralName }}.${ {{~> fieldKeyDataIndex}}? 'yes' : 'no'}`)}
     {{/compare}}
     {{#compare this.type 'in' 'DateTime' }}
 { {{~> fieldKeyAndDataIndex }} && <FormatDate timestamp={ {{~> fieldKeyDataIndex ~}} }{{#compare this.input '===' 'Date' }} format="MMMM Do, YYYY"{{/compare}} />}
     {{/compare}}
     {{#compare this.type '!in' '[Object]' '&&' this.type 'startsWith' '[' }}
-{ {{~> fieldKeyAndDataIndex }} && {{ camelCase (singular name) }}{{#if this.dataIndex}}.map((item) => item.{{ this.dataIndex }}){{/if}}.join(', ')}
+{ {{~> fieldKeyAndDataIndex }} && {{ camelCase singularName }}{{#if this.dataIndex}}.map((item) => item.{{ this.dataIndex }}){{/if}}.join(', ')}
     {{/compare}}
     {{#compare this.type '!in' 'Object|DateTime|Boolean' '&&' this.type '!startsWith' '[' }}
 { {{~> fieldKeyAndDataIndex ~}} }
