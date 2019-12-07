@@ -19,7 +19,7 @@
         "simpl-schema": "legacy",
         "query-string": "legacy",
         "strict-uri-encode": "legacy",
-        "split-on-first":"legacy"
+        "split-on-first": "legacy"
       }
     }
   },
