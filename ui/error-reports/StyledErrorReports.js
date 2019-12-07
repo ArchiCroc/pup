@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import PageWrapper from '../components/PageWrapper';
 
-const StyledErrorReports = styled.div``; // = (props) => <Grid>{props.children}</Grid>;
+const StyledErrorReports = styled(PageWrapper)``; // = (props) => <Grid>{props.children}</Grid>;
 export default StyledErrorReports;

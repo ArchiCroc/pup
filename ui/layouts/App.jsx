@@ -8,7 +8,7 @@ import { Roles } from 'meteor/alanning:roles';
 import { Switch, Route } from 'react-router-dom';
 
 import Layout from 'antd/lib/layout';
-import Grid from '../components/Grid';
+import PageContainer from '../components/PageContainer';
 
 import Navigation from '../components/Navigation';
 
@@ -93,133 +93,135 @@ class App extends React.Component {
     const { props, state, setAfterLoginPath } = this;
     return (
       <StyledApp ready={state.ready} loading={`${props.loading}`}>
-        {props.authenticated && (
-          <VerifyEmailAlert
-            userId={props.userId}
-            emailVerified={props.emailVerified}
-            emailAddress={props.emailAddress}
-          />
-        )}
-        {props.authenticated && <GDPRConsentModal userId={props.userId} />}
-        <Layout className="layout">
-          <Layout.Header>
-            <Navigation {...props} {...state} />
-          </Layout.Header>
-          <Layout.Content className="content">
-            <Grid className="app-grid">
-              <PageErrorBoundary>
-                <Switch>
-                  {/* #### PLOP_ROUTES_START #### */}
+        <PageErrorBoundary>
+          {props.authenticated && (
+            <VerifyEmailAlert
+              userId={props.userId}
+              emailVerified={props.emailVerified}
+              emailAddress={props.emailAddress}
+            />
+          )}
+          {props.authenticated && <GDPRConsentModal userId={props.userId} />}
+          <Layout className="layout">
+            <Layout.Header>
+              <Navigation {...props} {...state} />
+            </Layout.Header>
+            <Layout.Content className="content">
+              <PageContainer className="app-grid">
+                <PageErrorBoundary>
+                  <Switch>
+                    {/* #### PLOP_ROUTES_START #### */}
 
-                  {/* #### PAGES_ROUTES_START #### */}
-                  <PublicRoute exact name="index" path="/" component={Index} />
-                  <PublicRoute name="terms" path="/terms" component={Terms} />
-                  <PublicRoute name="privacy" path="/privacy" component={Privacy} />
-                  <PublicRoute name="examplePage" path="/example-page" component={ExamplePage} />
-                  {/* #### PAGES_ROUTES_END #### */}
+                    {/* #### PAGES_ROUTES_START #### */}
+                    <PublicRoute exact name="index" path="/" component={Index} />
+                    <PublicRoute name="terms" path="/terms" component={Terms} />
+                    <PublicRoute name="privacy" path="/privacy" component={Privacy} />
+                    <PublicRoute name="examplePage" path="/example-page" component={ExamplePage} />
+                    {/* #### PAGES_ROUTES_END #### */}
 
-                  {/* #### ERROR_REPORTS_ROUTES_START #### */}
-                  <AuthenticatedRoute
-                    exact
-                    path="/error-reports"
-                    component={ErrorReports}
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
-                  <AuthenticatedRoute
-                    exact
-                    path="/error-reports/new"
-                    component={NewErrorReport}
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
-                  <AuthenticatedRoute
-                    exact
-                    path="/error-reports/:_id"
-                    component={ViewErrorReport}
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
-                  <AuthenticatedRoute
-                    exact
-                    path="/error-reports/:_id/edit"
-                    component={EditErrorReport}
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
-                  {/* #### ERROR_REPORTS_ROUTES_END #### */}
+                    {/* #### ERROR_REPORTS_ROUTES_START #### */}
+                    <AuthenticatedRoute
+                      exact
+                      path="/error-reports"
+                      component={ErrorReports}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    <AuthenticatedRoute
+                      exact
+                      path="/error-reports/new"
+                      component={NewErrorReport}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    <AuthenticatedRoute
+                      exact
+                      path="/error-reports/:_id"
+                      component={ViewErrorReport}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    <AuthenticatedRoute
+                      exact
+                      path="/error-reports/:_id/edit"
+                      component={EditErrorReport}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    {/* #### ERROR_REPORTS_ROUTES_END #### */}
 
-                  {/* #### USERS_ROUTES_START #### */}
-                  <AuthenticatedRoute
-                    exact
-                    path="/user/:tab?"
-                    component={Profile}
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
-                  <PublicOnlyRoute path="/signup" component={Signup} {...props} {...state} />
-                  <PublicOnlyRoute path="/login" component={Login} {...props} {...state} />
-                  <Route
-                    path="/logout"
-                    render={(routeProps) => (
-                      <Logout {...routeProps} setAfterLoginPath={setAfterLoginPath} />
-                    )}
-                    {...props}
-                    {...state}
-                  />
+                    {/* #### USERS_ROUTES_START #### */}
+                    <AuthenticatedRoute
+                      exact
+                      path="/user/:tab?"
+                      component={Profile}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    <PublicOnlyRoute path="/signup" component={Signup} {...props} {...state} />
+                    <PublicOnlyRoute path="/login" component={Login} {...props} {...state} />
+                    <Route
+                      path="/logout"
+                      render={(routeProps) => (
+                        <Logout {...routeProps} setAfterLoginPath={setAfterLoginPath} />
+                      )}
+                      {...props}
+                      {...state}
+                    />
 
-                  <PublicRoute
-                    name="verify-email"
-                    path="/verify-email/:token"
-                    component={VerifyEmail}
-                  />
-                  <PublicRoute
-                    name="recover-password"
-                    path="/recover-password"
-                    component={RecoverPassword}
-                  />
-                  <PublicRoute
-                    name="reset-password"
-                    path="/reset-password/:token"
-                    component={ResetPassword}
-                  />
-                  <AuthorizedRoute
-                    exact
-                    allowedRoles={['admin']}
-                    path="/admin/users"
-                    pathAfterFailure="/"
-                    component={AdminUsers}
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
-                  <AuthorizedRoute
-                    exact
-                    allowedRoles={['admin']}
-                    path="/admin/users/:_id/:tab?"
-                    pathAfterFailure="/"
-                    component={AdminUser}
-                    setAfterLoginPath={setAfterLoginPath}
-                    {...props}
-                    {...state}
-                  />
-                  {/* #### USERS_ROUTES_START #### */}
+                    <PublicRoute
+                      name="verify-email"
+                      path="/verify-email/:token"
+                      component={VerifyEmail}
+                    />
+                    <PublicRoute
+                      name="recover-password"
+                      path="/recover-password"
+                      component={RecoverPassword}
+                    />
+                    <PublicRoute
+                      name="reset-password"
+                      path="/reset-password/:token"
+                      component={ResetPassword}
+                    />
+                    <AuthorizedRoute
+                      exact
+                      allowedRoles={['admin']}
+                      path="/admin/users"
+                      pathAfterFailure="/"
+                      component={AdminUsers}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    <AuthorizedRoute
+                      exact
+                      allowedRoles={['admin']}
+                      path="/admin/users/:_id/:tab?"
+                      pathAfterFailure="/"
+                      component={AdminUser}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    {/* #### USERS_ROUTES_START #### */}
 
-                  {/* #### PLOP_ROUTES_END #### */}
-                  <Route component={NotFound} />
-                </Switch>
-              </PageErrorBoundary>
-            </Grid>
-          </Layout.Content>
-          <Layout.Footer className="footer">
-            <Footer />
-          </Layout.Footer>
-        </Layout>
+                    {/* #### PLOP_ROUTES_END #### */}
+                    <Route component={NotFound} />
+                  </Switch>
+                </PageErrorBoundary>
+              </PageContainer>
+            </Layout.Content>
+            <Layout.Footer className="footer">
+              <Footer />
+            </Layout.Footer>
+          </Layout>
+        </PageErrorBoundary>
       </StyledApp>
     );
   }

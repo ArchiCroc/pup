@@ -2,9 +2,10 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import i18n from 'meteor/universe:i18n';
 import Alert from 'antd/lib/alert';
+import PageWrapper from '../components/PageWrapper';
 
 const NotFound = () => (
-  <div className="NotFound">
+  <PageWrapper className="NotFound">
     <Alert
       type="danger"
       message={i18n.__('page_not_found_title')}
@@ -12,7 +13,7 @@ const NotFound = () => (
         page: Meteor.isClient ? window.location.pathname : '',
       })}
     />
-  </div>
+  </PageWrapper>
 );
 
 export default NotFound;

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import PageWrapper from '../components/PageWrapper';
 
-const StyledProfile = styled.div`
+const StyledProfile = styled(PageWrapper)`
   .nav.nav-tabs {
     margin-bottom: 20px;
   }

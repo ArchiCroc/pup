@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import darken from 'polished/lib/color/darken';
 import lighten from 'polished/lib/color/lighten';
+import PageWrapper from '../components/PageWrapper';
 
 const textColor = '#4285F4';
 
-const StyledIndex = styled.div`
+const StyledIndex = styled(PageWrapper)`
   padding: 20px;
   background: var(--cb-blue);
   text-align: center;

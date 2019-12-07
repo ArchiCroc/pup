@@ -14,7 +14,7 @@ import EditErrorReportButton from './components/EditErrorReportButton';
 
 import { errorReport as errorReportQuery } from './queries/ErrorReports.gql';
 
-import StyledViewErrorReport from './StyledViewErrorReport';
+import StyledErrorReports from './StyledErrorReports';
 
 const ViewErrorReport = ({ match }) => {
   const { loading, data: { errorReport } = {} } = useQuery(errorReportQuery, {
@@ -22,7 +22,7 @@ const ViewErrorReport = ({ match }) => {
   });
 
   return (
-    <StyledViewErrorReport>
+    <StyledErrorReports>
       <PageHeader title={i18n.__('ErrorReports.view_error_report')} />
       {errorReport && (
         <p>
@@ -38,7 +38,7 @@ const ViewErrorReport = ({ match }) => {
           )}
         </Col>
       </Row>
-    </StyledViewErrorReport>
+    </StyledErrorReports>
   );
 };
 
