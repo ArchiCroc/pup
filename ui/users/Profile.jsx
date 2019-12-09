@@ -17,6 +17,7 @@ import capitalize from 'lodash/capitalize';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import message from 'antd/lib/message';
+import PageHeader from '../components/PageHeader';
 import AccountPageFooter from './components/AccountPageFooter';
 import UserSettings from './components/UserSettings';
 import { user as userQuery, exportUserData as exportUserDataQuery } from './queries/Users.gql';
@@ -197,9 +198,7 @@ function Profile({ match, history }) {
 
   return user ? (
     <StyledProfile md={16} lg={12} xl={10} xxl={8}>
-      <h4 className="page-header">
-        {user.profile ? `${user.profile.firstName} ${user.profile.lastName}` : user.username}
-      </h4>
+      <PageHeader title={user.fullName || user.username || 'unknown'} className="no-border" />
       <Tabs
         // animation={false}
         // activeKey={activeTab}

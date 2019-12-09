@@ -78,6 +78,7 @@ import { useQuery } from '@apollo/react-hooks';
 import Descriptions from 'antd/lib/descriptions';
 {{#uniqueImports}}
 import FormatDate from '{{uiPathOffset}}../components/FormatDate';
+import PageBreadcrumbs, { Breadcrumb } from '{{uiPathOffset}}../components/PageBreadcrumbs';
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
 import Loading from '{{uiPathOffset}}../components/Loading';
 import NotFound from '{{uiPathOffset}}../pages/NotFound';
@@ -104,6 +105,10 @@ const View{{ pascalCase singularName }} = ({ match{{#compare hasFieldPermissions
 
   return (
     <Styled{{ pascalCase pluralName }}>
+      <PageBreadcrumbs>
+        <Breadcrumb to="/{{ uiFolderName }}">{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
+        <Breadcrumb>{i18n.__('{{ pascalCase pluralName }}.view_{{ snakeCase shortSingularName }}')}</Breadcrumb>
+      </PageBreadcrumbs>
       <PageHeader title={i18n.__('{{ pascalCase pluralName }}.view_{{ snakeCase shortSingularName }}')} />
       { {{~ camelCase singularName }}{{#if schema.permissions.update}} && hasRole(roles, [{{#each schema.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]){{/if}} && (
         <p>

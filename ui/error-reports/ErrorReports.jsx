@@ -6,6 +6,7 @@ import queryString from 'query-string';
 import isString from 'lodash/isString';
 import Table from 'antd/lib/table';
 import Input from 'antd/lib/input';
+import PageBreadcrumbs, { Breadcrumb } from '../components/PageBreadcrumbs';
 import PageHeader from '../components/PageHeader';
 import PrettyDate from '../components/PrettyDate';
 
@@ -147,6 +148,9 @@ const ErrorReports = ({ history, location }) => {
 
   return (
     <StyledErrorReports>
+      <PageBreadcrumbs>
+        <Breadcrumb>{i18n.__('ErrorReports.error_report_plural')}</Breadcrumb>
+      </PageBreadcrumbs>
       <PageHeader title={i18n.__('ErrorReports.error_report_plural')} />
       <p>
         <NewErrorReportButton />

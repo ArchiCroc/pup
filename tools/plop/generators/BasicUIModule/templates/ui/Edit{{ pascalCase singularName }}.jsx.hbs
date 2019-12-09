@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { useQuery /* , useMutation */ } from '@apollo/react-hooks';
 import Divider from 'antd/lib/divider';
+import PageBreadcrumbs, { Breadcrumb } from '{{uiPathOffset}}../components/PageBreadcrumbs';
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
 import {{ pascalCase singularName }}Editor from './components/{{ pascalCase singularName }}Editor';
 import Loading from '{{uiPathOffset}}../components/Loading';
@@ -21,6 +22,10 @@ const Edit{{ pascalCase singularName }} = ({ history, match, roles }) => {
 
   return (
     <Styled{{ pascalCase pluralName }} md={16} lg={12} xl={10} xxl={8}>
+      <PageBreadcrumbs>
+        <Breadcrumb to="/{{ uiFolderName }}">{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
+        <Breadcrumb>{i18n.__('{{ pascalCase pluralName }}.edit_{{ snakeCase shortSingularName }}')}</Breadcrumb>
+      </PageBreadcrumbs>
       <PageHeader title={i18n.__('{{ pascalCase pluralName }}.edit_{{ snakeCase shortSingularName }}')} />
           {loading ? (
             <Loading />

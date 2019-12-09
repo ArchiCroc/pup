@@ -6,6 +6,7 @@ import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Descriptions from 'antd/lib/descriptions';
 import FormatDate from '../components/FormatDate';
+import PageBreadcrumbs, { Breadcrumb } from '../components/PageBreadcrumbs';
 import PageHeader from '../components/PageHeader';
 import Loading from '../components/Loading';
 import NotFound from '../pages/NotFound';
@@ -23,6 +24,10 @@ const ViewErrorReport = ({ match }) => {
 
   return (
     <StyledErrorReports>
+      <PageBreadcrumbs>
+        <Breadcrumb to="/error-reports">{i18n.__('ErrorReports.error_report_plural')}</Breadcrumb>
+        <Breadcrumb>{i18n.__('ErrorReports.view_error_report')}</Breadcrumb>
+      </PageBreadcrumbs>
       <PageHeader title={i18n.__('ErrorReports.view_error_report')} />
       {errorReport && (
         <p>

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
+import PageBreadcrumbs, { Breadcrumb } from '{{uiPathOffset}}../components/PageBreadcrumbs';
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
 import {{ pascalCase singularName }}Editor from './components/{{ pascalCase singularName }}Editor';
 
@@ -8,6 +9,10 @@ import Styled{{ pascalCase pluralName }} from './Styled{{ pascalCase pluralName 
 
 const New{{ pascalCase singularName }} = ({ history{{#if hasFieldPermissions}}, roles{{/if}} }) => (
   <Styled{{ pascalCase pluralName }} md={16} lg={12} xl={10} xxl={8}>
+    <PageBreadcrumbs>
+      <Breadcrumb to="/{{ uiFolderName }}">{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
+      <Breadcrumb>{i18n.__('{{ pascalCase pluralName }}.new_{{ snakeCase shortSingularName }}')}</Breadcrumb>
+    </PageBreadcrumbs>
     <PageHeader title={i18n.__('{{ pascalCase pluralName }}.new_{{ snakeCase shortSingularName }}')} />
     <{{ pascalCase singularName }}Editor history={history} {{#if hasFieldPermissions}}roles={roles} {{/if}}/>
   </Styled{{ pascalCase pluralName }}>

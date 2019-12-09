@@ -36,10 +36,12 @@ import queryString from 'query-string';
 import isString from 'lodash/isString';
 {{/if}}
 import Table from 'antd/lib/table';
+{{#uniqueImports}}
 {{#if isSearchable}}
 import Input from 'antd/lib/input';
 {{/if}}
-{{#uniqueImports}}
+
+import PageBreadcrumbs, { Breadcrumb } from '{{uiPathOffset}}../components/PageBreadcrumbs';
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
 import PrettyDate from '{{uiPathOffset}}../components/PrettyDate';
 import New{{ pascalCase singularName }}Button from './components/New{{ pascalCase singularName }}Button';
@@ -289,6 +291,9 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
 
   return (
     <Styled{{ pascalCase pluralName }}>
+      <PageBreadcrumbs>
+        <Breadcrumb>{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
+      </PageBreadcrumbs>
       <PageHeader title={i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')} />
       <p>
         {{#if schema.permissions.create}}{ hasRole(roles, [{{#each schema.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && ({{/if}}<New{{ pascalCase singularName }}Button />{{#if schema.permissions.create}})}{{/if}}

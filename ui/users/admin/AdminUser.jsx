@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import { generatePath } from 'react-router';
-// import i18n from 'meteor/universe:i18n';
+import i18n from 'meteor/universe:i18n';
 import Tabs from 'antd/lib/tabs';
-import Breadcrumb from 'antd/lib/breadcrumb';
-import { Link } from 'react-router-dom';
+import PageBreadcrumbs, { Breadcrumb } from '../../components/PageBreadcrumbs';
+import PageHeader from '../../components/PageHeader';
 import AdminUserProfile from './components/AdminUserProfile';
 import UserSettings from '../components/UserSettings';
 import { user as userQuery } from '../queries/Users.gql';
@@ -35,22 +35,21 @@ function AdminUser({ match, history }) {
     return <NotFound />;
   }
 
-  const { profile: { firstName, lastName } = {}, username } = user;
+  const { fullName, profile: { firstName, lastName } = {}, username = 'unknown' } = user;
+
+  console.log(user);
 
   return (
     <StyledAdminUser>
-      <Breadcrumb>
-        <Breadcrumb.Item>
-          <Link to="/admin/users">Users</Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>{name ? `${firstName} ${lastName}` : username}</Breadcrumb.Item>
-      </Breadcrumb>
-      <h4>
-        {name ? `${firstName} ${lastName}` : username}
+      <PageBreadcrumbs>
+        <Breadcrumb to="/admin/users">{i18n.__('Users.user_plural')}</Breadcrumb>
+        <Breadcrumb>{fullName || username || 'unknown'}</Breadcrumb>
+      </PageBreadcrumbs>
+      <PageHeader title={fullName || username || 'unknown'} className="no-border">
         {user.oAuthProvider && (
           <span className={`label label-${user.oAuthProvider}`}>{user.oAuthProvider}</span>
         )}
-      </h4>
+      </PageHeader>
       <Tabs activeKey={match.params.tab || 'profile'} onTabClick={handleTabClick}>
         <Tabs.TabPane key="profile" tab="Profile">
           <AdminUserProfile user={user} />

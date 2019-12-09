@@ -5,6 +5,11 @@ const PageHeader = styled.div`
   padding: 0px 0 20px;
   margin-bottom: 20px;
 
+  &.no-border {
+    border: none;
+    margin-bottom: 0;
+  }
+
   h1 {
     font-size: 20px;
     font-weight: 600;
@@ -32,7 +37,7 @@ const PageHeader = styled.div`
   }
 
   @media screen and (min-width: 992px) {
-    padding: 20px 0 40px;
+    padding: 10px 0 40px;
     margin-bottom: 40px;
   }
 `;

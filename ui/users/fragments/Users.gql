@@ -1,5 +1,6 @@
 fragment UserAttributes on User {
   _id
+  fullName
   profile {
     firstName
     lastName

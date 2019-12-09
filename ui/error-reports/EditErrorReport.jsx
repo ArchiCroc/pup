@@ -4,6 +4,7 @@ import i18n from 'meteor/universe:i18n';
 import { useQuery /* , useMutation */ } from '@apollo/react-hooks';
 import Divider from 'antd/lib/divider';
 import PageHeader from '../components/PageHeader';
+import PageBreadcrumbs, { Breadcrumb } from '../components/PageBreadcrumbs';
 import ErrorReportEditor from './components/ErrorReportEditor';
 import Loading from '../components/Loading';
 import NotFound from '../pages/NotFound';
@@ -20,6 +21,10 @@ const EditErrorReport = ({ history, match }) => {
 
   return (
     <StyledErrorReports md={16} lg={12} xl={10} xxl={8}>
+      <PageBreadcrumbs>
+        <Breadcrumb to="/error-reports">{i18n.__('ErrorReports.error_report_plural')}</Breadcrumb>
+        <Breadcrumb>{i18n.__('ErrorReports.edit_error_report')}</Breadcrumb>
+      </PageBreadcrumbs>
       <PageHeader title={i18n.__('ErrorReports.edit_error_report')} />
       {loading ? (
         <Loading />

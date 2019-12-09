@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import Styled from './StyledPageHeader';
 import PageTitle from './PageTitle';
 
-const PageHeader = ({ title, subtitle, children }) => (
-  <Styled.PageHeader>
+const PageHeader = ({ title, subtitle, children, className }) => (
+  <Styled.PageHeader className={className}>
     <PageTitle title={title} />
     <Styled.PageHeaderContainer>
       <h1>{title}</h1>
@@ -20,12 +20,14 @@ const PageHeader = ({ title, subtitle, children }) => (
 PageHeader.defaultProps = {
   subtitle: '',
   children: null,
+  className: undefined,
 };
 
 PageHeader.propTypes = {
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string,
   children: PropTypes.node,
+  className: PropTypes.string,
 };
 
 export default PageHeader;
