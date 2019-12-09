@@ -4,13 +4,16 @@ import { Link } from 'react-router-dom';
 {{#*inline "valueIndex" ~}}
   {{~#if reference.valueKey}}{{reference.valueKey}}{{else}}{{urlFieldKey}}{{/if ~}}
 {{~/inline}}
+{{#*inline "baseValue" ~}}
+  {{~ parent}}.{{key ~}}
+{{~/inline}}
 {{#*inline "fieldKeyValueIndex" ~}}
-  {{~> fieldKey }}.{{#if reference.valueKey}}{{reference.valueKey}}{{else}}{{@root.urlFieldKey}}{{/if ~}}
+  {{~> baseValue }}.{{#if reference.valueKey}}{{reference.valueKey}}{{else}}{{@root.urlFieldKey}}{{/if ~}}
 {{~/inline}}
 {{#*inline "fieldUrl" ~}}
   {{~#if reference.baseUrl}}{{reference.baseUrl}}{{else}}/{{@root.uiFolderName}}{{/if ~}}
 {{~/inline}}
-{ {{~> fieldKey}} && {{> fieldKey}}.map((item) => {
+{{> baseValue}} && {{> baseValue}}.map((item) => {
   return (
     <p key={item.{{> valueIndex ~}} }>
       <Link to={`{{> fieldUrl }}/${item.{{> valueIndex ~}} }`}>
@@ -18,5 +21,5 @@ import { Link } from 'react-router-dom';
       </Link>
     </p>
   );
-})}
-{{/if}}
+})
+{{~/if}}

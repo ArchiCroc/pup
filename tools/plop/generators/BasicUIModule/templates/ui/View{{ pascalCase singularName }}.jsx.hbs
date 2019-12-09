@@ -15,7 +15,11 @@
 {{~/inline}}
 {{#*inline "renderValue"}}
   {{#if this.detailTemplateFile}}
-{{> (lookup . 'detailTemplateFile' )}} 
+    {{#if dataIndex}}
+{ {{~> (lookup . 'detailTemplateFile' ) value=(concat name '.' @key '.' dataIndex) parent=name key=@key ~}} }
+    {{else}}
+{ {{~> (lookup . 'detailTemplateFile' ) value=(concat name '.' @key) parent=name key=@key ~}} } 
+{{/if}}
   {{else}}
     {{#if this.detailTemplate}}
 {{render this.detailTemplate}}

@@ -3,7 +3,12 @@
   {{~#compare this.showInTableView '!==' false '&&' @key '!==' @root.primaryFieldKey}}
     {{~#compare this.input '||' this.showInTableView '&&' @key '!==' @root.urlFieldKey }}
       {{#if this.dataIndex}}
-{{convertDataIndexToGraphqlSubQuery (concat @key '.' this.dataIndex) 3}}
+{{@key}} { 
+  {{#if this.reference.valueKey}}
+  {{convertDataIndexToGraphqlSubQuery this.reference.valueKey 1 ~}}
+  {{/if}}
+  {{convertDataIndexToGraphqlSubQuery this.dataIndex 1 ~}}
+}
       {{else}}
         {{#if this.reference.labelKey}}
 {{convertDataIndexToGraphqlSubQuery (concat @key '.' this.reference.labelKey) 3}}

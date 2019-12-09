@@ -39,6 +39,7 @@ import Table from 'antd/lib/table';
 {{#if isSearchable}}
 import Input from 'antd/lib/input';
 {{/if}}
+{{#uniqueImports}}
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
 import PrettyDate from '{{uiPathOffset}}../components/PrettyDate';
 import New{{ pascalCase singularName }}Button from './components/New{{ pascalCase singularName }}Button';
@@ -48,6 +49,14 @@ import hasRole from '{{uiPathOffset}}../../modules/hasRole';
 {{#if hasGraphqlFilterable}}
 import useQueryForFilters from '{{uiPathOffset}}../../modules/hooks/useQueryForFilters';
 {{/if}}
+  {{#each schema.fields ~}}
+    {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
+      {{#if this.detailTemplateFile}}
+{{> (lookup . 'detailTemplateFile' ) import=true}} 
+      {{/if}}
+    {{/compare~}}
+  {{~/each}}
+{{/uniqueImports}}
 
 import Styled{{ pascalCase pluralName }} from './Styled{{ pascalCase pluralName }}';
 
@@ -143,6 +152,13 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
     {
       title: i18n.__(' {{~ pascalCase @root.name ~}} .{{ snakeCase @key }}'),
       dataIndex: '{{ @key }}{{#if this.dataIndex}}{{#compare this.type '!startsWith' '['}}.{{ this.dataIndex }}{{/compare}}{{/if}}',
+      {{#compare this.tableTemplateFile '||' this.tableTemplate}}
+        {{#if this.tableTemplateFile}}
+      render: (value, record) => {{> (lookup . 'tableTemplateFile' ) value='value' parent='record' key=@key}},
+        {{else}}
+      render: (value, record) => ('todo'),
+        {{/if}}
+      {{else}}
       {{#compare this.type '===' 'String'}}
         {{#compare this.choices '!typeof' 'object'}}
       sorter: true,
@@ -174,6 +190,7 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
       sorter: true,
       render: (value) => value && value{{#if this.dataIndex}}.map((item) => item && item.{{ this.dataIndex }}){{/if}}
       {{~#compare this.type '===' '[String]'}}.map((item) => i18n.__(`{{ pascalCase @root.name }}.{{@key}}_${item}`)){{/compare}}.join(', '),
+      {{/compare}}
       {{/compare}}
       {{#compare this.filterable '&&' this.choices}}
       filteredValue: current{{> pascalFieldName }},

@@ -2,14 +2,19 @@
 import { Link } from 'react-router-dom';
 {{else}}
 {{#*inline "fieldKeyValueIndex" ~}}
-  {{~> fieldKey }}.{{#if reference.valueKey}}{{reference.valueKey}}{{else}}{{@root.urlFieldKey}}{{/if ~}}
+  {{~ parent}}.{{key}}.{{#if reference.valueKey}}{{reference.valueKey}}{{else}}{{@root.urlFieldKey}}{{/if ~}}
 {{~/inline}}
 {{#*inline "fieldUrl" ~}}
   {{~#if reference.baseUrl}}{{reference.baseUrl}}{{else}}/{{@root.uiFolderName}}{{/if ~}}
 {{~/inline}}
-{ {{~> fieldKey}} && (
-  <Link to={`{{> fieldUrl }}/${ {{~> fieldKeyValueIndex~}} }`}>
-    { {{~> fieldKeyDataIndex~}} }
+{{#*inline "baseValue" ~}}
+  {{~ parent}}.{{key ~}}
+{{~/inline}}
+{{> baseValue }} && (
+  <Link 
+    to={`{{> fieldUrl }}/${ {{~> fieldKeyValueIndex~}} }`} 
+    onClick={(event) => event.stopPropagation()}>
+    { {{~value~}} }
   </Link>
-)}
-{{/if}}
+)
+{{~/if}}
