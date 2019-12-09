@@ -6,6 +6,7 @@ import i18n from 'meteor/universe:i18n';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import PageHeader from './PageHeader';
+import PageWrapper from './PageWrapper';
 
 class PageErrorBoundary extends React.Component {
   constructor(props) {
@@ -51,7 +52,7 @@ class PageErrorBoundary extends React.Component {
     if (this.state.hasError) {
       // You can render any custom fallback UI
       return (
-        <>
+        <PageWrapper>
           <PageHeader title={i18n.__('page_error_title')} />
           <Row>
             <Col
@@ -63,7 +64,7 @@ class PageErrorBoundary extends React.Component {
               {i18n.__('page_error_message')}
             </Col>
           </Row>
-        </>
+        </PageWrapper>
       );
     }
 

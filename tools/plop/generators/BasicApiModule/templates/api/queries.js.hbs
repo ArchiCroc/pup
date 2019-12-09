@@ -27,9 +27,9 @@ export default {
       search,
 {{/if}}
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '||' this.queryable}}
       {{> inputFieldName ~}},
-  {{/if}}
+  {{/compare}}
 {{/each}}
     } = args;
 

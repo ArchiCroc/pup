@@ -1,0 +1,22 @@
+{{#if import}}
+import { Link } from 'react-router-dom';
+{{else}}
+{{#*inline "valueIndex" ~}}
+  {{~#if reference.valueKey}}{{reference.valueKey}}{{else}}{{urlFieldKey}}{{/if ~}}
+{{~/inline}}
+{{#*inline "fieldKeyValueIndex" ~}}
+  {{~> fieldKey }}.{{#if reference.valueKey}}{{reference.valueKey}}{{else}}{{@root.urlFieldKey}}{{/if ~}}
+{{~/inline}}
+{{#*inline "fieldUrl" ~}}
+  {{~#if reference.baseUrl}}{{reference.baseUrl}}{{else}}/{{@root.uiFolderName}}{{/if ~}}
+{{~/inline}}
+{ {{~> fieldKey}} && {{> fieldKey}}.map((item) => {
+  return (
+    <p key={item.{{> valueIndex ~}} }>
+      <Link to={`{{> fieldUrl }}/${item.{{> valueIndex ~}} }`}>
+        {item.{{dataIndex~}} }
+      </Link>
+    </p>
+  );
+})}
+{{/if}}

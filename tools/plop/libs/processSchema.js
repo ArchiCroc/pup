@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const changeCase = require('change-case');
 const pluralize = require('pluralize');
 
@@ -19,6 +20,18 @@ function processFields(item, index) {
   }
   if (item.fields) {
     Object.values(item.fields).forEach(processFields);
+  }
+  if (item.templateFile && !item.tableTemplateFile) {
+    item.tableTemplateFile = item.templateFile;
+  }
+  if (item.templateFile && !item.detailTemplateFile) {
+    item.detailTemplateFile = item.templateFile;
+  }
+  if (item.template && !item.tableTemplate) {
+    item.tableTemplate = item.template;
+  }
+  if (item.template && !item.detailTemplate) {
+    item.detailTemplate = item.template;
   }
 }
 

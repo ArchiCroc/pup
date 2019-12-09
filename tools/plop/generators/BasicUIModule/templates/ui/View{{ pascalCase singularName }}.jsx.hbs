@@ -8,19 +8,30 @@
   {{~ name }}.{{@key~}}
 {{~/inline}}
 {{#*inline "fieldKeyAndDataIndex" ~}}
-  {{~#if this.dataIndex}}{{~> fieldKey }} && {{/if}}{{~> fieldKey }}{{#if this.dataIndex}}.{{ this.dataIndex }}{{/if ~}}
+  {{~#if dataIndex}}{{~> fieldKey }} && {{/if}}{{~> fieldKey }}{{#if dataIndex}}.{{ dataIndex }}{{/if ~}}
 {{~/inline}}
 {{#*inline "fieldKeyDataIndex" ~}}
-  {{~> fieldKey }}{{#if this.dataIndex}}.{{ this.dataIndex }}{{/if ~}}
+  {{~> fieldKey }}{{#if dataIndex}}.{{ dataIndex }}{{/if}}
 {{~/inline}}
 {{#*inline "renderValue"}}
-  {{#compare this.choices 'typeof' 'object'}}
+  {{#if this.detailTemplateFile}}
+{{> (lookup . 'detailTemplateFile' )}} 
+  {{else}}
+    {{#if this.detailTemplate}}
+{{render this.detailTemplate}}
+    {{else}}
+{{> renderGenericValue}}
+    {{/if}}
+  {{/if}}
+{{~/inline}}
+{{#*inline "renderGenericValue"}}
+  {{#compare choices 'typeof' 'object'}}
 { {{~> fieldKeyAndDataIndex }} && i18n.__(`{{ pascalCase @root.pluralName }}.{{ snakeCase @key }}_${ {{> fieldKeyDataIndex ~}} }`)}
   {{else}}
-    {{#compare this.type '===' 'Object'}}
+    {{#compare type '===' 'Object'}}
 { {{~> fieldKeyAndDataIndex }} && (
   <>
-{{#each this.fields}}
+{{#each fields}}
     <div>
       {i18n.__('{{pascalCase @root.pluralName}}.{{@../key}}_{{@key}}_label')}: {{> renderValue name=(concat ../name '.' @../key)}}
     </div>
@@ -28,11 +39,11 @@
   </>
 )}
     {{/compare}}
-    {{#compare this.type '===' '[Object]'}}
+    {{#compare type '===' '[Object]'}}
 { {{~> fieldKeyAndDataIndex }} && {{> fieldKeyDataIndex}}.map((item, index) => {
   return (
     <React.Fragment key={index}>
-{{#each this.fields}}
+{{#each fields}}
       <div>
         {i18n.__('{{pascalCase @root.pluralName}}.{{@../key}}_{{@key}}_label')}: {{> renderValue name="item"}}
       </div>
@@ -41,16 +52,16 @@
    )
 })}
     {{/compare}}
-    {{#compare this.type '===' 'Boolean'}}
-{ {{~> fieldKeyAndDataIndex }} && i18n.__(`{{ pascalCase pluralName }}.${ {{~> fieldKeyDataIndex}}? 'yes' : 'no'}`)}
+    {{#compare type '===' 'Boolean'}}
+{ {{~> fieldKeyAndDataIndex }} && i18n.__(`{{ pascalCase @root.pluralName }}.${ {{~> fieldKeyDataIndex}}? 'yes' : 'no'}`)}
     {{/compare}}
-    {{#compare this.type 'in' 'DateTime' }}
-{ {{~> fieldKeyAndDataIndex }} && <FormatDate timestamp={ {{~> fieldKeyDataIndex ~}} }{{#compare this.input '===' 'Date' }} format="MMMM Do, YYYY"{{/compare}} />}
+    {{#compare type 'in' 'DateTime' }}
+{ {{~> fieldKeyAndDataIndex }} && <FormatDate timestamp={ {{~> fieldKeyDataIndex ~}} }{{#compare input '===' 'Date' }} format="MMMM Do, YYYY"{{/compare}} />}
     {{/compare}}
-    {{#compare this.type '!in' '[Object]' '&&' this.type 'startsWith' '[' }}
-{ {{~> fieldKeyAndDataIndex }} && {{ camelCase singularName }}{{#if this.dataIndex}}.map((item) => item.{{ this.dataIndex }}){{/if}}.join(', ')}
+    {{#compare type '!in' '[Object]' '&&' type 'startsWith' '[' }}
+{ {{~> fieldKeyAndDataIndex }} && {{> fieldKeyDataIndex}}{{#if dataIndex}}.map((item) => item.{{ dataIndex }}){{/if}}.join(', ')}
     {{/compare}}
-    {{#compare this.type '!in' 'Object|DateTime|Boolean' '&&' this.type '!startsWith' '[' }}
+    {{#compare type '!in' 'Object|DateTime|Boolean' '&&' type '!startsWith' '[' }}
 { {{~> fieldKeyAndDataIndex ~}} }
     {{/compare ~}}
   {{~/compare~}}
@@ -61,15 +72,24 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/react-hooks';
 import Descriptions from 'antd/lib/descriptions';
+{{#uniqueImports}}
 import FormatDate from '{{uiPathOffset}}../components/FormatDate';
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
 import Loading from '{{uiPathOffset}}../components/Loading';
 import NotFound from '{{uiPathOffset}}../pages/NotFound';
-{{#compare hasFieldPermissions '||' schema.permissions.update}}
+  {{#compare hasFieldPermissions '||' schema.permissions.update}}
 import hasRole from '{{uiPathOffset}}../../modules/hasRole';
-{{/compare}}
+  {{/compare}}
+  {{#each schema.fields ~}}
+    {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
+      {{#if this.detailTemplateFile}}
+{{> (lookup . 'detailTemplateFile' ) import=true}} 
+      {{/if}}
+    {{/compare~}}
+  {{~/each}}
+{{/uniqueImports}}
 
-import Edit{{ pascalCase singularName }}Button from './components/Edit{{ pascalCase singularName }}Button'
+import Edit{{ pascalCase singularName }}Button from './components/Edit{{ pascalCase singularName }}Button';
 
 import { {{ camelCase singularName }} as {{ camelCase singularName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
 
@@ -86,17 +106,17 @@ const View{{ pascalCase singularName }} = ({ match{{#compare hasFieldPermissions
           <Edit{{ pascalCase singularName }}Button {{urlFieldKey}}={ {{~ camelCase singularName }}.{{ urlFieldKey ~}} } />
         </p>
       )}
-          {loading ? (
-            <Loading />
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          { {{~ camelCase singularName }} ? (
+            <View{{ pascalCase singularName }}Fields {{ camelCase singularName }}={ {{~ camelCase singularName ~}} }{{#if hasFieldPermissions}} roles={roles}{{/if}} />
           ) : (
-            <>
-              { {{~ camelCase singularName }} ? (
-                <View{{ pascalCase singularName }}Fields {{ camelCase singularName }}={ {{~ camelCase singularName ~}} }{{#if hasFieldPermissions}} roles={roles}{{/if}} />
-              ) : (
-                <NotFound />
-              )}
-            </>
+            <NotFound />
           )}
+        </>
+      )}
     </Styled{{ pascalCase pluralName }}>
   );
 };

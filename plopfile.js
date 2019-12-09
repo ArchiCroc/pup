@@ -5,10 +5,11 @@ const filePath = require('inquirer-file-selector-prompt');
 const _ = require('lodash');
 const Handlebars = require('handlebars');
 
-const { readdirSync, statSync } = require('fs');
+const { readdirSync, statSync, readFileSync } = require('fs');
 const { join } = require('path');
 
 const dirs = (p) => readdirSync(p).filter((f) => statSync(join(p, f)).isDirectory());
+const files = (p) => readdirSync(p).filter((f) => statSync(join(p, f)).isFile());
 
 function comment(data, userConfig, plop) {
   const { comment = '' } = userConfig;
@@ -146,13 +147,89 @@ function quoteIfString(text) {
     const string = Handlebars.Utils.escapeExpression(text);
     return new Handlebars.SafeString(`'${string}'`); // mark as already escaped
   }
+  if (typeof text === 'boolean') {
+    return text === true ? 'true' : 'false';
+  }
   return text;
+}
+
+const importRegex = /^import (?:([A-Za-z0-9_-]*),? )?(?:\{(.*)\} )?from ['"](\S+)['"];?.*$/gm;
+
+function objectToImportString(i) {
+  const parts = ['import'];
+  if (i.moduleVar) {
+    parts.push(i.moduleVar + (i.memberVars.length > 0 ? ',' : ''));
+  }
+  if (i.memberVars.length) {
+    parts.push('{');
+    parts.push(i.memberVars.sort().join(', '));
+    parts.push('}');
+  }
+  parts.push('from');
+  parts.push(`'${i.module}';`);
+  return parts.join(' ');
+}
+function uniqueImports(options) {
+  const contents = options.fn(this);
+  // }
+  // function uniqueImportsTest(contents) {
+  let imports = contents.matchAll(importRegex);
+  const modules = {};
+  const moduleImports = [];
+  const localImports = [];
+  const finalImports = [];
+  imports.forEach((i) => {
+    const moduleVar = i[1];
+    const memberVars = i[2];
+    const module = i[3];
+
+    if (!modules[module]) {
+      modules[module] = { module, memberVars: [] };
+    }
+    if (memberVars) {
+      const parts = memberVars.split(/,\s*?/).map((i) => i.trim());
+      modules[module].memberVars.push(...parts);
+    }
+    if (moduleVar) {
+      modules[module].moduleVar = moduleVar;
+    }
+  });
+  Object.values(modules).forEach((i) => {
+    i.memberVars = _.uniq(i.memberVars);
+    if (i.module.startsWith('.')) {
+      localImports.push(i);
+    } else {
+      moduleImports.push(i);
+    }
+  });
+  _.sortBy(moduleImports, (i) => i.module).forEach((i) => {
+    finalImports.push(objectToImportString(i));
+  });
+  _.sortBy(localImports, (i) => i.module).forEach((i) => {
+    finalImports.push(objectToImportString(i));
+  });
+
+  return finalImports.join('\n');
+}
+
+// const testImports = `import some-Module, { someMember3 } from '../../someModule';
+// import { someMember2 } from 'someModule';
+// import { someMember} from 'someModule';
+// import someModule from 'myModule';
+// import { List} from 'react-router' `;
+
+// console.log(uniqueImportsTest(testImports));
+
+function render(text, options) {
+  const renderedString = plop.renderString('text', options.data);
+  return Handlebars.Utils.escapeExpression(renderedString);
 }
 
 module.exports = (plop) => {
   plop.setPrompt('jsonFile', jsonFilePath);
   plop.setPrompt('file', filePath);
   plop.setActionType('comment', comment);
+  plop.setHelper('render', render);
   plop.setHelper('pluralize', (text) => pluralize(text));
   plop.setHelper('singular', (text) => pluralize.singular(text));
   plop.setHelper('compare', compare);
@@ -198,6 +275,7 @@ module.exports = (plop) => {
   });
 
   plop.setHelper('convertDataIndexToGraphqlSubQuery', convertDataIndexToGraphqlSubQuery);
+  plop.setHelper('uniqueImports', uniqueImports);
 
   const generators = dirs('./tools/plop/generators');
 
@@ -206,6 +284,16 @@ module.exports = (plop) => {
     // eslint-disable-next-line
     const object = require(`./tools/plop/generators/${folder}`);
     plop.setGenerator(folder, object);
+  });
+
+  const partials = files('./tools/plop/templates');
+  partials.forEach((partialFileName) => {
+    // this is kinda dangerous but I think this is the best solution
+    // eslint-disable-next-line
+    const name = partialFileName.split('.').shift();
+
+    const contents = readFileSync(`./tools/plop/templates/${partialFileName}`, 'utf8');
+    plop.setPartial(name, contents);
   });
 
   // plop.setGenerator('Add Basic Module', basicModuleGenerator);

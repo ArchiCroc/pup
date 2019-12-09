@@ -2,7 +2,12 @@
   {{#each this ~}}
       {{!-- {{~#compare this.showInTableView '||' this.input }} --}}
     {{#if this.dataIndex}}
-{{convertDataIndexToGraphqlSubQuery (concat @key '.' this.dataIndex) 0}}
+{{@key}} { 
+  {{#if this.reference.valueKey}}
+  {{convertDataIndexToGraphqlSubQuery this.reference.valueKey 1 ~}}
+  {{/if}}
+  {{convertDataIndexToGraphqlSubQuery this.dataIndex 1 ~}}
+}
     {{else}}
         {{#compare this.fields 'typeof' 'object'}}
 {{@key}} {
