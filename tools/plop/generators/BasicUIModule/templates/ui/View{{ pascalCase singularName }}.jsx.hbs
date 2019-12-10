@@ -105,20 +105,20 @@ const View{{ pascalCase singularName }} = ({ match{{#compare hasFieldPermissions
 
   return (
     <Styled{{ pascalCase pluralName }}>
-      <PageBreadcrumbs>
-        <Breadcrumb to="/{{ uiFolderName }}">{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
-        <Breadcrumb>{i18n.__('{{ pascalCase pluralName }}.view_{{ snakeCase shortSingularName }}')}</Breadcrumb>
-      </PageBreadcrumbs>
-      <PageHeader title={i18n.__('{{ pascalCase pluralName }}.view_{{ snakeCase shortSingularName }}')} />
-      { {{~ camelCase singularName }}{{#if schema.permissions.update}} && hasRole(roles, [{{#each schema.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]){{/if}} && (
-        <p>
-          <Edit{{ pascalCase singularName }}Button {{urlFieldKey}}={ {{~ camelCase singularName }}.{{ urlFieldKey ~}} } />
-        </p>
-      )}
       {loading ? (
         <Loading />
       ) : (
         <>
+          <PageBreadcrumbs>
+            <Breadcrumb to="/{{ uiFolderName }}">{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
+            <Breadcrumb>{ {{~ camelCase singularName }}.{{labelKeyKey ~}} }</Breadcrumb>
+          </PageBreadcrumbs>
+          <PageHeader title={ {{~ camelCase singularName }}.{{labelKeyKey ~}} } />
+          { {{~ camelCase singularName }}{{#if schema.permissions.update}} && hasRole(roles, [{{#each schema.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]){{/if}} && (
+            <p>
+              <Edit{{ pascalCase singularName }}Button {{urlFieldKey}}={ {{~ camelCase singularName }}.{{ urlFieldKey ~}} } />
+            </p>
+          )}
           { {{~ camelCase singularName }} ? (
             <View{{ pascalCase singularName }}Fields {{ camelCase singularName }}={ {{~ camelCase singularName ~}} }{{#if hasFieldPermissions}} roles={roles}{{/if}} />
           ) : (
