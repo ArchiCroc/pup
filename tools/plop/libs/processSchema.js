@@ -146,7 +146,7 @@ function processSchema(input) {
   }
   data.labelKeyKey = schemaFieldKeys[labelKeyIndex];
   data.labelKey = schemaFields[data.labelKeyKey];
-  if (data.labelKey.searchable !== false) {
+  if (data.labelKey && data.labelKey.searchable !== false) {
     data.labelKey.searchable = true;
   }
 
