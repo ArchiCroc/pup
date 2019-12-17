@@ -7,22 +7,21 @@ import {{ pascalCase singularName }}Editor from './components/{{ pascalCase sing
 
 import Styled{{ pascalCase pluralName }} from './Styled{{ pascalCase pluralName }}';
 
-const New{{ pascalCase singularName }} = ({ history{{#if hasFieldPermissions}}, roles{{/if}} }) => (
+const New{{ pascalCase singularName }} = ({{#if hasFieldPermissions }}{ roles }{{/if}}) => (
   <Styled{{ pascalCase pluralName }} md={16} lg={12} xl={10} xxl={8}>
     <PageBreadcrumbs>
       <Breadcrumb to="/{{ uiFolderName }}">{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
       <Breadcrumb>{i18n.__('{{ pascalCase pluralName }}.new_{{ snakeCase shortSingularName }}')}</Breadcrumb>
     </PageBreadcrumbs>
     <PageHeader title={i18n.__('{{ pascalCase pluralName }}.new_{{ snakeCase shortSingularName }}')} />
-    <{{ pascalCase singularName }}Editor history={history} {{#if hasFieldPermissions}}roles={roles} {{/if}}/>
+    <{{ pascalCase singularName }}Editor {{#if hasFieldPermissions}}roles={roles} {{/if}}/>
   </Styled{{ pascalCase pluralName }}>
 );
 
-New{{ pascalCase singularName }}.propTypes = {
-  history: PropTypes.object.isRequired,
 {{#if hasFieldPermissions}}
+New{{ pascalCase singularName }}.propTypes = {
   roles: PropTypes.array.isRequired,
-{{/if}}
 };
 
+{{/if}}
 export default New{{ pascalCase singularName }};

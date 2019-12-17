@@ -24,7 +24,7 @@
     {{#if this.detailTemplate}}
 {{render this.detailTemplate}}
     {{else}}
-{{> renderGenericValue}}
+{{> renderGenericValue ~}}
     {{/if}}
   {{/if}}
 {{~/inline}}
@@ -44,17 +44,15 @@
 )}
     {{/compare}}
     {{#compare type '===' '[Object]'}}
-{ {{~> fieldKeyAndDataIndex }} && {{> fieldKeyDataIndex}}.map((item, index) => {
-  return (
-    <React.Fragment key={index}>
+{ {{~> fieldKeyAndDataIndex }} && {{> fieldKeyDataIndex}}.map((item, index) => (
+  <React.Fragment key={index}>
 {{#each fields}}
-      <div>
-        {i18n.__('{{pascalCase @root.pluralName}}.{{@../key}}_{{@key}}_label')}: {{> renderValue name="item"}}
-      </div>
+    <div>
+      {i18n.__('{{pascalCase @root.pluralName}}.{{@../key}}_{{@key}}_label')}: {{> renderValue name="item" ~}}
+    </div>
 {{/each}}
-    </React.Fragment>
-   )
-})}
+  </React.Fragment>
+))}
     {{/compare}}
     {{#compare type '===' 'Boolean'}}
 { {{~> fieldKeyAndDataIndex }} && i18n.__(`{{ pascalCase @root.pluralName }}.${ {{~> fieldKeyDataIndex}}? 'yes' : 'no'}`)}
@@ -73,6 +71,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/react-hooks';
 import Descriptions from 'antd/lib/descriptions';
@@ -100,8 +99,9 @@ import { {{ camelCase singularName }} as {{ camelCase singularName }}Query } fro
 
 import Styled{{ pascalCase pluralName }} from './Styled{{ pascalCase pluralName }}';
 
-const View{{ pascalCase singularName }} = ({ match{{#compare hasFieldPermissions '||' schema.permissions.update}}, roles{{/compare}} }) => {
-  const { loading, data: { {{ camelCase singularName }} } = {} } = useQuery({{ camelCase singularName }}Query, { variables: { {{ urlFieldKey }}: match.params.{{ urlFieldKey }} } });
+function View{{ pascalCase singularName }}({{#compare hasFieldPermissions '||' schema.permissions.update}}{ roles }{{/compare}}) {
+  const { {{ urlFieldKey }} } = useParams();
+  const { loading, data: { {{ camelCase singularName }} } = {} } = useQuery({{ camelCase singularName }}Query, { variables: { {{ urlFieldKey }} } });
 
   return (
     <Styled{{ pascalCase pluralName }}>
@@ -130,16 +130,13 @@ const View{{ pascalCase singularName }} = ({ match{{#compare hasFieldPermissions
   );
 };
 
-View{{ pascalCase singularName }}.propTypes = {
-  // history: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
 {{#compare hasFieldPermissions '||' schema.permissions.update}}
+View{{ pascalCase singularName }}.propTypes = {
   roles: PropTypes.array.isRequired,
-{{/compare}}
 };
 
-const View{{ pascalCase singularName }}Fields = ({ {{ camelCase singularName }}{{#if hasFieldPermissions}}, roles{{/if}} }) => {
-  return (
+{{/compare}}
+const View{{ pascalCase singularName }}Fields = ({ {{ camelCase singularName }}{{#if hasFieldPermissions}}, roles{{/if}} }) => (
     <Descriptions bordered column={1}>
 {{#each schema.fields ~}}
   {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
@@ -149,8 +146,8 @@ const View{{ pascalCase singularName }}Fields = ({ {{ camelCase singularName }}{
   {{/compare~}}
 {{~/each}}
     </Descriptions>
-  );
-};
+);
+
 
 View{{ pascalCase singularName }}Fields.propTypes = {
   {{ camelCase singularName }}: PropTypes.object.isRequired,
