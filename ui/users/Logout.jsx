@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import i18n from 'meteor/universe:i18n';
 import Icon from 'antd/lib/icon';
+
 import StyledLogout from './StyledLogout';
 
 const { productName, twitterUsername, facebookUsername } = Meteor.settings.public;

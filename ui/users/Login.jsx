@@ -1,18 +1,20 @@
 import React from 'react';
-import AutoForm from 'uniforms/AutoForm';
-import AutoField from 'uniforms-antd/AutoField';
-// import ErrorsField from 'uniforms-antd/ErrorsField';
+import { Link } from 'react-router-dom';
+import { Meteor } from 'meteor/meteor';
 import i18n from 'meteor/universe:i18n';
 import Button from 'antd/lib/button';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Divider from 'antd/lib/divider';
-import { Link } from 'react-router-dom';
-import { Meteor } from 'meteor/meteor';
 import message from 'antd/lib/message';
+import AutoForm from 'uniforms/AutoForm';
+import TextField from 'uniforms-antd/TextField';
+// import ErrorsField from 'uniforms-antd/ErrorsField';
+
 import OAuthLoginButtons from './components/OAuthLoginButtons';
 import AccountPageFooter from './components/AccountPageFooter';
 import { StyledLogin, LoginPromo } from './StyledLogin';
+
 import LoginSchema from '../../api/Users/schemas/login';
 
 function Login() {
@@ -41,7 +43,7 @@ function Login() {
         </Col>
         <Col sm={24} md={12} lg={12} className="login-form">
           <h2 className="page-header">{i18n.__('Users.login_header')}</h2>
-            {/* @todo add check to hide diver if not using oauth */}
+          {/* @todo add check to hide diver if not using oauth */}
           <OAuthLoginButtons services={['facebook', 'github', 'google']} />
           <Divider>{i18n.__('Users.login_with_email')}</Divider>
           <AutoForm
@@ -52,8 +54,8 @@ function Login() {
             placeholder
           >
             {/* <ErrorsField /> */}
-            <AutoField name="emailAddress" placeholder={i18n.__('Users.email_address')} />
-            <AutoField name="password" placeholder={i18n.__('Users.password')} />
+            <TextField name="emailAddress" placeholder={i18n.__('Users.email_address')} />
+            <TextField name="password" placeholder={i18n.__('Users.password')} />
 
             <Link className="pull-right" to="/recover-password">
               {i18n.__('Users.forgot_password')}
@@ -64,7 +66,7 @@ function Login() {
             </Button>
             <AccountPageFooter>
               <p>
-                {"Don't have an account?"} <Link to="/signup">{i18n.__('Users.sign_up')}</Link>.
+                {i18n.__('Users.login_footer')} <Link to="/signup">{i18n.__('Users.sign_up')}</Link>
               </p>
             </AccountPageFooter>
           </AutoForm>

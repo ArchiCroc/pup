@@ -11,7 +11,7 @@ import wrapField from 'uniforms-antd/wrapField';
 
 // import Icon from '../../components/Icon';
 
-const AdminPasswordField = (props) => {
+function AdminPasswordField(props) {
   function generatePassword() {
     props.onChange(Random.hexString(20));
   }
@@ -43,7 +43,7 @@ const AdminPasswordField = (props) => {
       className="admin-password-field"
     />,
   );
-};
+}
 
 AdminPasswordField.propTypes = {
   id: PropTypes.string,

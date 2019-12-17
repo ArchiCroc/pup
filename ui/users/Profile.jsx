@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import AutoForm from 'uniforms/AutoForm';
-import AutoField from 'uniforms-antd/AutoField';
-import i18n from 'meteor/universe:i18n';
 import { generatePath } from 'react-router';
-// import { compose, graphql, withApollo } from 'react-apollo';
-import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
-import FileSaver from 'file-saver';
+import { useHistory, useParams } from 'react-router-dom';
 import base64ToBlob from 'b64-to-blob';
-import Row from 'antd/lib/row';
-import Col from 'antd/lib/col';
-import Tabs from 'antd/lib/tabs';
-import Button from 'antd/lib/button';
-import Modal from 'antd/lib/modal';
-import capitalize from 'lodash/capitalize';
+import FileSaver from 'file-saver';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+import i18n from 'meteor/universe:i18n';
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
+import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
+import Modal from 'antd/lib/modal';
+import Tabs from 'antd/lib/tabs';
+import capitalize from 'lodash/capitalize';
+import AutoForm from 'uniforms/AutoForm';
+import TextField from 'uniforms-antd/TextField';
+
 import PageHeader from '../components/PageHeader';
 import AccountPageFooter from './components/AccountPageFooter';
 import UserSettings from './components/UserSettings';
@@ -28,15 +29,16 @@ import {
 import ProfileSchema from '../../api/Users/schemas/profile';
 import StyledProfile from './StyledProfile';
 
-function Profile({ match, history }) {
-  // const [activeTab, setActiveTab] = useState('profile');
+function Profile({ match }) {
+  const history = useHistory();
+  const { _id } = useParams();
 
   const client = useApolloClient();
 
   const { loading, data: { user } = {} } = useQuery(userQuery, {
     fetchPolicy: 'no-cache',
     variables: {
-      _id: match.params._id,
+      _id,
     },
   });
 
@@ -47,7 +49,7 @@ function Profile({ match, history }) {
     onError: (error) => {
       message.error(error.message);
     },
-    refetchQueries: [{ query: userQuery, variables: { _id: match.params._id } }],
+    refetchQueries: [{ query: userQuery, variables: { _id } }],
   });
   const [removeUser] = useMutation(removeUserMutation, {
     onCompleted: () => {
@@ -61,16 +63,16 @@ function Profile({ match, history }) {
 
   const getUserType = (u) => (u.oAuthProvider ? 'oauth' : 'password');
 
-  const handleExportData = async (event) => {
+  async function handleExportData(event) {
     event.preventDefault();
     const { data: result } = await client.query({
       query: exportUserDataQuery,
     });
 
     FileSaver.saveAs(base64ToBlob(result.exportUserData.zip), `${Meteor.userId()}.zip`);
-  };
+  }
 
-  const handleDeleteAccount = () => {
+  function handleDeleteAccount() {
     // @todo make this an antd confirm box
 
     Modal.confirm({
@@ -86,9 +88,9 @@ function Profile({ match, history }) {
         console.log('Cancel');
       },
     });
-  };
+  }
 
-  const handleSubmit = (form) => {
+  function handleSubmit(form) {
     const cleanForm = ProfileSchema.clean(form);
     updateUser({
       variables: {
@@ -112,10 +114,10 @@ function Profile({ match, history }) {
         }
       });
     }
-  };
+  }
 
   function handleTabClick(key) {
-    const path = generatePath(match.path, { _id: match.params._id, tab: key });
+    const path = generatePath(match.path, { _id, tab: key });
     history.push(path);
   }
 
@@ -148,25 +150,25 @@ function Profile({ match, history }) {
     </div>
   );
 
-  const renderPasswordUser = (u) => (
+  const renderPasswordUser = () => (
     <div>
       <Row gutter={50}>
         <Col xs={12}>
-          <AutoField name="firstName" />
+          <TextField name="firstName" />
         </Col>
         <Col xs={12}>
-          <AutoField name="lastName" />
+          <TextField name="lastName" />
         </Col>
       </Row>
 
-      <AutoField name="emailAddress" />
-      <AutoField
+      <TextField name="emailAddress" />
+      <TextField
         name="currentPassword"
         // ref={(currentPassword) => {
         //   this.currentPassword = currentPassword;
         // }}
       />
-      <AutoField
+      <TextField
         name="newPassword"
         // ref={(newPassword) => {
         //   this.newPassword = newPassword;
@@ -243,7 +245,6 @@ function Profile({ match, history }) {
 
 Profile.propTypes = {
   match: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
 };
 
 export default Profile;

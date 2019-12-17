@@ -1,29 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
 import { generatePath } from 'react-router';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
+import { useQuery } from '@apollo/react-hooks';
 import Tabs from 'antd/lib/tabs';
 import PageBreadcrumbs, { Breadcrumb } from '../../components/PageBreadcrumbs';
 import PageHeader from '../../components/PageHeader';
 import AdminUserProfile from './components/AdminUserProfile';
 import UserSettings from '../components/UserSettings';
-import { user as userQuery } from '../queries/Users.gql';
 import Loading from '../../components/Loading';
 import NotFound from '../../pages/NotFound';
 
 import StyledAdminUser from './StyledAdminUser';
 
-function AdminUser({ match, history }) {
+import { user as userQuery } from '../queries/Users.gql';
+
+function AdminUser({ match }) {
+  const history = useHistory();
+  const location = useLocation();
+  const { _id, tab = 'profile' } = useParams();
   const { loading, data: { user } = {} } = useQuery(userQuery, {
     fetchPolicy: 'no-cache',
     variables: {
-      _id: match.params._id,
+      _id,
     },
   });
 
   function handleTabClick(key) {
-    const path = generatePath(match.path, { _id: match.params._id, tab: key });
+    const path = generatePath(match.path, { _id, tab: key });
     history.push(path);
   }
 
@@ -37,7 +42,7 @@ function AdminUser({ match, history }) {
 
   const { fullName, profile: { firstName, lastName } = {}, username = 'unknown' } = user;
 
-  console.log(user);
+  console.log(location);
 
   return (
     <StyledAdminUser>
@@ -50,7 +55,7 @@ function AdminUser({ match, history }) {
           <span className={`label label-${user.oAuthProvider}`}>{user.oAuthProvider}</span>
         )}
       </PageHeader>
-      <Tabs activeKey={match.params.tab || 'profile'} onTabClick={handleTabClick}>
+      <Tabs activeKey={tab} onTabClick={handleTabClick}>
         <Tabs.TabPane key="profile" tab="Profile">
           <AdminUserProfile user={user} />
         </Tabs.TabPane>
@@ -64,7 +69,6 @@ function AdminUser({ match, history }) {
 
 AdminUser.propTypes = {
   match: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
 };
 
 export default AdminUser;

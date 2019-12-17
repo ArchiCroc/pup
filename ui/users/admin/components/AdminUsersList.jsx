@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Roles } from 'meteor/alanning:roles';
-// import { Link } from 'react-router-dom';
-import isString from 'lodash/isString';
+import { useHistory, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
-import Table from 'antd/lib/table';
-import { useQuery } from '@apollo/react-hooks';
+// import { Roles } from 'meteor/alanning:roles';
 import i18n from 'meteor/universe:i18n';
-// import Loading from '../../components/Loading';
+import { useQuery } from '@apollo/react-hooks';
+import isString from 'lodash/isString';
+import Table from 'antd/lib/table';
+
 import { users as usersQuery } from '../../queries/Users.gql';
 
 // import { StyledListGroup, StyledListGroupItem } from './StyledAdminUsersList';
@@ -15,7 +14,10 @@ import { users as usersQuery } from '../../queries/Users.gql';
 // @todo filter these
 // @ todo add status and account creation date
 
-const AdminUsersList = ({ history, location }) => {
+function AdminUsersList() {
+  const history = useHistory();
+  const location = useLocation();
+
   const {
     page = 1,
     sort = 'name',
@@ -126,15 +128,6 @@ const AdminUsersList = ({ history, location }) => {
       />
     </>
   );
-};
-
-// AdminUsersList.defaultProps = {
-//   search: '',
-// };
-
-AdminUsersList.propTypes = {
-  history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-};
+}
 
 export default AdminUsersList;
