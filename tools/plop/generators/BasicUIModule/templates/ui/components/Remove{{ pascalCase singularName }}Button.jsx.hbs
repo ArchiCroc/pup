@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import i18n from 'meteor/universe:i18n';
 import Button from 'antd/lib/button';
@@ -9,7 +10,8 @@ import message from 'antd/lib/message';
 import { {{ camelCase pluralName }} as {{ camelCase pluralName }}Query } from '../queries/{{ pascalCase pluralName }}.gql';
 import { remove{{ pascalCase singularName }} as remove{{ pascalCase singularName }}Mutation } from '../mutations/{{ pascalCase pluralName }}.gql';
 
-const Remove{{ pascalCase singularName }}Button = ({ {{#compare primaryFieldKey '!==' labelKeyKey}}{{ primaryFieldKey }}, {{ labelKeyKey }}{{else}}{{ primaryFieldKey }}{{/compare}}, history, className, disabled }) => {
+function Remove{{ pascalCase singularName }}Button({ {{#compare primaryFieldKey '!==' labelKeyKey}}{{ primaryFieldKey }}, {{ labelKeyKey }}{{else}}{{ primaryFieldKey }}{{/compare}}, ...props }) {
+  const history = useHistory();
   const [remove{{ pascalCase singularName }}] = useMutation(remove{{ pascalCase singularName }}Mutation, {
     ignoreResults: true,
     onCompleted: () => {
@@ -36,25 +38,16 @@ const Remove{{ pascalCase singularName }}Button = ({ {{#compare primaryFieldKey 
   return (
     <Button
       key={ {{~ primaryFieldKey ~}} }
-      className={className}
       type="danger"
-      disabled={disabled}
       onClick={showConfirmModal}
+      {...props}
     >
       {i18n.__('{{ pascalCase pluralName }}.remove_{{ snakeCase shortSingularName }}')}
     </Button>
   );
-};
-
-Remove{{ pascalCase singularName }}Button.defaultProps = {
-  className: undefined,
-  disabled: false,
-};
+}
 
 Remove{{ pascalCase singularName }}Button.propTypes = {
-  history: PropTypes.object.isRequired,
-  className: PropTypes.string,
-  disabled: PropTypes.bool,
   {{ primaryFieldKey }}: PropTypes.string.isRequired,
   {{ labelKeyKey }}: PropTypes.string.isRequired,
 };

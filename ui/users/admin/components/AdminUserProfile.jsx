@@ -1,14 +1,14 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { useMutation } from '@apollo/react-hooks';
-import AutoForm from 'uniforms/AutoForm';
-import AutoField from 'uniforms-antd/AutoField';
-import SelectField from 'uniforms-antd/SelectField';
 import i18n from 'meteor/universe:i18n';
+import { useMutation } from '@apollo/react-hooks';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
+import AutoForm from 'uniforms/AutoForm';
+import TextField from 'uniforms-antd/TextField';
+import SelectField from 'uniforms-antd/SelectField';
 import AdminPasswordField from './AdminPasswordField';
 import AdminUserProfileSchema from '../../../../api/Users/schemas/admin-profile';
 
@@ -18,7 +18,7 @@ import {
   removeUser as removeUserMutation,
 } from '../../mutations/Users.gql';
 
-const AdminUserProfile = ({ user }) => {
+function AdminUserProfile({ user }) {
   const formRef = useRef();
 
   const [updateUser] = useMutation(updateUserMutation, {
@@ -111,17 +111,17 @@ const AdminUserProfile = ({ user }) => {
               {user && user.profile && (
                 <Row gutter={25}>
                   <Col xs={12}>
-                    <AutoField name="firstName" placeholder={i18n.__('Users.first_name')} />
+                    <TextField name="firstName" placeholder={i18n.__('Users.first_name')} />
                   </Col>
                   <Col xs={12}>
-                    <AutoField name="lastName" placeholder={i18n.__('Users.last_name')} />
+                    <TextField name="lastName" placeholder={i18n.__('Users.last_name')} />
                   </Col>
                 </Row>
               )}
               {user && user.username && (
                 <Row>
                   <Col xs={24}>
-                    <AutoField
+                    <TextField
                       name="emailAddress"
                       disabled={user && user.oAuthProvider}
                       placeholder={i18n.__('Users.email_address')}
@@ -131,7 +131,7 @@ const AdminUserProfile = ({ user }) => {
               )}
               <Row>
                 <Col xs={24}>
-                  <AutoField name="emailAddress" placeholder={i18n.__('Users.email_address')} />
+                  <TextField name="emailAddress" placeholder={i18n.__('Users.email_address')} />
                 </Col>
               </Row>
               <Row>
@@ -165,7 +165,7 @@ const AdminUserProfile = ({ user }) => {
       </AutoForm>
     </div>
   );
-};
+}
 
 AdminUserProfile.propTypes = {
   user: PropTypes.object.isRequired,

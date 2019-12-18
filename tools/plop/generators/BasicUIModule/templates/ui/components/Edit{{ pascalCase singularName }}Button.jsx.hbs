@@ -4,22 +4,15 @@ import i18n from 'meteor/universe:i18n';
 import Button from 'antd/lib/button';
 import { LinkContainer } from 'react-router-bootstrap';
 
-const Edit{{ pascalCase singularName }}Button = ({ {{ urlFieldKey }}, className, disabled }) => (
+const Edit{{ pascalCase singularName }}Button = ({ {{ urlFieldKey }}, ...props }) => (
   <LinkContainer to={`/{{ uiFolderName }}/${ {{~ urlFieldKey ~}} }/edit`}>
-    <Button type="primary" icon="plus" className={className}>
+    <Button type="primary" icon="edit" {...props}>
       {i18n.__('{{ pascalCase pluralName }}.edit_{{ snakeCase shortSingularName }}')}
     </Button>
   </LinkContainer>
 );
 
-Edit{{ pascalCase singularName }}Button.defaultProps = {
-  className: undefined,
-  disabled: false,
-};
-
 Edit{{ pascalCase singularName }}Button.propTypes = {
-  className: PropTypes.string,
-  disabled: PropTypes.bool,
   {{ urlFieldKey }}: PropTypes.string.isRequired,
 };
 

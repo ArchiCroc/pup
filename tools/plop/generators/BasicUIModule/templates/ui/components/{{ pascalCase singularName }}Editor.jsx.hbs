@@ -47,6 +47,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import i18n from 'meteor/universe:i18n';
 import Button from 'antd/lib/button';
@@ -69,7 +70,8 @@ import {{ pascalCase singularName }}Schema from '{{uiPathOffset}}../../../api/{{
 
 import Styled{{ pascalCase singularName }}Editor from './Styled{{ pascalCase singularName }}Editor';
 
-const {{ pascalCase singularName }}Editor = ({ doc, history{{#if hasFieldPermissions}}, roles{{/if}} }) => {
+function {{ pascalCase singularName }}Editor({ doc{{#if hasFieldPermissions}}, roles{{/if}} }) {
+  const history = useHistory();
   const [save{{ pascalCase singularName }}] = useMutation(save{{ pascalCase singularName }}Mutation, {
     ignoreResults: true,
     onCompleted: () => {
@@ -112,7 +114,7 @@ const {{ pascalCase singularName }}Editor = ({ doc, history{{#if hasFieldPermiss
       </AutoForm>
     </Styled{{ pascalCase singularName }}Editor>
   );
-};
+}
 
 {{ pascalCase singularName }}Editor.defaultProps = {
   doc: {},
@@ -120,7 +122,6 @@ const {{ pascalCase singularName }}Editor = ({ doc, history{{#if hasFieldPermiss
 
 {{ pascalCase singularName }}Editor.propTypes = {
   doc: PropTypes.object,
-  history: PropTypes.object.isRequired,
 {{#if hasFieldPermissions}}
   roles: PropTypes.array.isRequired,
 {{/if}}

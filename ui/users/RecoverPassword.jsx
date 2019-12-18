@@ -1,24 +1,24 @@
 import React from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { Accounts } from 'meteor/accounts-base';
 import i18n from 'meteor/universe:i18n';
-import AutoForm from 'uniforms/AutoForm';
-import AutoField from 'uniforms-antd/AutoField';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Alert from 'antd/lib/alert';
 import Button from 'antd/lib/button';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { Accounts } from 'meteor/accounts-base';
 import message from 'antd/lib/message';
+import AutoForm from 'uniforms/AutoForm';
+import TextField from 'uniforms-antd/TextField';
+
 import AccountPageFooter from './components/AccountPageFooter';
 import StyledRecoverPassword from './StyledRecoverPassword';
 import RecoverPasswordSchema from '../../api/Users/schemas/recover-password';
 
-function RecoverPassword(props) {
+function RecoverPassword() {
+  const history = useHistory();
+
   const handleSubmit = (form) => {
     const cleanForm = RecoverPasswordSchema.clean(form);
-
-    const { history } = props;
     const email = cleanForm.emailAddress;
 
     Accounts.forgotPassword({ email }, (error) => {
@@ -44,7 +44,7 @@ function RecoverPassword(props) {
             showInlineError
             placeholder
           >
-            <AutoField name="emailAddress" />
+            <TextField name="emailAddress" />
             <Button htmlType="submit" type="primary">
               {i18n.__('Users.recover_password_submit')}
             </Button>
@@ -60,9 +60,5 @@ function RecoverPassword(props) {
     </StyledRecoverPassword>
   );
 }
-
-RecoverPassword.propTypes = {
-  history: PropTypes.object.isRequired,
-};
 
 export default RecoverPassword;

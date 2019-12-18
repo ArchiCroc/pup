@@ -29,18 +29,18 @@ const [current{{ pascalCase name }}, setCurrent{{ pascalCase name }}] = useState
 
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import queryString from 'query-string';
+import { useHistory, useLocation } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/react-hooks';
-import queryString from 'query-string';
 {{#if isFilterable}}
 import isString from 'lodash/isString';
 {{/if}}
-import Table from 'antd/lib/table';
 {{#uniqueImports}}
 {{#if isSearchable}}
 import Input from 'antd/lib/input';
 {{/if}}
-
+import Table from 'antd/lib/table';
 import PageBreadcrumbs, { Breadcrumb } from '{{uiPathOffset}}../components/PageBreadcrumbs';
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
 import PrettyDate from '{{uiPathOffset}}../components/PrettyDate';
@@ -64,6 +64,7 @@ import Styled{{ pascalCase pluralName }} from './Styled{{ pascalCase pluralName 
 
 import { {{ camelCase pluralName }} as {{ camelCase pluralName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
 {{#if isSearchable}}
+
 const { Search } = Input;
 {{/if}}
 
@@ -81,7 +82,10 @@ function get{{pascalCase @key}}Filters() {
   {{/compare}}
 {{/each}}
 
-const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
+function {{ pascalCase pluralName }}({ roles }) {
+  const history = useHistory();
+  const location = useLocation();
+
   const {
     pageSize = 10,
     page = 1,
@@ -321,11 +325,9 @@ const {{ pascalCase pluralName }} = ({ history, location, roles }) => {
       />
     </Styled{{ pascalCase pluralName }}>
   );
-};
+}
 
 {{ pascalCase pluralName }}.propTypes = {
-  history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
   roles: PropTypes.array.isRequired,
 };
 

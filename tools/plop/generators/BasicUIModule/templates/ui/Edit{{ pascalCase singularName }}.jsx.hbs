@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
 import { useQuery /* , useMutation */ } from '@apollo/react-hooks';
 import Divider from 'antd/lib/divider';
@@ -15,9 +16,11 @@ import { edit{{ pascalCase singularName }} as {{ camelCase singularName }}Query 
 
 import Styled{{ pascalCase pluralName }} from './Styled{{ pascalCase pluralName }}';
 
-const Edit{{ pascalCase singularName }} = ({ history, match, roles }) => {
+function Edit{{ pascalCase singularName }}({ roles }) {
+  const { {{ urlFieldKey }} } = useParams();
+
   const { loading, data: { {{ camelCase singularName }} = undefined } = {} } = useQuery({{ camelCase singularName }}Query, { 
-    variables: { {{ urlFieldKey }}: match.params.{{ urlFieldKey }} } 
+    variables: { {{ urlFieldKey }} },
   });
 
   return (
@@ -27,33 +30,29 @@ const Edit{{ pascalCase singularName }} = ({ history, match, roles }) => {
         <Breadcrumb>{i18n.__('{{ pascalCase pluralName }}.edit_{{ snakeCase shortSingularName }}')}</Breadcrumb>
       </PageBreadcrumbs>
       <PageHeader title={i18n.__('{{ pascalCase pluralName }}.edit_{{ snakeCase shortSingularName }}')} />
-          {loading ? (
-            <Loading />
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          { {{~ camelCase singularName }} ? (
+            <{{ pascalCase singularName }}Editor doc={ {{~ camelCase singularName ~}} } roles={roles} /> 
           ) : (
-            <>
-              { {{~ camelCase singularName }} ? (
-                <{{ pascalCase singularName }}Editor doc={ {{~ camelCase singularName ~}} } history={history} roles={roles} /> 
-              ) : (
-                <NotFound />
-              )}
-            </>
+            <NotFound />
           )}
-          <Divider />
-          { {{~ camelCase singularName }} && {{#if schema.permissions.delete}} hasRole(roles, [{{#each schema.permissions.delete }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && {{/if}}(
-              <Remove{{ pascalCase singularName }}Button 
-                {{primaryFieldKey}}={ {{~ camelCase singularName }}.{{primaryFieldKey ~}} } 
-                {{labelKeyKey}}={ {{~ camelCase singularName}}.{{labelKeyKey ~}} } 
-                history={history} 
-              />
-            )}
-
+        </>
+      )}
+      <Divider />
+      { {{~ camelCase singularName }} && {{#if schema.permissions.delete}} hasRole(roles, [{{#each schema.permissions.delete }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && {{/if}}(
+        <Remove{{ pascalCase singularName }}Button 
+          {{primaryFieldKey}}={ {{~ camelCase singularName }}.{{primaryFieldKey ~}} } 
+          {{labelKeyKey}}={ {{~ camelCase singularName}}.{{labelKeyKey ~}} } 
+        />
+      )}
     </Styled{{ pascalCase pluralName }}>
   );
-};
+}
 
 Edit{{ pascalCase singularName }}.propTypes = {
-  history: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
   roles: PropTypes.array.isRequired,
 };
 

@@ -1,24 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Link, useHistory, useParams } from 'react-router-dom';
+import { Accounts } from 'meteor/accounts-base';
 import i18n from 'meteor/universe:i18n';
-import AutoForm from 'uniforms/AutoForm';
-import AutoField from 'uniforms-antd/AutoField';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Alert from 'antd/lib/alert';
 import Button from 'antd/lib/button';
-import { Link } from 'react-router-dom';
-import { Accounts } from 'meteor/accounts-base';
 import message from 'antd/lib/message';
+import AutoForm from 'uniforms/AutoForm';
+import TextField from 'uniforms-antd/TextField';
+
 import AccountPageFooter from './components/AccountPageFooter';
 import StyledResetPassword from './StyledResetPassword';
 import ResetPasswordSchema from '../../api/Users/schemas/reset-password';
 
-function ResetPassword(props) {
-  const handleSubmit = (form) => {
-    const { match, history } = props;
-    const { token } = match.params;
+function ResetPassword() {
+  const history = useHistory();
+  const { token } = useParams();
 
+  function handleSubmit(form) {
     const cleanForm = ResetPasswordSchema.clean(form);
 
     Accounts.resetPassword(token, cleanForm.newPassword, (error) => {
@@ -28,7 +28,7 @@ function ResetPassword(props) {
         history.push('/');
       }
     });
-  };
+  }
 
   return (
     <StyledResetPassword>
@@ -43,8 +43,8 @@ function ResetPassword(props) {
             showInlineError
             placeholder
           >
-            <AutoField name="newPassword" />
-            <AutoField name="repeatNewPassword" />
+            <TextField name="newPassword" />
+            <TextField name="repeatNewPassword" />
             <Button htmlType="submit" type="primary">
               {i18n.__('Users.reset_password_submit')}
             </Button>
@@ -61,10 +61,5 @@ function ResetPassword(props) {
     </StyledResetPassword>
   );
 }
-
-ResetPassword.propTypes = {
-  match: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
-};
 
 export default ResetPassword;

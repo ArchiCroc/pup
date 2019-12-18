@@ -1,23 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import AutoForm from 'uniforms/AutoForm';
-import AutoField from 'uniforms-antd/AutoField';
+import { Link, useHistory } from 'react-router-dom';
+// import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 import i18n from 'meteor/universe:i18n';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Button from 'antd/lib/button';
 import Divider from 'antd/lib/divider';
-
-import { Link } from 'react-router-dom';
-// import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
 import message from 'antd/lib/message';
+import AutoForm from 'uniforms/AutoForm';
+import TextField from 'uniforms-antd/TextField';
+
 import OAuthLoginButtons from './components/OAuthLoginButtons';
 import AccountPageFooter from './components/AccountPageFooter';
 import StyledSignup from './StyledSignup';
 import SignupSchema from '../../api/Users/schemas/signup';
 
-const Signup = ({ history }) => {
+function Signup() {
+  const history = useHistory();
+
   function handleSubmit(form) {
     const cleanForm = SignupSchema.clean(form);
 
@@ -57,14 +58,14 @@ const Signup = ({ history }) => {
           >
             <Row gutter={16}>
               <Col xs={12}>
-                <AutoField name="firstName" />
+                <TextField name="firstName" />
               </Col>
               <Col xs={12}>
-                <AutoField name="lastName" />
+                <TextField name="lastName" />
               </Col>
             </Row>
-            <AutoField name="emailAddress" />
-            <AutoField
+            <TextField name="emailAddress" />
+            <TextField
               name="password"
               placeholder={i18n.__('Users.password')}
               help={i18n.__('Users.password_help')}
@@ -84,10 +85,6 @@ const Signup = ({ history }) => {
       </Row>
     </StyledSignup>
   );
-};
-
-Signup.propTypes = {
-  history: PropTypes.object.isRequired,
-};
+}
 
 export default Signup;
