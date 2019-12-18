@@ -57,10 +57,10 @@ const handleErrorAsHalJson = (error, request, response, next) => {
   response.end();
 };
 
-const validateApikey = (key, secret) => {
+const validateApikey = async (key, secret) => {
   if (key && secret) {
     // const result = Meteor.users.findOne({ _id: key, 'services.api.keys': secret });
-    const result = Meteor.users
+    const result = await Meteor.users
       .rawCollection()
       .findOne({ username: key, 'services.api.apiKeys.key': secret });
     if (result) {
@@ -71,7 +71,7 @@ const validateApikey = (key, secret) => {
   return false;
 };
 
-const parseBasicAuth = (request, response, next) => {
+const parseBasicAuth = async (request, response, next) => {
   // this has to run in a fiber to call a meteor method in validateApikey
   if (request.headers && request.headers.authorization) {
     const basicAuth = request.headers.authorization.match(/^Basic (.+)/);
@@ -84,7 +84,7 @@ const parseBasicAuth = (request, response, next) => {
     const basicAuthStringParts = basicAuthString.split(':');
 
     if (basicAuthStringParts.length === 2) {
-      const user = validateApikey(basicAuthStringParts[0], basicAuthStringParts[1]);
+      const user = await validateApikey(basicAuthStringParts[0], basicAuthStringParts[1]);
       if (user) {
         request.user = user; // assign user to request object
         next();
