@@ -62,7 +62,7 @@ module.exports = {
         comment: `Example Query:
         
 query {{queryName}}{{#if queryParams}}({{#each queryParamSegments}}\${{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}} {
-  {{queryName}}{{#if queryParams}}({{#each queryParamSegments}}{{param}}: \${{param}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}}{
+  {{queryName}}{{#if queryParams}}({{#each queryParamSegments}}{{param}}: \${{param}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}} {
     ...{{ pascalCase (singular apiFolderName) }}Attributes
   }
 }
