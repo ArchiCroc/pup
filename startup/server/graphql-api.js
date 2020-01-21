@@ -4,6 +4,11 @@ import { makeExecutableSchema } from 'graphql-tools';
 import { ObjectID } from '../../modules/server/GraphQLObjectIdScalar';
 
 /* #### PLOP_IMPORTS_START #### */
+/* #### ROLES_IMPORTS_START #### */
+import RoleTypes from '../../api/Roles/types';
+import RoleQueries from '../../api/Roles/queries';
+import RoleMutations from '../../api/Roles/mutations';
+/* #### ROLES_IMPORTS_END #### */
 
 /* #### USERS_IMPORTS_START #### */
 import UserTypes from '../../api/Users/types';
@@ -32,6 +37,7 @@ const schema = {
     ${CommentTypes}
 
     #### PLOP_TYPES_START ####
+    ${RoleTypes}
     ${ErrorReportTypes}
     #### PLOP_TYPES_END ####
 
@@ -44,6 +50,18 @@ const schema = {
 
     type Query {
       #### PLOP_QUERY_TYPES_START ####
+      #### ROLES_QUERY_TYPES_START ####
+      roles(
+        _ids: [String]
+        page: Int
+        pageSize: Int
+        sort: String
+        order: String
+        search: String
+      ): Roles
+      myRoles: [Role]
+      role(_id: String, name: String): Role
+      #### ROLES_QUERY_TYPES_END ####
 
       #### USERS_QUERY_TYPES_START ####
       user(_id: String): User
@@ -81,6 +99,10 @@ const schema = {
 
     type Mutation {
       #### PLOP_MUTATION_TYPES_START ####
+      #### ROLES_MUTATION_TYPES_START ####
+      saveRole(role: RoleInput): Role
+      removeRole(_id: String!): Role
+      #### ROLES_MUTATION_TYPES_END ####
 
       #### COMMENTS_REPORTS_MUTATION_TYPES_START ####
       addComment(documentId: String!, comment: String!): Comment
@@ -112,6 +134,7 @@ const schema = {
       //  ...UserSettingsQueries,
       ...OAuthQueries,
       /* #### PLOP_QUERY_RESOLVERS_START #### */
+      ...RoleQueries,
       ...ErrorReportQueries,
       /* #### PLOP_QUERY_RESOLVERS_END #### */
     },
@@ -120,6 +143,7 @@ const schema = {
       ...UserMutations,
       // ...UserSettingsMutations,
       /* #### PLOP_MUTATION_RESOLVERS_START #### */
+      ...RoleMutations,
       ...ErrorReportMutations,
       /* #### PLOP_MUTATION_RESOLVERS_END #### */
     },
@@ -139,6 +163,14 @@ const schema = {
         UserQueries.user(parent, { _id: parent.createdById }, context),
     },
     /* #### PLOP_RESOLVERS_START #### */
+/* #### ROLES_RESOLVERS_START #### */
+    Role: {
+      createdBy: (parent, args, context) =>
+        UserQueries.resolveUser(parent, { _id: parent.createdById }, context),
+      updatedBy: (parent, args, context) =>
+        UserQueries.resolveUser(parent, { _id: parent.updatedById }, context),
+    },
+    /* #### ROLES_RESOLVERS_END #### */
     /* #### PLOP_RESOLVERS_END #### */
   },
 };

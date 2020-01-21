@@ -1,5 +1,6 @@
 export default `
-  type Role {
+  # @todo I think this can be removed now
+  type UserRole {
     _id: String
     name: String
     inRole: Boolean

@@ -14,6 +14,10 @@ import './ssr';
 import './rest-api';
 
 /* #### PLOP_IMPORTS_START #### */
+/* #### ROLES_IMPORTS_START #### */
+import '../../api/Roles/server/indexes';
+import '../../api/Roles/server/rest-api';
+/* #### ROLES_IMPORTS_END #### */
 /* #### ERROR_REPORTS_IMPORTS_START #### */
 import '../../api/ErrorReports/server/indexes';
 import '../../api/ErrorReports/server/rest-api';

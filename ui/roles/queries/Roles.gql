@@ -1,0 +1,39 @@
+#import "../fragments/Roles.gql"
+
+query roles(
+  $_ids: [String]
+  $page: Int, 
+  $pageSize: Int, 
+  $search: String, 
+  $sort: String, 
+  $order: String,
+) {
+  roles(
+    _ids: $_ids,
+    page: $page, 
+    pageSize: $pageSize, 
+    search: $search, 
+    sort: $sort, 
+    order: $order,
+  ) {
+    total
+    roles {
+      _id
+      name
+      createdAtUTC
+      updatedAtUTC
+    }
+  }
+}
+
+query editRole($_id: String, $name: String) {
+  role(_id: $_id, name: $name) {
+    ...RoleAttributes
+  }
+}
+
+query role($_id: String, $name: String) {
+  role(_id: $_id, name: $name) {
+    ...RoleAttributes
+  }
+}

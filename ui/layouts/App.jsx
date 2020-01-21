@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Meteor } from 'meteor/meteor';
-import { Roles } from 'meteor/alanning:roles';
+import { Roles as MeteorRoles } from 'meteor/alanning:roles';
 import { Switch, Route } from 'react-router-dom';
 
 import Layout from 'antd/lib/layout';
@@ -20,6 +20,13 @@ import PublicOnlyRoute from '../components/PublicOnlyRoute';
 import PublicRoute from '../components/PublicRoute';
 
 /* #### PLOP_IMPORTS_START #### */
+
+/* #### ROLES_IMPORTS_START #### */
+import Roles from '../roles/Roles';
+import ViewRole from '../roles/ViewRole';
+import NewRole from '../roles/NewRole';
+import EditRole from '../roles/EditRole';
+/* #### ROLES_IMPORTS_END #### */
 /* #### PAGES_IMPORTS_START #### */
 import Index from '../pages/Index';
 import Terms from '../pages/Terms';
@@ -111,6 +118,41 @@ class App extends React.Component {
                 <PageErrorBoundary>
                   <Switch>
                     {/* #### PLOP_ROUTES_START #### */}
+
+                    {/* #### ROLES_ROUTES_START #### */}
+                    <AuthenticatedRoute
+                      exact
+                      path="/admin/roles"
+                      component={Roles}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    <AuthenticatedRoute
+                      exact
+                      path="/admin/roles/new"
+                      component={NewRole}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    <AuthenticatedRoute
+                      exact
+                      path="/admin/roles/:name"
+                      component={ViewRole}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    <AuthenticatedRoute
+                      exact
+                      path="/admin/roles/:name/edit"
+                      component={EditRole}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    {/* #### ROLES_ROUTES_END #### */}
 
                     {/* #### PAGES_ROUTES_START #### */}
                     <PublicRoute exact name="index" path="/" component={Index} />
@@ -250,7 +292,7 @@ export default withTrackerSsr(() => {
   const loggingIn = Meteor.loggingIn();
   const user = Meteor.user();
   const userId = Meteor.userId();
-  const loading = !app.ready() && !Roles.subscription.ready();
+  const loading = !app.ready() && !MeteorRoles.subscription.ready();
   const name = user && user.profile && getUserName(user.profile);
   const emailAddress = user && user.emails && user.emails[0].address;
 
@@ -259,7 +301,7 @@ export default withTrackerSsr(() => {
     loggingIn,
     authenticated: !loggingIn && !!userId,
     name: name || emailAddress,
-    roles: Roles.getRolesForUser(userId),
+    roles: MeteorRoles.getRolesForUser(userId),
     userId,
     emailAddress,
     emailVerified: user && user.emails ? user.emails[0] && user.emails[0].verified : true,
