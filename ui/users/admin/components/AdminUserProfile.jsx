@@ -8,8 +8,9 @@ import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 import AutoForm from 'uniforms/AutoForm';
 import TextField from 'uniforms-antd/TextField';
-import SelectField from 'uniforms-antd/SelectField';
+// import SelectField from 'uniforms-antd/SelectField';
 import AdminPasswordField from './AdminPasswordField';
+import CrossReferenceSelectField from '../../../components/CrossReferenceSelectField';
 import AdminUserProfileSchema from '../../../../api/Users/schemas/admin-profile';
 
 import { user as userQuery, users as usersQuery } from '../../queries/Users.gql';
@@ -136,7 +137,7 @@ function AdminUserProfile({ user }) {
               </Row>
               <Row>
                 <Col xs={24}>
-                  <SelectField
+                  <CrossReferenceSelectField
                     transform={(value) => value}
                     name="roles"
                     options={[{ label: 'User', value: 'user' }, { label: 'Admin', value: 'admin' }]}

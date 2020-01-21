@@ -10,7 +10,16 @@ import gql from 'graphql-tag';
 const { Option } = Select;
 
 const CrossReferenceSelectField = (props) => {
-  const { query, labelKey, valueKey, value: initalValue, placeholder, disabled, edges } = props;
+  const {
+    query,
+    labelKey,
+    valueKey,
+    value: initalValue,
+    placeholder,
+    disabled,
+    edges,
+    multiple,
+  } = props;
 
   const [value, setValue] = useState(initalValue);
 
@@ -55,6 +64,7 @@ const CrossReferenceSelectField = (props) => {
       placeholder={placeholder}
       onChange={handleChange}
       loading={loading}
+      mode={multiple ? 'multiple' : 'default'}
       // style={{ width: '100%' }}
       disabled={disabled}
       optionFilterProp="children"
@@ -76,6 +86,7 @@ CrossReferenceSelectField.defaultProps = {
   edges: undefined,
   placeholder: null,
   disabled: false,
+  multiple: false,
 };
 
 CrossReferenceSelectField.propTypes = {
@@ -84,12 +95,13 @@ CrossReferenceSelectField.propTypes = {
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   disabled: PropTypes.bool,
   query: PropTypes.string.isRequired,
   edges: PropTypes.string.isRequired,
   labelKey: PropTypes.string.isRequired,
   valueKey: PropTypes.string.isRequired,
+  multiple: PropTypes.bool,
 };
 
 export default connectField(CrossReferenceSelectField);

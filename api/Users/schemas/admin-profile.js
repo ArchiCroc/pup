@@ -68,7 +68,15 @@ const AdminProfileSchema = new SimpleSchema({
     type: Array,
     label: () => i18n.__('Users.role_plural'),
     optional: true,
-    allowedValues: ['user', 'staff', 'admin'],
+    //allowedValues: ['user', 'staff', 'admin'],
+    uniforms: {
+      multiple: true,
+      query: 'roles',
+      edges: 'roles',
+      initialLabelKey: 'roles',
+      labelKey: 'name',
+      valueKey: 'name',
+    },
   },
   'roles.$': {
     type: String,
