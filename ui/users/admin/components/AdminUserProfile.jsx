@@ -24,13 +24,13 @@ function AdminUserProfile({ user }) {
 
   const [updateUser] = useMutation(updateUserMutation, {
     onCompleted: () => {
-      message.success(i18n.__('Documents.admin_user_updated'));
+      message.success(i18n.__('Users.admin_user_updated'));
     },
     refetchQueries: [{ query: userQuery, variables: { _id: user._id } }],
   });
   const [removeUser] = useMutation(removeUserMutation, {
     onCompleted: () => {
-      message.success(i18n.__('Documents.admin_user_removed'));
+      message.success(i18n.__('Users.admin_user_removed'));
       history.push('/admin/users');
     },
     refetchQueries: [{ query: usersQuery }],
@@ -40,14 +40,8 @@ function AdminUserProfile({ user }) {
     const isPasswordUser = user && !user.oAuthProvider;
 
     const cleanForm = AdminUserProfileSchema.clean(form);
-    console.log('save form', cleanForm);
 
     const password = isPasswordUser ? cleanForm.password : null;
-    const roleCheckboxes = document.querySelectorAll('[name="role"]:checked');
-    const roles = [];
-    [].forEach.call(roleCheckboxes, (role) => {
-      roles.push(role.value);
-    });
 
     let cleanDoc;
 
@@ -60,13 +54,13 @@ function AdminUserProfile({ user }) {
           lastName: cleanForm.lastName,
         },
 
-        roles,
+        roles: cleanForm.roles,
       };
     }
 
     if (!isPasswordUser) {
       cleanDoc = {
-        roles,
+        roles: cleanForm.roles,
       };
     }
 
@@ -74,7 +68,7 @@ function AdminUserProfile({ user }) {
       cleanDoc._id = user._id;
     }
 
-    updateUser({ variables: { cleanDoc } }, () => formRef.current.change('password', ''));
+    updateUser({ variables: { user: cleanDoc } }, () => formRef.current.change('password', ''));
   }
 
   function handleDeleteUser() {
@@ -93,6 +87,7 @@ function AdminUserProfile({ user }) {
         lastName: user.profile.lastName,
         username: user.username,
         emailAddress: user.emailAddress,
+        roles: user.roles,
       }
     : {};
 
