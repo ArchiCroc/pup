@@ -2,4 +2,4 @@
 
 import { Mongo } from 'meteor/mongo';
 
-export default new Mongo.Collection('ErrorReports');
+export default new Mongo.Collection('errorReports');
