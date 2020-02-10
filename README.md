@@ -16,12 +16,14 @@ An Opinionated take on an even better version of "Pup: The Ultimate Boilerplate 
 - Switches to [Ant Design](https://ant.design) as the primary UI Component Library
 - Adds [Universe i18n](https://github.com/vazco/meteor-universe-i18n) for i18n support. (Work in Progress)
   - I'm considering swapping to a more full featured i18n Library but this is the one works good enough for the time being. 
+  - Still need to add a language selector to the user settings
 - Adds a Plop code generator for quickly adding new modules to the app.  Helps you get to the fun parts faster.
   - Define a schema with all the fields for your module and it can generate the boilerplate react ui and graphql api for
-  - See the section below on 
+  - See the Schema example section below 
 - Changes the UserPreferences Api from dynamic fields to a hard code schema. Use Plop help add new fields.
 - Adds a React ErrorBoundary inside each route so a page error doesn't crash the app.
 - Adds a predefined module 'ErrorReports' to collect react errors
+- Adds a predefined module 'Roles' to manage User Roles
 
 #### What's the catch?
 
@@ -35,7 +37,7 @@ Mobile Formating needs work
 - Getting the menu to collapse bootstrap style on small screens is on my todo list
 
 Testing Coverage still sucks
-- Creating default Test via the Plop code generator is on my Roadmap
+- Creating default tests via the Plop code generator is on the Roadmap
 
 ### Getting Started - Install Prereqs and run the local dev server
 ```shell
@@ -138,13 +140,12 @@ Starts default dev server at http://localhost:3000
       "showInTableView": "Created At"
     },
     "createdBy": {
-      "type": "CrossReference",
+      "type": "User",
       "input": {
         "name": "createdById",
         "type": "String"
       },
       "reference": {
-        "type": "User",
         "labelKey": "fullName",
         "valueKey": "_id"
       },
@@ -164,7 +165,7 @@ graphql-iso-date:
 - Date, DateTime
 
 Types Defined by the Pup+ App: 
-- Users, Documents, ErrorReports
+- Users, Comments, ErrorReports, Roles
 
 #### Supported Inputs
 [Uniform Fields](https://github.com/vazco/uniforms/blob/master/docs/api-fields.md):
@@ -194,5 +195,6 @@ Defined in Pup+
 
 |    Component    |                    Description                    |
 | :-------------: | :-----------------------------------------------: |
+|`ChainedSlugField`| autocompletes a slug based on the field it's "chained" to |
 |`CrossReferenceSearchField`| Autocomplete one or multiple values from a different module |
 |`CrossReferenceSelectField`| Select one or multiple values from a different module       | 
