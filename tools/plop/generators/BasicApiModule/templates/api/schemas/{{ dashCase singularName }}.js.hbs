@@ -139,10 +139,12 @@ uniforms: {
     {{/compare}}
   {{/compare}}
   {{#each this.uniforms}}
-  {{@key}}: {{quoteIfString this.defaultValue }},
+  {{@key}}: {{quoteIfString this }},
   {{/each}}
   {{#compare this.type 'startsWith' '[' '&&' (stripBrackets this.type) 'in' 'Select|CrossReferenceSearch|CrossReferenceSelect' }}
+    {{#unless this.uniforms.multiple}}
   multiple: true  
+    {{/unless}}
   {{/compare}}
 },
 {{/inline~}}

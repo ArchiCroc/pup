@@ -16,9 +16,9 @@
 {{#*inline "renderValue"}}
   {{#if this.detailTemplateFile}}
     {{#if dataIndex}}
-{ {{~> (lookup . 'detailTemplateFile' ) value=(concat name '.' @key '.' dataIndex) parent=name key=@key ~}} }
+{{~> (lookup . 'detailTemplateFile' ) value=(concat name '.' @key '.' dataIndex) parent=name key=@key ~}}
     {{else}}
-{ {{~> (lookup . 'detailTemplateFile' ) value=(concat name '.' @key) parent=name key=@key ~}} } 
+{{~> (lookup . 'detailTemplateFile' ) value=(concat name '.' @key) parent=name key=@key ~}}
 {{/if}}
   {{else}}
     {{#if this.detailTemplate}}
@@ -55,7 +55,7 @@
 ))}
     {{/compare}}
     {{#compare type '===' 'Boolean'}}
-{ {{~> fieldKeyAndDataIndex }} && i18n.__(`{{ pascalCase @root.pluralName }}.${ {{~> fieldKeyDataIndex}}? 'yes' : 'no'}`)}
+{ {{#if dataIndex}}{{~> fieldKeyAndDataIndex }} && {{/if}}i18n.__(`{{ pascalCase @root.pluralName }}.${ {{~> fieldKeyDataIndex}}? 'yes' : 'no'}`)}
     {{/compare}}
     {{#compare type 'in' 'DateTime' }}
 { {{~> fieldKeyAndDataIndex }} && <FormatDate timestamp={ {{~> fieldKeyDataIndex ~}} }{{#compare input '===' 'Date' }} format="MMMM Do, YYYY"{{/compare}} />}

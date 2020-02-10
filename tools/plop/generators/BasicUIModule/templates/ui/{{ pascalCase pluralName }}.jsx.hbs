@@ -160,7 +160,7 @@ function {{ pascalCase pluralName }}({ roles }) {
       dataIndex: '{{ @key }}{{#if this.dataIndex}}{{#compare this.type '!startsWith' '['}}.{{ this.dataIndex }}{{/compare}}{{/if}}',
       {{#compare this.tableTemplateFile '||' this.tableTemplate}}
         {{#if this.tableTemplateFile}}
-      render: (value, record) => {{> (lookup . 'tableTemplateFile' ) value='value' parent='record' key=@key}},
+      render: (value, record) => ({{> (lookup . 'tableTemplateFile' ) value='value' parent='record' key=@key}}),
         {{else}}
       render: (value, record) => ('todo'),
         {{/if}}
@@ -294,7 +294,7 @@ function {{ pascalCase pluralName }}({ roles }) {
   };
 
   return (
-    <Styled{{ pascalCase pluralName }}>
+    <Styled{{ pascalCase pluralName }}{{#compare schema.indexWidth '===' 'full'}} md={24} lg={24} xl={24}{{/compare}}>
       <PageBreadcrumbs>
         <Breadcrumb>{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
       </PageBreadcrumbs>

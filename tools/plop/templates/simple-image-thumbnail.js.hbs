@@ -1,1 +1,3 @@
-<img src={ {{~name~}} } style={{ maxWidth: 85, maxHeight: 85 }} />
+{{#unless import}}
+<>{ {{~value~}} && <img src={ {{~value~}} } style=\{{ maxWidth: 85, maxHeight: 85 }} />}</>
+{{/unless}}

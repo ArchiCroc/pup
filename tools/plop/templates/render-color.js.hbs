@@ -1,0 +1,13 @@
+
+{{#if import}}
+import readableColor from 'polished/lib/color/readableColor';
+{{else}}
+<span style=\{{  
+  padding: '5px',
+  margin: '-5px',
+  color: readableColor(`#${ {{~value~}} }`),
+  backgroundColor: `#${ {{~value~}} }` 
+}}>
+  { {{~value~}} }
+</span>
+{{/if}}
