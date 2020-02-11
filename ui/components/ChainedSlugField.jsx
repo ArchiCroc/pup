@@ -19,7 +19,7 @@ const ChainedSlugField = (props, { uniforms }) => {
 
   const [prevSelfValue, setPrevSelfValue] = useState(currentValue);
   const [prevSourceValue, setPrevSourceValue] = useState(toSlug(uniforms.model[props.sourceField]));
-  // console.log(`init (${prevSelfValue}), (${prevSourceValue})`);
+  console.log(`init (${currentValue}), (${prevSourceValue})`);
 
   if (typeof uniforms.model[props.sourceField] === 'string') {
     sourceValue = toSlug(uniforms.model[props.sourceField]);
@@ -39,9 +39,11 @@ const ChainedSlugField = (props, { uniforms }) => {
 
   useEffect(() => {
     if (currentValue) {
-      uniforms.onChange(props.name, prevSourceValue);
+      // console.log('updateContext');
+      uniforms.model[props.name] = currentValue;
+      //uniforms.onChange(props.name, currentValue);
     }
-  }, [prevSourceValue]);
+  }, [currentValue]);
 
   function handleChange(event) {
     setPrevSelfValue(event.target.value);
