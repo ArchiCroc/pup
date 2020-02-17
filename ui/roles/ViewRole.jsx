@@ -27,7 +27,7 @@ function ViewRole({ roles: userRoles }) {
       ) : (
         <>
           <PageBreadcrumbs>
-            <Breadcrumb to="/roles">{i18n.__('Roles.role_plural')}</Breadcrumb>
+            <Breadcrumb to="/admin/roles">{i18n.__('Roles.role_plural')}</Breadcrumb>
             <Breadcrumb>{role.name}</Breadcrumb>
           </PageBreadcrumbs>
           <PageHeader title={role.name} />

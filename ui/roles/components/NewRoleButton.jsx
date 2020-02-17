@@ -4,7 +4,7 @@ import Button from 'antd/lib/button';
 import { LinkContainer } from 'react-router-bootstrap';
 
 const NewRoleButton = (props) => (
-  <LinkContainer to="/roles/new">
+  <LinkContainer to="/admin/roles/new">
     <Button type="primary" icon="plus" {...props}>
       {i18n.__('Roles.new_role')}
     </Button>

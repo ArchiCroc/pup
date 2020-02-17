@@ -1,13 +1,23 @@
-
-
+# Global
+home: Home
 footer: '© ${copyrightYear} ${productName}'
 terms_of_service: Terms
 terms_of_service_hidden: ' of Service'
 privacy_policy: Privacy
 privacy_policy_hidden: ' Policy'
 
-home: Home
+# Index Page
+index_title: Pup Plus
+index_subtitle: Get to the fun part faster.
+index_docs_button: Read the Docs
+index_star_button: Star on GitHub
+index_footer: >
+  Want to learn how to build a really solid MVP with Pup? 
+  <a href="https://cleverbeagle.com/together?utm_source=pup&utm_medium=app&utm_campaign=oss">
+    Check out Together by Clever Beagle
+  </a>.
 
+# Global Admin
 admin: Admin
 
 # React Error Page
@@ -18,13 +28,3 @@ page_error_message: This page had a problem rendering. Please contact the site's
 page_not_found_title: 404 Page Not Found
 page_not_found: Page Not Found
 page_not_found_message:  ${page} does not exist.
-
-index_title: Pup Plus
-index_subtitle: Get to the fun part faster.
-index_docs_button: Read the Docs
-index_star_button: Star on GitHub
-index_footer: >
-  Want to learn how to build a really solid MVP with Pup? 
-  <a href="https://cleverbeagle.com/together?utm_source=pup&utm_medium=app&utm_campaign=oss">
-    Check out Together by Clever Beagle
-  </a>.

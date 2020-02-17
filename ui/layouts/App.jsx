@@ -119,48 +119,6 @@ class App extends React.Component {
                   <Switch>
                     {/* #### PLOP_ROUTES_START #### */}
 
-                    {/* #### ROLES_ROUTES_START #### */}
-                    <AuthenticatedRoute
-                      exact
-                      path="/admin/roles"
-                      component={Roles}
-                      setAfterLoginPath={setAfterLoginPath}
-                      {...props}
-                      {...state}
-                    />
-                    <AuthenticatedRoute
-                      exact
-                      path="/admin/roles/new"
-                      component={NewRole}
-                      setAfterLoginPath={setAfterLoginPath}
-                      {...props}
-                      {...state}
-                    />
-                    <AuthenticatedRoute
-                      exact
-                      path="/admin/roles/:name"
-                      component={ViewRole}
-                      setAfterLoginPath={setAfterLoginPath}
-                      {...props}
-                      {...state}
-                    />
-                    <AuthenticatedRoute
-                      exact
-                      path="/admin/roles/:name/edit"
-                      component={EditRole}
-                      setAfterLoginPath={setAfterLoginPath}
-                      {...props}
-                      {...state}
-                    />
-                    {/* #### ROLES_ROUTES_END #### */}
-
-                    {/* #### PAGES_ROUTES_START #### */}
-                    <PublicRoute exact name="index" path="/" component={Index} />
-                    <PublicRoute name="terms" path="/terms" component={Terms} />
-                    <PublicRoute name="privacy" path="/privacy" component={Privacy} />
-                    <PublicRoute name="examplePage" path="/example-page" component={ExamplePage} />
-                    {/* #### PAGES_ROUTES_END #### */}
-
                     {/* #### ERROR_REPORTS_ROUTES_START #### */}
                     <AuthenticatedRoute
                       exact
@@ -251,7 +209,48 @@ class App extends React.Component {
                       {...props}
                       {...state}
                     />
-                    {/* #### USERS_ROUTES_START #### */}
+                    {/* #### USERS_ROUTES_END #### */}
+
+                    {/* #### ROLES_ROUTES_START #### */}
+                    <AuthenticatedRoute
+                      exact
+                      path="/admin/roles"
+                      component={Roles}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    <AuthenticatedRoute
+                      exact
+                      path="/admin/roles/new"
+                      component={NewRole}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    <AuthenticatedRoute
+                      exact
+                      path="/admin/roles/:name"
+                      component={ViewRole}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    <AuthenticatedRoute
+                      exact
+                      path="/admin/roles/:name/edit"
+                      component={EditRole}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    {/* #### ROLES_ROUTES_END #### */}
+
+                    {/* #### PAGES_ROUTES_START #### */}
+                    <PublicRoute exact name="index" path="/" component={Index} />
+                    <PublicRoute name="terms" path="/terms" component={Terms} />
+                    <PublicRoute name="privacy" path="/privacy" component={Privacy} />
+                    {/* #### PAGES_ROUTES_END #### */}
 
                     {/* #### PLOP_ROUTES_END #### */}
                     <Route component={NotFound} />

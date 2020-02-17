@@ -118,7 +118,7 @@ function Roles({ roles: userRoles }) {
   function handleTableRow(record) {
     return {
       onClick: () => {
-        history.push(`/roles/${record.name}`);
+        history.push(`/admin/roles/${record.name}`);
       },
     };
   }
