@@ -12,15 +12,25 @@
         pageSize: Int
         sort: String
         order: String
+      {{#if isSearchable}}
         search: String
+      {{/if}}
         {{#each schema.fields}}
-          {{#if this.filterable}}
+          {{#compare this.filterable '||' this.queryable }}
             {{#compare this.input 'typeof' 'object'}}
         {{> schemaField this.input}}
              {{else}}
         {{> schemaField name=@key}}
              {{/compare}}
-          {{/if}}
+          {{else}}
+            {{#if this.groupKey }}
+              {{#compare this.input 'typeof' 'object'}}
+        {{ this.input.name }}: {{cleanGraphqlType this.input.type}}
+              {{else}}
+        {{ @key }}: {{cleanGraphqlType this.type}}
+              {{/compare}}
+            {{/if}}
+          {{/compare}}
         {{/each}}
       ): {{ pascalCase pluralName }}
       my{{ pascalCase pluralName }}: [{{ pascalCase singularName }}]

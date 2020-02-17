@@ -81,6 +81,7 @@ allowedValues: [{{#each this.choices}}{{quoteIfString this}}{{#unless @last}}, {
 allowedValues: {{this.choices}},
   {{/compare}}
 {{/if}}
+{{#unless isArrayKey}}
 uniforms: {
   {{#compare this.input '==' 'Hidden'}}
   type: 'hidden',
@@ -112,6 +113,7 @@ uniforms: {
   valueKey: '{{this.reference.valueKey}}',
   {{/if}}
 },
+{{/unless}}
 {{/inline}}
 {{#*inline "arrayFieldBody"}}
 type: Array,
@@ -146,6 +148,20 @@ uniforms: {
   multiple: true  
     {{/unless}}
   {{/compare}}
+  {{!-- for cross references --}}
+  {{#if this.reference.query}}
+  query: '{{this.reference.query}}',
+  {{/if}}
+  {{#if this.reference.edges}}
+  edges: '{{this.reference.edges}}',
+  {{/if}}
+  {{#if this.reference.labelKey}}
+  initialLabelKey: '{{@key}}',
+  labelKey: '{{this.reference.labelKey}}',
+  {{/if}}
+  {{#if this.reference.valueKey}}
+  valueKey: '{{this.reference.valueKey}}',
+  {{/if}}
 },
 {{/inline~}}
 

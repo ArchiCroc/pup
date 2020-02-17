@@ -139,6 +139,16 @@ function processSchema(input) {
     data.userKeyField = 'createdById';
   }
 
+  const groupKeyIndex = schemaFieldValues.findIndex((field) => field.groupKey);
+  // if primary key isn't found, set it to the primaryKey field
+  if (groupKeyIndex !== -1) {
+    data.groupKeyField = schemaFieldKeys[groupKeyIndex];
+    data.groupField = schemaFields[data.groupKeyField];
+  } else {
+    // I don't think we need to set a default, unefined is fine
+    // data.groupKeyField = 'parentId';
+  }
+
   let labelKeyIndex = schemaFieldValues.findIndex((field) => field.labelKey);
   // if primary key isn't found, set it to the first field that is a string
   if (labelKeyIndex === -1) {

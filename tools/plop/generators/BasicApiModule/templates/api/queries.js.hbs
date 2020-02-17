@@ -13,6 +13,7 @@ export default {
     }
 
 {{/if}}
+
     /* #### PLOP_QUERY_VALIDATION_START #### */
     {{~schema.hooks.queryValidation}}
     /* #### PLOP_QUERY_VALIDATION_END #### */
@@ -27,11 +28,20 @@ export default {
       search,
 {{/if}}
 {{#each schema.fields}}
-  {{#compare this.filterable '||' this.queryable}}
+  {{#compare this.filterable '||' this.queryable '||' this.groupKey '!==' undefined}}
       {{> inputFieldName ~}},
   {{/compare}}
 {{/each}}
     } = args;
+
+{{#each schema.fields}}
+  {{#if this.groupKey}}
+    if (!{{> inputFieldName ~}}) {
+      throw new Error('{{> inputFieldName ~}} is required');
+    }
+
+  {{/if}}
+{{/each}}    
 
     const cleanPageSize = pageSize > 100 ? 100 : pageSize;
 
@@ -56,8 +66,10 @@ export default {
     if (_ids) {
       query._id = { $in: _ids };
     }
-
 {{#each schema.fields}}
+  {{#if this.groupKey}}
+  query.{{> inputFieldName }} = {{> inputFieldName }};
+  {{/if}}
   {{#compare this.filterable '||' this.queryable}}
     if (isArray({{> inputFieldName ~}})) {
       query.{{> inputFieldName }} = { $in: {{> inputFieldName }} };
@@ -96,6 +108,7 @@ export default {
     if (!user || !user._id || !checkUserRole(user._id, [{{#each schema.permissions.read }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}])) {
       throw new Error('Sorry, you must have permission to view my {{ titleCase pluralName }}.');
     }
+
 {{/if}}
     /* #### PLOP_QUERY_VALIDATION_START #### */
     {{~schema.hooks.queryValidation}}
@@ -103,6 +116,15 @@ export default {
 
     const query = { {{userKeyField}}: user._id };
     const options = {};
+
+{{#each schema.fields}}
+  {{#if this.groupKey}}
+    if(args.{{> inputFieldName }}) {
+      query.{{> inputFieldName }} = {{> inputFieldName }};
+    }
+    
+  {{/if}}
+{{/each}}
 
     /* #### PLOP_QUERY_PRE_FIND_START #### */
     {{~schema.hooks.queryPreFind}}

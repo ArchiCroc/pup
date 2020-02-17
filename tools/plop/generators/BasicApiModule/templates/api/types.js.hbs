@@ -47,6 +47,11 @@ type {{ pascalCase singularName }} {
 
 type {{ pascalCase pluralName }} {
   total: Int
+{{#each schema.fields}}
+  {{#if this.groupKey}}
+  {{@key}}: {{this.type}} 
+  {{/if}}
+{{/each}}
   {{ camelCase pluralName }}: [{{ pascalCase singularName }}]
 }
 

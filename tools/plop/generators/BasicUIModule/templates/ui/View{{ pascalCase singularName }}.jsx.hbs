@@ -61,7 +61,7 @@
 { {{~> fieldKeyAndDataIndex }} && <FormatDate timestamp={ {{~> fieldKeyDataIndex ~}} }{{#compare input '===' 'Date' }} format="MMMM Do, YYYY"{{/compare}} />}
     {{/compare}}
     {{#compare type '!in' '[Object]' '&&' type 'startsWith' '[' }}
-{ {{~> fieldKeyAndDataIndex }} && {{> fieldKeyDataIndex}}{{#if dataIndex}}.map((item) => item.{{ dataIndex }}){{/if}}.join(', ')}
+{ {{~> fieldKey }} && {{> fieldKey}}{{#if dataIndex}}.map((item) => item.{{ dataIndex }}){{/if}}.join(', ')}
     {{/compare}}
     {{#compare type '!in' 'Object|DateTime|Boolean' '&&' type '!startsWith' '[' }}
 { {{~> fieldKeyAndDataIndex ~}} }

@@ -133,15 +133,16 @@ module.exports = {
         data,
       },
     ];
-    actions.push(
-      ...addMenuItem.actions({
-        ...data,
-        label: `${data.shortSingularName}_plural`,
-        menuItemType: data.schema.menu.index,
-        addWrapper: true,
-      }),
-    );
-
+    if (data.schema.menu && data.schema.menu.index) {
+      actions.push(
+        ...addMenuItem.actions({
+          ...data,
+          label: `${data.shortSingularName}_plural`,
+          menuItemType: data.schema.menu.index,
+          addWrapper: true,
+        }),
+      );
+    }
     return actions;
   },
 };

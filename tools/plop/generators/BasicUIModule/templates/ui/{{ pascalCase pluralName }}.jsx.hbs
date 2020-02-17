@@ -95,9 +95,9 @@ function {{ pascalCase pluralName }}({ roles }) {
     search = null,
 {{/if}}
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '||' this.queryable '||' this.groupKey '!==' undefined}}
     {{> fieldName }},
-  {{/if}}
+  {{/compare}}
 {{/each}}
   } = queryString.parse(location.search, { arrayFormat: 'comma' });
 
@@ -135,6 +135,10 @@ function {{ pascalCase pluralName }}({ roles }) {
 {{#each schema.fields}}
   {{#if this.filterable}}
       {{> fieldName }}: current{{> pascalFieldName}},
+  {{else}}
+    {{#compare this.queryable '||' this.groupKey}}
+      {{> fieldName }},
+    {{/compare}}
   {{/if}}
 {{/each}}
     },
@@ -277,6 +281,10 @@ function {{ pascalCase pluralName }}({ roles }) {
       {{#each schema.fields}}
         {{#if this.filterable}}
           {{> fieldName }}: new{{> pascalFieldName }},
+        {{else}}
+          {{#compare this.queryable '||' this.groupKey}}
+          {{> fieldName }},
+          {{/compare}}
         {{/if}}
       {{/each}}  
         },
