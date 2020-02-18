@@ -150,7 +150,7 @@ const schema = {
     User: {
       fullName: (user) =>
         (user.profile &&
-          user.profile.firstName &&
+          (user.profile.firstName || user.profile.lastName) &&
           `${user.profile.firstName} ${user.profile.lastName}`) ||
         user.username,
     },
@@ -163,7 +163,7 @@ const schema = {
         UserQueries.user(parent, { _id: parent.createdById }, context),
     },
     /* #### PLOP_RESOLVERS_START #### */
-/* #### ROLES_RESOLVERS_START #### */
+    /* #### ROLES_RESOLVERS_START #### */
     Role: {
       createdBy: (parent, args, context) =>
         UserQueries.resolveUser(parent, { _id: parent.createdById }, context),

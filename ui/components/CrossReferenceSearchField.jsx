@@ -127,7 +127,7 @@ const CrossReferenceSearchField = (props, { uniforms }) => {
     }
   }
   // eslint-disable-next-line
-  const searchData = data ? (edges ? data[query][edges] : data[query]) : [];
+  const searchData = data && data[query] ? (edges ? data[query][edges] : data[query]) : [];
 
   return wrapField(
     props,
