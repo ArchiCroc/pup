@@ -12,14 +12,14 @@ import NotFound from '{{uiPathOffset}}../pages/NotFound';
 import Remove{{ pascalCase singularName }}Button from './components/Remove{{ pascalCase singularName }}Button';
 import hasRole from '{{uiPathOffset}}../../modules/hasRole';
 
-import { edit{{ pascalCase singularName }} as {{ camelCase singularName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
+import { edit{{ pascalCase singularName }} as edit{{ pascalCase singularName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
 
 import Styled{{ pascalCase pluralName }} from './Styled{{ pascalCase pluralName }}';
 
 function Edit{{ pascalCase singularName }}({ roles }) {
   const { {{ urlFieldKey }} } = useParams();
 
-  const { loading, data: { {{ camelCase singularName }} = undefined } = {} } = useQuery({{ camelCase singularName }}Query, { 
+  const { loading, data: { {{ camelCase singularName }} = undefined } = {} } = useQuery(edit{{ pascalCase singularName }}Query, { 
     variables: { {{ urlFieldKey }} },
   });
 
