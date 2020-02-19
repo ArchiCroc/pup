@@ -4,6 +4,7 @@ function prepareFormModel(doc) {
   for (const [key, value] of entries) {
     cleanDoc[key] = value === null ? undefined : value;
   }
+  return cleanDoc;
 }
 
 export default prepareFormModel;
