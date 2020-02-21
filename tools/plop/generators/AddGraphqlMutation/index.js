@@ -55,15 +55,14 @@ module.exports = {
         type: 'append',
         path: 'api/{{apiDirCase apiFolderName}}/mutations.js',
         pattern: '/* #### PLOP_MUTATIONS_START #### */',
-        templateFile:
-          'tools/plop/generators/AddGraphqlMutation/templates/{{template}}/mutation.js.hbs',
+        templateFile: `tools/plop/generators/AddGraphqlMutation/templates/${data.template}/mutation.js.hbs`,
         data,
       },
       {
         type: 'append',
         path: 'startup/server/graphql-api.js',
         pattern: `#### ${changeCase.constantCase(data.apiFolderName)}_MUTATION_TYPES_START ####`,
-        template: `     {{mutationName}}{{#if mutationParams}}({{#each mutationParamSegments}}\${{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}}: {{returnType}}`,
+        template: `     {{mutationName}}{{#if mutationParams}}({{#each mutationParamSegments}}{{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}}: {{returnType}}`,
         data,
       },
       {

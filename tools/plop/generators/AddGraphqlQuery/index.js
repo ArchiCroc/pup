@@ -54,7 +54,7 @@ module.exports = {
         type: 'append',
         path: 'startup/server/graphql-api.js',
         pattern: `#### ${changeCase.constantCase(data.apiFolderName)}_QUERY_TYPES_START ####`,
-        template: `      {{queryName}}{{#if queryParams}}({{#each queryParamSegments}}\${{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}}: {{returnType}}`,
+        template: `      {{queryName}}{{#if queryParams}}({{#each queryParamSegments}}{{param}}: {{type}}{{#unless @last}}, {{/unless}}{{/each}}){{/if}}: {{returnType}}`,
         data,
       },
       {

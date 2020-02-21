@@ -45,21 +45,19 @@ module.exports = {
       {
         type: 'add',
         path: 'private/email-templates/{{uiDirCase apiFolderName}}/{{dashCase name}}.html',
-        templateFile:
-          'tools/plop/generators/AddEmailTemplate/templates/{{template}}/emailTemplate.html.hbs',
+        templateFile: `tools/plop/generators/AddEmailTemplate/templates/${data.template}/emailTemplate.html.hbs`,
         data,
       },
       {
         type: 'add',
         path: 'private/email-templates/{{uiDirCase apiFolderName}}/{{dashCase name}}.txt',
-        templateFile:
-          'tools/plop/generators/AddEmailTemplate/templates/{{template}}/emailTemplate.txt.hbs',
+        templateFile: `tools/plop/generators/AddEmailTemplate/templates/${data.template}/emailTemplate.txt.hbs`,
         data,
       },
       {
         type: 'add',
         path: 'api/{{apiFolderName}}/actions/send{{pascalCase name}}Email.js',
-        templateFile: 'tools/plop/generators/AddEmailTemplate/templates/{{template}}/action.js.hbs',
+        templateFile: `tools/plop/generators/AddEmailTemplate/templates/${data.template}/action.js.hbs`,
         data,
       },
     ];
