@@ -11,7 +11,7 @@
     {{/compare}}
 
     const schema = {{singular (pascalCase apiFolderName)}}Schema.pick({{#each mutationParamSegments}}'{{param}}'{{#unless @last}}, {{/unless}}{{/each}});
-    const cleanDoc = schema.clean(args)
+    const cleanDoc = schema.clean(args);
     schema.validate(cleanDoc);
 
     const { {{mutationParamSegments.0.param}} } = cleanDoc;
@@ -27,7 +27,7 @@
       {{#each mutationParamSegments}}
       // {{param}}: cleanDoc.{{param}},
       {{/each}}
-      updatedById: context.user._id,
+      updatedById: user._id,
       updatedAtUTC: new Date(),
     };
 
