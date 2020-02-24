@@ -2,7 +2,7 @@
 const changeCase = require('change-case');
 const pluralize = require('pluralize');
 
-function processFields(item, index) {
+function processFields([key, item]) {
   if (item.permissions) {
     // eslint-disable-next-line
     for (let permissionKey in item.permissions) {
@@ -19,7 +19,7 @@ function processFields(item, index) {
     item.dataIndex = item.reference.labelKey;
   }
   if (item.fields) {
-    Object.values(item.fields).forEach(processFields);
+    Object.entries(item.fields).forEach(processFields);
   }
   if (item.templateFile && !item.tableTemplateFile) {
     item.tableTemplateFile = item.templateFile;
@@ -32,6 +32,37 @@ function processFields(item, index) {
   }
   if (item.template && !item.detailTemplate) {
     item.detailTemplate = item.template;
+  }
+  // if field is a groupKey, it should also be queryable
+  if (item.groupKey) {
+    item.queryable = 'single';
+  }
+
+  if (item.groupKey) {
+    item.queryable = 'single';
+  }
+  // this is so we can always get the reference field name to use in the queries
+  if (item.input && item.input.name) {
+    item.fieldName = item.input.name;
+  } else {
+    item.fieldName = key;
+  }
+  if (item.input && item.input.type) {
+    item.fieldType = item.input.type;
+  } else {
+    item.fieldType = item.type;
+  }
+
+  // set default filter for value that are true so it matches a template
+  if (item.filterable === true) {
+    item.filterTemplateFile = 'filter-default';
+  } else if (typeof item.filterable === 'string') {
+    item.filterTemplateFile = `filterable-${item.filterable}`;
+  }
+  if (item.queryable === true) {
+    item.queryTemplateFile = 'query-default';
+  } else if (typeof item.queryableable === 'string') {
+    item.queryTemplateFile = `query-${item.queryable}`;
   }
 }
 
@@ -162,14 +193,14 @@ function processSchema(input) {
 
   data.isSearchable = !!schemaFieldValues.find((field) => field.searchable);
   data.isFilterable = !!schemaFieldValues.find((field) => field.filterable);
-  data.hasGraphqlFilterable = !!schemaFieldValues.find(
-    (field) => field.filterable && field.reference,
-  );
+  // data.hasGraphqlFilterable = !!schemaFieldValues.find(
+  //   (field) => field.filterable && field.reference,
+  // );
 
   // clean up field permissions
   data.hasFieldPermissions = schemaFieldValues.findIndex((field) => field.permissions) !== -1;
   // if (data.hasFieldPermissions) {
-  schemaFieldValues.forEach(processFields);
+  Object.entries(schemaFields).forEach(processFields);
   //}
 
   // stash these back to cover the case where they got built from scratch

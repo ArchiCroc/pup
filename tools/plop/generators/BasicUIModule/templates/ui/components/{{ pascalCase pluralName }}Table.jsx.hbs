@@ -1,0 +1,287 @@
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
+import i18n from 'meteor/universe:i18n';
+import { useQuery } from '@apollo/react-hooks';
+{{#uniqueImports}}
+  {{#if isSearchable}}
+import Input from 'antd/lib/input';
+  {{/if}}
+import Table from 'antd/lib/table';
+import PrettyDate from '{{uiPathOffset}}../../components/PrettyDate';
+import New{{ pascalCase singularName }}Button from './New{{ pascalCase singularName }}Button';
+  {{#if schema.permissions.create}}
+import hasRole from '{{uiPathOffset}}../../../modules/hasRole';
+  {{/if}}
+import useQueryObject from '{{uiPathOffset}}../../../modules/hooks/useQueryObject';
+  {{#each schema.fields ~}}
+    {{#if this.filterable}}
+{{> (lookup . 'filterTemplateFile' ) template='import'}}
+    {{/if}}
+    {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
+      {{#if this.detailTemplateFile}}
+{{> (lookup . 'detailTemplateFile' ) template='import'}} 
+      {{/if}}
+    {{/compare~}}
+  {{~/each}}
+{{/uniqueImports}}
+
+// import Styled{{ pascalCase pluralName }}Table from './Styled{{ pascalCase pluralName }}Table';
+
+import { {{ camelCase pluralName }} as {{ camelCase pluralName }}Query } from '../queries/{{ pascalCase pluralName }}.gql';
+{{#if isSearchable}}
+
+const { Search } = Input;
+{{/if}}
+
+{{!-- if a filterable field has choices create a function to generate the correct object for antd Table  --}}
+{{#each schema.fields}}
+    {{#if this.filterable}}
+{{> (lookup . 'filterTemplateFile' ) template='helpers'}}
+    {{/if}}
+{{/each}}
+
+function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singularName }}Button, queryKeyPrefix, ...props }) {
+  const history = useHistory();
+
+  const [queryObject, setQueryObject] = useQueryObject(queryKeyPrefix);
+  const {
+    pageSize,
+    page,
+    sort,
+    order,
+{{#if isSearchable}}
+    search,
+{{/if}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
+    {{> (lookup . 'filterTemplateFile' ) template='variables'}}
+  {{else}}
+    {{#if this.queryableable}}
+    {{> (lookup . 'queryableTemplateFile' ) template='variables'}}
+    {{/if}}
+  {{/if}}
+{{/each}}
+  } = Object.assign(props, queryObject);
+
+  const paginationObject = {
+    pageSize,
+    //  onChange: this.onPageChange,
+  };
+
+  const [currentPage, setCurrentPage] = useState(parseInt(page, 10));
+  const [currentSort, setCurrentSort] = useState(sort);
+  const [currentOrder, setCurrentOrder] = useState(order);
+{{#if isSearchable}}
+  const [currentSearch, setCurrentSearch] = useState(search);
+{{/if}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
+{{> (lookup . 'filterTemplateFile' ) template='useState'}}
+  {{/if}}
+{{/each}}
+
+  const { loading, data: { {{ camelCase pluralName }} } = {} } = useQuery({{ camelCase pluralName }}Query, {
+    fetchPolicy: 'cache-and-network',
+    variables: {
+      pageSize: paginationObject.pageSize,
+      page: currentPage,
+      sort: currentSort,
+      order: currentOrder,
+{{#if isSearchable}}
+      search: currentSearch,
+{{/if}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
+      {{> (lookup . 'filterTemplateFile' ) template='useQueryVariablesKeys'}}
+  {{else}}
+    {{#compare this.queryable '||' this.groupKey}}
+      {{ fieldName }},
+    {{/compare}}
+  {{/if}}
+{{/each}}
+    },
+  });
+{{#each schema.fields}}
+  {{#if this.filterable}}
+      {{> (lookup . 'filterTemplateFile' ) template='addtionalHooks'}}
+  {{/if}}
+{{/each}}
+  const columns = [
+{{#each schema.fields ~}}
+  {{#compare this.input '!==' 'Hidden' '&&' this.showInTableView '!==' false}}
+    {{~#compare this.input '||' this.showInTableView }}
+    {
+      title: i18n.__(' {{~ pascalCase @root.name ~}} .{{ snakeCase @key }}'),
+      dataIndex: '{{ @key }}{{#if this.dataIndex}}{{#compare this.type '!startsWith' '['}}.{{ this.dataIndex }}{{/compare}}{{/if}}',
+      {{#compare this.tableTemplateFile '||' this.tableTemplate}}
+        {{#if this.tableTemplateFile}}
+      render: (value, record) => ({{> (lookup . 'tableTemplateFile' ) value='value' parent='record' key=@key template='render'}}),
+        {{else}}
+      render: (value, record) => ('todo'),
+        {{/if}}
+      {{else}}
+      {{#compare this.type '===' 'String'}}
+        {{#compare this.choices '!typeof' 'object'}}
+      sorter: true,
+      defaultSortOrder: 'ascend',
+      // render: (value, record) => <Link to={`/{{ dashCase @root.name }}/${record.{{ @root.urlFieldKey ~}} }/edit`}>{value}</Link>, // eslint-disable-line
+        {{/compare}}
+      {{/compare}}
+      {{#compare this.type 'in' 'Date|DateTime|Time'}}
+      sorter: true,
+      defaultSortOrder: 'descend',
+      render: ({{ @key }}) => <PrettyDate timestamp={ {{~ @key ~}} } />, // eslint-disable-line 
+      {{/compare}}
+      {{#compare this.type '===' 'Boolean'}}
+      sorter: true,
+      // defaultSortOrder: 'ascend',
+      render: (value, record, index) => i18n.__(`{{ pascalCase @root.name }}.${value ? 'yes' : 'no'}`),
+      {{/compare}}
+      {{#compare this.type 'in' 'Int|Number|Float'}}
+      sorter: true,
+      // defaultSortOrder: 'ascend',
+      // render: (value, record) => value, // eslint-disable-line
+      {{/compare}}
+      {{#compare this.choices 'typeof' 'object'  }}
+      sorter: true,
+      // defaultSortOrder: 'ascend',
+      render: (value, record) => i18n.__(`{{ pascalCase @root.name }}.{{@key}}_${value}`), // eslint-disable-line
+      {{/compare}}
+      {{#compare this.type 'startsWith' '['}}
+      sorter: true,
+      render: (value) => value && value{{#if this.dataIndex}}.map((item) => item && item.{{ this.dataIndex }}){{/if}}
+      {{~#compare this.type '===' '[String]'}}.map((item) => i18n.__(`{{ pascalCase @root.name }}.{{@key}}_${item}`)){{/compare}}.join(', '),
+      {{/compare}}
+      {{/compare}}
+      {{#if this.filterable}}
+      {{> (lookup . 'filterTemplateFile' ) template='columnKeys'}}
+      {{/if}}
+    },
+    {{/compare}}
+  {{/compare}}
+{{/each}}
+  ];
+
+  // complete paginationObject
+  if ({{ camelCase pluralName }} && {{ camelCase pluralName }}.{{ camelCase pluralName }}) {
+    paginationObject.total = {{ camelCase pluralName }}.total;
+    paginationObject.current = currentPage;
+  }
+{{#if isSearchable}}
+  function handleSearch(value) {
+    setCurrentSearch(value);
+    setQueryObject({
+      search: value,
+    });
+  }
+{{/if}}
+
+  function handleTableChange(pagination, filters, sorter) {
+{{#if isFilterable}}
+    const {
+  {{#each schema.fields}}
+    {{#if this.filterable}}
+      {{> (lookup . 'filterTemplateFile' ) template='handleTableChangeNewKeys'}}
+    {{/if}}
+  {{/each}}  
+    } = filters;
+
+{{/if}}
+    const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
+
+    setCurrentPage(pagination.current);
+    setCurrentOrder(sorter.order);
+    setCurrentSort(sorter.field);
+{{#each schema.fields}}
+  {{#if this.filterable}}
+    {{> (lookup . 'filterTemplateFile' ) template='handleTableChangeSetState'}}
+  {{/if}}
+{{/each}}  
+
+    setQueryObject({
+      page: pagination.current,
+      sort: currentField,
+      order: sorter.order,
+{{#each schema.fields}}
+  {{#if this.filterable}}
+      {{> (lookup . 'filterTemplateFile' ) template='handleTableChangeSetQueryObjectKey'}}
+  {{/if}}
+{{/each}}  
+    });
+  }
+
+  function handleTableRow(record) {
+    return {
+      onClick: () => {
+        history.push(`/{{ uiFolderName }}/${record.{{ urlFieldKey ~}} }`);
+      },
+    };
+  }
+
+  return (
+    <>
+      <p>
+        { showNew{{ pascalCase singularName }}Button {{#if schema.permissions.create}}&& hasRole(roles, [{{#each schema.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) {{/if}}&& (<New{{ pascalCase singularName }}Button />)}&nbsp;
+        {{#if isSearchable}}
+        <span className="pull-right" style=\{{ width: 300 }}>
+          <Search
+            placeholder={i18n.__('{{ pascalCase pluralName }}.search_placeholder')}
+            onSearch={handleSearch}
+            defaultValue={currentSearch}
+            allowClear
+            enterButton
+          />
+        </span>
+        {{/if}}
+      </p>
+      <Table
+        columns={columns}
+        dataSource={ {{~ camelCase pluralName }}?.{{ camelCase pluralName ~}} }
+        loading={loading}
+        onChange={handleTableChange}
+        onRow={handleTableRow}
+        rowKey="{{ primaryFieldKey }}"
+        pagination={paginationObject}
+        rowClassName="clickable"
+      />
+    </>
+  );
+}
+
+{{ pascalCase pluralName }}Table.defaultProps = {
+  showNew{{ pascalCase singularName }}Button: false,
+  queryKeyPrefix: undefined,
+  pageSize: 10,
+  page: 1,
+  sort: '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelKeyKey}}{{/if}}',
+  order: '{{#if schema.defaultSortOrder}}{{schema.defaultSortOrder}}{{else}}ascend{{/if}}',
+{{#if isSearchable}}
+  search: undefined,
+{{/if}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
+  {{> (lookup . 'filterTemplateFile' ) template='defaultPropsKeys'}}
+  {{/if}}
+{{/each}}
+};
+
+{{ pascalCase pluralName }}Table.propTypes = {
+  roles: PropTypes.array.isRequired,
+  showNew{{ pascalCase singularName }}Button: PropTypes.bool,
+  queryKeyPrefix: PropTypes.string,
+  pageSize: PropTypes.number,
+  page: PropTypes.number,
+  sort: PropTypes.string,
+  order: PropTypes.string,
+{{#if isSearchable}}
+  search: PropTypes.string,
+{{/if}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
+  {{> (lookup . 'filterTemplateFile' ) template='propTypesKeys'}}
+{{/if}}
+{{/each}}
+};
+
+export default {{ pascalCase pluralName }}Table;

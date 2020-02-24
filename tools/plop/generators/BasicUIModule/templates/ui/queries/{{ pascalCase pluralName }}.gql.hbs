@@ -27,7 +27,7 @@
 {{/each}}
 {{/inline}}
 {{#*inline "filterParameter"}}
-  {{#compare this.type 'in' 'String|Int|Float|Number'}}
+  {{#compare this.type 'in' 'String|Int|Float|Number' '&&' this.queryable '!==' 'single'}}
 ${{ name }}: [{{cleanGraphqlType this.type}}],
   {{else}}
 ${{ name }}: {{cleanGraphqlType this.type}},
@@ -47,13 +47,13 @@ query {{ camelCase pluralName }}(
   $sort: String, 
   $order: String,
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '||' this.queryable}}
     {{#compare this.input 'typeof' 'object'}}
   {{> filterParameter this.input}}
     {{else}}
   {{> filterParameter name=@key}}
     {{/compare}}
-  {{/if}}
+  {{/compare}}
 {{/each}}
 ) {
   {{ camelCase pluralName }}(
@@ -64,13 +64,13 @@ query {{ camelCase pluralName }}(
     sort: $sort, 
     order: $order,
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '||' this.queryable}}
     {{#compare this.input 'typeof' 'object'}}
     {{> queryParameter this.input}}
     {{else}}
     {{> queryParameter name=@key}}
     {{/compare}}
-  {{/if}}
+  {{/compare}}
 {{/each}}
   ) {
     total

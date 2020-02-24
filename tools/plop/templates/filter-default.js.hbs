@@ -1,0 +1,113 @@
+{{#compare template '===' 'import'}}
+import isString from 'lodash/isString';
+{{#if reference}}
+import useQueryForFilters from '{{uiPathOffset}}../../modules/hooks/useQueryForFilters';
+{{/if}}
+{{/compare}}
+{{#compare template '===' 'helpers'}}
+  {{#if choices}}
+function get{{pascalCase fieldName}}Filters() {
+  const choices = [{{#each choices}}{{quoteIfString this}}{{#unless @last}}, {{/unless}}{{/each}}];
+  const filters = [];
+  for (const choice of choices) {
+    filters.push({ text: i18n.__(`{{ pascalCase @root.pluralName }}.{{snakeCase fieldName}}_${choice}`), value: choice },)
+  }
+  return filters;
+}
+  {{/if}}
+{{/compare}}
+{{#compare template '===' 'variables'}}
+{{fieldName}},
+{{/compare}}
+{{#compare template '===' 'useState'}}
+  {{#compare (stripBrackets fieldType) '===' 'Int' }}
+const [current{{ pascalCase fieldName }}, setCurrent{{ pascalCase fieldName }}] = useState(
+  {{ fieldName }} && isString({{ fieldName }}) ? [parseInt({{ fieldName }}, 10)] : {{ fieldName }} && {{ fieldName }}.map(parseInt),
+);
+  {{/compare}}
+  {{#compare (stripBrackets fieldType) 'in' 'Float|Number' }}
+const [current{{ pascalCase fieldName }}, setCurrent{{ pascalCase fieldName }}] = useState(
+  {{ fieldName }} && isString({{ fieldName }}) ? [parseFloat({{ fieldName }}, 10)] : {{ fieldName }} && {{ fieldName }}.map(parseFloat),
+);
+  {{/compare}}
+  {{#compare (stripBrackets fieldType) 'in' 'String|ObjectID' }}
+const [current{{ pascalCase fieldName }}, setCurrent{{ pascalCase fieldName }}] = useState(
+  {{ fieldName }} && isString({{ fieldName }}) ? [{{ fieldName }}] : {{ fieldName }},
+);
+  {{/compare}}
+  {{#compare fieldType '===' 'Boolean' }}
+const [current{{ pascalCase fieldName }}, setCurrent{{ pascalCase fieldName }}] = useState(
+  {{ fieldName }} && isString({{ fieldName }}) ? !!({{ fieldName }}.toLowerCase() === 'true') : {{ fieldName }},
+);
+  {{/compare}}
+{{/compare}}
+{{#compare template '===' 'useQueryVariablesKeys'}}
+{{fieldName}}: current{{pascalCase fieldName}},
+{{/compare}}
+{{#compare template '===' 'addtionalHooks'}}
+  {{#if reference}}
+const { filters: {{camelCase fieldName}}Filters } = useQueryForFilters({
+  query: '{{reference.query}}',
+  {{#if reference.edges}}
+  edges: '{{reference.edges}}',
+  {{/if}}
+  labelKey: '{{reference.labelKey}}',
+  valueKey: '{{reference.valueKey}}',
+});
+  {{/if}}
+{{/compare}}
+{{#compare template '===' 'columnKeys'}}
+  {{#if  this.choices}}
+filteredValue: current{{pascalCase fieldName }},
+filters: get{{pascalCase fieldName }}Filters(),
+  {{else}}
+    {{#if this.reference}}
+filteredValue: current{{pascalCase fieldName }},
+filters: {{camelCase fieldName}}Filters,
+    {{/if}}
+    {{#compare fieldType '===' 'Boolean' }}
+filteredValue: current{{pascalCase fieldName }},
+filters: [{ text: i18n.__('{{ pascalCase @root.pluralName }}.yes'), value: true },{ text: i18n.__('{{ pascalCase @root.pluralName }}.no'), value: false }],
+    {{/compare}}
+  {{/if}}  
+{{/compare}}
+{{#compare template '===' 'handleTableChangeNewKeys'}}
+{{#if dataIndex}}'{{fieldName}}.{{dataIndex}}'{{else}}{{ fieldName }}{{/if}}: new{{pascalCase fieldName }} = null,
+{{/compare}}
+{{#compare template '===' 'handleTableChangeSetState'}}
+setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
+{{/compare}}
+{{#compare template '===' 'handleTableChangeSetQueryObjectKey'}}
+{{ fieldName }}: new{{pascalCase fieldName}},
+{{/compare}}
+{{#compare template '===' 'defaultPropsKeys'}}
+{{fieldName}}: undefined,
+{{/compare}}
+{{#compare template '===' 'propTypesKeys'}}
+  {{#compare (stripBrackets fieldType) 'in' 'Float|Number|Int' }}
+{{fieldName}}: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.number,
+  PropTypes.array,
+]),
+  {{/compare}}
+  {{#compare (stripBrackets fieldType) 'in' 'String|ObjectID' }}
+{{fieldName}}: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.array,
+]),
+  {{/compare}}
+  {{#compare fieldType '===' 'Boolean' }}
+{{fieldName}}: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.bool,
+]),
+  {{/compare}}
+{{#compare (stripBrackets fieldType) '!in' 'Float|Number|Int|String|ObjectID|Boolean' }}
+{{fieldName}}: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.array,
+  PropTypes.object,
+]),
+  {{/compare}}
+{{/compare}}
