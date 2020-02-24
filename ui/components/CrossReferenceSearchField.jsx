@@ -56,7 +56,7 @@ const CrossReferenceSearchField = (props, { uniforms }) => {
           label: item[labelKey],
         })),
       );
-    } else if (label[labelKey]) {
+    } else if (label && label[labelKey]) {
       setLoadingComplete(true);
       setValue({
         key: initialValue,
