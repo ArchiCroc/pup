@@ -1,0 +1,102 @@
+{{#compare template '===' 'ui/import'}}
+{{/compare}}
+{{#compare template '===' 'ui/helpers'}}
+{{/compare}}
+{{#compare template 'in' 'ui/variables|api/variables'}}
+{{fieldName}}Min,
+{{fieldName}}Max,
+{{/compare}}
+{{#compare template '===' 'ui/useState'}}
+  {{#compare (stripBrackets fieldType) '===' 'Int' }}
+const [current{{pascalCase fieldName}}, setCurrent{{pascalCase fieldName}}] = useState(
+  {{fieldName}}Min && {{fieldName}}Max ? [parseInt({{fieldName}}Min, 10), parseInt({{fieldName}}Max, 10)] : [],
+);
+  {{/compare}}
+  {{#compare (stripBrackets fieldType) 'in' 'Float|Number' }}
+const [current{{pascalCase fieldName}}, setCurrent{{pascalCase fieldName}}] = useState(
+  {{fieldName}}Min && {{fieldName}}Max ? [parseFloat({{fieldName}}Min, 10), parseFloat({{fieldName}}Max, 10)] : [],
+);
+  {{/compare}}
+  {{#compare fieldType '===' 'Date' }}
+const [current{{pascalCase fieldName}}, setCurrent{{pascalCase fieldName}}] = useState(
+  {{fieldName}}Min && {{fieldName}}Max ? [new Date(({{fieldName}}Min), new Date({{fieldName}}Max)] : [],
+);
+  {{/compare}}
+{{/compare}}
+{{#compare template '===' 'ui/useQueryVariablesKeys'}}
+{{fieldName}}Min: current{{pascalCase fieldName}}[0],
+{{fieldName}}Max: current{{pascalCase fieldName}}[1],
+{{/compare}}
+{{#compare template '===' 'ui/addtionalHooks'}}
+{{/compare}}
+{{#compare template '===' 'ui/columnKeys'}}
+    {{#compare fieldType '===' 'Date' }}
+filteredValue: current{{pascalCase fieldName}},
+filterDropdown: (props) => (
+  <>Todo</>
+),
+    {{else}}{{!--Int|Float|Number--}}
+filteredValue: current{{pascalCase fieldName}},
+filterDropdown: (props) => (
+  <RangeFilterDropdown
+    min={ {{~camelCase @root.pluralName}}?.filters?.{{fieldName}}Min}
+    max={ {{~camelCase @root.pluralName}}?.filters?.{{fieldName}}Max}
+    {...props}
+  />
+),
+    {{/compare}}
+ 
+{{/compare}}
+{{#compare template '===' 'ui/handleTableChangeNewKeys'}}
+{{#if dataIndex}}'{{fieldName}}.{{dataIndex}}'{{else}}{{ fieldName }}{{/if}}: new{{pascalCase fieldName}} = [],
+{{/compare}}
+{{#compare template '===' 'ui/handleTableChangeSetState'}}
+setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
+{{/compare}}
+{{#compare template '===' 'ui/handleTableChangeSetQueryObjectKey'}}
+{{ fieldName }}Min: new{{pascalCase fieldName}}[0],
+{{ fieldName }}Max: new{{pascalCase fieldName}}[1],
+{{/compare}}
+{{#compare template '===' 'ui/defaultPropsKeys'}}
+{{fieldName}}Min: undefined,
+{{fieldName}}Max: undefined,
+{{/compare}}
+{{#compare template '===' 'ui/propTypesKeys'}}
+  {{#compare (stripBrackets fieldType) 'in' 'Date' }}
+{{fieldName}}Min: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.number,
+  PropTypes.object,
+]),
+{{fieldName}}Max: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.number,
+  PropTypes.object,
+]),
+  {{/compare}}
+{{#compare (stripBrackets fieldType) '!in' 'Date' }}
+{{fieldName}}Min: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.object,
+]),
+{{fieldName}}Max: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.object,
+]),
+  {{/compare}}
+{{/compare}}
+{{#compare template '===' 'api/queryModifiers'}}
+if ({{fieldName}}Min && {{fieldName}}Max) {
+    query.{{fieldName}} = { $gte: {{fieldName}}Min, $lte: {{fieldName}}Max };
+  }
+
+{{/compare}}
+{{#compare template '===' 'api/multiItemsQueryFilterProperties'}}
+{{fieldName}}Min: {{ pascalCase pluralName }}.findOne({}, { fields: { {{fieldName}}: 1 }, sort: { {{fieldName}}: 1 }, limit: 1 })
+  .{{fieldName}},
+{{fieldName}}Max: {{ pascalCase pluralName }}.findOne({}, { fields: { {{fieldName}}: 1 }, sort: { {{fieldName}}: -1 }, limit: 1 })
+  .{{fieldName}},
+{{/compare}}
+{{#compare template '===' 'api/typeFilterFields'}}
+{{fieldName}}: {{ cleanGraphqlType fieldType}}
+{{/compare}}

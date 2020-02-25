@@ -1,10 +1,10 @@
-{{#compare template '===' 'import'}}
+{{#compare template '===' 'ui/import'}}
 import isString from 'lodash/isString';
 {{#if reference}}
 import useQueryForFilters from '{{uiPathOffset}}../../modules/hooks/useQueryForFilters';
 {{/if}}
 {{/compare}}
-{{#compare template '===' 'helpers'}}
+{{#compare template '===' 'ui/helpers'}}
   {{#if choices}}
 function get{{pascalCase fieldName}}Filters() {
   const choices = [{{#each choices}}{{quoteIfString this}}{{#unless @last}}, {{/unless}}{{/each}}];
@@ -16,10 +16,10 @@ function get{{pascalCase fieldName}}Filters() {
 }
   {{/if}}
 {{/compare}}
-{{#compare template '===' 'variables'}}
+{{#compare template 'in' 'ui/variables|api/variables'}}
 {{fieldName}},
 {{/compare}}
-{{#compare template '===' 'useState'}}
+{{#compare template '===' 'ui/useState'}}
   {{#compare (stripBrackets fieldType) '===' 'Int' }}
 const [current{{ pascalCase fieldName }}, setCurrent{{ pascalCase fieldName }}] = useState(
   {{ fieldName }} && isString({{ fieldName }}) ? [parseInt({{ fieldName }}, 10)] : {{ fieldName }} && {{ fieldName }}.map(parseInt),
@@ -41,10 +41,10 @@ const [current{{ pascalCase fieldName }}, setCurrent{{ pascalCase fieldName }}] 
 );
   {{/compare}}
 {{/compare}}
-{{#compare template '===' 'useQueryVariablesKeys'}}
+{{#compare template '===' 'ui/useQueryVariablesKeys'}}
 {{fieldName}}: current{{pascalCase fieldName}},
 {{/compare}}
-{{#compare template '===' 'addtionalHooks'}}
+{{#compare template '===' 'ui/addtionalHooks'}}
   {{#if reference}}
 const { filters: {{camelCase fieldName}}Filters } = useQueryForFilters({
   query: '{{reference.query}}',
@@ -56,7 +56,7 @@ const { filters: {{camelCase fieldName}}Filters } = useQueryForFilters({
 });
   {{/if}}
 {{/compare}}
-{{#compare template '===' 'columnKeys'}}
+{{#compare template '===' 'ui/columnKeys'}}
   {{#if  this.choices}}
 filteredValue: current{{pascalCase fieldName }},
 filters: get{{pascalCase fieldName }}Filters(),
@@ -71,19 +71,19 @@ filters: [{ text: i18n.__('{{ pascalCase @root.pluralName }}.yes'), value: true 
     {{/compare}}
   {{/if}}  
 {{/compare}}
-{{#compare template '===' 'handleTableChangeNewKeys'}}
+{{#compare template '===' 'ui/handleTableChangeNewKeys'}}
 {{#if dataIndex}}'{{fieldName}}.{{dataIndex}}'{{else}}{{ fieldName }}{{/if}}: new{{pascalCase fieldName }} = null,
 {{/compare}}
-{{#compare template '===' 'handleTableChangeSetState'}}
+{{#compare template '===' 'ui/handleTableChangeSetState'}}
 setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
 {{/compare}}
-{{#compare template '===' 'handleTableChangeSetQueryObjectKey'}}
+{{#compare template '===' 'ui/handleTableChangeSetQueryObjectKey'}}
 {{ fieldName }}: new{{pascalCase fieldName}},
 {{/compare}}
-{{#compare template '===' 'defaultPropsKeys'}}
+{{#compare template '===' 'ui/defaultPropsKeys'}}
 {{fieldName}}: undefined,
 {{/compare}}
-{{#compare template '===' 'propTypesKeys'}}
+{{#compare template '===' 'ui/propTypesKeys'}}
   {{#compare (stripBrackets fieldType) 'in' 'Float|Number|Int' }}
 {{fieldName}}: PropTypes.oneOfType([
   PropTypes.string,
@@ -110,4 +110,12 @@ setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
   PropTypes.object,
 ]),
   {{/compare}}
+{{/compare}}
+{{#compare template '===' 'api/queryModifiers'}}
+if (isArray({{fieldName~}})) {
+  query.{{fieldName}} = { $in: {{fieldName}} };
+} else if ({{fieldName}}) {
+  query.{{fieldName}} = {{fieldName}};
+}
+
 {{/compare}}

@@ -1,6 +1,3 @@
-{{#*inline "inputFieldName" ~}}
-{{#if this.input.name}}{{this.input.name}}{{else}}{{ @key }}{{/if}}
-{{~/inline}}
 import isArray from 'lodash/isArray';
 import {{ pascalCase pluralName }} from './{{ pascalCase pluralName }}';
 import checkUserRole from '{{apiPathOffset}}../Users/actions/checkUserRole';
@@ -13,7 +10,6 @@ export default {
     }
 
 {{/if}}
-
     /* #### PLOP_QUERY_VALIDATION_START #### */
     {{~schema.hooks.queryValidation}}
     /* #### PLOP_QUERY_VALIDATION_END #### */
@@ -28,21 +24,17 @@ export default {
       search,
 {{/if}}
 {{#each schema.fields}}
-  {{#compare this.filterable '||' this.queryable '||' this.groupKey '!==' undefined}}
-      {{> inputFieldName ~}},
-  {{/compare}}
+  {{#if this.filterable}}
+      {{> (lookup . 'filterTemplateFile' ) template='api/variables'}}
+  {{/if}}
 {{/each}}
     } = args;
 
 {{#each schema.fields}}
-  {{#if this.groupKey}}
-    if (!{{> inputFieldName ~}}) {
-      throw new Error('{{> inputFieldName ~}} is required');
-    }
-
+  {{#if this.filterable}}
+    {{> (lookup . 'filterTemplateFile' ) template='api/multiItemArgsValidation'}}
   {{/if}}
 {{/each}}    
-
     const cleanPageSize = pageSize > 100 ? 100 : pageSize;
 
     const options = _ids
@@ -66,19 +58,12 @@ export default {
     if (_ids) {
       query._id = { $in: _ids };
     }
-{{#each schema.fields}}
-  {{#if this.groupKey}}
-  query.{{> inputFieldName }} = {{> inputFieldName }};
-  {{/if}}
-  {{#compare this.filterable '||' this.queryable}}
-    if (isArray({{> inputFieldName ~}})) {
-      query.{{> inputFieldName }} = { $in: {{> inputFieldName }} };
-    } else if ({{> inputFieldName }}) {
-      query.{{> inputFieldName }} = {{> inputFieldName }};
-    }
-  {{/compare}}
-{{/each}}
 
+{{#each schema.fields}}
+  {{#if this.filterable}}
+    {{> (lookup . 'filterTemplateFile' ) template='api/multiItemQueryModifiers'}}
+  {{/if}}
+{{/each}}
 {{#if isSearchable}}
     if (search) {
       const searchRegEx = new RegExp(search, 'i');
@@ -90,16 +75,29 @@ export default {
   {{/each}}
       ];
     }
-{{/if}}
 
+{{/if}}
     /* #### PLOP_QUERY_PRE_FIND_START #### */
     {{~schema.hooks.queryPreFind}}
     /* #### PLOP_QUERY_PRE_FIND_END #### */
 
     const result = {{ pascalCase pluralName }}.find(query, options);
 
+{{#if isFilterable}}
+    const filters = {
+  {{#each schema.fields}}
+    {{#if this.filterable}}
+      {{> (lookup . 'filterTemplateFile' ) template='api/multiItemsQueryFilterProperties'}}
+    {{/if}}
+  {{/each}}
+    }
+{{/if}}
+
     return {
       total: result.count(false),
+{{#if isFilterable}}
+      filters,
+{{/if}}
       {{ camelCase pluralName }}: result.fetch(),
     };
   },
@@ -110,6 +108,16 @@ export default {
     }
 
 {{/if}}
+{{#if isFilterable}}
+    const {
+{{#each schema.fields}}
+  {{#if this.filterable}}
+      {{> (lookup . 'filterTemplateFile' ) template='api/variables'}}
+  {{/if}}
+{{/each}}
+    } = args;
+
+{{/if}}
     /* #### PLOP_QUERY_VALIDATION_START #### */
     {{~schema.hooks.queryValidation}}
     /* #### PLOP_QUERY_VALIDATION_END #### */
@@ -118,14 +126,10 @@ export default {
     const options = {};
 
 {{#each schema.fields}}
-  {{#if this.groupKey}}
-    if(args.{{> inputFieldName }}) {
-      query.{{> inputFieldName }} = {{> inputFieldName }};
-    }
-    
+  {{#if this.filterable}}
+    {{> (lookup . 'filterTemplateFile' ) template='api/multiItemQueryModifiers'}}
   {{/if}}
 {{/each}}
-
     /* #### PLOP_QUERY_PRE_FIND_START #### */
     {{~schema.hooks.queryPreFind}}
     /* #### PLOP_QUERY_PRE_FIND_END #### */
@@ -151,6 +155,11 @@ export default {
     query.{{userKeyField}} = user._id;
 
 {{/compare}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
+    {{> (lookup . 'filterTemplateFile' ) template='api/singleItemQueryModifiers'}}
+  {{/if}}
+{{/each}}
     /* #### PLOP_QUERY_PRE_FIND_START #### */
     {{~schema.hooks.queryPreFind}}
     /* #### PLOP_QUERY_PRE_FIND_END #### */
@@ -163,7 +172,7 @@ export default {
 {{#compare primaryFieldKey '!==' urlFieldKey }}
     const {{ urlFieldKey }} = (parent && parent.{{ camelCase singularName }}{{ pascalCase urlFieldKey }}) || args.{{ urlFieldKey }};
     if ({{ urlFieldKey }}) {
-      query.{{ urlFieldKey }} = {{ urlFieldKey }}
+      query.{{ urlFieldKey }} = {{ urlFieldKey }};
       return {{ pascalCase pluralName }}.findOne(query);
     }
 {{/compare}}

@@ -1,0 +1,41 @@
+{{#compare template 'in' 'ui/variables|api/variables'}}
+{{fieldName}},
+{{/compare}}
+{{#compare template '===' 'multiItemArgsValidation'}}
+if (!{{fieldName}}) {
+  throw new Error('{{fieldName}} is required');
+}
+
+{{/compare}}
+{{#compare template '===' 'ui/defaultPropsKeys'}}
+{{fieldName}}: undefined,
+{{/compare}}
+{{#compare template '===' 'ui/propTypesKeys'}}
+  {{#compare (stripBrackets fieldType) 'in' 'Float|Number|Int' }}
+{{fieldName}}: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.number,
+]),
+  {{/compare}}
+  {{#compare (stripBrackets fieldType) 'in' 'String|ObjectID' }}
+{{fieldName}}: PropTypes.oneOfType([
+  PropTypes.string,
+]),
+  {{/compare}}
+  {{#compare fieldType '===' 'Boolean' }}
+{{fieldName}}: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.bool,
+]),
+  {{/compare}}
+{{#compare (stripBrackets fieldType) '!in' 'Float|Number|Int|String|ObjectID|Boolean' }}
+{{fieldName}}: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.object,
+]),
+  {{/compare}}
+{{/compare}}
+{{#compare template '===' 'api/queryModifiers'}}
+query.{{fieldName}} = {{fieldName}};
+
+{{/compare}}

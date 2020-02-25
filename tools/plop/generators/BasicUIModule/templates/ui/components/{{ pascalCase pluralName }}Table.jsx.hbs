@@ -13,10 +13,10 @@ import New{{ pascalCase singularName }}Button from './New{{ pascalCase singularN
   {{#if schema.permissions.create}}
 import hasRole from '{{uiPathOffset}}../../../modules/hasRole';
   {{/if}}
-import useQueryObject from '{{uiPathOffset}}../../../modules/hooks/useQueryObject';
+import useQueryStringObject from '{{uiPathOffset}}../../../modules/hooks/useQueryStringObject';
   {{#each schema.fields ~}}
     {{#if this.filterable}}
-{{> (lookup . 'filterTemplateFile' ) template='import'}}
+{{> (lookup . 'filterTemplateFile' ) template='ui/import'}}
     {{/if}}
     {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
       {{#if this.detailTemplateFile}}
@@ -37,14 +37,14 @@ const { Search } = Input;
 {{!-- if a filterable field has choices create a function to generate the correct object for antd Table  --}}
 {{#each schema.fields}}
     {{#if this.filterable}}
-{{> (lookup . 'filterTemplateFile' ) template='helpers'}}
+{{> (lookup . 'filterTemplateFile' ) template='ui/helpers'}}
     {{/if}}
 {{/each}}
 
 function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singularName }}Button, queryKeyPrefix, ...props }) {
   const history = useHistory();
 
-  const [queryObject, setQueryObject] = useQueryObject(queryKeyPrefix);
+  const [queryStringObject, setQueryStringObject] = useQueryStringObject(queryKeyPrefix);
   const {
     pageSize,
     page,
@@ -55,14 +55,10 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
 {{/if}}
 {{#each schema.fields}}
   {{#if this.filterable}}
-    {{> (lookup . 'filterTemplateFile' ) template='variables'}}
-  {{else}}
-    {{#if this.queryableable}}
-    {{> (lookup . 'queryableTemplateFile' ) template='variables'}}
-    {{/if}}
+    {{> (lookup . 'filterTemplateFile' ) template='ui/variables'}}
   {{/if}}
 {{/each}}
-  } = Object.assign(props, queryObject);
+  } = Object.assign(props, queryStringObject);
 
   const paginationObject = {
     pageSize,
@@ -77,7 +73,7 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
 {{/if}}
 {{#each schema.fields}}
   {{#if this.filterable}}
-{{> (lookup . 'filterTemplateFile' ) template='useState'}}
+{{> (lookup . 'filterTemplateFile' ) template='ui/useState'}}
   {{/if}}
 {{/each}}
 
@@ -93,18 +89,14 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
 {{/if}}
 {{#each schema.fields}}
   {{#if this.filterable}}
-      {{> (lookup . 'filterTemplateFile' ) template='useQueryVariablesKeys'}}
-  {{else}}
-    {{#compare this.queryable '||' this.groupKey}}
-      {{ fieldName }},
-    {{/compare}}
+      {{> (lookup . 'filterTemplateFile' ) template='ui/useQueryVariablesKeys'}}
   {{/if}}
 {{/each}}
     },
   });
 {{#each schema.fields}}
   {{#if this.filterable}}
-      {{> (lookup . 'filterTemplateFile' ) template='addtionalHooks'}}
+      {{> (lookup . 'filterTemplateFile' ) template='ui/addtionalHooks'}}
   {{/if}}
 {{/each}}
   const columns = [
@@ -155,7 +147,7 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
       {{/compare}}
       {{/compare}}
       {{#if this.filterable}}
-      {{> (lookup . 'filterTemplateFile' ) template='columnKeys'}}
+      {{> (lookup . 'filterTemplateFile' ) template='ui/columnKeys'}}
       {{/if}}
     },
     {{/compare}}
@@ -171,7 +163,7 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
 {{#if isSearchable}}
   function handleSearch(value) {
     setCurrentSearch(value);
-    setQueryObject({
+    setQueryStringObject({
       search: value,
     });
   }
@@ -182,7 +174,7 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
     const {
   {{#each schema.fields}}
     {{#if this.filterable}}
-      {{> (lookup . 'filterTemplateFile' ) template='handleTableChangeNewKeys'}}
+      {{> (lookup . 'filterTemplateFile' ) template='ui/handleTableChangeNewKeys'}}
     {{/if}}
   {{/each}}  
     } = filters;
@@ -195,17 +187,17 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
     setCurrentSort(sorter.field);
 {{#each schema.fields}}
   {{#if this.filterable}}
-    {{> (lookup . 'filterTemplateFile' ) template='handleTableChangeSetState'}}
+    {{> (lookup . 'filterTemplateFile' ) template='ui/handleTableChangeSetState'}}
   {{/if}}
 {{/each}}  
 
-    setQueryObject({
+    setQueryStringObject({
       page: pagination.current,
       sort: currentField,
       order: sorter.order,
 {{#each schema.fields}}
   {{#if this.filterable}}
-      {{> (lookup . 'filterTemplateFile' ) template='handleTableChangeSetQueryObjectKey'}}
+      {{> (lookup . 'filterTemplateFile' ) template='ui/handleTableChangeSetQueryObjectKey'}}
   {{/if}}
 {{/each}}  
     });
@@ -261,7 +253,7 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
 {{/if}}
 {{#each schema.fields}}
   {{#if this.filterable}}
-  {{> (lookup . 'filterTemplateFile' ) template='defaultPropsKeys'}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/defaultPropsKeys'}}
   {{/if}}
 {{/each}}
 };
@@ -279,7 +271,7 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
 {{/if}}
 {{#each schema.fields}}
   {{#if this.filterable}}
-  {{> (lookup . 'filterTemplateFile' ) template='propTypesKeys'}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/propTypesKeys'}}
 {{/if}}
 {{/each}}
 };

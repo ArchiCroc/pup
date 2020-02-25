@@ -1,0 +1,45 @@
+{{#compare template 'in' 'ui/variables|api/variables'}}
+{{fieldName}},
+{{/compare}}
+{{#compare template '===' 'ui/defaultPropsKeys'}}
+{{fieldName}}: undefined,
+{{/compare}}
+{{#compare template '===' 'ui/propTypesKeys'}}
+  {{#compare (stripBrackets fieldType) 'in' 'Float|Number|Int' }}
+{{fieldName}}: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.number,
+  PropTypes.array,
+]),
+  {{/compare}}
+  {{#compare (stripBrackets fieldType) 'in' 'String|ObjectID' }}
+{{fieldName}}: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.array,
+]),
+  {{/compare}}
+  {{#compare fieldType '===' 'Boolean' }}
+{{fieldName}}: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.bool,
+]),
+  {{/compare}}
+{{#compare (stripBrackets fieldType) '!in' 'Float|Number|Int|String|ObjectID|Boolean' }}
+{{fieldName}}: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.array,
+  PropTypes.object,
+]),
+  {{/compare}}
+{{/compare}}
+{{#compare template '===' 'api/multiItemQueryModifiers'}}
+{{!-- need to force this --}}
+if (isArray({{fieldName}})) {
+  query.{{fieldName}} = { $in: {{fieldName}} };
+} else if ({{fieldName}}) {
+  query.{{fieldName}} = {{fieldName}};
+}
+
+{{/compare}}
+{{#compare template '===' 'api/singleItemQueryModifiers'}}
+{{/compare}}

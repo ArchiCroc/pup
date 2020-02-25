@@ -34,13 +34,13 @@ function processFields([key, item]) {
     item.detailTemplate = item.template;
   }
   // if field is a groupKey, it should also be queryable
-  if (item.groupKey) {
-    item.queryable = 'single';
-  }
+  // if (item.groupKey) {
+  //   item.queryable = 'single';
+  // }
 
-  if (item.groupKey) {
-    item.queryable = 'single';
-  }
+  // if (item.groupKey) {
+  //   item.queryable = 'single';
+  // }
   // this is so we can always get the reference field name to use in the queries
   if (item.input && item.input.name) {
     item.fieldName = item.input.name;
@@ -57,12 +57,7 @@ function processFields([key, item]) {
   if (item.filterable === true) {
     item.filterTemplateFile = 'filter-default';
   } else if (typeof item.filterable === 'string') {
-    item.filterTemplateFile = `filterable-${item.filterable}`;
-  }
-  if (item.queryable === true) {
-    item.queryTemplateFile = 'query-default';
-  } else if (typeof item.queryableable === 'string') {
-    item.queryTemplateFile = `query-${item.queryable}`;
+    item.filterTemplateFile = `filter-${item.filterable}`;
   }
 }
 
@@ -170,15 +165,15 @@ function processSchema(input) {
     data.userKeyField = 'createdById';
   }
 
-  const groupKeyIndex = schemaFieldValues.findIndex((field) => field.groupKey);
-  // if primary key isn't found, set it to the primaryKey field
-  if (groupKeyIndex !== -1) {
-    data.groupKeyField = schemaFieldKeys[groupKeyIndex];
-    data.groupField = schemaFields[data.groupKeyField];
-  } else {
-    // I don't think we need to set a default, unefined is fine
-    // data.groupKeyField = 'parentId';
-  }
+  // const groupKeyIndex = schemaFieldValues.findIndex((field) => field.groupKey);
+  // // if primary key isn't found, set it to the primaryKey field
+  // if (groupKeyIndex !== -1) {
+  //   data.groupKeyField = schemaFieldKeys[groupKeyIndex];
+  //   data.groupField = schemaFields[data.groupKeyField];
+  // } else {
+  //   // I don't think we need to set a default, unefined is fine
+  //   // data.groupKeyField = 'parentId';
+  // }
 
   let labelKeyIndex = schemaFieldValues.findIndex((field) => field.labelKey);
   // if primary key isn't found, set it to the first field that is a string

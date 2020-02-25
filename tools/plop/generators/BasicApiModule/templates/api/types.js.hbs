@@ -18,20 +18,20 @@
 
 export default `
 {{#each schema.fields ~}}
-{{#compare (stripBrackets this.type) '===' 'Object'}}
-{{#if this.fields}}
+  {{#compare (stripBrackets this.type) '===' 'Object'}}
+    {{#if this.fields}}
 type {{ pascalCase @root.singularName }}{{ pascalCase @key }} {
-  {{#each this.fields ~}}
-    {{#if this.type}}
-      {{#compare this.input 'typeof' 'object'}}
+      {{#each this.fields ~}}
+        {{#if this.type}}
+          {{#compare this.input 'typeof' 'object'}}
   {{> schemaFieldType this.input }}
-      {{/compare}}
+          {{/compare}}
   {{> schemaFieldType name=@key}}
-    {{/if}}
-  {{/each}}
+        {{/if}}
+      {{/each}}
 }
-{{/if}}
-{{/compare}}
+    {{/if}}
+  {{/compare}}
 {{~/each}}
 
 type {{ pascalCase singularName }} {
@@ -45,32 +45,45 @@ type {{ pascalCase singularName }} {
 {{~/each}}
 }
 
+{{#if this.isFilterable}}
+type {{ pascalCase pluralName }}Filters {
+  {{#each schema.fields}}
+    {{#if this.filterable}}
+  {{> (lookup . 'filterTemplateFile' ) template='api/typeFilterFields'}}
+    {{/if}}
+  {{/each}}
+}
+
+{{/if}}
 type {{ pascalCase pluralName }} {
   total: Int
-{{#each schema.fields}}
+{{#if this.isFilterable}}
+  filters: {{ pascalCase pluralName }}Filters
+{{/if}}
+{{!--{{#each schema.fields}}
   {{#if this.groupKey}}
   {{@key}}: {{this.type}} 
   {{/if}}
-{{/each}}
+{{/each}}--}}
   {{ camelCase pluralName }}: [{{ pascalCase singularName }}]
 }
 
 {{#each schema.fields ~}}
-{{#compare (stripBrackets this.type) '===' 'Object'}}{{!-- this may need to be extended to subtypes too --}}
-{{#if this.fields}}
+   {{#compare (stripBrackets this.type) '===' 'Object'}}{{!-- this may need to be extended to subtypes too --}}
+     {{#if this.fields}}
 input {{ pascalCase @root.singularName }}{{ pascalCase @key }}Input {
-  {{#each this.fields ~}}
-    {{~#compare this.type '&&' this.input}}
-      {{#compare this.input 'typeof' 'object'}}
+      {{#each this.fields ~}}
+        {{~#compare this.type '&&' this.input}}
+          {{#compare this.input 'typeof' 'object'}}
   {{> schemaFieldInput this.input }}
-      {{else}}
+          {{else}}
   {{> schemaFieldInput name=@key}}
-      {{/compare}}
-    {{/compare~}}
-  {{/each}}
+          {{/compare}}
+        {{/compare~}}
+      {{/each}}
 }
-{{/if}}
-{{/compare}}
+    {{/if}}
+  {{/compare}}
 {{~/each}}
 
 input {{ pascalCase singularName }}Input {
