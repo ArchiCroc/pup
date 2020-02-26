@@ -2,14 +2,15 @@ import createIndex from '{{apiPathOffset}}../../../modules/server/createIndex';
 import {{ pascalCase pluralName }} from '../{{ pascalCase pluralName }}';
 
 {{#each schema.fields}}
-  {{#if this.index}}
-createIndex({{ pascalCase @root.pluralName }}, { {{ @key }}: 1 });
+  {{#compare this.index '||' this.filterable}}
+createIndex({{ pascalCase @root.pluralName }}, { {{#if this.dataIndex}}{{this.dataIndex}}{{else}}{{@key}}{{/if}}: 1 });
   {{else}}
     {{#compare @root.primaryFieldKey '!==' '_id' '&&' @root.primaryFieldKey '===' @key   }}
 createIndex({{ pascalCase @root.pluralName }}, { {{@root.primaryFieldKey}}: 1 });
-    {{/compare}}
-    {{#compare @root.primaryFieldKey '!==' urlFieldKey '&&' @root.urlFieldKey '===' @key  }}
+    {{else}}
+      {{#compare @root.primaryFieldKey '!==' urlFieldKey '&&' @root.urlFieldKey '===' @key  }}
 createIndex({{ pascalCase @root.pluralName }}, { {{@root.urlFieldKey}}: 1 });
+      {{/compare}}
     {{/compare}}
-  {{/if}}
+  {{/compare}}
 {{/each}}

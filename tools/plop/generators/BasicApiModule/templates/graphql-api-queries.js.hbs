@@ -1,10 +1,3 @@
-{{#*inline "schemaField"}}
-  {{#compare this.type 'in' 'String|Int|Float|Number'}}
-{{ name }}: [{{cleanGraphqlType this.type}}]
-  {{else}}
-{{ name }}: {{cleanGraphqlType this.type}}
-  {{/compare}}
-{{/inline }}
       #### {{ constantCase pluralName }}_QUERY_TYPES_START ####
       {{ camelCase pluralName }}(
         _ids: [String]
@@ -16,21 +9,9 @@
         search: String
       {{/if}}
         {{#each schema.fields}}
-          {{#compare this.filterable '||' this.queryable }}
-            {{#compare this.input 'typeof' 'object'}}
-        {{> schemaField this.input}}
-             {{else}}
-        {{> schemaField name=@key}}
-             {{/compare}}
-          {{else}}
-            {{#if this.groupKey }}
-              {{#compare this.input 'typeof' 'object'}}
-        {{ this.input.name }}: {{cleanGraphqlType this.input.type}}
-              {{else}}
-        {{ @key }}: {{cleanGraphqlType this.type}}
-              {{/compare}}
-            {{/if}}
-          {{/compare}}
+          {{#if this.filterable}}
+        {{> (lookup . 'filterTemplateFile' ) template='api/graphql-apiMultiItemsQueryArguments'}}
+          {{/if}}
         {{/each}}
       ): {{ pascalCase pluralName }}
       my{{ pascalCase pluralName }}: [{{ pascalCase singularName }}]

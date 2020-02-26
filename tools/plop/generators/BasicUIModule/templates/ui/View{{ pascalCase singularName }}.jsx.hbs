@@ -137,15 +137,15 @@ View{{ pascalCase singularName }}.propTypes = {
 
 {{/compare}}
 const View{{ pascalCase singularName }}Fields = ({ {{ camelCase singularName }}{{#if hasFieldPermissions}}, roles{{/if}} }) => (
-    <Descriptions bordered column={1}>
+  <Descriptions bordered column={1}>
 {{#each schema.fields ~}}
   {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
-      <Descriptions.Item label={i18n.__('{{ pascalCase @root.name }}.{{ snakeCase @key }}')}>
-        {{> renderValue name=(camelCase @root.singularName)}}
-      </Descriptions.Item>
+    <Descriptions.Item label={i18n.__('{{ pascalCase @root.name }}.{{ snakeCase @key }}')}>
+      {{> renderValue name=(camelCase @root.singularName)}}
+    </Descriptions.Item>
   {{/compare~}}
 {{~/each}}
-    </Descriptions>
+  </Descriptions>
 );
 
 

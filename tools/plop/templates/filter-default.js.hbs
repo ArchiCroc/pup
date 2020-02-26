@@ -1,4 +1,4 @@
-{{#compare template '===' 'ui/import'}}
+{{#compare template '===' 'ui/imports'}}
 import isString from 'lodash/isString';
 {{#if reference}}
 import useQueryForFilters from '{{uiPathOffset}}../../modules/hooks/useQueryForFilters';
@@ -111,6 +111,19 @@ setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
 ]),
   {{/compare}}
 {{/compare}}
+{{#compare template '===' 'ui/gqlMultiItemsQueryVariables'}}
+  {{#compare this.type '!in' 'Boolean'}}
+${{fieldName}}: [{{cleanGraphqlType fieldType}}],
+  {{else}}
+${{fieldName}}: {{cleanGraphqlType fieldType}},
+  {{/compare}}
+{{/compare}}
+{{#compare template '===' 'ui/gqlMultiItemsQueryArguments'}}
+{{ fieldName }}: ${{fieldName}},
+{{/compare}}
+{{#compare template '===' 'api/queryImports'}}
+import isArray from 'lodash/isArray';
+{{/compare}}
 {{#compare template '===' 'api/queryModifiers'}}
 if (isArray({{fieldName~}})) {
   query.{{fieldName}} = { $in: {{fieldName}} };
@@ -118,4 +131,13 @@ if (isArray({{fieldName~}})) {
   query.{{fieldName}} = {{fieldName}};
 }
 
+{{/compare}}
+{{#compare template '===' 'api/typeFilterFields'}}
+{{/compare}}
+{{#compare template '===' 'api/graphql-apiMultiItemsQueryArguments'}}
+  {{#compare this.type '!in' 'Boolean'}}
+{{fieldName}}: [{{cleanGraphqlType fieldType}}]
+  {{else}}
+{{fieldName}}: {{cleanGraphqlType fieldType}}
+  {{/compare}}
 {{/compare}}

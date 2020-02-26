@@ -83,6 +83,17 @@ function compare(v1, o1, v2, mainOperator, v3, o2, v4, opts) {
   return isTrue ? options.fn(this) : options.inverse(this);
 }
 
+function ifPartialHasValue(value, opts) {
+  let isTrue = false;
+
+  if (typeof value === 'function' && value(this).trim() !== '') {
+    // console.log('ifPartialHasValue', value, typeof value(), value(this), opts);
+    isTrue = true;
+  }
+
+  return isTrue ? opts.fn(this) : opts.inverse(this);
+}
+
 const simpleSchemeTypeConversions = {
   Int: 'SimpleSchema.Integer',
   Float: 'Number',
@@ -233,6 +244,7 @@ module.exports = (plop) => {
   plop.setHelper('pluralize', (text) => pluralize(text));
   plop.setHelper('singular', (text) => pluralize.singular(text));
   plop.setHelper('compare', compare);
+  plop.setHelper('ifPartialHasValue', ifPartialHasValue);
   plop.setHelper('log', (value) => console.log(value));
   plop.setHelper('stripBrackets', (text) => {
     if (typeof text === 'string') {

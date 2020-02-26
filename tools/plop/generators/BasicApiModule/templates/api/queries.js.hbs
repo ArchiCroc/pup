@@ -1,6 +1,24 @@
-import isArray from 'lodash/isArray';
+{{#*inline "multiItemFilterObject"}}
+  {{#ifPartialHasValue @partial-block}}
+    const filters = {
+      {{> @partial-block}}
+    };
+  {{/ifPartialHasValue}}
+{{/inline}}
+{{#*inline "multiItemFilterKey"}}
+  {{#ifPartialHasValue @partial-block}}
+      filters,
+  {{/ifPartialHasValue}}
+{{/inline}}
+{{#uniqueImports}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
+      {{> (lookup . 'filterTemplateFile' ) template='api/queryImports'}}
+  {{/if}}
+{{/each}}
 import {{ pascalCase pluralName }} from './{{ pascalCase pluralName }}';
 import checkUserRole from '{{apiPathOffset}}../Users/actions/checkUserRole';
+{{/uniqueImports}}
 
 export default {
   {{ camelCase pluralName }}: (parent, args, { user }) => {
@@ -84,19 +102,26 @@ export default {
     const result = {{ pascalCase pluralName }}.find(query, options);
 
 {{#if isFilterable}}
-    const filters = {
+    {{#> multiItemFilterObject}}
   {{#each schema.fields}}
     {{#if this.filterable}}
       {{> (lookup . 'filterTemplateFile' ) template='api/multiItemsQueryFilterProperties'}}
     {{/if}}
   {{/each}}
-    }
+    {{/multiItemFilterObject}}
 {{/if}}
 
     return {
       total: result.count(false),
 {{#if isFilterable}}
-      filters,
+      {{#> multiItemFilterKey}}
+      {{!--this doesn't get output but is just used to see if the filter object was created so we can included the filter key--}}
+  {{#each schema.fields}}
+    {{#if this.filterable}}
+      {{> (lookup . 'filterTemplateFile' ) template='api/multiItemsQueryFilterProperties'}}
+    {{/if}}
+  {{/each}}
+       {{/multiItemFilterKey}}
 {{/if}}
       {{ camelCase pluralName }}: result.fetch(),
     };

@@ -26,17 +26,14 @@
   {{/compare~}}
 {{/each}}
 {{/inline}}
-{{#*inline "filterParameter"}}
-  {{#compare this.type 'in' 'String|Int|Float|Number' '&&' this.queryable '!==' 'single'}}
-${{ name }}: [{{cleanGraphqlType this.type}}],
-  {{else}}
-${{ name }}: {{cleanGraphqlType this.type}},
-  {{/compare}}
+{{#*inline "filterSubQuery"}}
+{{log @partial-block}}
+  {{#ifPartialHasValue @partial-block}}
+    filters {
+      {{> @partial-block}}
+    }
+  {{/ifPartialHasValue}}
 {{/inline}}
-{{#*inline "queryParameter"}}
-{{ name }}: ${{name}},
-{{/inline~}}
-
 #import "../fragments/{{ pascalCase pluralName }}.gql"
 
 query {{ camelCase pluralName }}(
@@ -47,13 +44,9 @@ query {{ camelCase pluralName }}(
   $sort: String, 
   $order: String,
 {{#each schema.fields}}
-  {{#compare this.filterable '||' this.queryable}}
-    {{#compare this.input 'typeof' 'object'}}
-  {{> filterParameter this.input}}
-    {{else}}
-  {{> filterParameter name=@key}}
-    {{/compare}}
-  {{/compare}}
+  {{#if this.filterable}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/gqlMultiItemsQueryVariables'}}
+  {{/if}}
 {{/each}}
 ) {
   {{ camelCase pluralName }}(
@@ -64,16 +57,19 @@ query {{ camelCase pluralName }}(
     sort: $sort, 
     order: $order,
 {{#each schema.fields}}
-  {{#compare this.filterable '||' this.queryable}}
-    {{#compare this.input 'typeof' 'object'}}
-    {{> queryParameter this.input}}
-    {{else}}
-    {{> queryParameter name=@key}}
-    {{/compare}}
-  {{/compare}}
+  {{#if this.filterable}}
+    {{> (lookup . 'filterTemplateFile' ) template='ui/gqlMultiItemsQueryArguments'}}
+  {{/if}}
 {{/each}}
   ) {
     total
+{{#> filterSubQuery}}
+  {{#each schema.fields}}
+    {{#if this.filterable}}
+{{> (lookup . 'filterTemplateFile' ) template='ui/gqlMultiItemsQueryFilterKeys'}}
+    {{/if}}
+  {{/each}}
+{{/ filterSubQuery}}
     {{ camelCase pluralName }} {
       {{primaryFieldKey}}
       {{#compare primaryFieldKey '!==' urlFieldKey}}{{urlFieldKey}}{{/compare}}

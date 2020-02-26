@@ -1,4 +1,5 @@
-{{#compare template '===' 'ui/import'}}
+{{#compare template '===' 'ui/imports'}}
+import RangeFilterDropdown from '{{@root.uiPathOffset}}../../components/RangeFilterDropdown';
 {{/compare}}
 {{#compare template '===' 'ui/helpers'}}
 {{/compare}}
@@ -85,18 +86,35 @@ setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
 ]),
   {{/compare}}
 {{/compare}}
-{{#compare template '===' 'api/queryModifiers'}}
+{{#compare template '===' 'ui/gqlMultiItemsQueryVariables'}}
+${{ fieldName }}Min: {{cleanGraphqlType this.type}},
+${{ fieldName }}Max: {{cleanGraphqlType this.type}},
+{{/compare}}
+{{#compare template '===' 'ui/gqlMultiItemsQueryArguments'}}
+{{ fieldName }}Min: ${{fieldName}}Min,
+{{ fieldName }}Max: ${{fieldName}}Max,
+{{/compare}}
+{{#compare template '===' 'ui/gqlMultiItemsQueryFilterKeys'}}
+{{ fieldName }}Min
+{{ fieldName }}Max
+{{/compare}}
+{{#compare template '===' 'api/multiItemQueryModifiers'}}
 if ({{fieldName}}Min && {{fieldName}}Max) {
-    query.{{fieldName}} = { $gte: {{fieldName}}Min, $lte: {{fieldName}}Max };
-  }
+  query.{{fieldName}} = { $gte: {{fieldName}}Min, $lte: {{fieldName}}Max };
+}
 
 {{/compare}}
 {{#compare template '===' 'api/multiItemsQueryFilterProperties'}}
-{{fieldName}}Min: {{ pascalCase pluralName }}.findOne({}, { fields: { {{fieldName}}: 1 }, sort: { {{fieldName}}: 1 }, limit: 1 })
+{{fieldName}}Min: {{ pascalCase @root.pluralName }}.findOne({}, { fields: { {{fieldName}}: 1 }, sort: { {{fieldName}}: 1 }, limit: 1 })
   .{{fieldName}},
-{{fieldName}}Max: {{ pascalCase pluralName }}.findOne({}, { fields: { {{fieldName}}: 1 }, sort: { {{fieldName}}: -1 }, limit: 1 })
+{{fieldName}}Max: {{ pascalCase @root.pluralName }}.findOne({}, { fields: { {{fieldName}}: 1 }, sort: { {{fieldName}}: -1 }, limit: 1 })
   .{{fieldName}},
 {{/compare}}
 {{#compare template '===' 'api/typeFilterFields'}}
-{{fieldName}}: {{ cleanGraphqlType fieldType}}
+{{fieldName}}Min: {{ cleanGraphqlType fieldType}}
+{{fieldName}}Max: {{ cleanGraphqlType fieldType}}
+{{/compare}}
+{{#compare template '===' 'api/graphql-apiMultiItemsQueryArguments'}}
+{{fieldName}}Min: {{cleanGraphqlType fieldType}}
+{{fieldName}}Max: {{cleanGraphqlType fieldType}}
 {{/compare}}

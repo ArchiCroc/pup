@@ -16,7 +16,7 @@ import hasRole from '{{uiPathOffset}}../../../modules/hasRole';
 import useQueryStringObject from '{{uiPathOffset}}../../../modules/hooks/useQueryStringObject';
   {{#each schema.fields ~}}
     {{#if this.filterable}}
-{{> (lookup . 'filterTemplateFile' ) template='ui/import'}}
+{{> (lookup . 'filterTemplateFile' ) template='ui/imports'}}
     {{/if}}
     {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
       {{#if this.detailTemplateFile}}
@@ -73,7 +73,7 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
 {{/if}}
 {{#each schema.fields}}
   {{#if this.filterable}}
-{{> (lookup . 'filterTemplateFile' ) template='ui/useState'}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/useState'}}
   {{/if}}
 {{/each}}
 

@@ -35,6 +35,12 @@ if (!{{fieldName}}) {
 ]),
   {{/compare}}
 {{/compare}}
+{{#compare template '===' 'ui/gqlMultiItemsQueryVariables'}}
+${{ fieldName }}: {{cleanGraphqlType this.type}},
+{{/compare}}
+{{#compare template '===' 'ui/gqlMultiItemsQueryArguments'}}
+{{ fieldName }}: ${{fieldName}},
+{{/compare}}
 {{#compare template '===' 'api/queryModifiers'}}
 query.{{fieldName}} = {{fieldName}};
 

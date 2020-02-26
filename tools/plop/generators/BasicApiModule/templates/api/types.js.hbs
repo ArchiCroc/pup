@@ -15,7 +15,18 @@
 {{~#compare this.validate.optional '==' undefined '||' this.validate.optional '==' false}}{{#compare this.defaultValue '==' undefined}}!{{/compare}}{{/compare}}
   {{/compare}}
 {{/inline ~}}
-
+{{#*inline "typeFilterWrapper"}}
+  {{#ifPartialHasValue @partial-block}}
+type {{ pascalCase pluralName }}Filters {
+  {{> @partial-block}}
+}
+  {{/ifPartialHasValue}}
+{{/inline}}
+{{#*inline "multiItemFilterField"}}
+  {{#ifPartialHasValue @partial-block}}
+  filters: {{ pascalCase pluralName }}Filters
+  {{/ifPartialHasValue}}
+{{/inline}}
 export default `
 {{#each schema.fields ~}}
   {{#compare (stripBrackets this.type) '===' 'Object'}}
@@ -44,21 +55,27 @@ type {{ pascalCase singularName }} {
   {{/if~}}
 {{~/each}}
 }
-
 {{#if this.isFilterable}}
-type {{ pascalCase pluralName }}Filters {
+{{#> typeFilterWrapper}}
   {{#each schema.fields}}
     {{#if this.filterable}}
   {{> (lookup . 'filterTemplateFile' ) template='api/typeFilterFields'}}
     {{/if}}
   {{/each}}
-}
+{{/typeFilterWrapper}}
 
 {{/if}}
 type {{ pascalCase pluralName }} {
   total: Int
 {{#if this.isFilterable}}
-  filters: {{ pascalCase pluralName }}Filters
+  {{#> multiItemFilterField}}
+  {{!--this is just to see if we have sub fields and need to add this field--}}
+  {{#each schema.fields}}
+    {{#if this.filterable}}
+  {{> (lookup . 'filterTemplateFile' ) template='api/typeFilterFields'}}
+    {{/if}}
+  {{/each}}
+  {{/ multiItemFilterField}}
 {{/if}}
 {{!--{{#each schema.fields}}
   {{#if this.groupKey}}
@@ -70,7 +87,7 @@ type {{ pascalCase pluralName }} {
 
 {{#each schema.fields ~}}
    {{#compare (stripBrackets this.type) '===' 'Object'}}{{!-- this may need to be extended to subtypes too --}}
-     {{#if this.fields}}
+      {{#if this.fields}}
 input {{ pascalCase @root.singularName }}{{ pascalCase @key }}Input {
       {{#each this.fields ~}}
         {{~#compare this.type '&&' this.input}}
