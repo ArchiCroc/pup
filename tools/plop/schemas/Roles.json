@@ -1,8 +1,9 @@
 { 
   "name": "Roles",
-  "uiRouteBasePath": "/admin/roles",
+  "uiRouteBasePath": "/admin/users/roles",
+  "collectionName": "Roles",
   "permissions": {
-    "read": "user",
+    "read": "admin",
     "create": "admin",
     "update": "admin",
     "delete": "admin"

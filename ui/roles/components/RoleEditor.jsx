@@ -10,7 +10,7 @@ import message from 'antd/lib/message';
 import AutoForm from 'uniforms/AutoForm';
 import HiddenField from 'uniforms-antd/HiddenField';
 import TextField from 'uniforms-antd/TextField';
-
+import prepareFormModel from '../../../modules/prepareFormModel';
 /* #### PLOP_IMPORTS_START #### */
 /* #### PLOP_IMPORTS_END #### */
 
@@ -27,7 +27,7 @@ function RoleEditor({ doc }) {
     ignoreResults: true,
     onCompleted: () => {
       message.success(i18n.__('Roles.role_saved'));
-      history.push('/roles');
+      history.push('/admin/users/roles');
     },
     onError: (error) => {
       message.error(error.message);
@@ -54,7 +54,7 @@ function RoleEditor({ doc }) {
         name="role"
         schema={RoleSchema}
         onSubmit={handleSubmit}
-        model={doc}
+        model={prepareFormModel(doc)}
         showInlineError
         placeholder
       >

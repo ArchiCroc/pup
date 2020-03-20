@@ -16,7 +16,7 @@ import { role as roleQuery } from './queries/Roles.gql';
 
 import StyledRoles from './StyledRoles';
 
-function ViewRole({ roles: userRoles }) {
+function ViewRole({ roles }) {
   const { name } = useParams();
   const { loading, data: { role } = {} } = useQuery(roleQuery, { variables: { name } });
 
@@ -27,21 +27,25 @@ function ViewRole({ roles: userRoles }) {
       ) : (
         <>
           <PageBreadcrumbs>
-            <Breadcrumb to="/admin/roles">{i18n.__('Roles.role_plural')}</Breadcrumb>
+            <Breadcrumb to="/admin/users/roles">{i18n.__('Roles.role_plural')}</Breadcrumb>
             <Breadcrumb>{role.name}</Breadcrumb>
           </PageBreadcrumbs>
           <PageHeader title={role.name} />
-          {role && hasRole(userRoles, ['admin']) && (
+          {role && hasRole(roles, ['admin']) && (
             <p>
               <EditRoleButton name={role.name} />
             </p>
           )}
-          {role ? <ViewRoleFields role={role} /> : <NotFound />}
+          {role ? (
+            <ViewRoleFields role={role} />
+          ) : (
+            <NotFound />
+          )}
         </>
       )}
     </StyledRoles>
   );
-}
+};
 
 ViewRole.propTypes = {
   roles: PropTypes.array.isRequired,
@@ -49,7 +53,9 @@ ViewRole.propTypes = {
 
 const ViewRoleFields = ({ role }) => (
   <Descriptions bordered column={1}>
-    <Descriptions.Item label={i18n.__('Roles.name')}>{role.name}</Descriptions.Item>
+    <Descriptions.Item label={i18n.__('Roles.name')}>
+      {role.name}
+    </Descriptions.Item>
     <Descriptions.Item label={i18n.__('Roles.created_at_utc')}>
       {role.createdAtUTC && <FormatDate timestamp={role.createdAtUTC} />}
     </Descriptions.Item>
@@ -64,6 +70,7 @@ const ViewRoleFields = ({ role }) => (
     </Descriptions.Item>
   </Descriptions>
 );
+
 
 ViewRoleFields.propTypes = {
   role: PropTypes.object.isRequired,

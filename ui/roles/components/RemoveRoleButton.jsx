@@ -16,7 +16,7 @@ function RemoveRoleButton({ _id, name, ...props }) {
     ignoreResults: true,
     onCompleted: () => {
       message.success(i18n.__('Roles.role_saved'));
-      history.push('/roles');
+      history.push('/admin/users/roles');
     },
     onError: (error) => {
       message.error(error.message);

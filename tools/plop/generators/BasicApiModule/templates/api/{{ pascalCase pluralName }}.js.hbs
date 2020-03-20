@@ -1,4 +1,4 @@
 /* eslint-disable consistent-return */
 import { Mongo } from 'meteor/mongo';
 
-export default new Mongo.Collection('{{ mongoCollectionCase pluralName }}'{{#compare primaryField.type '===' 'ObjectID'}}, { idGeneration: 'MONGO' }{{/compare}});
+export default new Mongo.Collection('{{ mongoCollectionCase collectionName }}'{{#compare primaryField.type '===' 'ObjectID'}}, { idGeneration: 'MONGO' }{{/compare}});

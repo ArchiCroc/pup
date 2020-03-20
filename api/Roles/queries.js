@@ -1,6 +1,5 @@
-import isArray from 'lodash/isArray';
-import Roles from './Roles';
 import checkUserRole from '../Users/actions/checkUserRole';
+import Roles from './Roles';
 
 export default {
   roles: (parent, args, { user }) => {
@@ -11,14 +10,7 @@ export default {
     /* #### PLOP_QUERY_VALIDATION_START #### */
     /* #### PLOP_QUERY_VALIDATION_END #### */
 
-    const {
-      _ids,
-      pageSize = 10,
-      page = 1,
-      sort = 'name',
-      order = 'ascend',
-      search,
-    } = args;
+    const { _ids, pageSize = 10, page = 1, sort = 'name', order = 'ascend', search } = args;
 
     const cleanPageSize = pageSize > 100 ? 100 : pageSize;
 
@@ -39,12 +31,9 @@ export default {
       query._id = { $in: _ids };
     }
 
-
     if (search) {
       const searchRegEx = new RegExp(search, 'i');
-      query.$or = [
-        { name: searchRegEx },
-      ];
+      query.$or = [{ name: searchRegEx }];
     }
 
     /* #### PLOP_QUERY_PRE_FIND_START #### */
@@ -61,6 +50,7 @@ export default {
     if (!user || !user._id || !checkUserRole(user._id, ['user'])) {
       throw new Error('Sorry, you must have permission to view my Roles.');
     }
+
     /* #### PLOP_QUERY_VALIDATION_START #### */
     /* #### PLOP_QUERY_VALIDATION_END #### */
 
@@ -93,7 +83,7 @@ export default {
     }
     const name = (parent && parent.roleName) || args.name;
     if (name) {
-      query.name = name
+      query.name = name;
       return Roles.findOne(query);
     }
     return null;

@@ -10,7 +10,7 @@ import StyledRoles from './StyledRoles';
 const NewRole = () => (
   <StyledRoles md={16} lg={12} xl={10} xxl={8}>
     <PageBreadcrumbs>
-      <Breadcrumb to="/admin/roles">{i18n.__('Roles.role_plural')}</Breadcrumb>
+      <Breadcrumb to="/admin/users/roles">{i18n.__('Roles.role_plural')}</Breadcrumb>
       <Breadcrumb>{i18n.__('Roles.new_role')}</Breadcrumb>
     </PageBreadcrumbs>
     <PageHeader title={i18n.__('Roles.new_role')} />

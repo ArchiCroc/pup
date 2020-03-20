@@ -30,7 +30,7 @@ const AuthenticatedNavigation = ({ name, history, roles, location = { pathname: 
           {/* #### ROLES_ADMIN_MENU_ITEMS_START #### */}
           <Menu.Item key="/roles">
             {i18n.__('Roles.role_plural')}
-            <Link to="/admin/roles" />
+            <Link to="/admin/users/roles" />
           </Menu.Item>
           {/* #### ROLES_ADMIN_MENU_ITEMS_END #### */}
           {/* #### PAGES_ADMIN_MENU_ITEMS_START #### */}

@@ -5,7 +5,7 @@ import Button from 'antd/lib/button';
 import { LinkContainer } from 'react-router-bootstrap';
 
 const EditRoleButton = ({ name, ...props }) => (
-  <LinkContainer to={`/roles/${name}/edit`}>
+  <LinkContainer to={`/admin/users/roles/${name}/edit`}>
     <Button type="primary" icon="edit" {...props}>
       {i18n.__('Roles.edit_role')}
     </Button>

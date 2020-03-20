@@ -128,9 +128,16 @@ function processSchema(input) {
   }
 
   data.pluralName =
-    schema.pluralName || pluralize.isPlural(data.name) ? data.name : pluralize(data.name);
+    schema.pluralName !== undefined
+      ? schema.pluralName
+      : pluralize.isPlural(data.name)
+      ? data.name
+      : pluralize(data.name);
+
   data.singularName =
-    schema.singularName || pluralize.isSingular(data.name)
+    schema.singularName !== undefined
+      ? schema.singularName
+      : pluralize.isSingular(data.name)
       ? data.name
       : pluralize.singular(data.name);
 
@@ -143,6 +150,8 @@ function processSchema(input) {
     schema.shortSingularName || pluralize.isSingular(data.shortName)
       ? data.shortName
       : pluralize.singular(data.shortName);
+
+  data.collectionName = schema.collectionName || data.pluralName;
 
   let primaryKeyIndex = schemaFieldValues.findIndex((field) => field.primaryKey);
   // if primary key isn't found, set it to the first key

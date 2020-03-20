@@ -27,6 +27,7 @@ import ViewRole from '../roles/ViewRole';
 import NewRole from '../roles/NewRole';
 import EditRole from '../roles/EditRole';
 /* #### ROLES_IMPORTS_END #### */
+
 /* #### PAGES_IMPORTS_START #### */
 import Index from '../pages/Index';
 import Terms from '../pages/Terms';
@@ -154,6 +155,45 @@ class App extends React.Component {
                     />
                     {/* #### ERROR_REPORTS_ROUTES_END #### */}
 
+                    {/* #### ROLES_ROUTES_START #### */}
+                    <AuthorizedRoute
+                      exact
+                      allowedRoles={['admin']}
+                      path="/admin/users/roles"
+                      component={Roles}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    <AuthorizedRoute
+                      exact
+                      allowedRoles={['admin']}
+                      path="/admin/users/roles/new"
+                      component={NewRole}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    <AuthorizedRoute
+                      exact
+                      allowedRoles={['admin']}
+                      path="/admin/users/roles/:name"
+                      component={ViewRole}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    <AuthorizedRoute
+                      exact
+                      allowedRoles={['admin']}
+                      path="/admin/users/roles/:name/edit"
+                      component={EditRole}
+                      setAfterLoginPath={setAfterLoginPath}
+                      {...props}
+                      {...state}
+                    />
+                    {/* #### ROLES_ROUTES_END #### */}
+
                     {/* #### USERS_ROUTES_START #### */}
                     <AuthenticatedRoute
                       exact
@@ -210,41 +250,6 @@ class App extends React.Component {
                       {...state}
                     />
                     {/* #### USERS_ROUTES_END #### */}
-
-                    {/* #### ROLES_ROUTES_START #### */}
-                    <AuthenticatedRoute
-                      exact
-                      path="/admin/roles"
-                      component={Roles}
-                      setAfterLoginPath={setAfterLoginPath}
-                      {...props}
-                      {...state}
-                    />
-                    <AuthenticatedRoute
-                      exact
-                      path="/admin/roles/new"
-                      component={NewRole}
-                      setAfterLoginPath={setAfterLoginPath}
-                      {...props}
-                      {...state}
-                    />
-                    <AuthenticatedRoute
-                      exact
-                      path="/admin/roles/:name"
-                      component={ViewRole}
-                      setAfterLoginPath={setAfterLoginPath}
-                      {...props}
-                      {...state}
-                    />
-                    <AuthenticatedRoute
-                      exact
-                      path="/admin/roles/:name/edit"
-                      component={EditRole}
-                      setAfterLoginPath={setAfterLoginPath}
-                      {...props}
-                      {...state}
-                    />
-                    {/* #### ROLES_ROUTES_END #### */}
 
                     {/* #### PAGES_ROUTES_START #### */}
                     <PublicRoute exact name="index" path="/" component={Index} />

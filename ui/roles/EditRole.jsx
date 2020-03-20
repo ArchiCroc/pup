@@ -12,32 +12,41 @@ import NotFound from '../pages/NotFound';
 import RemoveRoleButton from './components/RemoveRoleButton';
 import hasRole from '../../modules/hasRole';
 
-import { editRole as roleQuery } from './queries/Roles.gql';
+import { editRole as editRoleQuery } from './queries/Roles.gql';
 
 import StyledRoles from './StyledRoles';
 
-function EditRole({ roles: userRoles }) {
+function EditRole({ roles }) {
   const { name } = useParams();
 
-  const { loading, data: { role = undefined } = {} } = useQuery(roleQuery, {
+  const { loading, data: { role = undefined } = {} } = useQuery(editRoleQuery, { 
     variables: { name },
   });
 
   return (
     <StyledRoles md={16} lg={12} xl={10} xxl={8}>
       <PageBreadcrumbs>
-        <Breadcrumb to="/admin/roles">{i18n.__('Roles.role_plural')}</Breadcrumb>
+        <Breadcrumb to="/admin/users/roles">{i18n.__('Roles.role_plural')}</Breadcrumb>
         <Breadcrumb>{i18n.__('Roles.edit_role')}</Breadcrumb>
       </PageBreadcrumbs>
       <PageHeader title={i18n.__('Roles.edit_role')} />
       {loading ? (
         <Loading />
       ) : (
-        <>{role ? <RoleEditor doc={role} roles={userRoles} /> : <NotFound />}</>
+        <>
+          {role ? (
+            <RoleEditor doc={role} roles={roles} /> 
+          ) : (
+            <NotFound />
+          )}
+        </>
       )}
       <Divider />
-      {role && hasRole(userRoles, ['admin']) && (
-        <RemoveRoleButton _id={role._id} name={role.name} />
+      {role &&  hasRole(roles, ['admin']) && (
+        <RemoveRoleButton 
+          _id={role._id} 
+          name={role.name} 
+        />
       )}
     </StyledRoles>
   );
