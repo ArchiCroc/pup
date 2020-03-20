@@ -114,7 +114,7 @@ function processSchema(input) {
     .join('/');
   data.uiPathOffset = '../'.repeat(data.uiFolderName.split('/').length - 1);
 
-  data.uiRouteBasePath = schema.uiRouteBasePath || '/' + data.uiPathOffset;
+  data.uiRouteBasePath = schema.uiRouteBasePath || '/' + data.uiFolderName;
 
   // clean the name. collection/bigItem into Collection/BigItem
   // if (data.rawName.includes('/')) {
