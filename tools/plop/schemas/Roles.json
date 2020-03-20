@@ -1,5 +1,6 @@
 { 
   "name": "Roles",
+  "uiRouteBasePath": "/admin/roles",
   "permissions": {
     "read": "user",
     "create": "admin",

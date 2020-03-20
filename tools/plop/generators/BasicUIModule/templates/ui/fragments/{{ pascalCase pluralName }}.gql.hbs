@@ -10,7 +10,7 @@
 }
     {{else}}
         {{#compare this.fields 'typeof' 'object'}}
-{{@key}} {
+{{@key}} { 
   {{> schemaFields this.fields}}
 }  
         {{else}}
