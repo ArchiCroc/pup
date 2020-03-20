@@ -1,7 +1,7 @@
 {{#compare template '===' 'ui/imports'}}
 import isString from 'lodash/isString';
 {{#if reference}}
-import useQueryForFilters from '{{uiPathOffset}}../../modules/hooks/useQueryForFilters';
+import useQueryForFilters from '{{@root.uiPathOffset}}../../../modules/hooks/useQueryForFilters';
 {{/if}}
 {{/compare}}
 {{#compare template '===' 'ui/helpers'}}
@@ -35,11 +35,6 @@ const [current{{ pascalCase fieldName }}, setCurrent{{ pascalCase fieldName }}] 
   {{ fieldName }} && isString({{ fieldName }}) ? [{{ fieldName }}] : {{ fieldName }},
 );
   {{/compare}}
-  {{#compare fieldType '===' 'Boolean' }}
-const [current{{ pascalCase fieldName }}, setCurrent{{ pascalCase fieldName }}] = useState(
-  {{ fieldName }} && isString({{ fieldName }}) ? !!({{ fieldName }}.toLowerCase() === 'true') : {{ fieldName }},
-);
-  {{/compare}}
 {{/compare}}
 {{#compare template '===' 'ui/useQueryVariablesKeys'}}
 {{fieldName}}: current{{pascalCase fieldName}},
@@ -65,14 +60,10 @@ filters: get{{pascalCase fieldName }}Filters(),
 filteredValue: current{{pascalCase fieldName }},
 filters: {{camelCase fieldName}}Filters,
     {{/if}}
-    {{#compare fieldType '===' 'Boolean' }}
-filteredValue: current{{pascalCase fieldName }},
-filters: [{ text: i18n.__('{{ pascalCase @root.pluralName }}.yes'), value: true },{ text: i18n.__('{{ pascalCase @root.pluralName }}.no'), value: false }],
-    {{/compare}}
   {{/if}}  
 {{/compare}}
 {{#compare template '===' 'ui/handleTableChangeNewKeys'}}
-{{#if dataIndex}}'{{fieldName}}.{{dataIndex}}'{{else}}{{ fieldName }}{{/if}}: new{{pascalCase fieldName }} = null,
+{{#if dataIndex}}'{{fieldName}}.{{dataIndex}}'{{else}}{{ fieldName }}{{/if}}: new{{pascalCase fieldName }},
 {{/compare}}
 {{#compare template '===' 'ui/handleTableChangeSetState'}}
 setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
@@ -97,13 +88,7 @@ setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
   PropTypes.array,
 ]),
   {{/compare}}
-  {{#compare fieldType '===' 'Boolean' }}
-{{fieldName}}: PropTypes.oneOfType([
-  PropTypes.string,
-  PropTypes.bool,
-]),
-  {{/compare}}
-{{#compare (stripBrackets fieldType) '!in' 'Float|Number|Int|String|ObjectID|Boolean' }}
+  {{#compare (stripBrackets fieldType) '!in' 'Float|Number|Int|String|ObjectID|Boolean' }}
 {{fieldName}}: PropTypes.oneOfType([
   PropTypes.string,
   PropTypes.array,
@@ -112,10 +97,10 @@ setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
   {{/compare}}
 {{/compare}}
 {{#compare template '===' 'ui/gqlMultiItemsQueryVariables'}}
-  {{#compare this.type '!in' 'Boolean'}}
-${{fieldName}}: [{{cleanGraphqlType fieldType}}],
-  {{else}}
+  {{#compare fieldType 'startsWith' '['}}
 ${{fieldName}}: {{cleanGraphqlType fieldType}},
+  {{else}}
+${{fieldName}}: [{{cleanGraphqlType fieldType}}],
   {{/compare}}
 {{/compare}}
 {{#compare template '===' 'ui/gqlMultiItemsQueryArguments'}}
@@ -124,10 +109,10 @@ ${{fieldName}}: {{cleanGraphqlType fieldType}},
 {{#compare template '===' 'api/queryImports'}}
 import isArray from 'lodash/isArray';
 {{/compare}}
-{{#compare template '===' 'api/queryModifiers'}}
+{{#compare template '===' 'api/multiItemQueryModifiers'}}
 if (isArray({{fieldName~}})) {
   query.{{fieldName}} = { $in: {{fieldName}} };
-} else if ({{fieldName}}) {
+} else if ({{fieldName}} !== undefined && {{fieldName}} !== null) {
   query.{{fieldName}} = {{fieldName}};
 }
 
@@ -135,9 +120,9 @@ if (isArray({{fieldName~}})) {
 {{#compare template '===' 'api/typeFilterFields'}}
 {{/compare}}
 {{#compare template '===' 'api/graphql-apiMultiItemsQueryArguments'}}
-  {{#compare this.type '!in' 'Boolean'}}
-{{fieldName}}: [{{cleanGraphqlType fieldType}}]
-  {{else}}
+  {{#compare fieldType 'startsWith' '['}}
 {{fieldName}}: {{cleanGraphqlType fieldType}}
+  {{else}}
+{{fieldName}}: [{{cleanGraphqlType fieldType}}]
   {{/compare}}
 {{/compare}}

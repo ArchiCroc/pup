@@ -11,14 +11,15 @@
   {{/ifPartialHasValue}}
 {{/inline}}
 {{#uniqueImports}}
-{{#each schema.fields}}
-  {{#if this.filterable}}
-      {{> (lookup . 'filterTemplateFile' ) template='api/queryImports'}}
-  {{/if}}
-{{/each}}
+  {{#each schema.fields}}
+    {{#if this.filterable}}
+{{> (lookup . 'filterTemplateFile' ) template='api/queryImports'}}
+    {{/if}}
+  {{/each}}
 import {{ pascalCase pluralName }} from './{{ pascalCase pluralName }}';
 import checkUserRole from '{{apiPathOffset}}../Users/actions/checkUserRole';
 {{/uniqueImports}}
+
 
 export default {
   {{ camelCase pluralName }}: (parent, args, { user }) => {

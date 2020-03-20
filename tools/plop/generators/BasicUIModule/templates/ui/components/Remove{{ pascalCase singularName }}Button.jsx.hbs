@@ -16,7 +16,7 @@ function Remove{{ pascalCase singularName }}Button({ {{#compare primaryFieldKey 
     ignoreResults: true,
     onCompleted: () => {
       message.success(i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_saved'));
-      history.push('/{{ uiFolderName }}');
+      history.push('{{ uiRouteBasePath }}');
     },
     onError: (error) => {
       message.error(error.message);

@@ -55,7 +55,7 @@
 ))}
     {{/compare}}
     {{#compare type '===' 'Boolean'}}
-{ {{#if dataIndex}}{{~> fieldKeyAndDataIndex }} && {{/if}}i18n.__(`{{ pascalCase @root.pluralName }}.${ {{~> fieldKeyDataIndex}}? 'yes' : 'no'}`)}
+{ {{#if dataIndex}}{{> fieldKeyAndDataIndex }} && {{/if}}i18n.__(`{{ pascalCase @root.pluralName }}.${ {{~> fieldKeyDataIndex}} ? 'yes' : 'no'}`)}
     {{/compare}}
     {{#compare type 'in' 'DateTime' }}
 { {{~> fieldKeyAndDataIndex }} && <FormatDate timestamp={ {{~> fieldKeyDataIndex ~}} }{{#compare input '===' 'Date' }} format="MMMM Do, YYYY"{{/compare}} />}
@@ -87,7 +87,7 @@ import hasRole from '{{uiPathOffset}}../../modules/hasRole';
   {{#each schema.fields ~}}
     {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
       {{#if this.detailTemplateFile}}
-{{> (lookup . 'detailTemplateFile' ) import=true}} 
+{{> (lookup . 'detailTemplateFile' ) template='import'}} 
       {{/if}}
     {{/compare~}}
   {{~/each}}
@@ -110,10 +110,10 @@ function View{{ pascalCase singularName }}({{#compare hasFieldPermissions '||' s
       ) : (
         <>
           <PageBreadcrumbs>
-            <Breadcrumb to="/{{ uiFolderName }}">{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
-            <Breadcrumb>{ {{~ camelCase singularName }}.{{labelKeyKey ~}} }</Breadcrumb>
+            <Breadcrumb to="{{ uiRouteBasePath }}">{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
+            <Breadcrumb>{ {{~#if schema.singleItemTitle}}{{{schema.singleItemTitle}}}{{else}}{{~ camelCase singularName }}.{{labelKeyKey ~}}{{/if~}} }</Breadcrumb>
           </PageBreadcrumbs>
-          <PageHeader title={ {{~ camelCase singularName }}.{{labelKeyKey ~}} } />
+          <PageHeader title={ {{~#if schema.singleItemTitle}}{{{schema.singleItemTitle}}}{{else}}{{~ camelCase singularName }}.{{labelKeyKey ~}}{{/if~}} } />
           { {{~ camelCase singularName }}{{#if schema.permissions.update}} && hasRole(roles, [{{#each schema.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]){{/if}} && (
             <p>
               <Edit{{ pascalCase singularName }}Button {{urlFieldKey}}={ {{~ camelCase singularName }}.{{ urlFieldKey ~}} } />

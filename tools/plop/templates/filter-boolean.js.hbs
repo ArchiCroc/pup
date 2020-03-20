@@ -1,0 +1,66 @@
+{{#compare template '===' 'ui/imports'}}
+import isString from 'lodash/isString';
+import BooleanFilterDropdown from '{{@root.uiPathOffset}}../../components/BooleanFilterDropdown';
+{{/compare}}
+{{#compare template '===' 'ui/helpers'}}
+{{/compare}}
+{{#compare template 'in' 'ui/variables|api/variables'}}
+{{fieldName}},
+{{/compare}}
+{{#compare template '===' 'ui/useState'}}
+const [current{{ pascalCase fieldName }}, setCurrent{{ pascalCase fieldName }}] = useState(
+  hasPrint === undefined 
+  ? [] 
+  : [isString({{ fieldName }}) ? !!({{ fieldName }}.toLowerCase() === 'true') : {{ fieldName }}],
+);
+{{/compare}}
+{{#compare template '===' 'ui/useQueryVariablesKeys'}}
+{{fieldName}}: current{{pascalCase fieldName}}[0],
+{{/compare}}
+{{#compare template '===' 'ui/addtionalHooks'}}
+{{/compare}}
+{{#compare template '===' 'ui/columnKeys'}}
+filteredValue: current{{pascalCase fieldName}},
+filterDropdown: (props) => <BooleanFilterDropdown {...props} />,
+{{/compare}}
+{{#compare template '===' 'ui/handleTableChangeNewKeys'}}
+{{ fieldName }}: new{{pascalCase fieldName}},
+{{/compare}}
+{{#compare template '===' 'ui/handleTableChangeSetState'}}
+setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
+{{/compare}}
+{{#compare template '===' 'ui/handleTableChangeSetQueryObjectKey'}}
+{{ fieldName }}: new{{pascalCase fieldName}},
+{{/compare}}
+{{#compare template '===' 'ui/defaultPropsKeys'}}
+{{fieldName}}: undefined,
+{{/compare}}
+{{#compare template '===' 'ui/propTypesKeys'}}
+{{fieldName}}: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.bool,
+]),
+{{/compare}}
+{{#compare template '===' 'ui/gqlMultiItemsQueryVariables'}}
+${{ fieldName }}: {{cleanGraphqlType this.type}},
+{{/compare}}
+{{#compare template '===' 'ui/gqlMultiItemsQueryArguments'}}
+{{ fieldName }}: ${{fieldName}},
+{{/compare}}
+{{#compare template '===' 'ui/gqlMultiItemsQueryFilterKeys'}}
+{{/compare}}
+{{#compare template '===' 'api/queryImports'}}
+{{/compare}}
+{{#compare template '===' 'api/multiItemQueryModifiers'}}
+if (typeof {{fieldName}} === 'boolean') {
+  query.{{fieldName}} = {{fieldName}};
+}
+
+{{/compare}}
+{{#compare template '===' 'api/multiItemsQueryFilterProperties'}}
+{{/compare}}
+{{#compare template '===' 'api/typeFilterFields'}}
+{{/compare}}
+{{#compare template '===' 'api/graphql-apiMultiItemsQueryArguments'}}
+{{fieldName}}: {{cleanGraphqlType fieldType}}
+{{/compare}}

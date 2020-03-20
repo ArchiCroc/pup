@@ -1,6 +1,9 @@
 {{#compare template 'in' 'ui/variables|api/variables'}}
 {{fieldName}},
 {{/compare}}
+{{#compare template '===' 'ui/useQueryVariablesKeys'}}
+{{fieldName}},
+{{/compare}}
 {{#compare template '===' 'ui/defaultPropsKeys'}}
 {{fieldName}}: undefined,
 {{/compare}}
@@ -32,6 +35,19 @@
 ]),
   {{/compare}}
 {{/compare}}
+{{#compare template '===' 'ui/gqlMultiItemsQueryVariables'}}
+  {{#compare fieldType 'startsWith' '['}}
+${{fieldName}}: {{cleanGraphqlType fieldType}},
+  {{else}}
+${{fieldName}}: [{{cleanGraphqlType fieldType}}],
+  {{/compare}}
+{{/compare}}
+{{#compare template '===' 'ui/gqlMultiItemsQueryArguments'}}
+{{ fieldName }}: ${{fieldName}},
+{{/compare}}
+{{#compare template '===' 'api/queryImports'}}
+import isArray from 'lodash/isArray';
+{{/compare}}
 {{#compare template '===' 'api/multiItemQueryModifiers'}}
 {{!-- need to force this --}}
 if (isArray({{fieldName}})) {
@@ -42,4 +58,11 @@ if (isArray({{fieldName}})) {
 
 {{/compare}}
 {{#compare template '===' 'api/singleItemQueryModifiers'}}
+{{/compare}}
+{{#compare template '===' 'api/graphql-apiMultiItemsQueryArguments'}}
+  {{#compare fieldType 'startsWith' '['}}
+{{fieldName}}: {{cleanGraphqlType fieldType}}
+  {{else}}
+{{fieldName}}: [{{cleanGraphqlType fieldType}}]
+  {{/compare}}
 {{/compare}}

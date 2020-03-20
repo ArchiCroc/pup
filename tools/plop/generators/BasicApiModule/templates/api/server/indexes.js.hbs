@@ -3,7 +3,7 @@ import {{ pascalCase pluralName }} from '../{{ pascalCase pluralName }}';
 
 {{#each schema.fields}}
   {{#compare this.index '||' this.filterable}}
-createIndex({{ pascalCase @root.pluralName }}, { {{#if this.dataIndex}}{{this.dataIndex}}{{else}}{{@key}}{{/if}}: 1 });
+createIndex({{ pascalCase @root.pluralName }}, { {{#compare this.dataIndex '!==' undefined '&&' this.reference '===' undefined}}'{{@key}}.{{dataIndex}}'{{else}}{{fieldName}}{{/compare}}: 1 });
   {{else}}
     {{#compare @root.primaryFieldKey '!==' '_id' '&&' @root.primaryFieldKey '===' @key   }}
 createIndex({{ pascalCase @root.pluralName }}, { {{@root.primaryFieldKey}}: 1 });

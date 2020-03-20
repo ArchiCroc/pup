@@ -1,5 +1,4 @@
-
-{{#if import}}
+{{#compare template '===' 'import'}}
 import readableColor from 'polished/lib/color/readableColor';
 {{else}}
 <span style=\{{  
@@ -10,4 +9,4 @@ import readableColor from 'polished/lib/color/readableColor';
 }}>
   { {{~value~}} }
 </span>
-{{/if}}
+{{/compare}}

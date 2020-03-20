@@ -5,7 +5,7 @@ import Button from 'antd/lib/button';
 import { LinkContainer } from 'react-router-bootstrap';
 
 const Edit{{ pascalCase singularName }}Button = ({ {{ urlFieldKey }}, ...props }) => (
-  <LinkContainer to={`/{{ uiFolderName }}/${ {{~ urlFieldKey ~}} }/edit`}>
+  <LinkContainer to={`{{ uiRouteBasePath }}/${ {{~ urlFieldKey ~}} }/edit`}>
     <Button type="primary" icon="edit" {...props}>
       {i18n.__('{{ pascalCase pluralName }}.edit_{{ snakeCase shortSingularName }}')}
     </Button>

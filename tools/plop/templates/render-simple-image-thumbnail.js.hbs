@@ -1,3 +1,4 @@
-{{#unless import}}
-<>{ {{~value~}} && <img src={ {{~value~}} } style=\{{ maxWidth: 85, maxHeight: 85 }} />}</>
-{{/unless}}
+{{#compare template '===' 'import'}}
+{{else}}
+<>{ {{~value}} && <img src={ {{~value~}} } style=\{{ maxWidth: 85, maxHeight: 85 }} />}</>
+{{/compare}}

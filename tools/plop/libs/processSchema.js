@@ -15,7 +15,7 @@ function processFields([key, item]) {
       }
     }
   }
-  if (!item.dataIndex && item.reference && item.reference.labelKey) {
+  if (item.dataIndex !== undefined && item.reference && item.reference.labelKey) {
     item.dataIndex = item.reference.labelKey;
   }
   if (item.fields) {
@@ -42,6 +42,7 @@ function processFields([key, item]) {
   //   item.queryable = 'single';
   // }
   // this is so we can always get the reference field name to use in the queries
+  item.key = key;
   if (item.input && item.input.name) {
     item.fieldName = item.input.name;
   } else {
@@ -55,7 +56,7 @@ function processFields([key, item]) {
 
   // set default filter for value that are true so it matches a template
   if (item.filterable === true) {
-    item.filterTemplateFile = 'filter-default';
+    item.filterTemplateFile = item.fieldType === 'Boolean' ? 'filter-boolean' : 'filter-default';
   } else if (typeof item.filterable === 'string') {
     item.filterTemplateFile = `filter-${item.filterable}`;
   }
@@ -112,6 +113,8 @@ function processSchema(input) {
     .map((folder) => changeCase.param(folder))
     .join('/');
   data.uiPathOffset = '../'.repeat(data.uiFolderName.split('/').length - 1);
+
+  data.uiRouteBasePath = schema.uiRouteBasePath || '/' + data.uiPathOffset;
 
   // clean the name. collection/bigItem into Collection/BigItem
   // if (data.rawName.includes('/')) {

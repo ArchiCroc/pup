@@ -1,4 +1,4 @@
-{{#if import}}
+{{#compare template '===' 'import'}}
 import { Link } from 'react-router-dom';
 {{else}}
 {{#*inline "fieldKeyValueIndex" ~}}
@@ -17,4 +17,4 @@ import { Link } from 'react-router-dom';
     { {{~value~}} }
   </Link>
 )
-{{~/if}}
+{{~/compare}}

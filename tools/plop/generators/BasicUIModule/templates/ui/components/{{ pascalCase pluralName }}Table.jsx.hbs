@@ -41,7 +41,7 @@ const { Search } = Input;
     {{/if}}
 {{/each}}
 
-function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singularName }}Button, queryKeyPrefix, ...props }) {
+function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singularName }}Button, {{#if isSearchable}}showSearch, {{/if}}queryKeyPrefix, ...props }) {
   const history = useHistory();
 
   const [queryStringObject, setQueryStringObject] = useQueryStringObject(queryKeyPrefix);
@@ -94,9 +94,11 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
 {{/each}}
     },
   });
+
 {{#each schema.fields}}
   {{#if this.filterable}}
-      {{> (lookup . 'filterTemplateFile' ) template='ui/addtionalHooks'}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/addtionalHooks'}}
+
   {{/if}}
 {{/each}}
   const columns = [
@@ -206,7 +208,7 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
   function handleTableRow(record) {
     return {
       onClick: () => {
-        history.push(`/{{ uiFolderName }}/${record.{{ urlFieldKey ~}} }`);
+        history.push(`{{ uiRouteBasePath }}/${record.{{ urlFieldKey ~}} }`);
       },
     };
   }
@@ -216,7 +218,7 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
       <p>
         { showNew{{ pascalCase singularName }}Button {{#if schema.permissions.create}}&& hasRole(roles, [{{#each schema.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) {{/if}}&& (<New{{ pascalCase singularName }}Button />)}&nbsp;
         {{#if isSearchable}}
-        <span className="pull-right" style=\{{ width: 300 }}>
+        { showSearch && (<span className="pull-right" style=\{{ width: 300 }}>
           <Search
             placeholder={i18n.__('{{ pascalCase pluralName }}.search_placeholder')}
             onSearch={handleSearch}
@@ -224,7 +226,7 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
             allowClear
             enterButton
           />
-        </span>
+        </span>)}
         {{/if}}
       </p>
       <Table
@@ -250,6 +252,7 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
   order: '{{#if schema.defaultSortOrder}}{{schema.defaultSortOrder}}{{else}}ascend{{/if}}',
 {{#if isSearchable}}
   search: undefined,
+  showSearch: true,
 {{/if}}
 {{#each schema.fields}}
   {{#if this.filterable}}
@@ -268,6 +271,7 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
   order: PropTypes.string,
 {{#if isSearchable}}
   search: PropTypes.string,
+  showSearch: PropTypes.bool,
 {{/if}}
 {{#each schema.fields}}
   {{#if this.filterable}}

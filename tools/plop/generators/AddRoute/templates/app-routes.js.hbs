@@ -1,7 +1,7 @@
 {{#compare routeType '===' 'user'}}
                   <AuthenticatedRoute
                     exact
-                    path="/{{ uiFolderName }}{{#if urlSlug}}/{{ urlSlug }}{{/if}}"
+                    path="{{ uiRouteBasePath }}{{#if urlSlug}}/{{ urlSlug }}{{/if}}"
                     component={ {{~ pascalCase componentName ~}} }
                     setAfterLoginPath={setAfterLoginPath}
                     {...props}
@@ -12,7 +12,7 @@
                   <AuthorizedRoute
                     exact
                     allowedRoles={['admin']}
-                    path="/{{ uiFolderName }}{{#if urlSlug}}/{{ urlSlug }}{{/if}}"
+                    path="{{ uiRouteBasePath }}{{#if urlSlug}}/{{ urlSlug }}{{/if}}"
                     component={ {{~ pascalCase componentName ~}} }
                     setAfterLoginPath={setAfterLoginPath}
                     {...props}
@@ -21,7 +21,7 @@
 {{/compare}}
 {{#compare routeType '===' 'everyone'}}
                   <PublicRoute
-                    path="/{{ uiFolderName }}{{#if urlSlug}}/{{ urlSlug }}{{/if}}" 
+                    path="{{ uiRouteBasePath }}{{#if urlSlug}}/{{ urlSlug }}{{/if}}" 
                     component={ {{~ pascalCase componentName ~}} }
                     {...props}
                     {...state}

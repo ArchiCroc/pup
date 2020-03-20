@@ -53,13 +53,15 @@ import i18n from 'meteor/universe:i18n';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 import AutoForm from 'uniforms/AutoForm';
+{{#uniqueImports}}
 import prepareFormModel from '{{uiPathOffset}}../../../modules/prepareFormModel';
-{{#if hasFieldPermissions }}
+  {{#if hasFieldPermissions }}
 import hasRole from '{{uiPathOffset}}../../../modules/hasRole';
-{{/if}}
-{{#each fieldImports}}
+  {{/if}}
+  {{#each fieldImports}}
 import {{this.variable}} from '{{this.path}}';
-{{/each}}
+  {{/each}}
+{{/uniqueImports}}
 
 /* #### PLOP_IMPORTS_START #### */
 /* #### PLOP_IMPORTS_END #### */
@@ -77,7 +79,7 @@ function {{ pascalCase singularName }}Editor({ doc{{#if hasFieldPermissions}}, r
     ignoreResults: true,
     onCompleted: () => {
       message.success(i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_saved'));
-      history.push('/{{ uiFolderName }}');
+      history.push('{{ uiRouteBasePath }}');
     },
     onError: (error) => {
       message.error(error.message);
