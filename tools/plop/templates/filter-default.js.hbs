@@ -110,7 +110,7 @@ ${{fieldName}}: [{{cleanGraphqlType fieldType}}],
 import isArray from 'lodash/isArray';
 {{/compare}}
 {{#compare template '===' 'api/multiItemQueryModifiers'}}
-if (isArray({{fieldName~}})) {
+if (isArray({{fieldName}}) && {{fieldName}}.length > 0) {
   query.{{fieldName}} = { $in: {{fieldName}} };
 } else if ({{fieldName}} !== undefined && {{fieldName}} !== null) {
   query.{{fieldName}} = {{fieldName}};
