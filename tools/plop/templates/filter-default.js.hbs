@@ -63,7 +63,7 @@ filters: {{camelCase fieldName}}Filters,
   {{/if}}  
 {{/compare}}
 {{#compare template '===' 'ui/handleTableChangeNewKeys'}}
-{{#if dataIndex}}'{{fieldName}}.{{dataIndex}}'{{else}}{{ fieldName }}{{/if}}: new{{pascalCase fieldName }},
+{{#if dataIndex}}'{{key}}.{{dataIndex}}'{{else}}{{ fieldName }}{{/if}}: new{{pascalCase fieldName }},
 {{/compare}}
 {{#compare template '===' 'ui/handleTableChangeSetState'}}
 setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
