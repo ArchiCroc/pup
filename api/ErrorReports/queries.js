@@ -1,12 +1,15 @@
 import isArray from 'lodash/isArray';
-import ErrorReports from './ErrorReports';
 import checkUserRole from '../Users/actions/checkUserRole';
+import ErrorReports from './ErrorReports';
 
 export default {
-  errorReports: (parent, args, context) => {
-    if (!context.user || !context.user._id || !checkUserRole(context.user._id, 'admin')) {
-      throw new Error('Sorry, you must have permission to view ErrorReports.');
+  errorReports: (parent, args, { user }) => {
+    if (!user || !user._id || !checkUserRole(user._id, ['admin'])) {
+      throw new Error('Sorry, you must have permission to view Error Reports.');
     }
+
+    /* #### PLOP_QUERY_VALIDATION_START #### */
+    /* #### PLOP_QUERY_VALIDATION_END #### */
 
     const {
       _ids,
@@ -39,12 +42,23 @@ export default {
 
     if (isArray(level)) {
       query.level = { $in: level };
+    } else if (level !== undefined && level !== null) {
+      query.level = level;
     }
 
     if (search) {
       const searchRegEx = new RegExp(search, 'i');
-      query.$or = [{ path: searchRegEx }, { message: searchRegEx }, { userAgent: searchRegEx }];
+      query.$or = [
+        { message: searchRegEx },
+        { path: searchRegEx },
+        { userAgent: searchRegEx },
+        { stack: searchRegEx },
+        { reactStack: searchRegEx },
+      ];
     }
+
+    /* #### PLOP_QUERY_PRE_FIND_START #### */
+    /* #### PLOP_QUERY_PRE_FIND_END #### */
 
     const result = ErrorReports.find(query, options);
 
@@ -53,22 +67,50 @@ export default {
       errorReports: result.fetch(),
     };
   },
-  myErrorReports: (parent, args, context) => {
-    if (!context.user || !context.user._id || !checkUserRole(context.user._id, 'admin')) {
-      throw new Error('Sorry, you must have permission to view my ErrorReports.');
+  myErrorReports: (parent, args, { user }) => {
+    if (!user || !user._id || !checkUserRole(user._id, ['admin'])) {
+      throw new Error('Sorry, you must have permission to view my Error Reports.');
     }
-    return ErrorReports.find(
-      { createdById: context.user._id },
-      { sort: { createdAtUTC: -1 } },
-    ).fetch();
-  },
-  errorReport: (parent, args, context) => {
-    if (!context.user || !context.user._id || !checkUserRole(context.user._id, 'admin')) {
-      throw new Error('Sorry, you must have permission to view ErrorReport.');
-    }
-    const errorReportIdFromParentQuery = parent && parent.errorReportId;
 
-    return ErrorReports.findOne({ _id: errorReportIdFromParentQuery || args._id });
+    const { level } = args;
+
+    /* #### PLOP_QUERY_VALIDATION_START #### */
+    /* #### PLOP_QUERY_VALIDATION_END #### */
+
+    const query = { createdById: user._id };
+    const options = {};
+
+    if (isArray(level)) {
+      query.level = { $in: level };
+    } else if (level !== undefined && level !== null) {
+      query.level = level;
+    }
+
+    /* #### PLOP_QUERY_PRE_FIND_START #### */
+    /* #### PLOP_QUERY_PRE_FIND_END #### */
+
+    return ErrorReports.find(query).fetch(query, options);
+  },
+  errorReport: (parent, args, { user }) => {
+    if (!user || !user._id || !checkUserRole(user._id, ['admin'])) {
+      throw new Error('Sorry, you must have permission to view Error Report.');
+    }
+
+    /* #### PLOP_QUERY_VALIDATION_START #### */
+    /* #### PLOP_QUERY_VALIDATION_END #### */
+
+    const query = {};
+    const options = {};
+
+    /* #### PLOP_QUERY_PRE_FIND_START #### */
+    /* #### PLOP_QUERY_PRE_FIND_END #### */
+
+    const _id = (parent && parent.errorReportId) || args._id;
+    if (_id) {
+      query._id = _id;
+      return ErrorReports.findOne(query, options);
+    }
+    return null;
   },
   /* #### PLOP_QUERIES_START #### */
   /* #### PLOP_QUERIES_END #### */

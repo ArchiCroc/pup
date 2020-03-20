@@ -1,22 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
 import { useQuery /* , useMutation */ } from '@apollo/react-hooks';
 import Divider from 'antd/lib/divider';
-import PageHeader from '../components/PageHeader';
 import PageBreadcrumbs, { Breadcrumb } from '../components/PageBreadcrumbs';
+import PageHeader from '../components/PageHeader';
 import ErrorReportEditor from './components/ErrorReportEditor';
 import Loading from '../components/Loading';
 import NotFound from '../pages/NotFound';
 import RemoveErrorReportButton from './components/RemoveErrorReportButton';
+import hasRole from '../../modules/hasRole';
 
-import { editErrorReport as errorReportQuery } from './queries/ErrorReports.gql';
+import { editErrorReport as editErrorReportQuery } from './queries/ErrorReports.gql';
 
 import StyledErrorReports from './StyledErrorReports';
 
-const EditErrorReport = ({ history, match }) => {
-  const { loading, data: { errorReport = undefined } = {} } = useQuery(errorReportQuery, {
-    variables: { _id: match.params._id },
+function EditErrorReport({ roles }) {
+  const { _id } = useParams();
+
+  const { loading, data: { errorReport = undefined } = {} } = useQuery(editErrorReportQuery, {
+    variables: { _id },
   });
 
   return (
@@ -29,25 +33,18 @@ const EditErrorReport = ({ history, match }) => {
       {loading ? (
         <Loading />
       ) : (
-        <>
-          {errorReport ? <ErrorReportEditor doc={errorReport} history={history} /> : <NotFound />}
-        </>
+        <>{errorReport ? <ErrorReportEditor doc={errorReport} roles={roles} /> : <NotFound />}</>
       )}
       <Divider />
-      {errorReport && (
-        <RemoveErrorReportButton
-          _id={errorReport._id}
-          message={errorReport.message}
-          history={history}
-        />
+      {errorReport && hasRole(roles, ['admin']) && (
+        <RemoveErrorReportButton _id={errorReport._id} message={errorReport.message} />
       )}
     </StyledErrorReports>
   );
-};
+}
 
 EditErrorReport.propTypes = {
-  history: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
+  roles: PropTypes.array.isRequired,
 };
 
 export default EditErrorReport;

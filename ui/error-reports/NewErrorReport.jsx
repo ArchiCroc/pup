@@ -7,19 +7,15 @@ import ErrorReportEditor from './components/ErrorReportEditor';
 
 import StyledErrorReports from './StyledErrorReports';
 
-const NewErrorReport = ({ history }) => (
+const NewErrorReport = () => (
   <StyledErrorReports md={16} lg={12} xl={10} xxl={8}>
     <PageBreadcrumbs>
       <Breadcrumb to="/error-reports">{i18n.__('ErrorReports.error_report_plural')}</Breadcrumb>
       <Breadcrumb>{i18n.__('ErrorReports.new_error_report')}</Breadcrumb>
     </PageBreadcrumbs>
     <PageHeader title={i18n.__('ErrorReports.new_error_report')} />
-    <ErrorReportEditor history={history} />
+    <ErrorReportEditor />
   </StyledErrorReports>
 );
-
-NewErrorReport.propTypes = {
-  history: PropTypes.object.isRequired,
-};
 
 export default NewErrorReport;

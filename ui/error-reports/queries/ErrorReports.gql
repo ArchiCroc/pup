@@ -21,6 +21,10 @@ query errorReports(
     total
     errorReports {
       _id
+      
+      user {
+              fullName
+            }
       level
       message
       path

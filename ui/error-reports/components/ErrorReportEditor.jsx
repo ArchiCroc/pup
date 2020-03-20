@@ -2,16 +2,19 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import i18n from 'meteor/universe:i18n';
 import Button from 'antd/lib/button';
+import message from 'antd/lib/message';
 import AutoForm from 'uniforms/AutoForm';
 import HiddenField from 'uniforms-antd/HiddenField';
-import SelectField from 'uniforms-antd/SelectField';
-import TextField from 'uniforms-antd/TextField';
 import ListField from 'uniforms-antd/ListField';
 import ListItemField from 'uniforms-antd/ListItemField';
-import message from 'antd/lib/message';
+import TextField from 'uniforms-antd/TextField';
+import prepareFormModel from '../../../modules/prepareFormModel';
+import CrossReferenceSearchField from '../../components/CrossReferenceSearchField';
+import SelectField from '../../components/SelectField';
 /* #### PLOP_IMPORTS_START #### */
 /* #### PLOP_IMPORTS_END #### */
 
@@ -22,7 +25,8 @@ import ErrorReportSchema from '../../../api/ErrorReports/schemas/error-report';
 
 import StyledErrorReportEditor from './StyledErrorReportEditor';
 
-const ErrorReportEditor = ({ doc, history }) => {
+function ErrorReportEditor({ doc }) {
+  const history = useHistory();
   const [saveErrorReport] = useMutation(saveErrorReportMutation, {
     ignoreResults: true,
     onCompleted: () => {
@@ -54,11 +58,12 @@ const ErrorReportEditor = ({ doc, history }) => {
         name="errorReport"
         schema={ErrorReportSchema}
         onSubmit={handleSubmit}
-        model={doc || {}}
+        model={prepareFormModel(doc)}
         showInlineError
         placeholder
       >
         <HiddenField name="_id" />
+        <CrossReferenceSearchField name="userId" />
         <SelectField name="level" />
         <TextField name="message" />
         <TextField name="path" />
@@ -75,15 +80,14 @@ const ErrorReportEditor = ({ doc, history }) => {
       </AutoForm>
     </StyledErrorReportEditor>
   );
-};
+}
 
 ErrorReportEditor.defaultProps = {
-  doc: null,
+  doc: {},
 };
 
 ErrorReportEditor.propTypes = {
   doc: PropTypes.object,
-  history: PropTypes.object.isRequired,
 };
 
 export default ErrorReportEditor;

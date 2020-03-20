@@ -2,47 +2,71 @@ import ErrorReports from './ErrorReports';
 import ErrorReportSchema from './schemas/error-report';
 // import sanitizeHtml from 'sanitize-html';
 import checkUserRole from '../Users/actions/checkUserRole';
+import createMongoModifier from '../../modules/server/createMongoModifier';
 
 export default {
-  saveErrorReport: (root, args, context) => {
-    if (!context.user || !context.user._id || !checkUserRole(context.user._id, 'admin')) {
-      throw new Error('Sorry, you must have permission to save ErrorReport.');
+  saveErrorReport: (root, args, { user }) => {
+    if (!user || !user._id || !checkUserRole(user._id, ['admin'])) {
+      throw new Error('Sorry, you must have permission to save a Error Report.');
     }
-    if (!context.user) throw new Error('Sorry, you must be logged in to add a new ErrorReport.');
+
+    /* #### PLOP_MUTATION_REMOVE_VALIDATION_START #### */
+    /* #### PLOP_MUTATION_REMOVE_VALIDATION_END #### */
 
     const cleanDoc = ErrorReportSchema.clean(args.errorReport);
     ErrorReportSchema.validate(cleanDoc);
 
-    const userId = context.user._id;
+    /* #### PLOP_MUTATION_PRE_SAVE_START #### */
+    /* #### PLOP_MUTATION_PRE_SAVE_END #### */
+
+    const userId = user._id;
     const timestamp = new Date();
 
-    cleanDoc.updatedBy = userId;
-    cleanDoc.updatedAtUTC = timestamp;
-
     if (cleanDoc._id) {
-      cleanDoc.updatedBy = context.user._id;
-      cleanDoc.updatedAt = new Date();
-
       const { _id } = cleanDoc;
-      delete cleanDoc._id;
 
-      ErrorReports.update({ _id }, { $set: cleanDoc });
+      cleanDoc.updatedById = userId;
+      cleanDoc.updatedAtUTC = timestamp;
+
+      const currentDoc = ErrorReports.findOne(_id, { fields: { createdById: 0, createdAtUTC: 0 } });
+      if (!currentDoc) {
+        throw new Error('Cannot find Error Report to update');
+      }
+
+      const modifier = createMongoModifier(currentDoc, cleanDoc);
+
+      delete modifier.$set._id;
+
+      /* #### PLOP_MUTATION_PRE_UPDATE_START #### */
+      /* #### PLOP_MUTATION_PRE_UPDATE_END #### */
+
+      ErrorReports.update({ _id }, modifier);
       return ErrorReports.findOne(_id);
     }
 
     cleanDoc.createdById = userId;
     cleanDoc.createdAtUTC = timestamp;
+    cleanDoc.updatedById = userId;
+    cleanDoc.updatedAtUTC = timestamp;
 
-    const ErrorReportId = ErrorReports.insert(cleanDoc);
-    const doc = ErrorReports.findOne(ErrorReportId);
+    /* #### PLOP_MUTATION_PRE_INSERT_START #### */
+    /* #### PLOP_MUTATION_PRE_INSERT_END #### */
+
+    const errorReportId = ErrorReports.insert(cleanDoc);
+    const doc = ErrorReports.findOne(errorReportId);
     return doc;
   },
-  removeErrorReport: (root, args, context) => {
-    if (!context.user || !context.user._id || !checkUserRole(context.user._id, 'admin')) {
-      throw new Error('Sorry, you must have permission to save ErrorReport.');
+  removeErrorReport: (root, args, { user }) => {
+    if (!user || !user._id || !checkUserRole(user._id, ['admin'])) {
+      throw new Error('Sorry, you must have permission to remove Error Report.');
     }
-    if (!ErrorReports.findOne({ _id: args._id, createdById: context.user._id }))
-      throw new Error('Sorry, you need to be the owner of this ErrorReport to remove it.');
+
+    /* #### PLOP_MUTATION_REMOVE_VALIDATION_START #### */
+    /* #### PLOP_MUTATION_REMOVE_VALIDATION_END #### */
+
+    /* #### PLOP_MUTATION_PRE_REMOVE_START #### */
+    /* #### PLOP_MUTATION_PRE_REMOVE_END #### */
+
     ErrorReports.remove(args);
     return args;
   },

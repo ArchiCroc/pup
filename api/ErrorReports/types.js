@@ -1,12 +1,13 @@
 export default `
+
 type ErrorReport {
   _id: String
-  user: User
   userId: String
-  userAgent: String
+  user: User
   level: Int
   message: String
   path: String
+  userAgent: String
   stack: [String]
   reactStack: [String]
   createdAtUTC: DateTime
@@ -19,13 +20,14 @@ type ErrorReports {
   errorReports: [ErrorReport]
 }
 
+
 input ErrorReportInput {
   _id: String
-  userId: String
-  userAgent: String
+  userId: String!
   level: Int!
   message: String!
   path: String
+  userAgent: String
   stack: [String]
   reactStack: [String]
 }
