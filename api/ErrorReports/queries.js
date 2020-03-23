@@ -41,7 +41,9 @@ export default {
     }
 
     if (isArray(level)) {
-      query.level = { $in: level };
+      if (level.length > 0) {
+        query.level = { $in: level };
+      }
     } else if (level !== undefined && level !== null) {
       query.level = level;
     }
