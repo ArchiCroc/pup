@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 import { year } from '../../modules/dates';
 import StyledFooter from './StyledFooter';
 
-const { productName, copyrightStartYear } = Meteor.settings.public;
 const copyrightYear = () => {
+  const copyrightStartYear = i18n.__('copyright_start_year');
   const currentYear = year();
   return currentYear === copyrightStartYear
     ? copyrightStartYear
@@ -17,7 +17,7 @@ const copyrightYear = () => {
 const Footer = () => (
   <StyledFooter>
     <p className="pull-left">
-      {i18n.__('footer', { copyrightYear: copyrightYear(), productName })}
+      {i18n.__('footer', { copyrightYear: copyrightYear(), productName: i18n.__('product_name') })}
     </p>
     <ul className="pull-right">
       <li>

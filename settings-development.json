@@ -4,11 +4,10 @@
       "httpUri": "http://localhost:3000/graphql"
     },
     "productName": "Product Name",
-    "copyrightStartYear": "2019",
+    "copyrightStartYear": "2018",
     "twitterUsername": "product",
     "facebookUsername": "product",
-    "productAddress": "Chicago, IL"
-    
+    "productAddress": "12345 Product Address"
   },
   "private": {
     "MAIL_URL": "",

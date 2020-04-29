@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
+import i18n from 'meteor/universe:i18n';
 
-const { productName } = Meteor.settings.public;
+const productName = i18n.__('product_name');
 
 const content = `
 Your privacy is important to us.

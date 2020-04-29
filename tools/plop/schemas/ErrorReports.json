@@ -13,7 +13,7 @@
     "_id": {
       "primaryKey": true,
       "urlKey": true,
-      "type": "String",
+      "type": "ObjectID",
       "input": "Hidden",
       "validate" : {
         "max": 24,

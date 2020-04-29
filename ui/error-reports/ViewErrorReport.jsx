@@ -53,14 +53,18 @@ ViewErrorReport.propTypes = {
 
 const ViewErrorReportFields = ({ errorReport }) => (
   <Descriptions bordered column={1}>
-    <Descriptions.Item label={i18n.__('ErrorReports.user')}>{errorReport.user}</Descriptions.Item>
+    <Descriptions.Item label={i18n.__('ErrorReports.user')}>
+      {errorReport.user?.fullName}
+    </Descriptions.Item>
     <Descriptions.Item label={i18n.__('ErrorReports.level')}>
       {errorReport.level && i18n.__(`ErrorReports.level_${errorReport.level}`)}
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('ErrorReports.message')}>
       {errorReport.message}
     </Descriptions.Item>
-    <Descriptions.Item label={i18n.__('ErrorReports.path')}>{errorReport.path}</Descriptions.Item>
+    <Descriptions.Item label={i18n.__('ErrorReports.path')}>
+      {errorReport.path && <a href={errorReport.path}>{errorReport.path}</a>}
+    </Descriptions.Item>
     <Descriptions.Item label={i18n.__('ErrorReports.user_agent')}>
       {errorReport.userAgent}
     </Descriptions.Item>
@@ -74,7 +78,7 @@ const ViewErrorReportFields = ({ errorReport }) => (
       {errorReport.createdAtUTC && <FormatDate timestamp={errorReport.createdAtUTC} />}
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('ErrorReports.created_by')}>
-      {errorReport.createdBy}
+      {errorReport.createdBy?.fullName}
     </Descriptions.Item>
   </Descriptions>
 );

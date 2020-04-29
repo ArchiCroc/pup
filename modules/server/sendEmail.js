@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Email } from 'meteor/email';
+import i18n from 'meteor/universe:i18n';
 import getPrivateFile from './getPrivateFile';
 import templateToText from './handlebarsEmailToText';
 import templateToHtml from './handlebarsEmailToHtml';
@@ -22,7 +23,7 @@ export default ({ text, html, template, templateVars = {}, ...rest }) => {
       const htmlTemplate = template && getPrivateFile(`email-templates/${template}.html`);
 
       const context = {
-        productName: Meteor.settings.public.productName,
+        productName: i18n.__('product_name'),
         productUrl: Meteor.absoluteUrl(), // e.g., returns http://localhost:3000/
         ...templateVars,
       };

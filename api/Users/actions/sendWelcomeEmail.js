@@ -1,13 +1,14 @@
 /* eslint-disable consistent-return */
 
 import { Meteor } from 'meteor/meteor';
+import i18n from 'meteor/universe:i18n';
 import normalizeMeteorUserData from './normalizeMeteorUserData';
 import sendEmail from '../../../modules/server/sendEmail';
 
 const getEmailOptions = (user) => {
   try {
     const { firstName } = user.profile;
-    const { productName } = Meteor.settings.public;
+    const productName = i18n.__('product_name');
 
     return {
       to: user.emails[0].address,

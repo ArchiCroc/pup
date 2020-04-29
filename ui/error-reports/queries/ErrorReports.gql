@@ -34,13 +34,13 @@ query errorReports(
   }
 }
 
-query editErrorReport($_id: String) {
+query editErrorReport($_id: ObjectID) {
   errorReport(_id: $_id) {
     ...ErrorReportAttributes
   }
 }
 
-query errorReport($_id: String) {
+query errorReport($_id: ObjectID) {
   errorReport(_id: $_id) {
     ...ErrorReportAttributes
   }

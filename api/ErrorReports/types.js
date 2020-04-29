@@ -1,7 +1,7 @@
 export default `
 
 type ErrorReport {
-  _id: String
+  _id: ObjectID
   userId: String
   user: User
   level: Int
@@ -22,7 +22,7 @@ type ErrorReports {
 
 
 input ErrorReportInput {
-  _id: String
+  _id: ObjectID
   userId: String!
   level: Int!
   message: String!

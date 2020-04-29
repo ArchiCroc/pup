@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
 import { Meteor } from 'meteor/meteor';
+import i18n from 'meteor/universe:i18n';
+import { Helmet } from 'react-helmet';
 
 const PageTitle = ({ title }) => (
   <Helmet>
     <title>
-      {title} | {Meteor.settings.public.productName}
+      {title} | {i18n.__('product_name')}
     </title>
   </Helmet>
 );

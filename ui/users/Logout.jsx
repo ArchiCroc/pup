@@ -6,12 +6,14 @@ import Icon from 'antd/lib/icon';
 
 import StyledLogout from './StyledLogout';
 
-const { productName, twitterUsername, facebookUsername } = Meteor.settings.public;
-
 function Logout(props) {
   useEffect(() => {
     Meteor.logout(() => props.setAfterLoginPath(null));
   });
+
+  const productName = i18n.__('product_name');
+  const facebookUsername = i18n.__('facebook_username');
+  const twitterUsername = i18n.__('twitter_username');
 
   return (
     <StyledLogout>

@@ -1,16 +1,21 @@
 import Uniforms from 'uniforms';
 import SimpleSchema from 'simpl-schema';
 import i18n from 'meteor/universe:i18n';
+import parseObjectID from '../../../modules/parseObjectID';
 /* #### PLOP_IMPORTS_START #### */
 /* #### PLOP_IMPORTS_END #### */
 
-const cleanLevel = (item) => parseInt(item, 10);;
+const cleanLevel = (item) => parseInt(item, 10);
 
 const ErrorReportSchema = new SimpleSchema({
   _id: {
-    type: String,
+    type: Mongo.ObjectID,
     optional: true,
     max: 24,
+    autoValue() {
+      return parseObjectID(this.value);
+    },
+    blackbox: true,
     uniforms: {
       type: 'hidden',
     },

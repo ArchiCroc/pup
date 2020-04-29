@@ -1,13 +1,12 @@
 import crypto from 'crypto';
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
+import i18n from 'meteor/universe:i18n';
 import { JsonRoutes as ApiRoutes } from 'meteor/simple:json-routes';
 import isNumber from 'lodash/isNumber';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import { getUser } from 'meteor/apollo';
-
-const { productName } = Meteor.settings.public;
 
 /**
  * Customized Middleware for error handling
@@ -72,7 +71,7 @@ const validateApikey = async (key, secret) => {
 };
 
 const parseBasicAuth = async (request, response, next) => {
-  // this has to run in a fiber to call a meteor method in validateApikey
+  const productName = i18n.__('product_name');
   if (request.headers && request.headers.authorization) {
     const basicAuth = request.headers.authorization.match(/^Basic (.+)/);
     if (!basicAuth) {

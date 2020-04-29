@@ -82,7 +82,7 @@ const schema = {
 
       #### ERROR_REPORTS_QUERY_TYPES_START ####
       errorReports(
-        _ids: [String]
+        _ids: [ObjectID]
         page: Int
         pageSize: Int
         sort: String
@@ -91,7 +91,7 @@ const schema = {
         level: [Int]
       ): ErrorReports
       myErrorReports: [ErrorReport]
-      errorReport(_id: String): ErrorReport
+      errorReport(_id: ObjectID): ErrorReport
       #### ERROR_REPORTS_QUERY_TYPES_END ####
 
       #### PLOP_QUERY_TYPES_END ####

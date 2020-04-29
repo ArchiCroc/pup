@@ -1,4 +1,10 @@
 # Global
+product_name: Pup Plus
+copyright_start_year: 2019
+twitter_username: productTwitter
+facebook_username: productFacebook
+product_address: Chicago, IL
+
 home: Home
 footer: '© ${copyrightYear} ${productName}'
 terms_of_service: Terms
