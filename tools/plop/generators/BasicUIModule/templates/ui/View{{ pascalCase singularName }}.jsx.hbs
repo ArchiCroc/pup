@@ -68,14 +68,13 @@
     {{/compare ~}}
   {{~/compare~}}
 {{/inline ~}}
-
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/react-hooks';
-import Descriptions from 'antd/lib/descriptions';
 {{#uniqueImports}}
+import { useParams } from 'react-router-dom';
+import Descriptions from 'antd/lib/descriptions';
 import FormatDate from '{{uiPathOffset}}../components/FormatDate';
 import PageBreadcrumbs, { Breadcrumb } from '{{uiPathOffset}}../components/PageBreadcrumbs';
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
@@ -87,10 +86,17 @@ import hasRole from '{{uiPathOffset}}../../modules/hasRole';
   {{#each schema.fields ~}}
     {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
       {{#if this.detailTemplateFile}}
-{{> (lookup . 'detailTemplateFile' ) template='import'}} 
+{{> (lookup . 'detailTemplateFile' ) template='import' uiPathOffset=@root.uiPathOffset }} 
       {{/if}}
     {{/compare~}}
   {{~/each}}
+{{#> paramsImport}}
+  {{#each schema.fields}}
+    {{#if this.filterable}}
+      {{> (lookup . 'filterTemplateFile' ) template='ui/paramVariables'}}
+    {{/if}}
+  {{/each}}
+{{/paramsImport}}
 {{/uniqueImports}}
 
 import Edit{{ pascalCase singularName }}Button from './components/Edit{{ pascalCase singularName }}Button';
@@ -100,7 +106,15 @@ import { {{ camelCase singularName }} as {{ camelCase singularName }}Query } fro
 import Styled{{ pascalCase pluralName }} from './Styled{{ pascalCase pluralName }}';
 
 function View{{ pascalCase singularName }}({{#compare hasFieldPermissions '||' schema.permissions.update}}{ roles }{{/compare}}) {
-  const { {{ urlFieldKey }} } = useParams();
+  const { 
+    {{ urlFieldKey }},
+{{#each schema.fields}}
+  {{#if this.filterable}}
+    {{> (lookup . 'filterTemplateFile' ) template='ui/paramVariables'}}
+  {{/if}}
+{{/each}}  
+  } = useParams();
+
   const { loading, data: { {{ camelCase singularName }} } = {} } = useQuery({{ camelCase singularName }}Query, { variables: { {{ urlFieldKey }} } });
 
   return (
@@ -110,17 +124,33 @@ function View{{ pascalCase singularName }}({{#compare hasFieldPermissions '||' s
       ) : (
         <>
           <PageBreadcrumbs>
-            <Breadcrumb to="{{ uiRouteBasePath }}">{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
-            <Breadcrumb>{ {{~#if schema.singleItemTitle}}{{{schema.singleItemTitle}}}{{else}}{{~ camelCase singularName }}.{{labelKeyKey ~}}{{/if~}} }</Breadcrumb>
+            <Breadcrumb to={`{{ convertParamsToTemplateVars uiRouteBasePath }}`}>{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
+            <Breadcrumb>{ {{~#if schema.singleItemTitle}}{{{schema.singleItemTitle}}}{{else}}{{~ camelCase singularName }}.{{labelKeyKey ~}}{{#if labelKey.dataIndex}}.{{labelKey.dataIndex}}{{/if}}{{/if~}} }</Breadcrumb>
           </PageBreadcrumbs>
           <PageHeader title={ {{~#if schema.singleItemTitle}}{{{schema.singleItemTitle}}}{{else}}{{~ camelCase singularName }}.{{labelKeyKey ~}}{{/if~}} } />
           { {{~ camelCase singularName }}{{#if schema.permissions.update}} && hasRole(roles, [{{#each schema.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]){{/if}} && (
             <p>
-              <Edit{{ pascalCase singularName }}Button {{urlFieldKey}}={ {{~ camelCase singularName }}.{{ urlFieldKey ~}} } />
+              <Edit{{ pascalCase singularName }}Button 
+                {{urlFieldKey}}={ {{~ camelCase singularName }}.{{ urlFieldKey ~}} } 
+{{#each schema.fields}}
+  {{#if this.filterable}}
+                {{> (lookup . 'filterTemplateFile' ) template='ui/componentProps'}}
+  {{/if}}
+{{/each}}
+              />
             </p>
           )}
           { {{~ camelCase singularName }} ? (
-            <View{{ pascalCase singularName }}Fields {{ camelCase singularName }}={ {{~ camelCase singularName ~}} }{{#if hasFieldPermissions}} roles={roles}{{/if}} />
+            <View{{ pascalCase singularName }}Fields 
+              {{ camelCase singularName }}={ {{~ camelCase singularName ~}} }
+{{#if hasFieldPermissions}} 
+              roles={roles}
+{{/if}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
+              {{> (lookup . 'filterTemplateFile' ) template='ui/componentProps'}}
+  {{/if}}
+{{/each}}/>
           ) : (
             <NotFound />
           )}
@@ -136,7 +166,17 @@ View{{ pascalCase singularName }}.propTypes = {
 };
 
 {{/compare}}
-const View{{ pascalCase singularName }}Fields = ({ {{ camelCase singularName }}{{#if hasFieldPermissions}}, roles{{/if}} }) => (
+const View{{ pascalCase singularName }}Fields = ({ 
+  {{ camelCase singularName }},
+{{#if hasFieldPermissions}}
+  roles,
+{{/if}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/paramVariables'}}
+  {{/if}}
+{{/each}}
+  }) => (
   <Descriptions bordered column={1}>
 {{#each schema.fields ~}}
   {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
@@ -154,6 +194,11 @@ View{{ pascalCase singularName }}Fields.propTypes = {
 {{#if hasFieldPermissions}}
   roles: PropTypes.array.isRequired,
 {{/if}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/paramPropTypes'}}
+  {{/if}}
+{{/each}}
 };
 
 export default View{{ pascalCase singularName }};

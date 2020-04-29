@@ -4,7 +4,7 @@ import BooleanFilterDropdown from '{{@root.uiPathOffset}}../../components/Boolea
 {{/compare}}
 {{#compare template '===' 'ui/helpers'}}
 {{/compare}}
-{{#compare template 'in' 'ui/variables|api/variables'}}
+{{#compare template 'in' 'ui/queryStringVariables|api/variables'}}
 {{fieldName}},
 {{/compare}}
 {{#compare template '===' 'ui/useState'}}
@@ -32,10 +32,10 @@ setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
 {{#compare template '===' 'ui/handleTableChangeSetQueryObjectKey'}}
 {{ fieldName }}: new{{pascalCase fieldName}},
 {{/compare}}
-{{#compare template '===' 'ui/defaultPropsKeys'}}
+{{#compare template '===' 'ui/queryStringDefaultPropsKeys'}}
 {{fieldName}}: undefined,
 {{/compare}}
-{{#compare template '===' 'ui/propTypesKeys'}}
+{{#compare template '===' 'ui/queryStringPropsTypes'}}
 {{fieldName}}: PropTypes.oneOfType([
   PropTypes.string,
   PropTypes.bool,

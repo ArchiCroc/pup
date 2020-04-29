@@ -1,22 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import i18n from 'meteor/universe:i18n';
+{{#uniqueImports}}
 import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
-import i18n from 'meteor/universe:i18n';
 import Button from 'antd/lib/button';
 import modal from 'antd/lib/modal';
 import message from 'antd/lib/message';
+{{/uniqueImports}}
 
 import { {{ camelCase pluralName }} as {{ camelCase pluralName }}Query } from '../queries/{{ pascalCase pluralName }}.gql';
 import { remove{{ pascalCase singularName }} as remove{{ pascalCase singularName }}Mutation } from '../mutations/{{ pascalCase pluralName }}.gql';
 
-function Remove{{ pascalCase singularName }}Button({ {{#compare primaryFieldKey '!==' labelKeyKey}}{{ primaryFieldKey }}, {{ labelKeyKey }}{{else}}{{ primaryFieldKey }}{{/compare}}, ...props }) {
+function Remove{{ pascalCase singularName }}Button({ 
+{{#compare primaryFieldKey '!==' labelKeyKey}}
+  {{ primaryFieldKey }}, 
+  {{ labelKeyKey }},
+{{else}}
+  {{ primaryFieldKey }},
+{{/compare}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/paramVariables'}}
+  {{/if}}
+{{/each}}
+  ...props
+  }) {
   const history = useHistory();
+  
   const [remove{{ pascalCase singularName }}] = useMutation(remove{{ pascalCase singularName }}Mutation, {
     ignoreResults: true,
     onCompleted: () => {
       message.success(i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_saved'));
-      history.push('{{ uiRouteBasePath }}');
+      history.push(`{{convertParamsToTemplateVars uiRouteBasePath }}`);
     },
     onError: (error) => {
       message.error(error.message);
@@ -50,6 +66,11 @@ function Remove{{ pascalCase singularName }}Button({ {{#compare primaryFieldKey 
 Remove{{ pascalCase singularName }}Button.propTypes = {
   {{ primaryFieldKey }}: PropTypes.string.isRequired,
   {{ labelKeyKey }}: PropTypes.string.isRequired,
+{{#each schema.fields}}
+  {{#if this.filterable}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/paramPropTypes'}}
+  {{/if}}
+{{/each}}
 };
 
 export default Remove{{ pascalCase singularName }}Button;

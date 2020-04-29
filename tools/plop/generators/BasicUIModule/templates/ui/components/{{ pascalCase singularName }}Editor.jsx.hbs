@@ -47,13 +47,13 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
-import { useMutation } from '@apollo/react-hooks';
 import i18n from 'meteor/universe:i18n';
+import { useMutation } from '@apollo/react-hooks';
+{{#uniqueImports}}
+import { useHistory } from 'react-router-dom';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 import AutoForm from 'uniforms/AutoForm';
-{{#uniqueImports}}
 import prepareFormModel from '{{uiPathOffset}}../../../modules/prepareFormModel';
   {{#if hasFieldPermissions }}
 import hasRole from '{{uiPathOffset}}../../../modules/hasRole';
@@ -73,13 +73,22 @@ import {{ pascalCase singularName }}Schema from '{{uiPathOffset}}../../../api/{{
 
 import Styled{{ pascalCase singularName }}Editor from './Styled{{ pascalCase singularName }}Editor';
 
-function {{ pascalCase singularName }}Editor({ doc{{#if hasFieldPermissions}}, roles{{/if}} }) {
+function {{ pascalCase singularName }}Editor({ 
+  doc,
+  {{#if hasFieldPermissions}}roles,{{/if}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/paramVariables'}}
+  {{/if}}
+{{/each}}
+  }) {
   const history = useHistory();
+
   const [save{{ pascalCase singularName }}] = useMutation(save{{ pascalCase singularName }}Mutation, {
     ignoreResults: true,
     onCompleted: () => {
       message.success(i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_saved'));
-      history.push('{{ uiRouteBasePath }}');
+      history.push(`{{convertParamsToTemplateVars uiRouteBasePath }}`);
     },
     onError: (error) => {
       message.error(error.message);
@@ -128,6 +137,11 @@ function {{ pascalCase singularName }}Editor({ doc{{#if hasFieldPermissions}}, r
 {{#if hasFieldPermissions}}
   roles: PropTypes.array.isRequired,
 {{/if}}
+{{#each schema.fields}}
+  {{#if this.filterable}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/paramPropTypes'}}
+  {{/if}}
+{{/each}}
 };
 
 export default {{ pascalCase singularName }}Editor;

@@ -124,6 +124,13 @@ function cleanGraphqlType(text) {
   return clean;
 }
 
+function convertParamsToTemplateVars(text) {
+  return text
+    .split('/')
+    .map((item) => (item.startsWith(':') ? '${' + item.replace(':', '') + '}' : item))
+    .join('/');
+}
+
 function apiDirCase(text) {
   return text
     .split('/')
@@ -262,6 +269,7 @@ module.exports = (plop) => {
     return text;
   });
   plop.setHelper('quoteIfString', quoteIfString);
+  plop.setHelper('convertParamsToTemplateVars', convertParamsToTemplateVars);
   plop.setHelper('apiDirCase', apiDirCase);
 
   plop.setHelper('uiDirCase', uiDirCase);

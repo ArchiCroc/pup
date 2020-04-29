@@ -3,7 +3,7 @@ import RangeFilterDropdown from '{{@root.uiPathOffset}}../../components/RangeFil
 {{/compare}}
 {{#compare template '===' 'ui/helpers'}}
 {{/compare}}
-{{#compare template 'in' 'ui/variables|api/variables'}}
+{{#compare template 'in' 'ui/queryStringVariables|api/variables'}}
 {{fieldName}}Min,
 {{fieldName}}Max,
 {{/compare}}
@@ -58,11 +58,11 @@ setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
 {{ fieldName }}Min: new{{pascalCase fieldName}}[0],
 {{ fieldName }}Max: new{{pascalCase fieldName}}[1],
 {{/compare}}
-{{#compare template '===' 'ui/defaultPropsKeys'}}
+{{#compare template '===' 'ui/queryStringDefaultPropsKeys'}}
 {{fieldName}}Min: undefined,
 {{fieldName}}Max: undefined,
 {{/compare}}
-{{#compare template '===' 'ui/propTypesKeys'}}
+{{#compare template '===' 'ui/queryStringPropsTypes'}}
   {{#compare (stripBrackets fieldType) 'in' 'Date' }}
 {{fieldName}}Min: PropTypes.oneOfType([
   PropTypes.string,

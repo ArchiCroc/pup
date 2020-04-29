@@ -1,13 +1,13 @@
-{{#compare template 'in' 'ui/variables|api/variables'}}
+{{#compare template 'in' 'ui/queryStringVariables|api/variables'}}
 {{fieldName}},
 {{/compare}}
 {{#compare template '===' 'ui/useQueryVariablesKeys'}}
 {{fieldName}},
 {{/compare}}
-{{#compare template '===' 'ui/defaultPropsKeys'}}
+{{#compare template '===' 'ui/queryStringDefaultPropsKeys'}}
 {{fieldName}}: undefined,
 {{/compare}}
-{{#compare template '===' 'ui/propTypesKeys'}}
+{{#compare template '===' 'ui/queryStringPropsTypes'}}
   {{#compare (stripBrackets fieldType) 'in' 'Float|Number|Int' }}
 {{fieldName}}: PropTypes.oneOfType([
   PropTypes.string,

@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
   {{~> baseValue }}.{{#if reference.valueKey}}{{reference.valueKey}}{{else}}{{@root.urlFieldKey}}{{/if ~}}
 {{~/inline}}
 {{#*inline "fieldUrl" ~}}
-  {{~#if reference.baseUrl}}{{reference.baseUrl}}{{else}}/{{@root.uiFolderName}}{{/if ~}}
+  {{~#if reference.baseUrl}}{{convertParamsToTemplateVars reference.baseUrl}}{{else}}/{{convertParamsToTemplateVars @root.uiFolderName}}{{/if ~}}
 {{~/inline}}
 {{> baseValue}} && {{> baseValue}}.map((item) => {
   return (

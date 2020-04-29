@@ -15,7 +15,12 @@ function processFields([key, item]) {
       }
     }
   }
-  if (item.dataIndex === undefined && item.reference && item.reference.labelKey) {
+  if (
+    item.dataIndex === undefined &&
+    item.reference &&
+    item.reference.labelKey &&
+    typeof item.reference.labelKey == 'string'
+  ) {
     item.dataIndex = item.reference.labelKey;
   }
   if (item.fields) {

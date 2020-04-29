@@ -90,12 +90,12 @@ module.exports = {
         templateFile: 'tools/plop/generators/StubModule/templates/graphql-api-resolvers.js.hbs',
         data,
       },
-      ,
       {
         type: 'append',
         path: 'startup/server/index.js',
         pattern: '/* #### PLOP_IMPORTS_START #### */',
-        templateFile: 'tools/plop/generators/StubModule/templates/server-index-imports.js.hbs',
+        template: `import '../../api/{{ apiFolderName }}/server/indexes';
+import '../../api/{{ apiFolderName }}/server/rest-api';`,
         data,
       },
       // i18n

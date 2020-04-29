@@ -1,47 +1,51 @@
-{{#compare template 'in' 'ui/variables|api/variables'}}
+{{#compare template '===' 'ui/componentProps'}}
+{{fieldName}}={ {{~fieldName~}} }
+{{/compare}}
+{{#compare template '===' 'ui/paramVariables'}}
 {{fieldName}},
 {{/compare}}
-{{#compare template '===' 'multiItemArgsValidation'}}
+{{#compare template '===' 'ui/useQueryVariablesKeys'}}
+{{fieldName}},
+{{/compare}}
+{{#compare template '===' 'ui/gqlMultiItemsQueryVariables'}}
+${{ fieldName }}: {{cleanGraphqlType this.type}}!,
+{{/compare}}
+{{#compare template '===' 'ui/gqlMultiItemsQueryArguments'}}
+{{ fieldName }}: ${{fieldName}},
+{{/compare}}
+{{#compare template '===' 'ui/paramPropTypes'}}
+  {{#compare (stripBrackets fieldType) 'in' 'Float|Number|Int' }}
+{{fieldName}}: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.number,
+]).isRequired,
+  {{/compare}}
+  {{#compare (stripBrackets fieldType) 'in' 'String|ObjectID' }}
+{{fieldName}}: PropTypes.string.isRequired,
+  {{/compare}}
+  {{#compare (stripBrackets fieldType) '!in' 'Float|Number|Int|String|ObjectID|Boolean' }}
+{{fieldName}}: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.array,
+  PropTypes.object,
+]).isRequired,
+  {{/compare}}
+{{/compare}}
+{{#compare template '===' 'api/variables'}}
+{{fieldName}},
+{{/compare}}
+{{#compare template '===' 'api/multiItemArgsValidation'}}
 if (!{{fieldName}}) {
   throw new Error('{{fieldName}} is required');
 }
 
 {{/compare}}
-{{#compare template '===' 'ui/defaultPropsKeys'}}
-{{fieldName}}: undefined,
-{{/compare}}
-{{#compare template '===' 'ui/propTypesKeys'}}
-  {{#compare (stripBrackets fieldType) 'in' 'Float|Number|Int' }}
-{{fieldName}}: PropTypes.oneOfType([
-  PropTypes.string,
-  PropTypes.number,
-]),
-  {{/compare}}
-  {{#compare (stripBrackets fieldType) 'in' 'String|ObjectID' }}
-{{fieldName}}: PropTypes.oneOfType([
-  PropTypes.string,
-]),
-  {{/compare}}
-  {{#compare fieldType '===' 'Boolean' }}
-{{fieldName}}: PropTypes.oneOfType([
-  PropTypes.string,
-  PropTypes.bool,
-]),
-  {{/compare}}
-{{#compare (stripBrackets fieldType) '!in' 'Float|Number|Int|String|ObjectID|Boolean' }}
-{{fieldName}}: PropTypes.oneOfType([
-  PropTypes.string,
-  PropTypes.object,
-]),
-  {{/compare}}
-{{/compare}}
-{{#compare template '===' 'ui/gqlMultiItemsQueryVariables'}}
-${{ fieldName }}: {{cleanGraphqlType this.type}},
-{{/compare}}
-{{#compare template '===' 'ui/gqlMultiItemsQueryArguments'}}
-{{ fieldName }}: ${{fieldName}},
-{{/compare}}
-{{#compare template '===' 'api/queryModifiers'}}
+{{#compare template '===' 'api/multiItemQueryModifiers'}}
 query.{{fieldName}} = {{fieldName}};
 
+{{/compare}}
+{{#compare template '===' 'api/singleItemQueryModifiers'}}
+{{/compare}}
+{{#compare template '===' 'api/graphql-apiMultiItemsQueryArguments'}}
+{{fieldName}}: {{cleanGraphqlType fieldType}}!
 {{/compare}}

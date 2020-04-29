@@ -2,26 +2,30 @@
 {{#each this ~}}
   {{~#compare this.showInTableView '!==' false '&&' @key '!==' @root.primaryFieldKey}}
     {{~#compare this.input '||' this.showInTableView '&&' @key '!==' @root.urlFieldKey }}
-      {{#if this.dataIndex}}
+      {{#compare this.dataIndex '||' this.reference}}
 {{@key}} { 
-  {{#if this.reference.valueKey}}
+        {{#if this.reference.valueKey}}
   {{convertDataIndexToGraphqlSubQuery this.reference.valueKey 1 ~}}
-  {{/if}}
+        {{/if}}
+        {{#if this.dataIndex}}
   {{convertDataIndexToGraphqlSubQuery this.dataIndex 1 ~}}
+       {{else}}
+          {{#if this.reference.labelKey}}
+            {{#each this.reference.labelKey }}
+  {{convertDataIndexToGraphqlSubQuery this 1 ~}}
+            {{/each}}
+          {{/if}}
+        {{/if}}
 }
       {{else}}
-        {{#if this.reference.labelKey}}
-{{convertDataIndexToGraphqlSubQuery (concat @key '.' this.reference.labelKey) 3}}
-        {{else}}
-          {{#compare this.fields 'typeof' 'object'}}
+        {{#compare this.fields 'typeof' 'object'}}
 {{@key}} {
   {{> schemaFields this.fields}}
 }
-          {{else}}
+        {{else}}
 {{@key}}
-          {{/compare}}  
-        {{/if}}
-      {{/if}}
+        {{/compare}}  
+      {{/compare}}
     {{/compare~}}
   {{/compare~}}
 {{/each}}
@@ -36,7 +40,7 @@
 #import "../fragments/{{ pascalCase pluralName }}.gql"
 
 query {{ camelCase pluralName }}(
-  $_ids: [String]
+  $_ids: [ObjectID]
   $page: Int, 
   $pageSize: Int, 
   $search: String, 

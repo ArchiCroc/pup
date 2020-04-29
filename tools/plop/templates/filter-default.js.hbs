@@ -16,7 +16,7 @@ function get{{pascalCase fieldName}}Filters() {
 }
   {{/if}}
 {{/compare}}
-{{#compare template 'in' 'ui/variables|api/variables'}}
+{{#compare template 'in' 'ui/queryStringVariables|api/variables'}}
 {{fieldName}},
 {{/compare}}
 {{#compare template '===' 'ui/useState'}}
@@ -71,10 +71,10 @@ setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
 {{#compare template '===' 'ui/handleTableChangeSetQueryObjectKey'}}
 {{ fieldName }}: new{{pascalCase fieldName}},
 {{/compare}}
-{{#compare template '===' 'ui/defaultPropsKeys'}}
+{{#compare template '===' 'ui/queryStringDefaultPropsKeys'}}
 {{fieldName}}: undefined,
 {{/compare}}
-{{#compare template '===' 'ui/propTypesKeys'}}
+{{#compare template '===' 'ui/queryStringPropsTypes'}}
   {{#compare (stripBrackets fieldType) 'in' 'Float|Number|Int' }}
 {{fieldName}}: PropTypes.oneOfType([
   PropTypes.string,
@@ -110,10 +110,8 @@ ${{fieldName}}: [{{cleanGraphqlType fieldType}}],
 import isArray from 'lodash/isArray';
 {{/compare}}
 {{#compare template '===' 'api/multiItemQueryModifiers'}}
-if (isArray({{fieldName}})) {
-  if ({{fieldName}}.length > 0) {
-    query.{{fieldName}} = { $in: {{fieldName}} };
-  }
+if (isArray({{fieldName}}) && {{fieldName}}.length > 0) {
+  query.{{fieldName}} = { $in: {{fieldName}} };
 } else if ({{fieldName}} !== undefined && {{fieldName}} !== null) {
   query.{{fieldName}} = {{fieldName}};
 }

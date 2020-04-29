@@ -1,5 +1,5 @@
 {{#compare template '===' 'import'}}
-import ColorTag from '{{@root.uiPathOffset}}../../components/ColorTag';
+import ColorTag from '{{uiPathOffset}}../collection/components/ColorTag';
 {{else}}
 <ColorTag
   name={ {{~value}}?.name ?  {{~value}}.name : i18n.__('{{ pascalCase @root.pluralName }}.no_color')}

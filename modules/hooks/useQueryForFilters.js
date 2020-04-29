@@ -6,13 +6,15 @@ function useQueryForFilters(props) {
   const { query, labelKey, valueKey, edges } = props;
   const gqlQuery = useMemo(() => {
     return gql`
-        query selectData {
-          ${query}(pageSize: 100) {
-            ${edges ? edges + ' {' : ''}
-              ${labelKey}
-              ${valueKey}
-            ${edges ? '}' : ''}
-          }
+        query selectData($_ids: [ObjectID]) {
+       
+            ${query}(_ids: $_ids, pageSize: 100) {
+              ${edges ? edges + ' {' : ''}
+                ${labelKey}
+                ${valueKey}
+              ${edges ? '}' : ''}
+            }
+          
         }`;
   }, [query, labelKey, valueKey]);
 

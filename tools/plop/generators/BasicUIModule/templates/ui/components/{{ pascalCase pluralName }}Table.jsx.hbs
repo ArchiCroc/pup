@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+{{#uniqueImports}}
 import { useHistory } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/react-hooks';
-{{#uniqueImports}}
   {{#if isSearchable}}
 import Input from 'antd/lib/input';
   {{/if}}
@@ -16,11 +16,11 @@ import hasRole from '{{uiPathOffset}}../../../modules/hasRole';
 import useQueryStringObject from '{{uiPathOffset}}../../../modules/hooks/useQueryStringObject';
   {{#each schema.fields ~}}
     {{#if this.filterable}}
-{{> (lookup . 'filterTemplateFile' ) template='ui/imports'}}
+{{> (lookup . 'filterTemplateFile' ) template='ui/imports' uiPathOffset=(concat @root.uiPathOffset "../")}}
     {{/if}}
     {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
       {{#if this.detailTemplateFile}}
-{{> (lookup . 'detailTemplateFile' ) template='import'}} 
+{{> (lookup . 'detailTemplateFile' ) template='import' uiPathOffset=(concat @root.uiPathOffset "../")}} 
       {{/if}}
     {{/compare~}}
   {{~/each}}
@@ -41,7 +41,20 @@ const { Search } = Input;
     {{/if}}
 {{/each}}
 
-function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singularName }}Button, {{#if isSearchable}}showSearch, {{/if}}queryKeyPrefix, ...props }) {
+function {{ pascalCase pluralName }}Table({ 
+  roles, 
+  showNew{{ pascalCase singularName }}Button, 
+{{#if isSearchable}}
+  showSearch, 
+{{/if}}
+  queryKeyPrefix, 
+{{#each schema.fields}}
+  {{#if this.filterable}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/paramVariables'}}
+  {{/if}}
+{{/each}}
+  ...props
+  }) {
   const history = useHistory();
 
   const [queryStringObject, setQueryStringObject] = useQueryStringObject(queryKeyPrefix);
@@ -55,7 +68,7 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
 {{/if}}
 {{#each schema.fields}}
   {{#if this.filterable}}
-    {{> (lookup . 'filterTemplateFile' ) template='ui/variables'}}
+    {{> (lookup . 'filterTemplateFile' ) template='ui/queryStringVariables'}}
   {{/if}}
 {{/each}}
   } = Object.assign(props, queryStringObject);
@@ -208,7 +221,7 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
   function handleTableRow(record) {
     return {
       onClick: () => {
-        history.push(`{{ uiRouteBasePath }}/${record.{{ urlFieldKey ~}} }`);
+        history.push(`{{#if schema.tableRowClickUrl}}{{schema.tableRowClickUrl}}{{else}}{{convertParamsToTemplateVars uiRouteBasePath }}/${record.{{ urlFieldKey ~}} }{{/if}}`);
       },
     };
   }
@@ -216,7 +229,14 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
   return (
     <>
       <p>
-        { showNew{{ pascalCase singularName }}Button {{#if schema.permissions.create}}&& hasRole(roles, [{{#each schema.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) {{/if}}&& (<New{{ pascalCase singularName }}Button />)}&nbsp;
+        { showNew{{ pascalCase singularName }}Button {{#if schema.permissions.create}}&& hasRole(roles, [{{#each schema.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) {{/if}}&& (
+          <New{{ pascalCase singularName }}Button 
+{{#each schema.fields}}
+  {{#if this.filterable}}
+            {{> (lookup . 'filterTemplateFile' ) template='ui/componentProps'}}
+  {{/if}}
+{{/each}}
+          />)}&nbsp;
         {{#if isSearchable}}
         { showSearch && (<span className="pull-right" style=\{{ width: 300 }}>
           <Search
@@ -256,13 +276,18 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
 {{/if}}
 {{#each schema.fields}}
   {{#if this.filterable}}
-  {{> (lookup . 'filterTemplateFile' ) template='ui/defaultPropsKeys'}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/queryStringDefaultPropsKeys'}}
   {{/if}}
 {{/each}}
 };
 
 {{ pascalCase pluralName }}Table.propTypes = {
   roles: PropTypes.array.isRequired,
+{{#each schema.fields}}
+  {{#if this.filterable}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/paramPropTypes'}}
+  {{/if}}
+{{/each}}
   showNew{{ pascalCase singularName }}Button: PropTypes.bool,
   queryKeyPrefix: PropTypes.string,
   pageSize: PropTypes.number,
@@ -275,7 +300,7 @@ function {{ pascalCase pluralName }}Table({ roles, showNew{{ pascalCase singular
 {{/if}}
 {{#each schema.fields}}
   {{#if this.filterable}}
-  {{> (lookup . 'filterTemplateFile' ) template='ui/propTypesKeys'}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/queryStringPropTypes'}}
 {{/if}}
 {{/each}}
 };
