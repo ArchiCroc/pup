@@ -54,22 +54,22 @@ const { filters: {{camelCase fieldName}}Filters } = useQueryForFilters({
 {{#compare template '===' 'ui/columnKeys'}}
   {{#if  this.choices}}
 filteredValue: current{{pascalCase fieldName }},
-filters: get{{pascalCase fieldName }}Filters(),
+filters: props.{{ fieldName }} ? undefined : get{{pascalCase fieldName }}Filters(),
   {{else}}
     {{#if this.reference}}
 filteredValue: current{{pascalCase fieldName }},
-filters: {{camelCase fieldName}}Filters,
+filters: props.{{ fieldName }} ? undefined : {{camelCase fieldName}}Filters,
     {{/if}}
   {{/if}}  
 {{/compare}}
 {{#compare template '===' 'ui/handleTableChangeNewKeys'}}
-{{#if dataIndex}}'{{key}}.{{dataIndex}}'{{else}}{{ fieldName }}{{/if}}: new{{pascalCase fieldName }},
+{{#if dataIndexDEBUG}}'{{key}}.{{dataIndex}}'{{else}}{{ key }}{{/if}}: new{{pascalCase fieldName }},
 {{/compare}}
 {{#compare template '===' 'ui/handleTableChangeSetState'}}
 setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
 {{/compare}}
 {{#compare template '===' 'ui/handleTableChangeSetQueryObjectKey'}}
-{{ fieldName }}: new{{pascalCase fieldName}},
+{{ key }}: new{{pascalCase fieldName}},
 {{/compare}}
 {{#compare template '===' 'ui/queryStringDefaultPropsKeys'}}
 {{fieldName}}: undefined,

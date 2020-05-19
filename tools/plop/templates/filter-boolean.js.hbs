@@ -21,7 +21,7 @@ const [current{{ pascalCase fieldName }}, setCurrent{{ pascalCase fieldName }}] 
 {{/compare}}
 {{#compare template '===' 'ui/columnKeys'}}
 filteredValue: current{{pascalCase fieldName}},
-filterDropdown: (props) => <BooleanFilterDropdown {...props} />,
+filterDropdown: props.{{fieldName }} ? undefined : (props) => <BooleanFilterDropdown {...props} />,
 {{/compare}}
 {{#compare template '===' 'ui/handleTableChangeNewKeys'}}
 {{ fieldName }}: new{{pascalCase fieldName}},

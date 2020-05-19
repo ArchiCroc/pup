@@ -10,11 +10,13 @@ import { Link } from 'react-router-dom';
 {{#*inline "baseValue" ~}}
   {{~ parent}}.{{key ~}}
 {{~/inline}}
-{{> baseValue }} && (
+<>
+{ {{~> baseValue }} && (
   <Link 
     to={`{{> fieldUrl }}/${ {{~> fieldKeyValueIndex~}} }`} 
     onClick={(event) => event.stopPropagation()}>
     { {{~value~}} }
   </Link>
-)
+)}
+</>
 {{~/compare}}

@@ -19,7 +19,7 @@ function processFields([key, item]) {
     item.dataIndex === undefined &&
     item.reference &&
     item.reference.labelKey &&
-    typeof item.reference.labelKey == 'string'
+    typeof item.reference.labelKey === 'string'
   ) {
     item.dataIndex = item.reference.labelKey;
   }
@@ -38,6 +38,14 @@ function processFields([key, item]) {
   if (item.template && !item.detailTemplate) {
     item.detailTemplate = item.template;
   }
+
+  if (!item.tableTemplateFile && ['Date', 'DateTime', 'Time'].includes(item.type)) {
+    item.tableTemplateFile = 'render-pretty-date';
+  }
+  if (!item.detailTemplateFile && ['Date', 'DateTime', 'Time'].includes(item.type)) {
+    item.detailTemplateFile = 'render-format-date';
+  }
+
   // if field is a groupKey, it should also be queryable
   // if (item.groupKey) {
   //   item.queryable = 'single';

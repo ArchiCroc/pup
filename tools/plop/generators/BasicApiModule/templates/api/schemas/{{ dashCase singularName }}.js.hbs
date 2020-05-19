@@ -107,7 +107,7 @@ uniforms: {
   {{/if}}
   {{#if this.reference.labelKey}}
   initialLabelKey: '{{@key}}',
-  labelKey: '{{this.reference.labelKey}}',
+  labelKey: '{{#compare this.reference.labelKey 'typeof' 'array'}}{{this.reference.labelKey.[0]}}{{else}}{{this.reference.labelKey}}{{/compare}}',
   {{/if}}
   {{#if this.reference.valueKey}}
   valueKey: '{{this.reference.valueKey}}',
@@ -157,7 +157,7 @@ uniforms: {
   {{/if}}
   {{#if this.reference.labelKey}}
   initialLabelKey: '{{@key}}',
-  labelKey: '{{this.reference.labelKey}}',
+  labelKey: '{{#compare this.reference.labelKey 'typeof' 'array'}}{{this.reference.labelKey.[0]}}{{else}}{{this.reference.labelKey}}{{/compare}}',
   {{/if}}
   {{#if this.reference.valueKey}}
   valueKey: '{{this.reference.valueKey}}',

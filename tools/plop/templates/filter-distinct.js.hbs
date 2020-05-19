@@ -1,0 +1,23 @@
+{{> filter-default }}
+{{#compare template '===' 'api/queryImports'}}
+import omit from 'lodash/omit';
+  {{#compare fieldType '==' 'ObjectID'}}
+import { Mongo } from 'meteor/mongo';
+import convertMeteorToMongo from '{{@root.apiPathOffset}}../../modules/server/convertMeteorToMongo';
+import convertMongoToMeteor from '{{@root.apiPathOffset}}../../modules/server/convertMongoToMeteor';
+  {{/compare}}
+{{/compare}}
+{{#compare template '===' 'api/multiItemAsyncFunction'}}
+async 
+{{/compare}}
+{{#compare template '===' 'api/multiItemsQueryFilterProperties'}}
+{{pluralize fieldName}}:  query.{{fieldName}}?.$in || Object.keys(query).length > 0 ? convertMongoToMeteor( await {{ pascalCase @root.pluralName }}.rawCollection().distinct('{{fieldName}}', 
+{{~#compare fieldType '==' 'ObjectID'~}}
+convertMeteorToMongo(omit(query,['{{fieldName}}']))))
+{{~else~}}
+omit(query,['{{fieldName}}']))
+{{~/compare~}} : null,
+{{/compare}}
+{{#compare template '===' 'api/typeFilterFields'}}
+{{pluralize fieldName}}: {{#compare this.type 'startsWith' '['}}{{ cleanGraphqlType fieldType}}{{else}}[{{ cleanGraphqlType fieldType}}]{{/compare}}
+{{/compare}}

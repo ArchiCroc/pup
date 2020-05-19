@@ -1,3 +1,6 @@
+{{#*inline "multiItemAsyncFunction"}}
+  {{#ifPartialHasValue @partial-block}}async {{/ifPartialHasValue}}
+{{/inline}}
 {{#*inline "multiItemFilterObject"}}
   {{#ifPartialHasValue @partial-block}}
     const filters = {
@@ -22,7 +25,15 @@ import checkUserRole from '{{apiPathOffset}}../Users/actions/checkUserRole';
 
 
 export default {
-  {{ camelCase pluralName }}: (parent, args, { user }) => {
+  {{ camelCase pluralName }}: 
+{{~#> multiItemAsyncFunction~}}
+      {{!--this doesn't get output but is just used to see if any function need async so we can use await--}}
+  {{#each schema.fields}}
+    {{#if this.filterable}}
+      {{> (lookup . 'filterTemplateFile' ) template='api/multiItemAsyncFunction'}}
+    {{/if}}
+  {{/each}}
+       {{~/multiItemAsyncFunction~}} (parent, args, { user }) => {
 {{#if schema.permissions.read}}
     if (!user || !user._id || !checkUserRole(user._id, [{{#each schema.permissions.read }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}])) {
       throw new Error('Sorry, you must have permission to view {{ titleCase pluralName }}.');

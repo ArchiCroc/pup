@@ -8,7 +8,7 @@
   {{~ name }}.{{@key~}}
 {{~/inline}}
 {{#*inline "fieldKeyAndDataIndex" ~}}
-  {{~#if dataIndex}}{{~> fieldKey }} && {{/if}}{{~> fieldKey }}{{#if dataIndex}}.{{ dataIndex }}{{/if ~}}
+  {{~> fieldKey }}{{#if dataIndex}}?.{{ dataIndex }}{{/if ~}}
 {{~/inline}}
 {{#*inline "fieldKeyDataIndex" ~}}
   {{~> fieldKey }}{{#if dataIndex}}.{{ dataIndex }}{{/if}}
@@ -55,10 +55,7 @@
 ))}
     {{/compare}}
     {{#compare type '===' 'Boolean'}}
-{ {{#if dataIndex}}{{> fieldKeyAndDataIndex }} && {{/if}}i18n.__(`{{ pascalCase @root.pluralName }}.${ {{~> fieldKeyDataIndex}} ? 'yes' : 'no'}`)}
-    {{/compare}}
-    {{#compare type 'in' 'DateTime' }}
-{ {{~> fieldKeyAndDataIndex }} && <FormatDate timestamp={ {{~> fieldKeyDataIndex ~}} }{{#compare input '===' 'Date' }} format="MMMM Do, YYYY"{{/compare}} />}
+{ {{~#if dataIndex}}{{> fieldKeyAndDataIndex }} && {{/if}}i18n.__(`{{ pascalCase @root.pluralName }}.${ {{~> fieldKeyDataIndex}} ? 'yes' : 'no'}`)}
     {{/compare}}
     {{#compare type '!in' '[Object]' '&&' type 'startsWith' '[' }}
 { {{~> fieldKey }} && {{> fieldKey}}{{#if dataIndex}}.map((item) => item.{{ dataIndex }}){{/if}}.join(', ')}
@@ -75,7 +72,6 @@ import { useQuery } from '@apollo/react-hooks';
 {{#uniqueImports}}
 import { useParams } from 'react-router-dom';
 import Descriptions from 'antd/lib/descriptions';
-import FormatDate from '{{uiPathOffset}}../components/FormatDate';
 import PageBreadcrumbs, { Breadcrumb } from '{{uiPathOffset}}../components/PageBreadcrumbs';
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
 import Loading from '{{uiPathOffset}}../components/Loading';
@@ -97,6 +93,9 @@ import hasRole from '{{uiPathOffset}}../../modules/hasRole';
     {{/if}}
   {{/each}}
 {{/paramsImport}}
+{{#each schema.detailImports}}
+{{{this}}}
+{{/each}}
 {{/uniqueImports}}
 
 import Edit{{ pascalCase singularName }}Button from './components/Edit{{ pascalCase singularName }}Button';
@@ -141,7 +140,8 @@ function View{{ pascalCase singularName }}({{#compare hasFieldPermissions '||' s
             </p>
           )}
           { {{~ camelCase singularName }} ? (
-            <View{{ pascalCase singularName }}Fields 
+            <>
+              <View{{ pascalCase singularName }}Fields 
               {{ camelCase singularName }}={ {{~ camelCase singularName ~}} }
 {{#if hasFieldPermissions}} 
               roles={roles}
@@ -150,7 +150,9 @@ function View{{ pascalCase singularName }}({{#compare hasFieldPermissions '||' s
   {{#if this.filterable}}
               {{> (lookup . 'filterTemplateFile' ) template='ui/componentProps'}}
   {{/if}}
-{{/each}}/>
+{{/each}}/> 
+              {{{schema.detailAddtionalContent}}}
+            </>
           ) : (
             <NotFound />
           )}

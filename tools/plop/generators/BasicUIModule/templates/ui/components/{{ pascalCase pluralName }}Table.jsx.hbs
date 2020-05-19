@@ -8,7 +8,6 @@ import { useQuery } from '@apollo/react-hooks';
 import Input from 'antd/lib/input';
   {{/if}}
 import Table from 'antd/lib/table';
-import PrettyDate from '{{uiPathOffset}}../../components/PrettyDate';
 import New{{ pascalCase singularName }}Button from './New{{ pascalCase singularName }}Button';
   {{#if schema.permissions.create}}
 import hasRole from '{{uiPathOffset}}../../../modules/hasRole';
@@ -19,8 +18,8 @@ import useQueryStringObject from '{{uiPathOffset}}../../../modules/hooks/useQuer
 {{> (lookup . 'filterTemplateFile' ) template='ui/imports' uiPathOffset=(concat @root.uiPathOffset "../")}}
     {{/if}}
     {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
-      {{#if this.detailTemplateFile}}
-{{> (lookup . 'detailTemplateFile' ) template='import' uiPathOffset=(concat @root.uiPathOffset "../")}} 
+      {{#if this.tableTemplateFile}}
+{{> (lookup . 'tableTemplateFile' ) template='import' uiPathOffset=(concat @root.uiPathOffset "../")}} 
       {{/if}}
     {{/compare~}}
   {{~/each}}
@@ -122,10 +121,13 @@ function {{ pascalCase pluralName }}Table({
       title: i18n.__(' {{~ pascalCase @root.name ~}} .{{ snakeCase @key }}'),
       dataIndex: '{{ @key }}{{#if this.dataIndex}}{{#compare this.type '!startsWith' '['}}.{{ this.dataIndex }}{{/compare}}{{/if}}',
       {{#compare this.tableTemplateFile '||' this.tableTemplate}}
+        {{#compare this.type 'in' 'Date|DateTime|Time'}}
+      sorter: true,
+         {{/compare}}
         {{#if this.tableTemplateFile}}
       render: (value, record) => ({{> (lookup . 'tableTemplateFile' ) value='value' parent='record' key=@key template='render'}}),
         {{else}}
-      render: (value, record) => ('todo'),
+      render: (value, record) => ({{{this.tableTemplate}}}),
         {{/if}}
       {{else}}
       {{#compare this.type '===' 'String'}}
@@ -134,11 +136,6 @@ function {{ pascalCase pluralName }}Table({
       defaultSortOrder: 'ascend',
       // render: (value, record) => <Link to={`/{{ dashCase @root.name }}/${record.{{ @root.urlFieldKey ~}} }/edit`}>{value}</Link>, // eslint-disable-line
         {{/compare}}
-      {{/compare}}
-      {{#compare this.type 'in' 'Date|DateTime|Time'}}
-      sorter: true,
-      defaultSortOrder: 'descend',
-      render: ({{ @key }}) => <PrettyDate timestamp={ {{~ @key ~}} } />, // eslint-disable-line 
       {{/compare}}
       {{#compare this.type '===' 'Boolean'}}
       sorter: true,

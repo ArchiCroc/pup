@@ -33,12 +33,12 @@ const [current{{pascalCase fieldName}}, setCurrent{{pascalCase fieldName}}] = us
 {{#compare template '===' 'ui/columnKeys'}}
     {{#compare fieldType '===' 'Date' }}
 filteredValue: current{{pascalCase fieldName}},
-filterDropdown: (props) => (
+filterDropdown: props.{{fieldName }} ? undefined : (props) => (
   <>Todo</>
 ),
     {{else}}{{!--Int|Float|Number--}}
 filteredValue: current{{pascalCase fieldName}},
-filterDropdown: (props) => (
+filterDropdown: props.{{fieldName }} ? undefined : (props) => (
   <RangeFilterDropdown
     min={ {{~camelCase @root.pluralName}}?.filters?.{{fieldName}}Min}
     max={ {{~camelCase @root.pluralName}}?.filters?.{{fieldName}}Max}

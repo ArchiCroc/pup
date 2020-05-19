@@ -13,7 +13,8 @@ import { Link } from 'react-router-dom';
 {{#*inline "fieldUrl" ~}}
   {{~#if reference.baseUrl}}{{convertParamsToTemplateVars reference.baseUrl}}{{else}}/{{convertParamsToTemplateVars @root.uiFolderName}}{{/if ~}}
 {{~/inline}}
-{{> baseValue}} && {{> baseValue}}.map((item) => {
+<>
+{ {{~> baseValue}} && {{> baseValue}}.map((item) => {
   return (
     <p key={item.{{> valueIndex ~}} }>
       <Link to={`{{> fieldUrl }}/${item.{{> valueIndex ~}} }`}>
@@ -21,5 +22,6 @@ import { Link } from 'react-router-dom';
       </Link>
     </p>
   );
-})
+})}
+</>
 {{~/compare}}

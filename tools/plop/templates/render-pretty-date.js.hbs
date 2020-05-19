@@ -1,0 +1,5 @@
+{{#compare template '===' 'import'}}
+import PrettyDate from '{{uiPathOffset}}../components/PrettyDate';
+{{else}}
+<PrettyDate timestamp={ {{~ value ~}} } />
+{{/compare}}
