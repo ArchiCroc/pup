@@ -1,7 +1,7 @@
 import { GraphQLScalarType } from 'graphql';
 import { Kind } from 'graphql/language';
 // import { ObjectID } from 'mongodb'
-import { Mongo } from 'meteor/mongo';
+import { Mongo, MongoInternals } from 'meteor/mongo';
 
 // eslint-disable-next-line import/prefer-default-export
 export const ObjectID = new GraphQLScalarType({
@@ -13,6 +13,9 @@ export const ObjectID = new GraphQLScalarType({
     if (_id instanceof Mongo.ObjectID) {
       return _id.toHexString();
     }
+    // if (_id instanceof MongoInternals.NpmModule.ObjectID) {
+    //   return _id.toHexString();
+    // }
     if (typeof _id === 'string') {
       return _id;
     }

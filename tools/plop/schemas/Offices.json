@@ -90,7 +90,8 @@
     "isActive": {
       "type": "Boolean",
       "input": "Bool",
-      "defaultValue": true
+      "defaultValue": true,
+      "filterable": true
     },
     "openDate": {
       "type": "DateTime",
