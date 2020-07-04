@@ -77,7 +77,7 @@ const CrossReferenceSearchField = (props, { uniforms }) => {
           }
         }`,
       initialValue: gql`
-        query searchData($_ids: [String]) {
+        query searchData($_ids: [ObjectID]) {
           ${query}(_ids: $_ids) {
             ${edges ? edges + ' {' : ''}
               ${labelKey}
