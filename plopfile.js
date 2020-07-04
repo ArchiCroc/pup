@@ -196,7 +196,9 @@ function uniqueImports(options) {
   const moduleImports = [];
   const localImports = [];
   const finalImports = [];
-  imports.forEach((i) => {
+
+  for (const i of imports) {
+    //imports.forEach((i) => { //this ins't supported in node 12 :(
     const moduleVar = i[1];
     const memberVars = i[2];
     const module = i[3];
@@ -211,7 +213,8 @@ function uniqueImports(options) {
     if (moduleVar) {
       modules[module].moduleVar = moduleVar;
     }
-  });
+  }
+  //);
   Object.values(modules).forEach((i) => {
     i.memberVars = _.uniq(i.memberVars);
     if (i.module.startsWith('.')) {
@@ -289,7 +292,7 @@ module.exports = (plop) => {
     return text;
   });
 
-  plop.setHelper('concat', function() {
+  plop.setHelper('concat', function () {
     arguments = [...arguments].slice(0, -1);
     return arguments.join('');
   });
