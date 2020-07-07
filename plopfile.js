@@ -230,7 +230,7 @@ function uniqueImports(options) {
     finalImports.push(objectToImportString(i));
   });
 
-  return finalImports.join('\n');
+  return finalImports.join('\n') + '\n';
 }
 
 const templateLiteralRegex = /\${.*}/gm;
