@@ -14,7 +14,7 @@
   "fields": {
     "_id": {
       "primaryKey": true,
-      "type": "String",
+      "type": "ObjectID",
       "input": "Hidden",
       "validate" : {
         "max": 24,

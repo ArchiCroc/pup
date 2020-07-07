@@ -42,7 +42,7 @@ function Edit{{ pascalCase singularName }}({ roles }) {
   return (
     <Styled{{ pascalCase pluralName }} md={16} lg={12} xl={10} xxl={8}>
       <PageBreadcrumbs>
-        <Breadcrumb to={`{{ convertParamsToTemplateVars uiRouteBasePath }}`}>{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
+        <Breadcrumb to={{#quoteStringForJSX}}{{ convertParamsToTemplateVars uiRouteBasePath }}{{/quoteStringForJSX}}>{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
         <Breadcrumb>{i18n.__('{{ pascalCase pluralName }}.edit_{{ snakeCase shortSingularName }}')}</Breadcrumb>
       </PageBreadcrumbs>
       <PageHeader title={i18n.__('{{ pascalCase pluralName }}.edit_{{ snakeCase shortSingularName }}')} />

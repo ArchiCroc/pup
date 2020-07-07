@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 <>
 { {{~> baseValue }} && (
   <Link 
-    to={`{{> fieldUrl }}/${ {{~> fieldKeyValueIndex~}} }`} 
+    to={{#quoteStringForJSX}}{{> fieldUrl }}/${ {{~> fieldKeyValueIndex~}} }{{/quoteStringForJSX}} 
     onClick={(event) => event.stopPropagation()}>
     { {{~value~}} }
   </Link>

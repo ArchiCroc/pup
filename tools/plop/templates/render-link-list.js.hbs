@@ -17,7 +17,7 @@ import { Link } from 'react-router-dom';
 { {{~> baseValue}} && {{> baseValue}}.map((item) => {
   return (
     <p key={item.{{> valueIndex ~}} }>
-      <Link to={`{{> fieldUrl }}/${item.{{> valueIndex ~}} }`}>
+      <Link to={{#quoteStringForJSX}}{{> fieldUrl }}/${item.{{> valueIndex ~}} }{{/quoteStringForJSX}}>
         {item.{{dataIndex~}} }
       </Link>
     </p>

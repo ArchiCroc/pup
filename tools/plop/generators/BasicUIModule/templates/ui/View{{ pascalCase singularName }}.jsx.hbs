@@ -123,7 +123,7 @@ function View{{ pascalCase singularName }}({{#compare hasFieldPermissions '||' s
       ) : (
         <>
           <PageBreadcrumbs>
-            <Breadcrumb to={`{{ convertParamsToTemplateVars uiRouteBasePath }}`}>{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
+            <Breadcrumb to={{#quoteStringForJSX}}{{ convertParamsToTemplateVars uiRouteBasePath }}{{/quoteStringForJSX}}>{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
             <Breadcrumb>{ {{~#if schema.singleItemTitle}}{{{schema.singleItemTitle}}}{{else}}{{~ camelCase singularName }}.{{labelKeyKey ~}}{{#if labelKey.dataIndex}}.{{labelKey.dataIndex}}{{/if}}{{/if~}} }</Breadcrumb>
           </PageBreadcrumbs>
           <PageHeader title={ {{~#if schema.singleItemTitle}}{{{schema.singleItemTitle}}}{{else}}{{~ camelCase singularName }}.{{labelKeyKey ~}}{{/if~}} } />

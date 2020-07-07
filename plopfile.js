@@ -233,6 +233,32 @@ function uniqueImports(options) {
   return finalImports.join('\n');
 }
 
+const templateLiteralRegex = /\${.*}/gm;
+
+function quoteString(options) {
+  const contents = options.fn(this);
+  // }
+  // function uniqueImportsTest(contents) {
+  let match = contents.match(templateLiteralRegex);
+  if (match) {
+    return '`' + contents + '`';
+  }
+
+  return `'${contents}'`;
+}
+
+function quoteStringForJSX(options) {
+  const contents = options.fn(this);
+  // }
+  // function uniqueImportsTest(contents) {
+  let match = contents.match(templateLiteralRegex);
+  if (match) {
+    return '{`' + contents + '`}';
+  }
+
+  return `"${contents}"`;
+}
+
 // const testImports = `import some-Module, { someMember3 } from '../../someModule';
 // import { someMember2 } from 'someModule';
 // import { someMember} from 'someModule';
@@ -299,6 +325,8 @@ module.exports = (plop) => {
 
   plop.setHelper('convertDataIndexToGraphqlSubQuery', convertDataIndexToGraphqlSubQuery);
   plop.setHelper('uniqueImports', uniqueImports);
+  plop.setHelper('quoteString', quoteString);
+  plop.setHelper('quoteStringForJSX', quoteStringForJSX);
 
   const generators = dirs('./tools/plop/generators');
 

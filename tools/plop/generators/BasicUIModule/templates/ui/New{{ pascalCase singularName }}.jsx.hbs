@@ -29,7 +29,7 @@ import {{ pascalCase singularName }}Editor from './components/{{ pascalCase sing
 
 import Styled{{ pascalCase pluralName }} from './Styled{{ pascalCase pluralName }}';
 
-function New{{ pascalCase singularName }}({{#if hasFieldPermissions }}{ roles }{{/if}}){
+function New{{ pascalCase singularName }}({{#if hasFieldPermissions }}{ roles }{{/if}}) {
   {{#> paramsWrapper}}
   {{#each schema.fields}}
     {{#if this.filterable}}
@@ -41,7 +41,7 @@ function New{{ pascalCase singularName }}({{#if hasFieldPermissions }}{ roles }{
   return (
     <Styled{{ pascalCase pluralName }} md={16} lg={12} xl={10} xxl={8}>
       <PageBreadcrumbs>
-        <Breadcrumb to={`{{ convertParamsToTemplateVars uiRouteBasePath }}`}>{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
+        <Breadcrumb to={{#quoteStringForJSX}}{{ convertParamsToTemplateVars uiRouteBasePath }}{{/quoteStringForJSX}}>{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
         <Breadcrumb>{i18n.__('{{ pascalCase pluralName }}.new_{{ snakeCase shortSingularName }}')}</Breadcrumb>
       </PageBreadcrumbs>
       <PageHeader title={i18n.__('{{ pascalCase pluralName }}.new_{{ snakeCase shortSingularName }}')} />

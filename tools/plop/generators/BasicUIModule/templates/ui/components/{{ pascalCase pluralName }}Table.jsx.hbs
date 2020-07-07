@@ -218,7 +218,7 @@ function {{ pascalCase pluralName }}Table({
   function handleTableRow(record) {
     return {
       onClick: () => {
-        history.push(`{{#if schema.tableRowClickUrl}}{{schema.tableRowClickUrl}}{{else}}{{convertParamsToTemplateVars uiRouteBasePath }}/${record.{{ urlFieldKey ~}} }{{/if}}`);
+        history.push({{#quoteString}}{{#if schema.tableRowClickUrl}}{{schema.tableRowClickUrl}}{{else}}{{convertParamsToTemplateVars uiRouteBasePath }}/${record.{{ urlFieldKey ~}} }{{/if}}{{/quoteString}});
       },
     };
   }
