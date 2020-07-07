@@ -1,3 +1,8 @@
+{{#*inline "paramPropTypesImport"}}
+  {{#ifPartialHasValue @partial-block}}
+import PropTypes from 'prop-types';
+  {{/ifPartialHasValue}}
+{{/inline}}
 {{#*inline "paramPropTypes"}}
   {{#ifPartialHasValue @partial-block}}
 New{{ pascalCase singularName }}Button.propTypes = {
@@ -7,7 +12,13 @@ New{{ pascalCase singularName }}Button.propTypes = {
   {{/ifPartialHasValue}}
 {{/inline}}
 import React from 'react';
-import PropTypes from 'prop-types';
+{{#> paramPropTypesImport}}
+  {{#each schema.fields}}
+    {{#if this.filterable}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/paramPropTypes'}}
+    {{/if}}
+  {{/each}}
+{{/paramPropTypesImport}}
 import i18n from 'meteor/universe:i18n';
 import Button from 'antd/lib/button';
 import { LinkContainer } from 'react-router-bootstrap';

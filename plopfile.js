@@ -262,7 +262,7 @@ function quoteStringForJSX(options) {
 function prettyProps(maxStringLength, options) {
   if (!options) {
     options = maxStringLength;
-    maxStringLength = 60;
+    maxStringLength = 80;
   }
 
   const contents = options.fn(this);

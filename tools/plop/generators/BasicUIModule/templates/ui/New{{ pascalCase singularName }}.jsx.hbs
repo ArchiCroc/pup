@@ -12,7 +12,9 @@ const  {
   {{/ifPartialHasValue}}
 {{/inline}}
 import React from 'react';
+{{#if hasFieldPermissions}}
 import PropTypes from 'prop-types';
+{{/if}}
 import i18n from 'meteor/universe:i18n';
 {{#uniqueImports}}
 import PageBreadcrumbs, { Breadcrumb } from '{{uiPathOffset}}../components/PageBreadcrumbs';
@@ -37,7 +39,6 @@ function New{{ pascalCase singularName }}({{#if hasFieldPermissions }}{ roles }{
     {{/if}}
   {{/each}}
   {{/paramsWrapper}}  
-
   return (
     <Styled{{ pascalCase pluralName }} md={16} lg={12} xl={10} xxl={8}>
       <PageBreadcrumbs>
@@ -47,11 +48,11 @@ function New{{ pascalCase singularName }}({{#if hasFieldPermissions }}{ roles }{
       <PageHeader title={i18n.__('{{ pascalCase pluralName }}.new_{{ snakeCase shortSingularName }}')} />
       <{{ pascalCase singularName }}Editor 
         {{#if hasFieldPermissions}}roles={roles} {{/if}}
-{{#each schema.fields}}
+{{~#each schema.fields}}
   {{#if this.filterable}}
         {{> (lookup . 'filterTemplateFile' ) template='ui/componentProps'}}
   {{/if}}
-{{/each}}
+{{/each~}}
       />
     </Styled{{ pascalCase pluralName }}>
   );

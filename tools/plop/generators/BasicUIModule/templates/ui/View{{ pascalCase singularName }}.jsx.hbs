@@ -105,14 +105,14 @@ import { {{ camelCase singularName }} as {{ camelCase singularName }}Query } fro
 import Styled{{ pascalCase pluralName }} from './Styled{{ pascalCase pluralName }}';
 
 function View{{ pascalCase singularName }}({{#compare hasFieldPermissions '||' schema.permissions.update}}{ roles }{{/compare}}) {
-  const { 
+  const {{#prettyProps}} 
     {{ urlFieldKey }},
 {{#each schema.fields}}
   {{#if this.filterable}}
     {{> (lookup . 'filterTemplateFile' ) template='ui/paramVariables'}}
   {{/if}}
 {{/each}}  
-  } = useParams();
+  {{/prettyProps}} = useParams();
 
   const { loading, data: { {{ camelCase singularName }} } = {} } = useQuery({{ camelCase singularName }}Query, { variables: { {{ urlFieldKey }} } });
 
@@ -160,7 +160,7 @@ function View{{ pascalCase singularName }}({{#compare hasFieldPermissions '||' s
       )}
     </Styled{{ pascalCase pluralName }}>
   );
-};
+}
 
 {{#compare hasFieldPermissions '||' schema.permissions.update}}
 View{{ pascalCase singularName }}.propTypes = {
@@ -168,7 +168,7 @@ View{{ pascalCase singularName }}.propTypes = {
 };
 
 {{/compare}}
-const View{{ pascalCase singularName }}Fields = ({ 
+const View{{ pascalCase singularName }}Fields = ({{#prettyProps}}  
   {{ camelCase singularName }},
 {{#if hasFieldPermissions}}
   roles,
@@ -178,7 +178,7 @@ const View{{ pascalCase singularName }}Fields = ({
   {{> (lookup . 'filterTemplateFile' ) template='ui/paramVariables'}}
   {{/if}}
 {{/each}}
-  }) => (
+{{/prettyProps}}) => (
   <Descriptions bordered column={1}>
 {{#each schema.fields ~}}
   {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
@@ -189,7 +189,6 @@ const View{{ pascalCase singularName }}Fields = ({
 {{~/each}}
   </Descriptions>
 );
-
 
 View{{ pascalCase singularName }}Fields.propTypes = {
   {{ camelCase singularName }}: PropTypes.object.isRequired,

@@ -57,7 +57,7 @@ function {{ pascalCase pluralName }}Table({{#prettyProps}}
   const history = useHistory();
 
   const [queryStringObject, setQueryStringObject] = useQueryStringObject(queryKeyPrefix);
-  const {
+  const {{#prettyProps 40}}
     pageSize,
     page,
     sort,
@@ -70,7 +70,7 @@ function {{ pascalCase pluralName }}Table({{#prettyProps}}
     {{> (lookup . 'filterTemplateFile' ) template='ui/queryStringVariables'}}
   {{/compare}}
 {{/each}}
-  } = Object.assign(props, queryStringObject);
+  {{/prettyProps}} = Object.assign(props, queryStringObject);
 
   const paginationObject = {
     pageSize,

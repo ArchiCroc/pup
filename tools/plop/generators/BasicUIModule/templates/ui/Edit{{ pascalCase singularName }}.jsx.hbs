@@ -26,14 +26,14 @@ import { edit{{ pascalCase singularName }} as edit{{ pascalCase singularName }}Q
 import Styled{{ pascalCase pluralName }} from './Styled{{ pascalCase pluralName }}';
 
 function Edit{{ pascalCase singularName }}({ roles }) {
-  const { 
+  const {{#prettyProps}} 
     {{ urlFieldKey }},
 {{#each schema.fields}}
   {{#if this.filterable}}
     {{> (lookup . 'filterTemplateFile' ) template='ui/paramVariables'}}
   {{/if}}
 {{/each}}  
-  } = useParams();
+  {{/prettyProps}} = useParams();
 
   const { loading, data: { {{ camelCase singularName }} = undefined } = {} } = useQuery(edit{{ pascalCase singularName }}Query, { 
     variables: { {{ urlFieldKey }} },
@@ -65,8 +65,8 @@ function Edit{{ pascalCase singularName }}({ roles }) {
         </>
       )}
       <Divider />
-      { {{~ camelCase singularName }} && {{#if schema.permissions.delete}} hasRole(roles, [{{#each schema.permissions.delete }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && {{/if}}(
-        <Remove{{ pascalCase singularName }}Button 
+      { {{~ camelCase singularName }} && {{#if schema.permissions.delete}}hasRole(roles, [{{#each schema.permissions.delete }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && {{/if}}(
+        <Remove{{ pascalCase singularName }}Button
           {{primaryFieldKey}}={ {{~ camelCase singularName }}.{{primaryFieldKey ~}} } 
           {{labelKeyKey}}={ {{~ camelCase singularName}}.{{labelKeyKey ~}} } 
 {{#each schema.fields}}

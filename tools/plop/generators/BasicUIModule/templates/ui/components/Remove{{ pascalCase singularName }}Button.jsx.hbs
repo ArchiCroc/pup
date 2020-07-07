@@ -27,7 +27,7 @@ function Remove{{ pascalCase singularName }}Button({{#prettyProps}}
   ...props
   {{/prettyProps}}) {
   const history = useHistory();
-  
+
   const [remove{{ pascalCase singularName }}] = useMutation(remove{{ pascalCase singularName }}Mutation, {
     ignoreResults: true,
     onCompleted: () => {
