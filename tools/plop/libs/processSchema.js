@@ -68,10 +68,23 @@ function processFields([key, item]) {
   }
 
   // set default filter for value that are true so it matches a template
-  if (item.filterable === true) {
+  if (item.filterable === true && !item.filterTemplateFile) {
     item.filterTemplateFile = item.fieldType === 'Boolean' ? 'filter-boolean' : 'filter-default';
   } else if (typeof item.filterable === 'string') {
     item.filterTemplateFile = `filter-${item.filterable}`;
+    item.filterable = true;
+  } else {
+    item.filterable = false;
+  }
+
+  // make sure default for showInTableView is set
+  if (item.showInTableView === undefined) {
+    item.showInTableView = true;
+  }
+
+  // make sure default for showInDetailView is set
+  if (item.showInDetailView === undefined) {
+    item.showInDetailView = true;
   }
 }
 
