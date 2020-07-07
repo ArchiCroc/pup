@@ -2,6 +2,7 @@
 const fs = require('fs');
 const _ = require('lodash');
 const processSchema = require('../../libs/processSchema');
+const prettierTransform = require('../../libs/prettierTransform');
 const addMenuItem = require('../AddMenuItem');
 
 const requireField = (fieldName) => {
@@ -114,7 +115,16 @@ module.exports = {
         type: 'addMany',
         destination: 'ui/{{ uiFolderName }}/',
         base: 'tools/plop/generators/BasicUIModule/templates/ui/',
-        templateFiles: 'tools/plop/generators/BasicUIModule/templates/ui/**',
+        templateFiles: 'tools/plop/generators/BasicUIModule/templates/ui/**/+(*.js.hbs|*.jsx.hbs)',
+        verbose: true,
+        data,
+        transform: prettierTransform,
+      },
+      {
+        type: 'addMany',
+        destination: 'ui/{{ uiFolderName }}/',
+        base: 'tools/plop/generators/BasicUIModule/templates/ui/',
+        templateFiles: 'tools/plop/generators/BasicUIModule/templates/ui/**/!(*.js.hbs|*.jsx.hbs)',
         verbose: true,
         data,
       },

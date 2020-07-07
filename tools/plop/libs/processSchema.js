@@ -81,9 +81,17 @@ function processFields([key, item]) {
   if (item.showInTableView === undefined) {
     item.showInTableView = true;
   }
+  if (typeof item.showInTableView === 'string') {
+    item.tableLabel = item.showInTableView;
+    item.showInTableView = true;
+  }
 
   // make sure default for showInDetailView is set
   if (item.showInDetailView === undefined) {
+    item.showInDetailView = true;
+  }
+  if (typeof item.showInDetailView === 'string') {
+    item.detailLabel = item.showInDetailView;
     item.showInDetailView = true;
   }
 }

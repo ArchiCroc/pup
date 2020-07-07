@@ -3,7 +3,7 @@
 {{~/inline}}
 {{#*inline "inputField" ~}}
 {{#compare (snakeCase name) '==' (snakeCase @root.shortSingularName) '||' (snakeCase name) 'in' 'save|yes|no|cancel|remove'  }}# {{/compare}}
-{{~ snakeCase name}}: {{#compare this.showInTableView 'typeof' 'string'}}{{this.showInTableView}}{{else}}{{#compare this.showInDetailView 'typeof' 'string'}}{{this.showInDetailView}}{{else}}{{ titleCase @key}}{{/compare}}{{/compare}}
+{{~ snakeCase name}}: {{#compare this.tableLabel 'typeof' 'string'}}{{this.tableLabel}}{{else}}{{#compare this.detailLabel 'typeof' 'string'}}{{this.detailLabel}}{{else}}{{ titleCase @key}}{{/compare}}{{/compare}}
   {{#if this.input}}
 {{snakeCase name}}_label: {{> inputLabel}}
   {{#compare this.type '!=' 'Boolean'  }}

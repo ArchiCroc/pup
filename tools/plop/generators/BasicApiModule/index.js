@@ -1,6 +1,7 @@
 /* eslint-disable  */
 const fs = require('fs');
 const processSchema = require('../../libs/processSchema');
+const prettierTransform = require('../../libs/prettierTransform');
 
 const requireField = (fieldName) => {
   return (value) => {
@@ -37,7 +38,18 @@ module.exports = {
         type: 'addMany',
         destination: 'api/{{ apiFolderName }}/',
         base: 'tools/plop/generators/BasicApiModule/templates/api/',
-        templateFiles: 'tools/plop/generators/BasicApiModule/templates/api/**',
+        templateFiles:
+          'tools/plop/generators/BasicApiModule/templates/api/**/+(*.js.hbs|*.jsx.hbs)',
+        verbose: true,
+        data,
+        transform: prettierTransform,
+      },
+      {
+        type: 'addMany',
+        destination: 'api/{{ apiFolderName }}/',
+        base: 'tools/plop/generators/BasicApiModule/templates/api/',
+        templateFiles:
+          'tools/plop/generators/BasicApiModule/templates/api/**/!(*.js.hbs|*.jsx.hbs)',
         verbose: true,
         data,
       },

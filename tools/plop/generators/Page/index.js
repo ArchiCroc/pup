@@ -3,6 +3,7 @@ const changeCase = require('change-case');
 const relativePath = require('../../libs/relativePath');
 const addMenuItem = require('../AddMenuItem');
 const addRoute = require('../AddRoute');
+const prettierTransform = require('../../libs/prettierTransform');
 
 const requireField = (fieldName) => {
   return (value) => {
@@ -58,18 +59,21 @@ module.exports = {
         path: 'ui/{{uiFolderName}}/{{pascalCase name}}.jsx',
         templateFile: 'tools/plop/generators/Page/templates/Page.jsx.hbs',
         data,
+        transform: prettierTransform,
       },
       {
         type: 'add',
         path: 'ui/{{uiFolderName}}/{{pascalCase name}}.test.js',
         templateFile: 'tools/plop/generators/Page/templates/Page.test.js.hbs',
         data,
+        transform: prettierTransform,
       },
       {
         type: 'add',
         path: 'ui/{{uiFolderName}}/Styled{{pascalCase name}}.js',
         templateFile: 'tools/plop/generators/Page/templates/StyledPage.js.hbs',
         data,
+        transform: prettierTransform,
       },
       {
         type: 'append',
