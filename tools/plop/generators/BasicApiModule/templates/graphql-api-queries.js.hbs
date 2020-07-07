@@ -1,6 +1,6 @@
       #### {{ constantCase pluralName }}_QUERY_TYPES_START ####
       {{ camelCase pluralName }}(
-        _ids: [ObjectID]
+        _ids: [{{ primaryField.type }}]
         page: Int
         pageSize: Int
         sort: String
