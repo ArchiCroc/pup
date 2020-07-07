@@ -63,7 +63,7 @@ filters: props.{{ fieldName }} ? undefined : {{camelCase fieldName}}Filters,
   {{/if}}  
 {{/compare}}
 {{#compare template '===' 'ui/handleTableChangeNewKeys'}}
-{{#if dataIndexDEBUG}}'{{key}}.{{dataIndex}}'{{else}}{{ key }}{{/if}}: new{{pascalCase fieldName }},
+{{#if dataIndex}}'{{key}}.{{dataIndex}}'{{else}}{{ key }}{{/if}}: new{{pascalCase fieldName }},
 {{/compare}}
 {{#compare template '===' 'ui/handleTableChangeSetState'}}
 setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});

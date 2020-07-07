@@ -14,10 +14,10 @@ import hasRole from '{{uiPathOffset}}../../../modules/hasRole';
   {{/if}}
 import useQueryStringObject from '{{uiPathOffset}}../../../modules/hooks/useQueryStringObject';
   {{#each schema.fields ~}}
-    {{#if this.filterable}}
+    {{#compare this.filterable '&&' this.showInTableView}}
 {{> (lookup . 'filterTemplateFile' ) template='ui/imports' uiPathOffset=(concat @root.uiPathOffset "../")}}
-    {{/if}}
-    {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
+    {{/compare}}
+    {{#compare this.input '!==' 'Hidden' '&&' this.showInTableView '===' true}}
       {{#if this.tableTemplateFile}}
 {{> (lookup . 'tableTemplateFile' ) template='import' uiPathOffset=(concat @root.uiPathOffset "../")}} 
       {{/if}}
@@ -35,9 +35,9 @@ const { Search } = Input;
 
 {{!-- if a filterable field has choices create a function to generate the correct object for antd Table  --}}
 {{#each schema.fields}}
-    {{#if this.filterable}}
+    {{#compare this.filterable '&&' this.showInTableView}}
 {{> (lookup . 'filterTemplateFile' ) template='ui/helpers'}}
-    {{/if}}
+    {{/compare}}
 {{/each}}
 
 function {{ pascalCase pluralName }}Table({ 
@@ -48,9 +48,9 @@ function {{ pascalCase pluralName }}Table({
 {{/if}}
   queryKeyPrefix, 
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '&&' this.showInTableView}}
   {{> (lookup . 'filterTemplateFile' ) template='ui/paramVariables'}}
-  {{/if}}
+  {{/compare}}
 {{/each}}
   ...props
   }) {
@@ -66,9 +66,9 @@ function {{ pascalCase pluralName }}Table({
     search,
 {{/if}}
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '&&' this.showInTableView}}
     {{> (lookup . 'filterTemplateFile' ) template='ui/queryStringVariables'}}
-  {{/if}}
+  {{/compare}}
 {{/each}}
   } = Object.assign(props, queryStringObject);
 
@@ -84,9 +84,9 @@ function {{ pascalCase pluralName }}Table({
   const [currentSearch, setCurrentSearch] = useState(search);
 {{/if}}
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '&&' this.showInTableView}}
   {{> (lookup . 'filterTemplateFile' ) template='ui/useState'}}
-  {{/if}}
+  {{/compare}}
 {{/each}}
 
   const { loading, data: { {{ camelCase pluralName }} } = {} } = useQuery({{ camelCase pluralName }}Query, {
@@ -100,18 +100,18 @@ function {{ pascalCase pluralName }}Table({
       search: currentSearch,
 {{/if}}
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '&&' this.showInTableView}}
       {{> (lookup . 'filterTemplateFile' ) template='ui/useQueryVariablesKeys'}}
-  {{/if}}
+  {{/compare}}
 {{/each}}
     },
   });
 
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '&&' this.showInTableView}}
   {{> (lookup . 'filterTemplateFile' ) template='ui/addtionalHooks'}}
 
-  {{/if}}
+  {{/compare}}
 {{/each}}
   const columns = [
 {{#each schema.fields ~}}
@@ -185,9 +185,9 @@ function {{ pascalCase pluralName }}Table({
 {{#if isFilterable}}
     const {
   {{#each schema.fields}}
-    {{#if this.filterable}}
+    {{#compare this.filterable '&&' this.showInTableView}}
       {{> (lookup . 'filterTemplateFile' ) template='ui/handleTableChangeNewKeys'}}
-    {{/if}}
+    {{/compare}}
   {{/each}}  
     } = filters;
 
@@ -198,9 +198,9 @@ function {{ pascalCase pluralName }}Table({
     setCurrentOrder(sorter.order);
     setCurrentSort(sorter.field);
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '&&' this.showInTableView}}
     {{> (lookup . 'filterTemplateFile' ) template='ui/handleTableChangeSetState'}}
-  {{/if}}
+  {{/compare}}
 {{/each}}  
 
     setQueryStringObject({
@@ -208,9 +208,9 @@ function {{ pascalCase pluralName }}Table({
       sort: currentField,
       order: sorter.order,
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '&&' this.showInTableView}}
       {{> (lookup . 'filterTemplateFile' ) template='ui/handleTableChangeSetQueryObjectKey'}}
-  {{/if}}
+  {{/compare}}
 {{/each}}  
     });
   }
@@ -229,9 +229,9 @@ function {{ pascalCase pluralName }}Table({
         { showNew{{ pascalCase singularName }}Button {{#if schema.permissions.create}}&& hasRole(roles, [{{#each schema.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) {{/if}}&& (
           <New{{ pascalCase singularName }}Button 
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '&&' this.showInTableView}}
             {{> (lookup . 'filterTemplateFile' ) template='ui/componentProps'}}
-  {{/if}}
+  {{/compare}}
 {{/each}}
           />)}&nbsp;
         {{#if isSearchable}}
@@ -272,18 +272,18 @@ function {{ pascalCase pluralName }}Table({
   showSearch: true,
 {{/if}}
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '&&' this.showInTableView}}
   {{> (lookup . 'filterTemplateFile' ) template='ui/queryStringDefaultPropsKeys'}}
-  {{/if}}
+  {{/compare}}
 {{/each}}
 };
 
 {{ pascalCase pluralName }}Table.propTypes = {
   roles: PropTypes.array.isRequired,
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '&&' this.showInTableView}}
   {{> (lookup . 'filterTemplateFile' ) template='ui/paramPropTypes'}}
-  {{/if}}
+  {{/compare}}
 {{/each}}
   showNew{{ pascalCase singularName }}Button: PropTypes.bool,
   queryKeyPrefix: PropTypes.string,
@@ -296,9 +296,9 @@ function {{ pascalCase pluralName }}Table({
   showSearch: PropTypes.bool,
 {{/if}}
 {{#each schema.fields}}
-  {{#if this.filterable}}
+  {{#compare this.filterable '&&' this.showInTableView}}
   {{> (lookup . 'filterTemplateFile' ) template='ui/queryStringPropTypes'}}
-{{/if}}
+  {{/compare}}
 {{/each}}
 };
 
