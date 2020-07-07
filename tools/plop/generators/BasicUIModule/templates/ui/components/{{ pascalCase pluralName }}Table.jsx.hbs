@@ -40,7 +40,7 @@ const { Search } = Input;
     {{/compare}}
 {{/each}}
 
-function {{ pascalCase pluralName }}Table({ 
+function {{ pascalCase pluralName }}Table({{#prettyProps}} 
   roles, 
   showNew{{ pascalCase singularName }}Button, 
 {{#if isSearchable}}
@@ -53,7 +53,7 @@ function {{ pascalCase pluralName }}Table({
   {{/compare}}
 {{/each}}
   ...props
-  }) {
+  {{/prettyProps}}) {
   const history = useHistory();
 
   const [queryStringObject, setQueryStringObject] = useQueryStringObject(queryKeyPrefix);

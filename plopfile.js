@@ -259,6 +259,40 @@ function quoteStringForJSX(options) {
   return `"${contents}"`;
 }
 
+function prettyProps(maxStringLength, options) {
+  if (!options) {
+    options = maxStringLength;
+    maxStringLength = 60;
+  }
+
+  const contents = options.fn(this);
+
+  const props = _.uniq(_.compact(contents.split(',').map(_.trim))).sort();
+
+  if (props.length === 0) {
+    return '';
+  }
+
+  //trim ...props if it's the only item
+  if (props.length === 1 && props[0].startsWith('...')) {
+    return props[0].replace('...', '');
+  }
+
+  // make sure ...props is last since alphabetically it comes first
+  if (props[0].startsWith('...')) {
+    const first = props.shift();
+    props.push(first);
+  }
+
+  let result = ` ${props.join(', ')} `;
+  if (result.length > maxStringLength) {
+    result = `\n  ${
+      props.join(',\n  ') + (props[props.length - 1].startsWith('...') ? '' : ',')
+    } \n`;
+  }
+  return `{${result}}`;
+}
+
 // const testImports = `import some-Module, { someMember3 } from '../../someModule';
 // import { someMember2 } from 'someModule';
 // import { someMember} from 'someModule';
@@ -327,6 +361,7 @@ module.exports = (plop) => {
   plop.setHelper('uniqueImports', uniqueImports);
   plop.setHelper('quoteString', quoteString);
   plop.setHelper('quoteStringForJSX', quoteStringForJSX);
+  plop.setHelper('prettyProps', prettyProps);
 
   const generators = dirs('./tools/plop/generators');
 

@@ -12,7 +12,7 @@ import message from 'antd/lib/message';
 import { {{ camelCase pluralName }} as {{ camelCase pluralName }}Query } from '../queries/{{ pascalCase pluralName }}.gql';
 import { remove{{ pascalCase singularName }} as remove{{ pascalCase singularName }}Mutation } from '../mutations/{{ pascalCase pluralName }}.gql';
 
-function Remove{{ pascalCase singularName }}Button({ 
+function Remove{{ pascalCase singularName }}Button({{#prettyProps}} 
 {{#compare primaryFieldKey '!==' labelKeyKey}}
   {{ primaryFieldKey }}, 
   {{ labelKeyKey }},
@@ -25,7 +25,7 @@ function Remove{{ pascalCase singularName }}Button({
   {{/if}}
 {{/each}}
   ...props
-  }) {
+  {{/prettyProps}}) {
   const history = useHistory();
   
   const [remove{{ pascalCase singularName }}] = useMutation(remove{{ pascalCase singularName }}Mutation, {

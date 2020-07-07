@@ -4,7 +4,7 @@ import i18n from 'meteor/universe:i18n';
 import Button from 'antd/lib/button';
 import { LinkContainer } from 'react-router-bootstrap';
 
-const Edit{{ pascalCase singularName }}Button = ({
+const Edit{{ pascalCase singularName }}Button = ({{#prettyProps}}
   {{ urlFieldKey }},
 {{#each schema.fields}}
   {{#if this.filterable}}
@@ -12,7 +12,7 @@ const Edit{{ pascalCase singularName }}Button = ({
   {{/if}}
 {{/each}}
   ...props
-  }) => (
+  {{/prettyProps}}) => (
   <LinkContainer to={{#quoteStringForJSX}}{{ convertParamsToTemplateVars uiRouteBasePath }}/${ {{~ urlFieldKey ~}} }/edit{{/quoteStringForJSX}}>
     <Button type="primary" icon="edit" {...props}>
       {i18n.__('{{ pascalCase pluralName }}.edit_{{ snakeCase shortSingularName }}')}

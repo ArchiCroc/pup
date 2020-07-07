@@ -9,19 +9,17 @@ New{{ pascalCase singularName }}Button.propTypes = {
 import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
-{{#uniqueImports}}
 import Button from 'antd/lib/button';
 import { LinkContainer } from 'react-router-bootstrap';
-{{/uniqueImports}}
 
-const New{{ pascalCase singularName }}Button = ({
+const New{{ pascalCase singularName }}Button = ({{#prettyProps}}
 {{#each schema.fields}}
   {{#if this.filterable}}
   {{> (lookup . 'filterTemplateFile' ) template='ui/paramVariables'}}
   {{/if}}
 {{/each}}
   ...props
-}) => (
+{{/prettyProps}}) => (
   <LinkContainer to={{#quoteStringForJSX}}{{convertParamsToTemplateVars uiRouteBasePath }}/new{{/quoteStringForJSX}}>
     <Button type="primary" icon="plus" {...props}>
       {i18n.__('{{ pascalCase pluralName }}.new_{{ snakeCase shortSingularName }}')}
