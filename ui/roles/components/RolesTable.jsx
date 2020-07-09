@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
-import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/react-hooks';
 import Input from 'antd/lib/input';
 import Table from 'antd/lib/table';
+import i18n from 'meteor/universe:i18n';
+import { useHistory } from 'react-router-dom';
 import hasRole from '../../../modules/hasRole';
 import useQueryStringObject from '../../../modules/hooks/useQueryStringObject';
 import PrettyDate from '../../components/PrettyDate';
 import NewRoleButton from './NewRoleButton';
+
 // import StyledRolesTable from './StyledRolesTable';
 
 import { roles as rolesQuery } from '../queries/Roles.gql';
 
 const { Search } = Input;
 
-function RolesTable({ roles, showNewRoleButton, showSearch, queryKeyPrefix, ...props }) {
+function RolesTable({ queryKeyPrefix, roles, showNewRoleButton, showSearch, ...props }) {
   const history = useHistory();
 
   const [queryStringObject, setQueryStringObject] = useQueryStringObject(queryKeyPrefix);
-  const { pageSize, page, sort, order, search } = Object.assign(props, queryStringObject);
+  const { order, page, pageSize, search, sort } = { ...props, ...queryStringObject };
 
   const paginationObject = {
     pageSize,
@@ -55,14 +56,14 @@ function RolesTable({ roles, showNewRoleButton, showSearch, queryKeyPrefix, ...p
       dataIndex: 'createdAtUTC',
       sorter: true,
       defaultSortOrder: 'descend',
-      render: (createdAtUTC) => <PrettyDate timestamp={createdAtUTC} />, // eslint-disable-line
+      render: (value, record) => <PrettyDate timestamp={value} />, // eslint-disable-line
     },
     {
       title: i18n.__('Roles.updated_at_utc'),
       dataIndex: 'updatedAtUTC',
       sorter: true,
       defaultSortOrder: 'descend',
-      render: (updatedAtUTC) => <PrettyDate timestamp={updatedAtUTC} />, // eslint-disable-line
+      render: (value, record) => <PrettyDate timestamp={value} />, // eslint-disable-line
     },
   ];
 

@@ -40,7 +40,7 @@
 #import "../fragments/{{ pascalCase pluralName }}.gql"
 
 query {{ camelCase pluralName }}(
-  $_ids: [ObjectID]
+  $_ids: [{{ primaryField.type }}]
   $page: Int, 
   $pageSize: Int, 
   $search: String, 

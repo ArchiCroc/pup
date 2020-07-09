@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
 import { useQuery /* , useMutation */ } from '@apollo/react-hooks';
 import Divider from 'antd/lib/divider';
+import { useParams } from 'react-router-dom';
+import hasRole from '../../modules/hasRole';
+import Loading from '../components/Loading';
 import PageBreadcrumbs, { Breadcrumb } from '../components/PageBreadcrumbs';
 import PageHeader from '../components/PageHeader';
-import RoleEditor from './components/RoleEditor';
-import Loading from '../components/Loading';
 import NotFound from '../pages/NotFound';
 import RemoveRoleButton from './components/RemoveRoleButton';
-import hasRole from '../../modules/hasRole';
+import RoleEditor from './components/RoleEditor';
 
 import { editRole as editRoleQuery } from './queries/Roles.gql';
 
@@ -19,7 +19,7 @@ import StyledRoles from './StyledRoles';
 function EditRole({ roles }) {
   const { name } = useParams();
 
-  const { loading, data: { role = undefined } = {} } = useQuery(editRoleQuery, { 
+  const { loading, data: { role = undefined } = {} } = useQuery(editRoleQuery, {
     variables: { name },
   });
 
@@ -30,24 +30,9 @@ function EditRole({ roles }) {
         <Breadcrumb>{i18n.__('Roles.edit_role')}</Breadcrumb>
       </PageBreadcrumbs>
       <PageHeader title={i18n.__('Roles.edit_role')} />
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
-          {role ? (
-            <RoleEditor doc={role} roles={roles} /> 
-          ) : (
-            <NotFound />
-          )}
-        </>
-      )}
+      {loading ? <Loading /> : <>{role ? <RoleEditor doc={role} roles={roles} /> : <NotFound />}</>}
       <Divider />
-      {role &&  hasRole(roles, ['admin']) && (
-        <RemoveRoleButton 
-          _id={role._id} 
-          name={role.name} 
-        />
-      )}
+      {role && hasRole(roles, ['admin']) && <RemoveRoleButton _id={role._id} name={role.name} />}
     </StyledRoles>
   );
 }

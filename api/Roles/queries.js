@@ -3,7 +3,7 @@ import Roles from './Roles';
 
 export default {
   roles: (parent, args, { user }) => {
-    if (!user || !user._id || !checkUserRole(user._id, ['user'])) {
+    if (!user || !user._id || !checkUserRole(user._id, ['admin'])) {
       throw new Error('Sorry, you must have permission to view Roles.');
     }
 
@@ -47,7 +47,7 @@ export default {
     };
   },
   myRoles: (parent, args, { user }) => {
-    if (!user || !user._id || !checkUserRole(user._id, ['user'])) {
+    if (!user || !user._id || !checkUserRole(user._id, ['admin'])) {
       throw new Error('Sorry, you must have permission to view my Roles.');
     }
 
@@ -63,7 +63,7 @@ export default {
     return Roles.find(query).fetch(query, options);
   },
   role: (parent, args, { user }) => {
-    if (!user || !user._id || !checkUserRole(user._id, ['user'])) {
+    if (!user || !user._id || !checkUserRole(user._id, ['admin'])) {
       throw new Error('Sorry, you must have permission to view Role.');
     }
 

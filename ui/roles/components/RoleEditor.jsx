@@ -2,15 +2,16 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
-import { useMutation } from '@apollo/react-hooks';
 import i18n from 'meteor/universe:i18n';
+import { useMutation } from '@apollo/react-hooks';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
-import AutoForm from 'uniforms/AutoForm';
+import { useHistory } from 'react-router-dom';
 import HiddenField from 'uniforms-antd/HiddenField';
 import TextField from 'uniforms-antd/TextField';
+import AutoForm from 'uniforms/AutoForm';
 import prepareFormModel from '../../../modules/prepareFormModel';
+
 /* #### PLOP_IMPORTS_START #### */
 /* #### PLOP_IMPORTS_END #### */
 
@@ -23,6 +24,7 @@ import StyledRoleEditor from './StyledRoleEditor';
 
 function RoleEditor({ doc }) {
   const history = useHistory();
+
   const [saveRole] = useMutation(saveRoleMutation, {
     ignoreResults: true,
     onCompleted: () => {
