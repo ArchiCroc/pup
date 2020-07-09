@@ -142,6 +142,12 @@ module.exports = {
         templateFile: 'tools/plop/generators/BasicUIModule/templates/app-routes.js.hbs',
         data,
       },
+      {
+        type: 'modify',
+        path: 'ui/layouts/App.jsx',
+        transform: prettierTransform,
+        data,
+      },
     ];
     if (data.schema.menu && data.schema.menu.index) {
       actions.push(

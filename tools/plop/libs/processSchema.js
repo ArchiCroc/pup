@@ -148,7 +148,13 @@ function processSchema(input) {
     .join('/');
   data.uiPathOffset = '../'.repeat(data.uiFolderName.split('/').length - 1);
 
-  data.uiRouteBasePath = schema.uiRouteBasePath || '/' + data.uiFolderName;
+  // set the uiRouteBasePath fromthe foldername if it blank
+  data.uiRouteBasePath = schema.uiRouteBasePath || `/${data.uiFolderName}`;
+
+  // make uiRouteBasePath starts with a slash
+  if (!data.uiRouteBasePath.startsWith('/')) {
+    data.uiRouteBasePath = `/${data.uiRouteBasePath}`;
+  }
 
   // clean the name. collection/bigItem into Collection/BigItem
   // if (data.rawName.includes('/')) {

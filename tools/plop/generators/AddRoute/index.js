@@ -57,6 +57,13 @@ module.exports = {
           validate: requireField('URL Slug'),
           default: defaultSlug,
         },
+        {
+          type: 'input',
+          name: 'uiRouteBasePath',
+          message: `What is Route Base Path?`,
+          validate: requireField('URL Slug'),
+          default: `/${changeCase.paramCase(values.uiFolderName)}`,
+        },
       ]);
       Object.assign(values, values2, values3);
     }
@@ -80,6 +87,10 @@ module.exports = {
       componentParts = componentParts.join('').split('/');
 
       data.componentName = componentParts.map((item) => changeCase.pascalCase(item)).join('');
+    }
+
+    if (!data.uiRouteBasePath) {
+      data.uiRouteBasePath = `/${data.uiFolderName}`;
     }
 
     if (data.urlSlug) {
@@ -123,6 +134,12 @@ module.exports = {
         path: 'ui/layouts/App.jsx',
         pattern: `{/* #### ${changeCase.constant(data.uiFolderName)}_ROUTES_START #### */}`,
         templateFile: 'tools/plop/generators/AddRoute/templates/app-route.js.hbs',
+        data,
+      },
+      {
+        type: 'modify',
+        path: 'ui/layouts/App.jsx',
+        transform: prettierTransform,
         data,
       },
     );

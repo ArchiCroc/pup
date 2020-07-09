@@ -103,10 +103,22 @@ module.exports = {
         data,
       },
       {
+        type: 'modify',
+        path: 'startup/server/graphql-api.js',
+        transform: prettierTransform,
+        data,
+      },
+      {
         type: 'append',
         path: 'startup/server/index.js',
         pattern: '/* #### PLOP_IMPORTS_START #### */',
         templateFile: 'tools/plop/generators/BasicApiModule/templates/server-index-imports.js.hbs',
+        data,
+      },
+      {
+        type: 'modify',
+        path: 'startup/server/index.js',
+        transform: prettierTransform,
         data,
       },
     ];
