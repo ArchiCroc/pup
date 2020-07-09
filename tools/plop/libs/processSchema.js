@@ -73,7 +73,7 @@ function processFields([key, item]) {
   } else if (typeof item.filterable === 'string') {
     item.filterTemplateFile = `filter-${item.filterable}`;
     item.filterable = true;
-  } else {
+  } else if (item.filterable !== true) {
     item.filterable = false;
   }
 
