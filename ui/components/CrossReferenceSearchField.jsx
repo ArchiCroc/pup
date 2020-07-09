@@ -18,6 +18,7 @@ const CrossReferenceSearchField = (props, { uniforms }) => {
     labelKey,
     valueKey,
     initialLabelKey,
+    idType,
     name,
     value: initialValue,
     placeholder,
@@ -77,7 +78,7 @@ const CrossReferenceSearchField = (props, { uniforms }) => {
           }
         }`,
       initialValue: gql`
-        query searchData($_ids: [ObjectID]) {
+        query searchData($_ids: [${idType}]) {
           ${query}(_ids: $_ids) {
             ${edges ? edges + ' {' : ''}
               ${labelKey}
@@ -95,11 +96,21 @@ const CrossReferenceSearchField = (props, { uniforms }) => {
     onCompleted: () => console.log('complete'),
   });
 
-  const { loading: loading2 } = useQuery(gqlQueries.initialValue, {
+  const { loading: loading2, error: error2 } = useQuery(gqlQueries.initialValue, {
     variables: { _ids: initialValue },
-    skip: value || !initialValue || loadingComplete,
+    skip: !!value || !initialValue || loadingComplete,
     // fetchPolicy: 'cache-and-network', // network-only
     onCompleted: (result) => {
+      if (!result) {
+        // @todo figure out why this is problem https://github.com/apollographql/react-apollo/issues/3943
+        if (!!value || !initialValue || loadingComplete) {
+          console.log('this should be skipped. is apollo broken?');
+          return;
+        }
+        console.log('inital value not found', initialValue);
+        return;
+      }
+      console.log(idType, result, query, edges);
       setLoadingComplete(true);
       const resultEdges = edges ? result[query][edges] : result[query];
       if (resultEdges && resultEdges.length) {
@@ -163,6 +174,7 @@ CrossReferenceSearchField.defaultProps = {
   placeholder: null,
   disabled: false,
   multiple: false,
+  idType: 'ObjectID',
 };
 
 CrossReferenceSearchField.propTypes = {
@@ -178,6 +190,7 @@ CrossReferenceSearchField.propTypes = {
   labelKey: PropTypes.string.isRequired,
   valueKey: PropTypes.string.isRequired,
   multiple: PropTypes.bool,
+  idType: PropTypes.string,
 };
 
 CrossReferenceSearchField.contextTypes = BaseField.contextTypes;

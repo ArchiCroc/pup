@@ -31,7 +31,8 @@
         "query": "users",
         "edges": "users",
         "labelKey": "fullName",
-        "valueKey": "_id"
+        "valueKey": "_id",
+        "idType": "String"
       },
       "showInTableView": true
     },

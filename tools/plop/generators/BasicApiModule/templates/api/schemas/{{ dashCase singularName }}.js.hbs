@@ -112,6 +112,9 @@ uniforms: {
   {{#if this.reference.valueKey}}
   valueKey: '{{this.reference.valueKey}}',
   {{/if}}
+  {{#if this.reference.idType}}
+  idType: '{{this.reference.idType}}',
+  {{/if}}
 },
 {{/unless}}
 {{/inline}}
@@ -161,6 +164,9 @@ uniforms: {
   {{/if}}
   {{#if this.reference.valueKey}}
   valueKey: '{{this.reference.valueKey}}',
+  {{/if}}
+  {{#if this.reference.idType}}
+  idType: '{{this.reference.idType}}',
   {{/if}}
 },
 {{/inline~}}

@@ -119,7 +119,7 @@ const schema = {
 
       #### ERROR_REPORTS_MUTATION_TYPES_START ####
       saveErrorReport(errorReport: ErrorReportInput): ErrorReport
-      removeErrorReport(_id: String!): ErrorReport
+      removeErrorReport(_id: ObjectID!): ErrorReport
       #### ERROR_REPORTS_MUTATION_TYPES_END ####
 
       #### PLOP_MUTATION_TYPES_END ####

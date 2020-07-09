@@ -6,7 +6,7 @@ mutation saveErrorReport($errorReport: ErrorReportInput!) {
   }
 }
 
-mutation removeErrorReport($_id: String!) {
+mutation removeErrorReport($_id: ObjectID!) {
   removeErrorReport(_id: $_id) {
     _id
   }

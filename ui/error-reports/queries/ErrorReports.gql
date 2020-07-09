@@ -1,7 +1,7 @@
 #import "../fragments/ErrorReports.gql"
 
 query errorReports(
-  $_ids: [String]
+  $_ids: [ObjectID]
   $page: Int, 
   $pageSize: Int, 
   $search: String, 
@@ -22,9 +22,10 @@ query errorReports(
     errorReports {
       _id
       
-      user {
-              fullName
-            }
+      user { 
+        _id
+        fullName
+      }
       level
       message
       path

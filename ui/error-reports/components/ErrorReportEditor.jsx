@@ -2,19 +2,20 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
-import { useMutation } from '@apollo/react-hooks';
 import i18n from 'meteor/universe:i18n';
+import { useMutation } from '@apollo/react-hooks';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
-import AutoForm from 'uniforms/AutoForm';
+import { useHistory } from 'react-router-dom';
 import HiddenField from 'uniforms-antd/HiddenField';
 import ListField from 'uniforms-antd/ListField';
 import ListItemField from 'uniforms-antd/ListItemField';
 import TextField from 'uniforms-antd/TextField';
+import AutoForm from 'uniforms/AutoForm';
 import prepareFormModel from '../../../modules/prepareFormModel';
 import CrossReferenceSearchField from '../../components/CrossReferenceSearchField';
 import SelectField from '../../components/SelectField';
+
 /* #### PLOP_IMPORTS_START #### */
 /* #### PLOP_IMPORTS_END #### */
 
@@ -27,6 +28,7 @@ import StyledErrorReportEditor from './StyledErrorReportEditor';
 
 function ErrorReportEditor({ doc }) {
   const history = useHistory();
+
   const [saveErrorReport] = useMutation(saveErrorReportMutation, {
     ignoreResults: true,
     onCompleted: () => {

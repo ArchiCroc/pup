@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
-import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/react-hooks';
 import Input from 'antd/lib/input';
 import Table from 'antd/lib/table';
 import isString from 'lodash/isString';
+import i18n from 'meteor/universe:i18n';
+import { useHistory } from 'react-router-dom';
 import hasRole from '../../../modules/hasRole';
 import useQueryStringObject from '../../../modules/hooks/useQueryStringObject';
 import PrettyDate from '../../components/PrettyDate';
 import NewErrorReportButton from './NewErrorReportButton';
+
 // import StyledErrorReportsTable from './StyledErrorReportsTable';
 
 import { errorReports as errorReportsQuery } from '../queries/ErrorReports.gql';
@@ -19,7 +20,6 @@ const { Search } = Input;
 function getLevelFilters() {
   const choices = [0, 1, 2, 3, 4, 5];
   const filters = [];
-
   for (const choice of choices) {
     filters.push({ text: i18n.__(`ErrorReports.level_${choice}`), value: choice });
   }
@@ -27,16 +27,16 @@ function getLevelFilters() {
 }
 
 function ErrorReportsTable({
+  queryKeyPrefix,
   roles,
   showNewErrorReportButton,
   showSearch,
-  queryKeyPrefix,
   ...props
 }) {
   const history = useHistory();
 
   const [queryStringObject, setQueryStringObject] = useQueryStringObject(queryKeyPrefix);
-  const { pageSize, page, sort, order, search, level } = Object.assign(props, queryStringObject);
+  const { level, order, page, pageSize, search, sort } = { ...props, ...queryStringObject };
 
   const paginationObject = {
     pageSize,
@@ -66,7 +66,7 @@ function ErrorReportsTable({
   const columns = [
     {
       title: i18n.__('ErrorReports.user'),
-      dataIndex: 'user',
+      dataIndex: 'user.fullName',
     },
     {
       title: i18n.__('ErrorReports.level'),
@@ -78,7 +78,7 @@ function ErrorReportsTable({
       // defaultSortOrder: 'ascend',
       render: (value, record) => i18n.__(`ErrorReports.level_${value}`), // eslint-disable-line
       filteredValue: currentLevel,
-      filters: getLevelFilters(),
+      filters: props.level ? undefined : getLevelFilters(),
     },
     {
       title: i18n.__('ErrorReports.message'),
@@ -106,7 +106,7 @@ function ErrorReportsTable({
       dataIndex: 'createdAtUTC',
       sorter: true,
       defaultSortOrder: 'descend',
-      render: (createdAtUTC) => <PrettyDate timestamp={createdAtUTC} />, // eslint-disable-line
+      render: (value, record) => <PrettyDate timestamp={value} />,
     },
   ];
 
@@ -200,7 +200,6 @@ ErrorReportsTable.propTypes = {
   order: PropTypes.string,
   search: PropTypes.string,
   showSearch: PropTypes.bool,
-  level: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
 };
 
 export default ErrorReportsTable;

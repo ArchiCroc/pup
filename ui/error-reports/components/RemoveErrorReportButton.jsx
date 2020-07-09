@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
-import { useMutation } from '@apollo/react-hooks';
 import i18n from 'meteor/universe:i18n';
+import { useMutation } from '@apollo/react-hooks';
 import Button from 'antd/lib/button';
-import modal from 'antd/lib/modal';
 import message from 'antd/lib/message';
+import modal from 'antd/lib/modal';
+import { useHistory } from 'react-router-dom';
 
 import { errorReports as errorReportsQuery } from '../queries/ErrorReports.gql';
 import { removeErrorReport as removeErrorReportMutation } from '../mutations/ErrorReports.gql';
 
 function RemoveErrorReportButton({ _id, message, ...props }) {
   const history = useHistory();
+
   const [removeErrorReport] = useMutation(removeErrorReportMutation, {
     ignoreResults: true,
     onCompleted: () => {

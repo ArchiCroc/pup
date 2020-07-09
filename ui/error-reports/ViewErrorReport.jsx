@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/react-hooks';
 import Descriptions from 'antd/lib/descriptions';
+import { useParams } from 'react-router-dom';
 import hasRole from '../../modules/hasRole';
 import FormatDate from '../components/FormatDate';
 import Loading from '../components/Loading';
 import PageBreadcrumbs, { Breadcrumb } from '../components/PageBreadcrumbs';
 import PageHeader from '../components/PageHeader';
 import NotFound from '../pages/NotFound';
+
 import EditErrorReportButton from './components/EditErrorReportButton';
 
 import { errorReport as errorReportQuery } from './queries/ErrorReports.gql';
@@ -18,6 +19,7 @@ import StyledErrorReports from './StyledErrorReports';
 
 function ViewErrorReport({ roles }) {
   const { _id } = useParams();
+
   const { loading, data: { errorReport } = {} } = useQuery(errorReportQuery, {
     variables: { _id },
   });
@@ -40,7 +42,13 @@ function ViewErrorReport({ roles }) {
               <EditErrorReportButton _id={errorReport._id} />
             </p>
           )}
-          {errorReport ? <ViewErrorReportFields errorReport={errorReport} /> : <NotFound />}
+          {errorReport ? (
+            <>
+              <ViewErrorReportFields errorReport={errorReport} />
+            </>
+          ) : (
+            <NotFound />
+          )}
         </>
       )}
     </StyledErrorReports>
@@ -62,9 +70,7 @@ const ViewErrorReportFields = ({ errorReport }) => (
     <Descriptions.Item label={i18n.__('ErrorReports.message')}>
       {errorReport.message}
     </Descriptions.Item>
-    <Descriptions.Item label={i18n.__('ErrorReports.path')}>
-      {errorReport.path && <a href={errorReport.path}>{errorReport.path}</a>}
-    </Descriptions.Item>
+    <Descriptions.Item label={i18n.__('ErrorReports.path')}>{errorReport.path}</Descriptions.Item>
     <Descriptions.Item label={i18n.__('ErrorReports.user_agent')}>
       {errorReport.userAgent}
     </Descriptions.Item>
@@ -75,7 +81,7 @@ const ViewErrorReportFields = ({ errorReport }) => (
       {errorReport.reactStack && errorReport.reactStack.join(', ')}
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('ErrorReports.created_at_utc')}>
-      {errorReport.createdAtUTC && <FormatDate timestamp={errorReport.createdAtUTC} />}
+      <>{errorReport.createdAtUTC && <FormatDate timestamp={errorReport.createdAtUTC} />}</>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('ErrorReports.created_by')}>
       {errorReport.createdBy?.fullName}

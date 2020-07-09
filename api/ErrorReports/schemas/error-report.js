@@ -1,9 +1,10 @@
+import { Mongo } from 'meteor/mongo';
 import Uniforms from 'uniforms';
 import SimpleSchema from 'simpl-schema';
 import i18n from 'meteor/universe:i18n';
-import parseObjectID from '../../../modules/parseObjectID';
 /* #### PLOP_IMPORTS_START #### */
 /* #### PLOP_IMPORTS_END #### */
+import parseObjectID from '../../../modules/parseObjectID';
 
 const cleanLevel = (item) => parseInt(item, 10);
 
@@ -30,6 +31,7 @@ const ErrorReportSchema = new SimpleSchema({
       initialLabelKey: 'user',
       labelKey: 'fullName',
       valueKey: '_id',
+      idType: 'String',
     },
   },
   level: {

@@ -40,10 +40,8 @@ export default {
       query._id = { $in: _ids };
     }
 
-    if (isArray(level)) {
-      if (level.length > 0) {
-        query.level = { $in: level };
-      }
+    if (isArray(level) && level.length > 0) {
+      query.level = { $in: level };
     } else if (level !== undefined && level !== null) {
       query.level = level;
     }
@@ -82,7 +80,7 @@ export default {
     const query = { createdById: user._id };
     const options = {};
 
-    if (isArray(level)) {
+    if (isArray(level) && level.length > 0) {
       query.level = { $in: level };
     } else if (level !== undefined && level !== null) {
       query.level = level;

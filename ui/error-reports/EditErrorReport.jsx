@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
 import { useQuery /* , useMutation */ } from '@apollo/react-hooks';
 import Divider from 'antd/lib/divider';
+import { useParams } from 'react-router-dom';
+import hasRole from '../../modules/hasRole';
+import Loading from '../components/Loading';
 import PageBreadcrumbs, { Breadcrumb } from '../components/PageBreadcrumbs';
 import PageHeader from '../components/PageHeader';
-import ErrorReportEditor from './components/ErrorReportEditor';
-import Loading from '../components/Loading';
 import NotFound from '../pages/NotFound';
+import ErrorReportEditor from './components/ErrorReportEditor';
 import RemoveErrorReportButton from './components/RemoveErrorReportButton';
-import hasRole from '../../modules/hasRole';
 
 import { editErrorReport as editErrorReportQuery } from './queries/ErrorReports.gql';
 

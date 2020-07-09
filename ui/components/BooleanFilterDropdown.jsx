@@ -4,7 +4,6 @@ import i18n from 'meteor/universe:i18n';
 import Radio from 'antd/lib/radio';
 import isArray from 'lodash/isArray';
 import FilterDropdownMenuWrapper from 'antd/lib/table/FilterDropdownMenuWrapper';
-//import Menu from 'antd/lib/menu';
 
 function BooleanFilterDropdown(props) {
   const { setSelectedKeys, selectedKeys, confirm, clearFilters, trueText, falseText } = props;
@@ -50,10 +49,10 @@ function BooleanFilterDropdown(props) {
       </Menu> */}
       </div>
       <div className="ant-table-filter-dropdown-btns">
-        <a className="ant-table-filter-dropdown-link confirm" onClick={confirm}>
+        <a className="ant-table-filter-dropdown-link confirm" onClick={confirm} role="button">
           {i18n.__('confirm')}
         </a>
-        <a className="ant-table-filter-dropdown-link clear" onClick={clearFilters}>
+        <a className="ant-table-filter-dropdown-link clear" onClick={clearFilters} role="button">
           {i18n.__('reset')}
         </a>
       </div>
@@ -64,9 +63,14 @@ function BooleanFilterDropdown(props) {
 BooleanFilterDropdown.defaultProps = {
   trueText: 'true',
   falseText: 'false',
+  selectedKeys: undefined,
 };
 
 BooleanFilterDropdown.propTypes = {
+  setSelectedKeys: PropTypes.func.isRequired,
+  selectedKeys: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  confirm: PropTypes.func.isRequired,
+  clearFilters: PropTypes.func.isRequired,
   trueText: PropTypes.string,
   falseText: PropTypes.string,
 };
