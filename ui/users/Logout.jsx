@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import i18n from 'meteor/universe:i18n';
-import Icon from 'antd/lib/icon';
+import FacebookIcon from '@ant-design/icons/FacebookOutlined';
+import TwitterIcon from '@ant-design/icons/TwitterOutlined';
 
 import StyledLogout from './StyledLogout';
 
@@ -28,14 +29,14 @@ function Logout(props) {
           <a
             href={`https://facebook.com/${facebookUsername}?utm_source=app&utm_medium=referral&utm_campaign=logoutPage`}
           >
-            <Icon type="facebook" />
+            <FacebookIcon />
           </a>
         </li>
         <li>
           <a
             href={`https://twitter.com/${twitterUsername}?utm_source=app&utm_medium=referral&utm_campaign=logoutPage`}
           >
-            <Icon type="twitter" />
+            <TwitterIcon />
           </a>
         </li>
       </ul>

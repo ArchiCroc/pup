@@ -7,9 +7,10 @@ import Col from 'antd/lib/col';
 import Alert from 'antd/lib/alert';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
-import { AutoForm, TextField } from 'uniforms-antd';
-
+import { TextField } from 'uniforms-antd';
+import AutoForm from '../components/AutoForm';
 import AccountPageFooter from './components/AccountPageFooter';
+
 import StyledResetPassword from './StyledResetPassword';
 import ResetPasswordSchema from '../../api/Users/schemas/reset-password';
 
@@ -35,13 +36,7 @@ function ResetPassword() {
         <Col xs={12}>
           <h4 className="page-header">{i18n.__('Users.reset_password_header')}</h4>
           <Alert type="info" message={i18n.__('Users.reset_password_help')} />
-          <AutoForm
-            name="reset-password"
-            schema={ResetPasswordSchema}
-            onSubmit={handleSubmit}
-            showInlineError
-            placeholder
-          >
+          <AutoForm name="reset-password" schema={ResetPasswordSchema} onSubmit={handleSubmit}>
             <TextField name="newPassword" />
             <TextField name="repeatNewPassword" />
             <Button htmlType="submit" type="primary">

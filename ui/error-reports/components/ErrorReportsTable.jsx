@@ -66,16 +66,14 @@ function ErrorReportsTable({
   const columns = [
     {
       title: i18n.__('ErrorReports.user'),
-      dataIndex: 'user.fullName',
+      dataIndex: ['user', 'fullName'],
     },
     {
       title: i18n.__('ErrorReports.level'),
       dataIndex: 'level',
       sorter: true,
-      // defaultSortOrder: 'ascend',
-      // render: (value, record) => value, // eslint-disable-line
-      sorter: true,
-      // defaultSortOrder: 'ascend',
+      defaultSortOrder: 'ascend',
+      sortOrder: currentSort === 'level' && currentOrder,
       render: (value, record) => i18n.__(`ErrorReports.level_${value}`), // eslint-disable-line
       filteredValue: currentLevel,
       filters: props.level ? undefined : getLevelFilters(),
@@ -85,6 +83,7 @@ function ErrorReportsTable({
       dataIndex: 'message',
       sorter: true,
       defaultSortOrder: 'ascend',
+      sortOrder: currentSort === 'message' && currentOrder,
       // render: (value, record) => <Link to={`/error-reports/${record._id}/edit`}>{value}</Link>, // eslint-disable-line
     },
     {
@@ -92,6 +91,7 @@ function ErrorReportsTable({
       dataIndex: 'path',
       sorter: true,
       defaultSortOrder: 'ascend',
+      sortOrder: currentSort === 'path' && currentOrder,
       // render: (value, record) => <Link to={`/error-reports/${record._id}/edit`}>{value}</Link>, // eslint-disable-line
     },
     {
@@ -99,6 +99,7 @@ function ErrorReportsTable({
       dataIndex: 'userAgent',
       sorter: true,
       defaultSortOrder: 'ascend',
+      sortOrder: currentSort === 'userAgent' && currentOrder,
       // render: (value, record) => <Link to={`/error-reports/${record._id}/edit`}>{value}</Link>, // eslint-disable-line
     },
     {
@@ -106,6 +107,7 @@ function ErrorReportsTable({
       dataIndex: 'createdAtUTC',
       sorter: true,
       defaultSortOrder: 'descend',
+      sortOrder: currentSort === 'createdAtUTC' && currentOrder,
       render: (value, record) => <PrettyDate timestamp={value} />,
     },
   ];

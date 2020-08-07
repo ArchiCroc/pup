@@ -7,7 +7,8 @@ import { useMutation } from '@apollo/react-hooks';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 import { useHistory } from 'react-router-dom';
-import { AutoForm, HiddenField, TextField } from 'uniforms-antd';
+import { HiddenField, TextField } from 'uniforms-antd';
+import AutoForm from '../../components/AutoForm';
 import prepareFormModel from '../../../modules/prepareFormModel';
 
 /* #### PLOP_IMPORTS_START #### */

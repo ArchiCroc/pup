@@ -7,8 +7,8 @@ import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Divider from 'antd/lib/divider';
 import message from 'antd/lib/message';
-import { AutoForm, TextField } from 'uniforms-antd';
-// import ErrorsField from 'uniforms-antd/ErrorsField';
+import { TextField /*, ErrorsField*/ } from 'uniforms-antd';
+import AutoForm from '../components/AutoForm';
 
 import OAuthLoginButtons from './components/OAuthLoginButtons';
 import AccountPageFooter from './components/AccountPageFooter';
@@ -45,13 +45,7 @@ function Login() {
           {/* @todo add check to hide diver if not using oauth */}
           <OAuthLoginButtons services={['facebook', 'github', 'google']} />
           <Divider>{i18n.__('Users.login_with_email')}</Divider>
-          <AutoForm
-            name="login"
-            schema={LoginSchema}
-            onSubmit={handleSubmit}
-            showInlineError
-            placeholder
-          >
+          <AutoForm name="login" schema={LoginSchema} onSubmit={handleSubmit}>
             {/* <ErrorsField /> */}
             <TextField name="emailAddress" placeholder={i18n.__('Users.email_address')} />
             <TextField name="password" placeholder={i18n.__('Users.password')} />

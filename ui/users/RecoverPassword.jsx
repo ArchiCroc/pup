@@ -7,9 +7,10 @@ import Col from 'antd/lib/col';
 import Alert from 'antd/lib/alert';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
-import { AutoForm, TextField } from 'uniforms-antd';
-
+import { TextField } from 'uniforms-antd';
+import AutoForm from '../components/AutoForm';
 import AccountPageFooter from './components/AccountPageFooter';
+
 import StyledRecoverPassword from './StyledRecoverPassword';
 import RecoverPasswordSchema from '../../api/Users/schemas/recover-password';
 
@@ -36,13 +37,7 @@ function RecoverPassword() {
         <Col xs={24}>
           <h4 className="page-header">{i18n.__('Users.recover_password_header')}</h4>
           <Alert type="info" message={i18n.__('Users.recover_password_help')} />
-          <AutoForm
-            name="recover-password"
-            schema={RecoverPasswordSchema}
-            onSubmit={handleSubmit}
-            showInlineError
-            placeholder
-          >
+          <AutoForm name="recover-password" schema={RecoverPasswordSchema} onSubmit={handleSubmit}>
             <TextField name="emailAddress" />
             <Button htmlType="submit" type="primary">
               {i18n.__('Users.recover_password_submit')}

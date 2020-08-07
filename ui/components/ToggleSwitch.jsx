@@ -10,6 +10,7 @@ class ToggleSwitch extends React.Component {
     super(props);
     const { toggled } = props;
     this.state = { toggled };
+    console.log('toggle switch needs to updated');
   }
 
   componentWillReceiveProps(nextProps) {

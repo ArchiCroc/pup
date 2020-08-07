@@ -8,7 +8,8 @@ import Col from 'antd/lib/col';
 import Button from 'antd/lib/button';
 import Divider from 'antd/lib/divider';
 import message from 'antd/lib/message';
-import { AutoForm, TextField } from 'uniforms-antd';
+import { TextField } from 'uniforms-antd';
+import AutoForm from '../components/AutoForm';
 import OAuthLoginButtons from './components/OAuthLoginButtons';
 import AccountPageFooter from './components/AccountPageFooter';
 import StyledSignup from './StyledSignup';
@@ -47,13 +48,7 @@ function Signup() {
           <h2 className="page-header">{i18n.__('Users.sign_up_header')}</h2>
           <OAuthLoginButtons services={['facebook', 'github', 'google']} />
           <Divider>{i18n.__('Users.sign_up_with_email')}</Divider>
-          <AutoForm
-            name="signup"
-            schema={SignupSchema}
-            onSubmit={handleSubmit}
-            showInlineError
-            placeholder
-          >
+          <AutoForm name="signup" schema={SignupSchema} onSubmit={handleSubmit}>
             <Row gutter={16}>
               <Col xs={12}>
                 <TextField name="firstName" />

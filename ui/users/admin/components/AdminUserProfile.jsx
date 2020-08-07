@@ -6,7 +6,9 @@ import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
-import { AutoForm, TextField } from 'uniforms-antd';
+
+import { TextField } from 'uniforms-antd';
+import AutoForm from '../../../components/AutoForm';
 import AdminPasswordField from './AdminPasswordField';
 import CrossReferenceSelectField from '../../../components/CrossReferenceSelectField';
 import AdminUserProfileSchema from '../../../../api/Users/schemas/admin-profile';
@@ -95,9 +97,7 @@ function AdminUserProfile({ user }) {
         schema={AdminUserProfileSchema}
         model={model}
         onSubmit={handleSubmit}
-        ref={formRef}
-        showInlineError
-        placeholder
+        formRef={formRef}
       >
         {user && (
           <Row>

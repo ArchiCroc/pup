@@ -14,7 +14,7 @@ import unfreezeApolloCacheValue from '../../../modules/unfreezeApolloCacheValue'
 class GDPRConsentModal extends React.Component {
   state = { show: false };
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data.user && nextProps.data.user.settings) {
       let gdprComplete = true;
       const gdprSettings = nextProps.data.user.settings.filter(
@@ -78,6 +78,8 @@ class GDPRConsentModal extends React.Component {
   }
 
   render() {
+    console.log('gdpr needs to updated');
+
     return <div className="GDPRConsentModal" />;
   }
 }

@@ -36,7 +36,9 @@ RenderAuthenticatedRoute.propTypes = {
 };
 
 class AuthenticatedRoute extends React.Component {
-  componentWillMount() {
+  //@todo figure out how to convert this to a functional component
+
+  UNSAFE_componentWillMount() {
     if (Meteor.isClient) {
       const { setAfterLoginPath } = this.props;
       setAfterLoginPath(`${window.location.pathname}${window.location.search}`);

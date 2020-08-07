@@ -15,8 +15,8 @@ import message from 'antd/lib/message';
 import Modal from 'antd/lib/modal';
 import Tabs from 'antd/lib/tabs';
 import capitalize from 'lodash/capitalize';
-import { AutoForm, TextField } from 'uniforms-antd';
-
+import { TextField } from 'uniforms-antd';
+import AutoForm from '../components/AutoForm';
 import PageHeader from '../components/PageHeader';
 import AccountPageFooter from './components/AccountPageFooter';
 import UserSettings from './components/UserSettings';
@@ -209,6 +209,7 @@ function Profile({ match }) {
       >
         <Tabs.TabPane key="profile" tab={i18n.__('Users.profile')}>
           <AutoForm
+            name="user-profile"
             schema={ProfileSchema}
             model={model}
             onSubmit={handleSubmit}

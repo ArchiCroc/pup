@@ -49,6 +49,7 @@ function RolesTable({ queryKeyPrefix, roles, showNewRoleButton, showSearch, ...p
       dataIndex: 'name',
       sorter: true,
       defaultSortOrder: 'ascend',
+      sortOrder: currentSort === 'name' && currentOrder,
       // render: (value, record) => <Link to={`/roles/${record.name}/edit`}>{value}</Link>, // eslint-disable-line
     },
     {
@@ -56,6 +57,7 @@ function RolesTable({ queryKeyPrefix, roles, showNewRoleButton, showSearch, ...p
       dataIndex: 'createdAtUTC',
       sorter: true,
       defaultSortOrder: 'descend',
+      sortOrder: currentSort === 'createdAtUTC' && currentOrder,
       render: (value, record) => <PrettyDate timestamp={value} />, // eslint-disable-line
     },
     {
@@ -63,6 +65,7 @@ function RolesTable({ queryKeyPrefix, roles, showNewRoleButton, showSearch, ...p
       dataIndex: 'updatedAtUTC',
       sorter: true,
       defaultSortOrder: 'descend',
+      sortOrder: currentSort === 'updatedAtUTC' && currentOrder,
       render: (value, record) => <PrettyDate timestamp={value} />, // eslint-disable-line
     },
   ];

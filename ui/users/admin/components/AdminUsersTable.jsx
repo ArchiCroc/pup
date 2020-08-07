@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { useHistory, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 // import { Roles } from 'meteor/alanning:roles';
 import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/react-hooks';
+import useQueryStringObject from '../../../../modules/hooks/useQueryStringObject';
 import isString from 'lodash/isString';
 import Table from 'antd/lib/table';
 
@@ -14,26 +16,27 @@ import { users as usersQuery } from '../../queries/Users.gql';
 // @todo filter these
 // @ todo add status and account creation date
 
-function AdminUsersList() {
+function AdminUsersList({
+  queryKeyPrefix,
+  showNewUserButton,
+  showSearch,
+  showSizeChanger,
+  ...props
+}) {
   const history = useHistory();
-  const location = useLocation();
 
-  const {
-    page = 1,
-    sort = 'name',
-    order = 'ascend',
-    search = null,
-    role = null,
-  } = queryString.parse(location.search, { arrayFormat: 'comma' });
+  const [queryStringObject, setQueryStringObject] = useQueryStringObject(queryKeyPrefix);
+  const { order, page, pageSize, roles, search, sort } = { ...props, ...queryStringObject };
 
   const [currentPage, setCurrentPage] = useState(parseInt(page, 10));
+  const [currentPageSize, setCurrentPageSize] = useState(parseInt(pageSize, 10));
   const [currentSort, setCurrentSort] = useState(sort);
   const [currentOrder, setCurrentOrder] = useState(order);
   const [currentSearch, setCurrentSearch] = useState(search);
-  const [currentRole, setCurrentRole] = useState(role && isString(role) ? [role] : role);
+  const [currentRoles, setCurrentRoles] = useState(roles && isString(roles) ? [roles] : roles);
 
   const paginationObject = {
-    pageSize: 10,
+    pageSize: currentPageSize,
     //  onChange: this.onPageChange,
   };
 
@@ -41,23 +44,26 @@ function AdminUsersList() {
     {
       title: () => i18n.__('Users.name'),
       dataIndex: 'fullName',
-      defaultSortOrder: 'ascend',
       sorter: true,
+      defaultSortOrder: 'ascend',
+      sortOrder: currentSort === 'fullName' && currentOrder,
     },
     {
       title: () => i18n.__('Users.email_address'),
       dataIndex: 'emailAddress',
-      defaultSortOrder: 'ascend',
       sorter: true,
+      defaultSortOrder: 'ascend',
+      sortOrder: currentSort === 'emailAddress' && currentOrder,
     },
     {
       title: () => i18n.__('Users.role_plural'),
       dataIndex: 'roles',
-      defaultSortOrder: 'ascend',
-      filteredValue: currentRole,
-      //filters: Roles.getAllRoles().fetch(),
+      filteredValue: currentRoles,
+      // filters: Roles.getAllRoles().fetch(),
       filters: ['user', 'admin', 'api'].map((item) => ({ text: item, value: item })),
       sorter: true,
+      defaultSortOrder: 'roles',
+      sortOrder: currentSort === 'fullName' && currentOrder,
       // render: (item) => item && item.map((item2) => item2.name).join(', '),
       render: (item) => item && item.join(', '),
     },
@@ -71,7 +77,7 @@ function AdminUsersList() {
       search: currentSearch,
       sort: currentSort,
       order: currentOrder,
-      role: currentRole,
+      roles: currentRoles,
     },
   });
 
@@ -88,26 +94,22 @@ function AdminUsersList() {
 
   function handleTableChange(pagination, filters, sorter) {
     // console.log(pagination, filters, sorter);
-    const { roles: newRole = null } = filters;
+    const { roles: newRoles = null } = filters;
 
     const currentField = sorter.field ? sorter.field.split('.')[0] : 'name';
 
     setCurrentPage(pagination.current);
+    setCurrentPageSize(pagination.pageSize);
     setCurrentOrder(sorter.order);
     setCurrentSort(sorter.field);
-    setCurrentRole(newRole);
+    setCurrentRoles(newRoles);
 
-    history.push({
-      pathname: window.location.pathname,
-      search: `?${queryString.stringify(
-        {
-          page: pagination.current,
-          sort: currentField,
-          order: sorter.order,
-          role: newRole,
-        },
-        { arrayFormat: 'comma' },
-      )}`,
+    setQueryStringObject({
+      page: pagination.current,
+      pageSize: pagination.pageSize,
+      sort: currentField,
+      order: sorter.order === false && null,
+      roles: newRoles,
     });
   }
 
@@ -129,5 +131,31 @@ function AdminUsersList() {
     </>
   );
 }
+
+AdminUsersList.defaultProps = {
+  showNewUserButton: false,
+  queryKeyPrefix: undefined,
+  page: 1,
+  pageSize: 10,
+  sort: 'fullName',
+  order: 'ascend',
+  search: undefined,
+  showSearch: true,
+  showSizeChanger: true,
+  roles: undefined,
+};
+
+AdminUsersList.propTypes = {
+  roles: PropTypes.array,
+  showNewUserButton: PropTypes.bool,
+  queryKeyPrefix: PropTypes.string,
+  page: PropTypes.number,
+  pageSize: PropTypes.number,
+  sort: PropTypes.string,
+  order: PropTypes.string,
+  search: PropTypes.string,
+  showSearch: PropTypes.bool,
+  showSizeChanger: PropTypes.bool,
+};
 
 export default AdminUsersList;
