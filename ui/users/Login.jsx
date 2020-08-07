@@ -7,8 +7,7 @@ import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Divider from 'antd/lib/divider';
 import message from 'antd/lib/message';
-import AutoForm from 'uniforms/AutoForm';
-import TextField from 'uniforms-antd/TextField';
+import { AutoForm, TextField } from 'uniforms-antd';
 // import ErrorsField from 'uniforms-antd/ErrorsField';
 
 import OAuthLoginButtons from './components/OAuthLoginButtons';

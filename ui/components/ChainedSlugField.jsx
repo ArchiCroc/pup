@@ -2,11 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Input from 'antd/lib/input';
-import BaseField from 'uniforms/BaseField';
-import connectField from 'uniforms/connectField';
-import filterDOMProps from 'uniforms/filterDOMProps';
-import joinName from 'uniforms/joinName';
-import wrapField from 'uniforms-antd/wrapField';
+import { connectField, filterDOMProps, joinName, BaseField } from 'uniforms';
+import { wrapField } from 'uniforms-antd';
+
 import slugify from 'slugify';
 
 function toSlug(text) {
@@ -14,6 +12,9 @@ function toSlug(text) {
 }
 
 const ChainedSlugField = (props, { uniforms }) => {
+  // export default function HiddenField({ value, ...rawProps }: HiddenFieldProps) {
+  // const props = useField(rawProps.name, rawProps, { initialValue: false })[0];
+
   let currentValue = props.value || undefined;
   let sourceValue;
 
@@ -94,7 +95,7 @@ ChainedSlugField.propTypes = {
   // valueKey: PropTypes.string.isRequired,
 };
 
-ChainedSlugField.contextTypes = BaseField.contextTypes;
+// ChainedSlugField.contextTypes = BaseField.contextTypes;
 
 filterDOMProps.register('allowClear', 'sourceField', 'seperator');
 

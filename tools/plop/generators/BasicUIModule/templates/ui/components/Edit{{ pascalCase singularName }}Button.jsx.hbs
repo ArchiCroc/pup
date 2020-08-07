@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import Button from 'antd/lib/button';
+import EditIcon from '@ant-design/icons/EditOutlined';
 import { LinkContainer } from 'react-router-bootstrap';
 
 const Edit{{ pascalCase singularName }}Button = ({{#prettyProps}}
@@ -14,7 +15,7 @@ const Edit{{ pascalCase singularName }}Button = ({{#prettyProps}}
   ...props
   {{/prettyProps}}) => (
   <LinkContainer to={{#quoteStringForJSX}}{{ convertParamsToTemplateVars uiRouteBasePath }}/${ {{~ urlFieldKey ~}} }/edit{{/quoteStringForJSX}}>
-    <Button type="primary" icon="edit" {...props}>
+    <Button type="primary" icon={<EditIcon />} {...props}>
       {i18n.__('{{ pascalCase pluralName }}.edit_{{ snakeCase shortSingularName }}')}
     </Button>
   </LinkContainer>

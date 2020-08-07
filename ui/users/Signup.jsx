@@ -8,9 +8,7 @@ import Col from 'antd/lib/col';
 import Button from 'antd/lib/button';
 import Divider from 'antd/lib/divider';
 import message from 'antd/lib/message';
-import AutoForm from 'uniforms/AutoForm';
-import TextField from 'uniforms-antd/TextField';
-
+import { AutoForm, TextField } from 'uniforms-antd';
 import OAuthLoginButtons from './components/OAuthLoginButtons';
 import AccountPageFooter from './components/AccountPageFooter';
 import StyledSignup from './StyledSignup';

@@ -1,22 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'antd/lib/button';
-import Icon from './Icon';
-import Styles from './StyledBlankState';
+import StyledBlankState from './StyledBlankState';
 
-const BlankState = ({ image, icon, title, subtitle, action }) => (
-  <Styles.BlankState>
-    {image && <img src={image} alt={title} />}
-    {icon && <Icon iconStyle={icon.style} icon={icon.symbol} />}
-    <h4>{title}</h4>
-    <p>{subtitle}</p>
-    {action && (
-      <Button type={action.style || 'primary'} onClick={action.onClick}>
-        {action.label}
-      </Button>
-    )}
-  </Styles.BlankState>
-);
+function BlankState({ image, icon, title, subtitle, action }) {
+  const Icon = icon;
+
+  return (
+    <StyledBlankState>
+      {image && <img src={image} alt={title} />}
+      {icon && <Icon />}
+      <h4>{title}</h4>
+      <p>{subtitle}</p>
+      {action && (
+        <Button type={action.style || 'primary'} onClick={action.onClick}>
+          {action.label}
+        </Button>
+      )}
+    </StyledBlankState>
+  );
+}
 
 BlankState.defaultProps = {
   image: null,

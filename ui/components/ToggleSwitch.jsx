@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from './Icon';
+import CheckIcon from '@ant-design/icons/CheckOutlined';
+import RemoveIcon from '@ant-design/icons/RemoveOutlined';
+
 import Styles from './styles';
 
 class ToggleSwitch extends React.Component {
@@ -35,9 +37,7 @@ class ToggleSwitch extends React.Component {
       <Styles.ToggleSwitch className="ToggleSwitch" toggled={toggled} onClick={this.toggleSwitch}>
         <div className="handle">
           <span className="handle-label">
-            {toggled
-              ? onLabel || <Icon iconStyle="solid" icon="check" />
-              : offLabel || <Icon iconStyle="solid" icon="remove" />}
+            {toggled ? onLabel || <CheckIcon /> : offLabel || <RemoveIcon />}
           </span>
         </div>
       </Styles.ToggleSwitch>

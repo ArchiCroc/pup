@@ -4,10 +4,10 @@ import i18n from 'meteor/universe:i18n';
 import Button from 'antd/lib/button';
 // import Checkbox from 'antd/lib/checkbox';
 import Input from 'antd/lib/input';
+import RedoIcon from '@ant-design/icons/RedoOutlined';
 import { Random } from 'meteor/random';
-import connectField from 'uniforms/connectField';
-// import ErrorField from 'uniforms-antd/ErrorField';
-import wrapField from 'uniforms-antd/wrapField';
+import { connectField } from 'uniforms';
+import { wrapField } from 'uniforms-antd';
 
 // import Icon from '../../components/Icon';
 
@@ -18,8 +18,7 @@ function AdminPasswordField(props) {
 
   function renderButton() {
     return (
-      <Button onClick={generatePassword} icon="redo" type="primary">
-        {/* <Icon iconStyle="solid" icon="refresh" /> */}
+      <Button onClick={generatePassword} icon={<RedoIcon />} type="primary">
         {i18n.__('Users.generate')}
       </Button>
     );

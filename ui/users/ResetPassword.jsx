@@ -7,8 +7,7 @@ import Col from 'antd/lib/col';
 import Alert from 'antd/lib/alert';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
-import AutoForm from 'uniforms/AutoForm';
-import TextField from 'uniforms-antd/TextField';
+import { AutoForm, TextField } from 'uniforms-antd';
 
 import AccountPageFooter from './components/AccountPageFooter';
 import StyledResetPassword from './StyledResetPassword';

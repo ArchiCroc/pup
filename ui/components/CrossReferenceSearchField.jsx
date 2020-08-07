@@ -1,11 +1,9 @@
 import React, { useMemo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
-import BaseField from 'uniforms/BaseField';
 import Select from 'antd/lib/select';
-import connectField from 'uniforms/connectField';
-import filterDOMProps from 'uniforms/filterDOMProps';
-import wrapField from 'uniforms-antd/wrapField';
+import { connectField, filterDOMProps } from 'uniforms';
+import { wrapField } from 'uniforms-antd';
 
 import debounce from 'lodash/debounce';
 import gql from 'graphql-tag';
@@ -193,7 +191,7 @@ CrossReferenceSearchField.propTypes = {
   idType: PropTypes.string,
 };
 
-CrossReferenceSearchField.contextTypes = BaseField.contextTypes;
+// CrossReferenceSearchField.contextTypes = BaseField.contextTypes;
 
 export default connectField(CrossReferenceSearchField);
 

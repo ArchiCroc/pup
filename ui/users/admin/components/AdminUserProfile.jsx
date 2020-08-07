@@ -6,9 +6,7 @@ import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
-import AutoForm from 'uniforms/AutoForm';
-import TextField from 'uniforms-antd/TextField';
-// import SelectField from 'uniforms-antd/SelectField';
+import { AutoForm, TextField } from 'uniforms-antd';
 import AdminPasswordField from './AdminPasswordField';
 import CrossReferenceSelectField from '../../../components/CrossReferenceSelectField';
 import AdminUserProfileSchema from '../../../../api/Users/schemas/admin-profile';
@@ -135,7 +133,10 @@ function AdminUserProfile({ user }) {
                   <CrossReferenceSelectField
                     transform={(value) => value}
                     name="roles"
-                    options={[{ label: 'User', value: 'user' }, { label: 'Admin', value: 'admin' }]}
+                    options={[
+                      { label: 'User', value: 'user' },
+                      { label: 'Admin', value: 'admin' },
+                    ]}
                     checkboxes
                   />
                 </Col>

@@ -1,6 +1,7 @@
 import React from 'react';
 import i18n from 'meteor/universe:i18n';
 import Button from 'antd/lib/button';
+import StarIcon from '@ant-design/icons/StarOutlined';
 
 import StyledIndex from './StyledIndex';
 
@@ -15,7 +16,7 @@ const Index = () => (
     <div>
       <Button href="http://cleverbeagle.com/pup">{i18n.__('index_docs_button')}</Button>
       <> </>
-      <Button href="https://github.com/cleverbeagle/pup" icon="star">
+      <Button href="https://github.com/cleverbeagle/pup" icon={<StarIcon />}>
         {i18n.__('index_star_button')}
       </Button>
     </div>

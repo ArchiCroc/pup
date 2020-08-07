@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from './Icon';
+import SearchIcon from '@ant-design/icons/SearchOutlined';
 import StyledSearchInput from './StyledSearchInput';
 
 const SearchInput = ({ placeholder, value, onChange }) => (
   <StyledSearchInput className="SearchInput">
-    <Icon iconStyle="solid" icon="search" />
+    <SearchIcon />
     <input
       type="text"
       name="search"

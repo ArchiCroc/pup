@@ -15,8 +15,7 @@ import message from 'antd/lib/message';
 import Modal from 'antd/lib/modal';
 import Tabs from 'antd/lib/tabs';
 import capitalize from 'lodash/capitalize';
-import AutoForm from 'uniforms/AutoForm';
-import TextField from 'uniforms-antd/TextField';
+import { AutoForm, TextField } from 'uniforms-antd';
 
 import PageHeader from '../components/PageHeader';
 import AccountPageFooter from './components/AccountPageFooter';

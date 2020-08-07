@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'antd/lib/select';
-import connectField from 'uniforms/connectField';
-import filterDOMProps from 'uniforms/filterDOMProps';
-import wrapField from 'uniforms-antd/wrapField';
+import { connectField, filterDOMProps } from 'uniforms';
+import { wrapField } from 'uniforms-antd';
 import i18n from 'meteor/universe:i18n';
 
 const SelectField = (props) => {

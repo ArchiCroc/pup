@@ -2,9 +2,8 @@ import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import Select from 'antd/lib/select';
-import connectField from 'uniforms/connectField';
-import filterDOMProps from 'uniforms/filterDOMProps';
-import wrapField from 'uniforms-antd/wrapField';
+import { connectField, filterDOMProps } from 'uniforms';
+import { wrapField } from 'uniforms-antd';
 import gql from 'graphql-tag';
 
 const { Option } = Select;
