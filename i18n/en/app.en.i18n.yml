@@ -34,3 +34,9 @@ page_error_message: This page had a problem rendering. Please contact the site's
 page_not_found_title: 404 Page Not Found
 page_not_found: Page Not Found
 page_not_found_message:  ${page} does not exist.
+
+# generic
+true: 'Yes'
+false: 'No'
+confirm: Confirm
+reset: Reset

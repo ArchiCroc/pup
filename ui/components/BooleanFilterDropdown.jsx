@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import Radio from 'antd/lib/radio';
 import isArray from 'lodash/isArray';
-import FilterDropdownMenuWrapper from 'antd/lib/table/FilterDropdownMenuWrapper';
+import FilterDropdownMenuWrapper from 'antd/lib/table/hooks/useFilter/FilterWrapper';
 
 function BooleanFilterDropdown(props) {
   const { setSelectedKeys, selectedKeys, confirm, clearFilters, trueText, falseText } = props;

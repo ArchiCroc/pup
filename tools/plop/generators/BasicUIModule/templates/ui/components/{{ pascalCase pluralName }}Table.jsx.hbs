@@ -89,7 +89,7 @@ function {{ pascalCase pluralName }}Table({{#prettyProps}}
   const { loading, data: { {{ camelCase pluralName }} } = {} } = useQuery({{ camelCase pluralName }}Query, {
     fetchPolicy: 'cache-and-network',
     variables: {
-      pageSize: paginationObject.pageSize,
+      pageSize: currentPageSize,
       page: currentPage,
       sort: currentSort,
       order: currentOrder,

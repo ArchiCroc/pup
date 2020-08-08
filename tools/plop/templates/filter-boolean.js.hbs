@@ -9,7 +9,7 @@ import BooleanFilterDropdown from '{{@root.uiPathOffset}}../../components/Boolea
 {{/compare}}
 {{#compare template '===' 'ui/useState'}}
 const [current{{ pascalCase fieldName }}, setCurrent{{ pascalCase fieldName }}] = useState(
-  {{ fieldName }} === undefined 
+  {{ fieldName }} == null 
   ? [] 
   : [isString({{ fieldName }}) ? !!({{ fieldName }}.toLowerCase() === 'true') : {{ fieldName }}],
 );
