@@ -20,7 +20,7 @@ const RoleSchema = new SimpleSchema({
     label: () => i18n.__('Roles.name_label'),
     max: 64,
     autoValue() {
-      if (this.value !== undefined && this.value !== null) {
+      if (this.value != null) {
         return cleanName(this.value);
       }
       return this.value;

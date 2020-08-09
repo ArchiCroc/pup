@@ -38,7 +38,7 @@ const ErrorReportSchema = new SimpleSchema({
     type: SimpleSchema.Integer,
     label: () => i18n.__('ErrorReports.level_label'),
     autoValue() {
-      if (this.value !== undefined && this.value !== null) {
+      if (this.value != null) {
         return cleanLevel(this.value);
       }
       return this.value;

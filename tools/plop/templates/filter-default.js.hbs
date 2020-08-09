@@ -112,7 +112,7 @@ import isArray from 'lodash/isArray';
 {{#compare template '===' 'api/multiItemQueryModifiers'}}
 if (isArray({{fieldName}}) && {{fieldName}}.length > 0) {
   query.{{fieldName}} = { $in: {{fieldName}} };
-} else if ({{fieldName}} !== undefined && {{fieldName}} !== null) {
+} else if ({{fieldName}} != null) {
   query.{{fieldName}} = {{fieldName}};
 }
 
