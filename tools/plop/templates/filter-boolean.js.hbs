@@ -35,7 +35,7 @@ setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
 {{#compare template '===' 'ui/queryStringDefaultPropsKeys'}}
 {{fieldName}}: undefined,
 {{/compare}}
-{{#compare template '===' 'ui/queryStringPropsTypes'}}
+{{#compare template '===' 'ui/queryStringPropTypes'}}
 {{fieldName}}: PropTypes.oneOfType([
   PropTypes.string,
   PropTypes.bool,
