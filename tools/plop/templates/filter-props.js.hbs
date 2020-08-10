@@ -50,9 +50,9 @@ import isArray from 'lodash/isArray';
 {{/compare}}
 {{#compare template '===' 'api/multiItemQueryModifiers'}}
 {{!-- need to force this --}}
-if (isArray({{fieldName}})) {
+if (isArray({{fieldName}}) && {{fieldName}}.length > 0) {
   query.{{fieldName}} = { $in: {{fieldName}} };
-} else if ({{fieldName}}) {
+} else if ({{fieldName}} != null) {
   query.{{fieldName}} = {{fieldName}};
 }
 

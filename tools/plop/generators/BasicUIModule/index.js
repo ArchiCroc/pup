@@ -51,8 +51,7 @@ module.exports = {
     Object.assign(values, name);
     return values;
   },
-  actions: (promptData, test) => {
-    console.log(test);
+  actions: (promptData) => {
     const data = processSchema(promptData);
 
     const schemaKeys = Object.keys(data.schema.fields);
