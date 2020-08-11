@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
-import { useQuery } from '@apollo/client';
-import gql from 'graphql-tag';
+import { gql, useQuery } from '@apollo/client';
 
 function useQueryForFilters(props) {
   const { query, labelKey, valueKey, edges } = props;
