@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Button from 'antd/lib/button';

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { BoolField, SubmitField } from 'uniforms-antd';
 import message from 'antd/lib/message';
 import AutoForm from '../../components/AutoForm';

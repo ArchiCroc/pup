@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { generatePath } from 'react-router';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import Tabs from 'antd/lib/tabs';
 import PageBreadcrumbs, { Breadcrumb } from '../../components/PageBreadcrumbs';
 import PageHeader from '../../components/PageHeader';

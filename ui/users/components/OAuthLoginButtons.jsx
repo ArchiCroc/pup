@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import OAuthLoginButton from './OAuthLoginButton';
 import oAuthServicesQuery from '../queries/OAuth.gql';
 import StyledOAuthLoginButtons from './StyledOAuthLoginButtons';

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import Descriptions from 'antd/lib/descriptions';
 import { useParams } from 'react-router-dom';
 import hasRole from '../../modules/hasRole';

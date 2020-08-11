@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Accounts } from 'meteor/accounts-base';
 import i18n from 'meteor/universe:i18n';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import message from 'antd/lib/message';
 import Alert from '../components/Alert';
 

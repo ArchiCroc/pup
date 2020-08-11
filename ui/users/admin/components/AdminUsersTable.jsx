@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 // import { Roles } from 'meteor/alanning:roles';
 import i18n from 'meteor/universe:i18n';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import useQueryStringObject from '../../../../modules/hooks/useQueryStringObject';
 import isString from 'lodash/isString';
 import Table from 'antd/lib/table';

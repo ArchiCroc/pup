@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import Input from 'antd/lib/input';
 import Table from 'antd/lib/table';
 import isString from 'lodash/isString';

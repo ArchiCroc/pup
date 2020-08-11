@@ -8,7 +8,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import { ThemeProvider } from 'styled-components';
 // import { ApolloProvider } from 'react-apollo';
-import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider } from '@apollo/client';
 
 // import i18n from 'meteor/universe:i18n';
 

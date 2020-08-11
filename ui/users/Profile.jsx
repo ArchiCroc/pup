@@ -7,7 +7,7 @@ import FileSaver from 'file-saver';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import i18n from 'meteor/universe:i18n';
-import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
+import { useQuery, useMutation, useApolloClient } from '@apollo/client';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Button from 'antd/lib/button';

@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import Select from 'antd/lib/select';
 import { connectField, filterDOMProps } from 'uniforms';
 import { wrapField } from 'uniforms-antd';

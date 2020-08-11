@@ -1,11 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 
 import { Meteor } from 'meteor/meteor';
-import { ApolloClient } from 'apollo-client';
-import { ApolloLink } from 'apollo-link';
-import { onError } from 'apollo-link-error';
-import { HttpLink } from 'apollo-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
 import { MeteorAccountsLink } from 'meteor/apollo';
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {

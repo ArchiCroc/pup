@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'antd/lib/button';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import message from 'antd/lib/message';
 import i18n from 'meteor/universe:i18n';
 import Alert from '../../components/Alert';
