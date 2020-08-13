@@ -1,5 +1,5 @@
 import Uniforms from 'uniforms';
-import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
+import SimpleSchema2Bridge from '../../libs/uniforms-bridge-simple-schema-2/index';
 import i18n from 'meteor/universe:i18n';
 
 import '../../i18n';
