@@ -34,3 +34,4 @@ universe:i18n
 simple:json-routes
 react-meteor-data
 apollo
+typescript

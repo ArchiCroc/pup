@@ -1,16 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { AutoForm as UniformsAutoForm } from 'uniforms-antd';
+import SimpleSchema2Bridge from '../../modules/uniforms-bridge-simple-schema-2/index';
 import prepareFormModel from '../../modules/prepareFormModel';
 
-function AutoForm({ id, name, schema, model, formRef, ...props }) {
+function AutoForm({ id, name, schema, model, formComponent, formRef, ...props }) {
   const bridgedSchema = new SimpleSchema2Bridge(schema);
 
   const preparedFormModel = prepareFormModel(model);
 
+  const FormComponent = formComponent;
+
   return (
-    <UniformsAutoForm
+    <FormComponent
       id={id || `form-${name}`}
       schema={bridgedSchema}
       model={preparedFormModel}
@@ -27,6 +29,7 @@ AutoForm.defaultProps = {
   placeholder: true,
   formRef: undefined,
   model: {},
+  formComponent: UniformsAutoForm,
 };
 
 AutoForm.propTypes = {
@@ -37,6 +40,7 @@ AutoForm.propTypes = {
   schema: PropTypes.object.isRequired,
   model: PropTypes.object,
   formRef: PropTypes.object,
+  formComponent: PropTypes.func,
 };
 
 export default AutoForm;

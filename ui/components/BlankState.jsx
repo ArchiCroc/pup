@@ -4,14 +4,12 @@ import Button from 'antd/lib/button';
 import StyledBlankState from './StyledBlankState';
 
 function BlankState({ image, icon, title, subtitle, action }) {
-  const Icon = icon;
-
   return (
     <StyledBlankState>
       {image && <img src={image} alt={title} />}
-      {icon && <Icon />}
+      {icon && icon}
       <h4>{title}</h4>
-      <p>{subtitle}</p>
+      {subtitle && <p>{subtitle}</p>}
       {action && (
         <Button type={action.style || 'primary'} onClick={action.onClick}>
           {action.label}
@@ -25,13 +23,14 @@ BlankState.defaultProps = {
   image: null,
   icon: null,
   action: null,
+  subtitle: undefined,
 };
 
 BlankState.propTypes = {
   image: PropTypes.string,
-  icon: PropTypes.object,
+  icon: PropTypes.node,
   title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
+  subtitle: PropTypes.string,
   action: PropTypes.object,
 };
 
