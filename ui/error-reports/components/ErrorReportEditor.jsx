@@ -9,7 +9,6 @@ import message from 'antd/lib/message';
 import { useHistory } from 'react-router-dom';
 import { HiddenField, ListField, ListItemField, TextField } from 'uniforms-antd';
 import AutoForm from '../../components/AutoForm';
-import prepareFormModel from '../../../modules/prepareFormModel';
 import CrossReferenceSearchField from '../../components/CrossReferenceSearchField';
 import SelectField from '../../components/SelectField';
 
@@ -53,14 +52,7 @@ function ErrorReportEditor({ doc }) {
 
   return (
     <StyledErrorReportEditor>
-      <AutoForm
-        name="errorReport"
-        schema={ErrorReportSchema}
-        onSubmit={handleSubmit}
-        model={prepareFormModel(doc)}
-        showInlineError
-        placeholder
-      >
+      <AutoForm name="errorReport" schema={ErrorReportSchema} onSubmit={handleSubmit} model={doc}>
         <HiddenField name="_id" />
         <CrossReferenceSearchField name="userId" />
         <SelectField name="level" />

@@ -47,8 +47,6 @@ const UserSettings = ({ user }) => {
         onSubmit={handleSubmit}
         autosave
         autosaveDelay={250}
-        showInlineError
-        placeholder
         submitField={renderSubmitButton}
       >
         <BoolField name="gdpr.canSendMarketingEmails" />

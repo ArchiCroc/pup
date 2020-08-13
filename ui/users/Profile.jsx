@@ -213,8 +213,6 @@ function Profile({ match }) {
             schema={ProfileSchema}
             model={model}
             onSubmit={handleSubmit}
-            showInlineError
-            placeholder
           >
             {renderProfileForm(user)}
           </AutoForm>

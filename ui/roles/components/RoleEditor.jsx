@@ -9,7 +9,6 @@ import message from 'antd/lib/message';
 import { useHistory } from 'react-router-dom';
 import { HiddenField, TextField } from 'uniforms-antd';
 import AutoForm from '../../components/AutoForm';
-import prepareFormModel from '../../../modules/prepareFormModel';
 
 /* #### PLOP_IMPORTS_START #### */
 /* #### PLOP_IMPORTS_END #### */
@@ -51,14 +50,7 @@ function RoleEditor({ doc }) {
 
   return (
     <StyledRoleEditor>
-      <AutoForm
-        name="role"
-        schema={RoleSchema}
-        onSubmit={handleSubmit}
-        model={prepareFormModel(doc)}
-        showInlineError
-        placeholder
-      >
+      <AutoForm name="role" schema={RoleSchema} onSubmit={handleSubmit} model={doc}>
         <HiddenField name="_id" />
         <TextField name="name" />
         <Button htmlType="submit" type="primary" block>

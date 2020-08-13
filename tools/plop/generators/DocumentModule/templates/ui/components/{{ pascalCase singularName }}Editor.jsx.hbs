@@ -170,8 +170,6 @@ const {{ pascalCase singularName }}Editor = ({ doc, history }) => {
           model={doc}
           schema={{{ pascalCase singularName }}Schema}
           onChange={handleUpdate{{ pascalCase singularName }}}
-          showInlineError
-          placeholder
         >
           <{{ pascalCase singularName }}EditorTitle>
             <AutoField name="title" placeholder={i18n.__('{{ pascalCase pluralName }}.title_placeholder')} />
