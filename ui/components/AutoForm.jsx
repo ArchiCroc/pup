@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { AutoForm as UniformsAutoForm } from 'uniforms-antd';
-import SimpleSchema2Bridge from '../../modules/uniforms-bridge-simple-schema-2/index';
-import prepareFormModel from '../../modules/prepareFormModel';
+import SimpleSchema2Bridge from '../../libs/uniforms-bridge-simple-schema-2/index';
+import prepareFormModel from '../../libs/prepareFormModel';
 
 function AutoForm({ id, name, schema, model, formComponent, formRef, ...props }) {
   const bridgedSchema = new SimpleSchema2Bridge(schema);
