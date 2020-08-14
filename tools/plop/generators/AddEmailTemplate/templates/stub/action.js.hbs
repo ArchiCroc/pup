@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 // import { gql } from '@apollo/client';
 // import { getGraphqlSchema } from '../../../startup/server/graphql-api';
 // import {{pascalCase apiFolderName }} from '../{{pascalCase apiFolderName }}';
-import sendEmail from '../../../modules/server/sendEmail';
+import sendEmail from '../../../libs/server/sendEmail';
 
 const send{{pascalCase name }}Email = ({ userId }, context) => {
   const user = Meteor.users.findOne({ _id: userId });

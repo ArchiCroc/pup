@@ -25,8 +25,8 @@ import {
   remove{{ pascalCase singularName }} as remove{{ pascalCase singularName }}Mutation,
   update{{ pascalCase singularName }}Key as update{{ pascalCase singularName }}KeyMutation,
 } from '../mutations/{{ pascalCase pluralName }}.gql';
-import delay from '../../../modules/delay';
-import { timeago } from '../../../modules/dates';
+import delay from '../../../libs/delay';
+import { timeago } from '../../../libs/dates';
 import {{ pascalCase singularName }}Schema from '../../../api/{{ pascalCase pluralName }}/schemas/{{ camelCase singularName }}';
 
 import {

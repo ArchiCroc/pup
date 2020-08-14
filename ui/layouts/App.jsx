@@ -63,8 +63,8 @@ import Footer from '../components/Footer';
 import VerifyEmailAlert from '../users/components/VerifyEmailAlert';
 import GDPRConsentModal from '../users/components/GDPRConsentModal';
 
-import withTrackerSsr from '../../modules/withTrackerSsr';
-import getUserName from '../../modules/getUserName';
+import withTrackerSsr from '../../libs/withTrackerSsr';
+import getUserName from '../../libs/getUserName';
 
 import StyledApp from './StyledApp';
 

@@ -10,9 +10,9 @@ import Input from 'antd/lib/input';
 import Table from 'antd/lib/table';
 import New{{ pascalCase singularName }}Button from './New{{ pascalCase singularName }}Button';
   {{#if schema.permissions.create}}
-import hasRole from '{{uiPathOffset}}../../../modules/hasRole';
+import hasRole from '{{uiPathOffset}}../../../libs/hasRole';
   {{/if}}
-import useQueryStringObject from '{{uiPathOffset}}../../../modules/hooks/useQueryStringObject';
+import useQueryStringObject from '{{uiPathOffset}}../../../libs/hooks/useQueryStringObject';
   {{#each schema.fields ~}}
     {{#compare this.filterable '&&' this.showInTableView}}
 {{> (lookup . 'filterTemplateFile' ) template='ui/imports' uiPathOffset=(concat @root.uiPathOffset "../")}}

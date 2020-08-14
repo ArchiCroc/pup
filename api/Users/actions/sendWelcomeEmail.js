@@ -3,7 +3,7 @@
 import { Meteor } from 'meteor/meteor';
 import i18n from 'meteor/universe:i18n';
 import normalizeMeteorUserData from './normalizeMeteorUserData';
-import sendEmail from '../../../modules/server/sendEmail';
+import sendEmail from '../../../libs/server/sendEmail';
 
 const getEmailOptions = (user) => {
   try {

@@ -4,7 +4,7 @@ import i18n from 'meteor/universe:i18n';
 import { withRouter, Link } from 'react-router-dom';
 // import { LinkContainer } from 'react-router-bootstrap';
 import Menu from 'antd/lib/menu';
-import hasRole from '../../modules/hasRole';
+import hasRole from '../../libs/hasRole';
 
 const AuthenticatedNavigation = ({ name, history, roles, location = { pathname: '' } }) => (
   <>

@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 import { GraphQLDate, GraphQLDateTime } from 'graphql-iso-date';
 import { makeExecutableSchema } from 'graphql-tools';
-import { ObjectID } from '../../modules/server/GraphQLObjectIdScalar';
+import { ObjectID } from '../../libs/server/GraphQLObjectIdScalar';
 
 /* #### PLOP_IMPORTS_START #### */
 /* #### ROLES_IMPORTS_START #### */

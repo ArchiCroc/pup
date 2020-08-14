@@ -4,7 +4,7 @@ import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/client';
 import Descriptions from 'antd/lib/descriptions';
 import { useParams } from 'react-router-dom';
-import hasRole from '../../modules/hasRole';
+import hasRole from '../../libs/hasRole';
 import FormatDate from '../components/FormatDate';
 import Loading from '../components/Loading';
 import PageBreadcrumbs, { Breadcrumb } from '../components/PageBreadcrumbs';

@@ -15,7 +15,7 @@ import enUS from 'antd/lib/locale-provider/en_US';
 
 import GlobalStyle from '../../ui/layouts/GlobalStyle';
 import App from '../../ui/layouts/App';
-import checkIfBlacklisted from '../../modules/server/checkIfBlacklisted';
+import checkIfBlacklisted from '../../libs/server/checkIfBlacklisted';
 
 onPageLoad(async (sink) => {
   if (checkIfBlacklisted(sink.request.url.path)) {

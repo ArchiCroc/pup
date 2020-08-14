@@ -11,7 +11,7 @@ import {{ pascalCase singularName }}Editor from './components/{{ pascalCase sing
 import Loading from '{{uiPathOffset}}../components/Loading';
 import NotFound from '{{uiPathOffset}}../pages/NotFound';
 import Remove{{ pascalCase singularName }}Button from './components/Remove{{ pascalCase singularName }}Button';
-import hasRole from '{{uiPathOffset}}../../modules/hasRole';
+import hasRole from '{{uiPathOffset}}../../libs/hasRole';
 {{#> paramsImport}}
   {{#each schema.fields}}
     {{#if this.filterable}}

@@ -5,8 +5,8 @@ import Input from 'antd/lib/input';
 import Table from 'antd/lib/table';
 import i18n from 'meteor/universe:i18n';
 import { useHistory } from 'react-router-dom';
-import hasRole from '../../../modules/hasRole';
-import useQueryStringObject from '../../../modules/hooks/useQueryStringObject';
+import hasRole from '../../../libs/hasRole';
+import useQueryStringObject from '../../../libs/hooks/useQueryStringObject';
 import PrettyDate from '../../components/PrettyDate';
 import NewRoleButton from './NewRoleButton';
 

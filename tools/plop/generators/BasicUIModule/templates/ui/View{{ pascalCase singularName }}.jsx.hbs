@@ -77,7 +77,7 @@ import PageHeader from '{{uiPathOffset}}../components/PageHeader';
 import Loading from '{{uiPathOffset}}../components/Loading';
 import NotFound from '{{uiPathOffset}}../pages/NotFound';
   {{#compare hasFieldPermissions '||' schema.permissions.update}}
-import hasRole from '{{uiPathOffset}}../../modules/hasRole';
+import hasRole from '{{uiPathOffset}}../../libs/hasRole';
   {{/compare}}
   {{#each schema.fields ~}}
     {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}

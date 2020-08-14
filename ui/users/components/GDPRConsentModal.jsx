@@ -8,7 +8,7 @@ import modal from 'antd/lib/modal';
 import UserSettings from './UserSettings';
 import { userSettings as userSettingsQuery } from '../queries/Users.gql';
 import { updateUser as updateUserMutation } from '../mutations/Users.gql';
-import unfreezeApolloCacheValue from '../../../modules/unfreezeApolloCacheValue';
+import unfreezeApolloCacheValue from '../../../libs/unfreezeApolloCacheValue';
 // import Styles from './StyledGDPRConsentModal';
 
 class GDPRConsentModal extends React.Component {

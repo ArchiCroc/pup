@@ -55,7 +55,7 @@ import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 import AutoForm from '{{uiPathOffset}}../../components/AutoForm';
   {{#if hasFieldPermissions }}
-import hasRole from '{{uiPathOffset}}../../../modules/hasRole';
+import hasRole from '{{uiPathOffset}}../../../libs/hasRole';
   {{/if}}
   {{#each fieldImports}}
 import {{this.variable}} from '{{this.path}}';

@@ -2,7 +2,7 @@ import Roles from './Roles';
 import RoleSchema from './schemas/role';
 // import sanitizeHtml from 'sanitize-html';
 import checkUserRole from '../Users/actions/checkUserRole';
-import createMongoModifier from '../../modules/server/createMongoModifier';
+import createMongoModifier from '../../libs/server/createMongoModifier';
 
 export default {
   saveRole: (root, args, { user }) => {
