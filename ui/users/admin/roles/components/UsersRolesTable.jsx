@@ -92,7 +92,7 @@ function UsersRolesTable({
     const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
 
     setCurrentPage(pagination.current);
-    setCurrentPage(pagination.pageSize);
+    setCurrentPageSize(pagination.pageSize);
     setCurrentOrder(sorter.order);
     setCurrentSort(sorter.field);
 

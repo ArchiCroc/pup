@@ -203,9 +203,11 @@ const paginationObject = {
 {{/if}}
     const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
 
+    const $newOrder = sorter.order ? sorter.order : null;
+
     setCurrentPage(pagination.current);
-    setCurrentPage(pagination.pageSize);
-    setCurrentOrder(sorter.order);
+    setCurrentPageSize(pagination.pageSize);
+    setCurrentOrder($newOrder);
     setCurrentSort(sorter.field);
 {{#each schema.fields}}
   {{#compare this.filterable '&&' this.showInTableView}}
@@ -217,7 +219,7 @@ const paginationObject = {
       page: pagination.current,
       pageSize: pagination.pageSize,
       sort: currentField,
-      order: sorter.order,
+      order: $newOrder,
 {{#each schema.fields}}
   {{#compare this.filterable '&&' this.showInTableView}}
       {{> (lookup . 'filterTemplateFile' ) template='ui/handleTableChangeSetQueryObjectKey'}}
