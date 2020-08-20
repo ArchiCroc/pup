@@ -5,9 +5,9 @@ import i18n from 'meteor/universe:i18n';
 import FacebookIcon from '@ant-design/icons/FacebookOutlined';
 import TwitterIcon from '@ant-design/icons/TwitterOutlined';
 
-import StyledLogout from './StyledLogout';
+import StyledLogoutPage from './StyledLogoutPage';
 
-function Logout(props) {
+function LogoutPage(props) {
   useEffect(() => {
     Meteor.logout(() => props.setAfterLoginPath(null));
   });
@@ -17,7 +17,7 @@ function Logout(props) {
   const twitterUsername = i18n.__('twitter_username');
 
   return (
-    <StyledLogout>
+    <StyledLogoutPage>
       <img
         src="https://s3-us-west-2.amazonaws.com/cleverbeagle-assets/graphics/email-icon.png"
         alt="Clever Beagle"
@@ -40,12 +40,12 @@ function Logout(props) {
           </a>
         </li>
       </ul>
-    </StyledLogout>
+    </StyledLogoutPage>
   );
 }
 
-Logout.propTypes = {
+LogoutPage.propTypes = {
   setAfterLoginPath: PropTypes.func.isRequired,
 };
 
-export default Logout;
+export default LogoutPage;

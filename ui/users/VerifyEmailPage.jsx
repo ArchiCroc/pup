@@ -8,7 +8,7 @@ import Alert from '../components/Alert';
 
 import { sendWelcomeEmail as sendWelcomeEmailMutation } from './mutations/Users.gql';
 
-function VerifyEmail() {
+function VerifyEmailPage() {
   const history = useHistory();
   const { token } = useParams();
   const [error, setError] = useState(null);
@@ -36,4 +36,4 @@ function VerifyEmail() {
   );
 }
 
-export default VerifyEmail;
+export default VerifyEmailPage;

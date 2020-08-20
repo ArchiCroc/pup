@@ -22,9 +22,9 @@ import PublicRoute from '../components/PublicRoute';
 /* #### PLOP_IMPORTS_START #### */
 
 /* #### PAGES_IMPORTS_START #### */
-import Index from '../pages/Index';
-import Terms from '../pages/Terms';
-import Privacy from '../pages/Privacy';
+import IndexPage from '../pages/IndexPage';
+import TermsPage from '../pages/TermsPage';
+import PrivacyPage from '../pages/PrivacyPage';
 import ExamplePage from '../pages/ExamplePage';
 /* #### PAGES_IMPORTS_END #### */
 
@@ -43,15 +43,14 @@ import EditUsersRolePage from '../users/admin/roles/EditUsersRolePage';
 /* #### USERS_ROLES_IMPORTS_END #### */
 
 /* #### USERS_IMPORTS_START #### */
-import Profile from '../users/Profile';
-import Signup from '../users/Signup';
-import Login from '../users/Login';
-import Logout from '../users/Logout';
-import NotFound from '../pages/NotFoundPage';
-
-import VerifyEmail from '../users/VerifyEmail';
-import RecoverPassword from '../users/RecoverPassword';
-import ResetPassword from '../users/ResetPassword';
+import ProfilePage from '../users/ProfilePage';
+import SignupPage from '../users/SignupPage';
+import LoginPage from '../users/LoginPage';
+import LogoutPage from '../users/LogoutPage';
+import NotFoundPage from '../pages/NotFoundPage';
+import VerifyEmailPage from '../users/VerifyEmailPage';
+import RecoverPasswordPage from '../users/RecoverPasswordPage';
+import ResetPasswordPage from '../users/ResetPasswordPage';
 
 import AdminUsers from '../users/admin/AdminUsers';
 import AdminUser from '../users/admin/AdminUser';
@@ -194,17 +193,17 @@ class App extends React.Component {
                     <AuthenticatedRoute
                       exact
                       path="/user/:tab?"
-                      component={Profile}
+                      component={ProfilePage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
-                    <PublicOnlyRoute path="/signup" component={Signup} {...props} {...state} />
-                    <PublicOnlyRoute path="/login" component={Login} {...props} {...state} />
+                    <PublicOnlyRoute path="/signup" component={SignupPage} {...props} {...state} />
+                    <PublicOnlyRoute path="/login" component={LoginPage} {...props} {...state} />
                     <Route
                       path="/logout"
                       render={(routeProps) => (
-                        <Logout {...routeProps} setAfterLoginPath={setAfterLoginPath} />
+                        <LogoutPage {...routeProps} setAfterLoginPath={setAfterLoginPath} />
                       )}
                       {...props}
                       {...state}
@@ -213,17 +212,17 @@ class App extends React.Component {
                     <PublicRoute
                       name="verify-email"
                       path="/verify-email/:token"
-                      component={VerifyEmail}
+                      component={VerifyEmailPage}
                     />
                     <PublicRoute
                       name="recover-password"
                       path="/recover-password"
-                      component={RecoverPassword}
+                      component={RecoverPasswordPage}
                     />
                     <PublicRoute
                       name="reset-password"
                       path="/reset-password/:token"
-                      component={ResetPassword}
+                      component={ResetPasswordPage}
                     />
                     <AuthorizedRoute
                       exact
@@ -248,13 +247,13 @@ class App extends React.Component {
                     {/* #### USERS_ROUTES_END #### */}
 
                     {/* #### PAGES_ROUTES_START #### */}
-                    <PublicRoute exact name="index" path="/" component={Index} />
-                    <PublicRoute name="terms" path="/terms" component={Terms} />
-                    <PublicRoute name="privacy" path="/privacy" component={Privacy} />
+                    <PublicRoute exact name="index" path="/" component={IndexPage} />
+                    <PublicRoute name="terms" path="/terms" component={TermsPage} />
+                    <PublicRoute name="privacy" path="/privacy" component={PrivacyPage} />
                     {/* #### PAGES_ROUTES_END #### */}
 
                     {/* #### PLOP_ROUTES_END #### */}
-                    <Route component={NotFound} />
+                    <Route component={NotFoundPage} />
                   </Switch>
                 </PageErrorBoundary>
               </PageContainer>

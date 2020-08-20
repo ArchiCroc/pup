@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import lighten from 'polished/lib/color/lighten';
 
-const StyledLogout = styled.div`
+const StyledLogoutPage = styled.div`
   padding: 20px;
   background: var(--cb-blue);
   text-align: center;
@@ -66,4 +66,4 @@ const StyledLogout = styled.div`
   }
 `;
 
-export default StyledLogout;
+export default StyledLogoutPage;

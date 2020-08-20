@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StyledRecoverPassword = styled.div`
+const StyledRecoverPasswordPage = styled.div`
   border: 1px solid var(--gray-lighter);
   padding: 25px;
   max-width: 425px;
@@ -26,4 +26,4 @@ const StyledRecoverPassword = styled.div`
   }
 `;
 
-export default StyledRecoverPassword;
+export default StyledRecoverPasswordPage;

@@ -12,10 +12,10 @@ import { TextField } from 'uniforms-antd';
 import AutoForm from '../components/AutoForm';
 import OAuthLoginButtons from './components/OAuthLoginButtons';
 import AccountPageFooter from './components/AccountPageFooter';
-import StyledSignup from './StyledSignup';
+import StyledSignupPage from './StyledSignupPage';
 import SignupSchema from '../../api/Users/schemas/signup';
 
-function Signup() {
+function SignupPage() {
   const history = useHistory();
 
   function handleSubmit(form) {
@@ -42,7 +42,7 @@ function Signup() {
   }
 
   return (
-    <StyledSignup>
+    <StyledSignupPage>
       <Row>
         <Col xs={24}>
           <h2 className="page-header">{i18n.__('Users.sign_up_header')}</h2>
@@ -76,8 +76,8 @@ function Signup() {
           </AutoForm>
         </Col>
       </Row>
-    </StyledSignup>
+    </StyledSignupPage>
   );
 }
 
-export default Signup;
+export default SignupPage;

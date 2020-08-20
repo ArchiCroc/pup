@@ -26,9 +26,9 @@ import {
   removeUser as removeUserMutation,
 } from './mutations/Users.gql';
 import ProfileSchema from '../../api/Users/schemas/profile';
-import StyledProfile from './StyledProfile';
+import StyledProfilePage from './StyledProfilePage';
 
-function Profile({ match }) {
+function ProfilePage({ match }) {
   const history = useHistory();
   const { _id } = useParams();
 
@@ -198,7 +198,7 @@ function Profile({ match }) {
     : {};
 
   return user ? (
-    <StyledProfile md={16} lg={12} xl={10} xxl={8}>
+    <StyledProfilePage md={16} lg={12} xl={10} xxl={8}>
       <PageHeader title={user.fullName || user.username || 'unknown'} className="no-border" />
       <Tabs
         // animation={false}
@@ -235,14 +235,14 @@ function Profile({ match }) {
           <UserSettings user={user} />
         </Tabs.TabPane>
       </Tabs>
-    </StyledProfile>
+    </StyledProfilePage>
   ) : (
     <div />
   );
 }
 
-Profile.propTypes = {
+ProfilePage.propTypes = {
   match: PropTypes.object.isRequired,
 };
 
-export default Profile;
+export default ProfilePage;

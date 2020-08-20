@@ -11,10 +11,10 @@ import { TextField } from 'uniforms-antd';
 import AutoForm from '../components/AutoForm';
 import AccountPageFooter from './components/AccountPageFooter';
 
-import StyledResetPassword from './StyledResetPassword';
+import StyledResetPasswordPage from './StyledResetPasswordPage';
 import ResetPasswordSchema from '../../api/Users/schemas/reset-password';
 
-function ResetPassword() {
+function ResetPasswordPage() {
   const history = useHistory();
   const { token } = useParams();
 
@@ -31,7 +31,7 @@ function ResetPassword() {
   }
 
   return (
-    <StyledResetPassword>
+    <StyledResetPasswordPage>
       <Row>
         <Col xs={12}>
           <h4 className="page-header">{i18n.__('Users.reset_password_header')}</h4>
@@ -52,8 +52,8 @@ function ResetPassword() {
           </AutoForm>
         </Col>
       </Row>
-    </StyledResetPassword>
+    </StyledResetPasswordPage>
   );
 }
 
-export default ResetPassword;
+export default ResetPasswordPage;

@@ -12,11 +12,11 @@ import AutoForm from '../components/AutoForm';
 
 import OAuthLoginButtons from './components/OAuthLoginButtons';
 import AccountPageFooter from './components/AccountPageFooter';
-import { StyledLogin, LoginPromo } from './StyledLogin';
+import { StyledLoginPage, LoginPromo } from './StyledLoginPage';
 
 import LoginSchema from '../../api/Users/schemas/login';
 
-function Login() {
+function LoginPage() {
   function handleSubmit(form) {
     const cleanForm = LoginSchema.clean(form);
 
@@ -30,7 +30,7 @@ function Login() {
   }
 
   return (
-    <StyledLogin>
+    <StyledLoginPage>
       <Row className="login">
         <Col sm={24} md={12} lg={12}>
           <LoginPromo>
@@ -65,8 +65,8 @@ function Login() {
           </AutoForm>
         </Col>
       </Row>
-    </StyledLogin>
+    </StyledLoginPage>
   );
 }
 
-export default Login;
+export default LoginPage;

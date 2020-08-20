@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const StyledLogin = styled.div`
+export const StyledLoginPage = styled.div`
   .login {
     border: 1px solid var(--gray-lighter);
     padding: 25px;

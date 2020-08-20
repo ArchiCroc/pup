@@ -3,10 +3,10 @@ import i18n from 'meteor/universe:i18n';
 import Button from 'antd/lib/button';
 import StarIcon from '@ant-design/icons/StarOutlined';
 
-import StyledIndex from './StyledIndex';
+import StyledIndexPage from './StyledIndexPage';
 
-const Index = () => (
-  <StyledIndex>
+const IndexPage = () => (
+  <StyledIndexPage>
     <img
       src="https://s3-us-west-2.amazonaws.com/cleverbeagle-assets/graphics/email-icon.png"
       alt="Clever Beagle"
@@ -23,7 +23,7 @@ const Index = () => (
     <footer>
       <p>{i18n.___('index_footer')}</p>
     </footer>
-  </StyledIndex>
+  </StyledIndexPage>
 );
 
-export default Index;
+export default IndexPage;

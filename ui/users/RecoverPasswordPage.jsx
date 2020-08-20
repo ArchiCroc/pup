@@ -11,10 +11,10 @@ import { TextField } from 'uniforms-antd';
 import AutoForm from '../components/AutoForm';
 import AccountPageFooter from './components/AccountPageFooter';
 
-import StyledRecoverPassword from './StyledRecoverPassword';
+import StyledRecoverPasswordPage from './StyledRecoverPasswordPage';
 import RecoverPasswordSchema from '../../api/Users/schemas/recover-password';
 
-function RecoverPassword() {
+function RecoverPasswordPage() {
   const history = useHistory();
 
   const handleSubmit = (form) => {
@@ -32,7 +32,7 @@ function RecoverPassword() {
   };
 
   return (
-    <StyledRecoverPassword>
+    <StyledRecoverPasswordPage>
       <Row>
         <Col xs={24}>
           <h4 className="page-header">{i18n.__('Users.recover_password_header')}</h4>
@@ -51,8 +51,8 @@ function RecoverPassword() {
           </AutoForm>
         </Col>
       </Row>
-    </StyledRecoverPassword>
+    </StyledRecoverPasswordPage>
   );
 }
 
-export default RecoverPassword;
+export default RecoverPasswordPage;

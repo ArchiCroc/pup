@@ -1,19 +1,14 @@
 import styled from 'styled-components';
 
-const StyledSignup = styled.div`
+const StyledResetPasswordPage = styled.div`
   border: 1px solid var(--gray-lighter);
   padding: 25px;
   max-width: 425px;
   margin: 0 auto;
   border-radius: 3px;
-  background-color: #fff;
 
   .page-header {
     margin-top: 0;
-  }
-
-  .help-block {
-    font-style: italic;
   }
 
   > .row {
@@ -25,10 +20,10 @@ const StyledSignup = styled.div`
     margin-top: 20px;
   }
 
-  /* @media screen and (min-width: 768px) {
+  @media screen and (min-width: 768px) {
     margin-top: 0px;
-    padding: 25px 25px;
-  } */
+    padding: 40px 25px;
+  }
 `;
 
-export default StyledSignup;
+export default StyledResetPasswordPage;
