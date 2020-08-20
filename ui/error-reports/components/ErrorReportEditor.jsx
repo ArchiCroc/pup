@@ -29,7 +29,7 @@ function ErrorReportEditor({ doc }) {
     ignoreResults: true,
     onCompleted: () => {
       message.success(i18n.__('ErrorReports.error_report_saved'));
-      history.push('/error-reports');
+      history.push('/admin/error-reports');
     },
     onError: (error) => {
       message.error(error.message);

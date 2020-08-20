@@ -5,18 +5,18 @@ import { useQuery /* , useMutation */ } from '@apollo/client';
 import Divider from 'antd/lib/divider';
 import { useParams } from 'react-router-dom';
 import hasRole from '../../libs/hasRole';
+import ItemNotFound from '../components/ItemNotFound';
 import Loading from '../components/Loading';
 import PageBreadcrumbs, { Breadcrumb } from '../components/PageBreadcrumbs';
 import PageHeader from '../components/PageHeader';
-import NotFound from '../pages/NotFoundPage';
 import ErrorReportEditor from './components/ErrorReportEditor';
 import RemoveErrorReportButton from './components/RemoveErrorReportButton';
 
 import { editErrorReport as editErrorReportQuery } from './queries/ErrorReports.gql';
 
-import StyledErrorReports from './StyledErrorReports';
+import StyledErrorReportsPage from './StyledErrorReportsPage';
 
-function EditErrorReport({ roles }) {
+function EditErrorReportPage({ roles }) {
   const { _id } = useParams();
 
   const { loading, data: { errorReport = undefined } = {} } = useQuery(editErrorReportQuery, {
@@ -24,27 +24,38 @@ function EditErrorReport({ roles }) {
   });
 
   return (
-    <StyledErrorReports md={16} lg={12} xl={10} xxl={8}>
+    <StyledErrorReportsPage md={16} lg={12} xl={10} xxl={8}>
       <PageBreadcrumbs>
-        <Breadcrumb to="/error-reports">{i18n.__('ErrorReports.error_report_plural')}</Breadcrumb>
+        <Breadcrumb to="/admin/error-reports">
+          {i18n.__('ErrorReports.error_report_plural')}
+        </Breadcrumb>
         <Breadcrumb>{i18n.__('ErrorReports.edit_error_report')}</Breadcrumb>
       </PageBreadcrumbs>
       <PageHeader title={i18n.__('ErrorReports.edit_error_report')} />
       {loading ? (
         <Loading />
       ) : (
-        <>{errorReport ? <ErrorReportEditor doc={errorReport} roles={roles} /> : <NotFound />}</>
+        <>
+          {errorReport ? (
+            <ErrorReportEditor doc={errorReport} roles={roles} />
+          ) : (
+            <ItemNotFound
+              title={i18n.__('ErrorReports.error_report_not_found_title')}
+              message={i18n.__('ErrorReports.error_report_not_found_message')}
+            />
+          )}
+        </>
       )}
       <Divider />
       {errorReport && hasRole(roles, ['admin']) && (
         <RemoveErrorReportButton _id={errorReport._id} message={errorReport.message} />
       )}
-    </StyledErrorReports>
+    </StyledErrorReportsPage>
   );
 }
 
-EditErrorReport.propTypes = {
+EditErrorReportPage.propTypes = {
   roles: PropTypes.array.isRequired,
 };
 
-export default EditErrorReport;
+export default EditErrorReportPage;

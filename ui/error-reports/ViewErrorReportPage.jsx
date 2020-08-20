@@ -6,18 +6,18 @@ import Descriptions from 'antd/lib/descriptions';
 import { useParams } from 'react-router-dom';
 import hasRole from '../../libs/hasRole';
 import FormatDate from '../components/FormatDate';
+import ItemNotFound from '../components/ItemNotFound';
 import Loading from '../components/Loading';
 import PageBreadcrumbs, { Breadcrumb } from '../components/PageBreadcrumbs';
 import PageHeader from '../components/PageHeader';
-import NotFound from '../pages/NotFoundPage';
 
 import EditErrorReportButton from './components/EditErrorReportButton';
 
 import { errorReport as errorReportQuery } from './queries/ErrorReports.gql';
 
-import StyledErrorReports from './StyledErrorReports';
+import StyledErrorReportsPage from './StyledErrorReportsPage';
 
-function ViewErrorReport({ roles }) {
+function ViewErrorReportPage({ roles }) {
   const { _id } = useParams();
 
   const { loading, data: { errorReport } = {} } = useQuery(errorReportQuery, {
@@ -25,13 +25,13 @@ function ViewErrorReport({ roles }) {
   });
 
   return (
-    <StyledErrorReports>
+    <StyledErrorReportsPage>
       {loading ? (
         <Loading />
       ) : (
         <>
           <PageBreadcrumbs>
-            <Breadcrumb to="/error-reports">
+            <Breadcrumb to="/admin/error-reports">
               {i18n.__('ErrorReports.error_report_plural')}
             </Breadcrumb>
             <Breadcrumb>{errorReport.message}</Breadcrumb>
@@ -47,15 +47,18 @@ function ViewErrorReport({ roles }) {
               <ViewErrorReportFields errorReport={errorReport} />
             </>
           ) : (
-            <NotFound />
+            <ItemNotFound
+              title={i18n.__('ErrorReports.error_report_not_found_title')}
+              message={i18n.__('ErrorReports.error_report_not_found_message')}
+            />
           )}
         </>
       )}
-    </StyledErrorReports>
+    </StyledErrorReportsPage>
   );
 }
 
-ViewErrorReport.propTypes = {
+ViewErrorReportPage.propTypes = {
   roles: PropTypes.array.isRequired,
 };
 
@@ -93,4 +96,4 @@ ViewErrorReportFields.propTypes = {
   errorReport: PropTypes.object.isRequired,
 };
 
-export default ViewErrorReport;
+export default ViewErrorReportPage;

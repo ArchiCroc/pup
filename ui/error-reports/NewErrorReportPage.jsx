@@ -4,19 +4,21 @@ import PageBreadcrumbs, { Breadcrumb } from '../components/PageBreadcrumbs';
 import PageHeader from '../components/PageHeader';
 import ErrorReportEditor from './components/ErrorReportEditor';
 
-import StyledErrorReports from './StyledErrorReports';
+import StyledErrorReportsPage from './StyledErrorReportsPage';
 
-function NewErrorReport() {
+function NewErrorReportPage() {
   return (
-    <StyledErrorReports md={16} lg={12} xl={10} xxl={8}>
+    <StyledErrorReportsPage md={16} lg={12} xl={10} xxl={8}>
       <PageBreadcrumbs>
-        <Breadcrumb to="/error-reports">{i18n.__('ErrorReports.error_report_plural')}</Breadcrumb>
+        <Breadcrumb to="/admin/error-reports">
+          {i18n.__('ErrorReports.error_report_plural')}
+        </Breadcrumb>
         <Breadcrumb>{i18n.__('ErrorReports.new_error_report')}</Breadcrumb>
       </PageBreadcrumbs>
       <PageHeader title={i18n.__('ErrorReports.new_error_report')} />
       <ErrorReportEditor />
-    </StyledErrorReports>
+    </StyledErrorReportsPage>
   );
 }
 
-export default NewErrorReport;
+export default NewErrorReportPage;

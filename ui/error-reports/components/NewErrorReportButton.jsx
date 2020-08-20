@@ -5,7 +5,7 @@ import PlusIcon from '@ant-design/icons/PlusOutlined';
 import { LinkContainer } from 'react-router-bootstrap';
 
 const NewErrorReportButton = (props) => (
-  <LinkContainer to="/error-reports/new">
+  <LinkContainer to="/admin/error-reports/new">
     <Button type="primary" icon={<PlusIcon />} {...props}>
       {i18n.__('ErrorReports.new_error_report')}
     </Button>

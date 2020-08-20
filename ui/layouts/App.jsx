@@ -21,18 +21,11 @@ import PublicRoute from '../components/PublicRoute';
 
 /* #### PLOP_IMPORTS_START #### */
 
-/* #### PAGES_IMPORTS_START #### */
-import IndexPage from '../pages/IndexPage';
-import TermsPage from '../pages/TermsPage';
-import PrivacyPage from '../pages/PrivacyPage';
-import ExamplePage from '../pages/ExamplePage';
-/* #### PAGES_IMPORTS_END #### */
-
 /* #### ERROR_REPORTS_IMPORTS_START #### */
-import ErrorReports from '../error-reports/ErrorReports';
-import ViewErrorReport from '../error-reports/ViewErrorReport';
-import NewErrorReport from '../error-reports/NewErrorReport';
-import EditErrorReport from '../error-reports/EditErrorReport';
+import ErrorReportsPage from '../error-reports/ErrorReportsPage';
+import ViewErrorReportPage from '../error-reports/ViewErrorReportPage';
+import NewErrorReportPage from '../error-reports/NewErrorReportPage';
+import EditErrorReportPage from '../error-reports/EditErrorReportPage';
 /* #### ERROR_REPORTS_IMPORTS_END #### */
 
 /* #### USERS_ROLES_IMPORTS_START #### */
@@ -55,6 +48,14 @@ import ResetPasswordPage from '../users/ResetPasswordPage';
 import AdminUsers from '../users/admin/AdminUsers';
 import AdminUser from '../users/admin/AdminUser';
 /* #### USERS_IMPORTS_END #### */
+
+/* #### PAGES_IMPORTS_START #### */
+import IndexPage from '../pages/IndexPage';
+import TermsPage from '../pages/TermsPage';
+import PrivacyPage from '../pages/PrivacyPage';
+import ExamplePage from '../pages/ExamplePage';
+/* #### PAGES_IMPORTS_END #### */
+
 /* #### PLOP_IMPORTS_END #### */
 
 import Footer from '../components/Footer';
@@ -122,32 +123,32 @@ class App extends React.Component {
                     {/* #### ERROR_REPORTS_ROUTES_START #### */}
                     <AuthenticatedRoute
                       exact
-                      path="/error-reports"
-                      component={ErrorReports}
+                      path="/admin/error-reports"
+                      component={ErrorReportsPage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
                     <AuthenticatedRoute
                       exact
-                      path="/error-reports/new"
-                      component={NewErrorReport}
+                      path="/admin/error-reports/new"
+                      component={NewErrorReportPage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
                     <AuthenticatedRoute
                       exact
-                      path="/error-reports/:_id"
-                      component={ViewErrorReport}
+                      path="/admin/error-reports/:_id"
+                      component={ViewErrorReportPage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
                     <AuthenticatedRoute
                       exact
-                      path="/error-reports/:_id/edit"
-                      component={EditErrorReport}
+                      path="/admin/error-reports/:_id/edit"
+                      component={EditErrorReportPage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}

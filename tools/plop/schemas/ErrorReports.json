@@ -1,5 +1,6 @@
 { 
   "name": "ErrorReports",
+  "uiRouteBasePath": "/admin/error-reports",
   "permissions": {
     "read":"admin",
     "save": "admin",

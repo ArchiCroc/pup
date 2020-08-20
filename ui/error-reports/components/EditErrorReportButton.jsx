@@ -6,7 +6,7 @@ import EditIcon from '@ant-design/icons/EditOutlined';
 import { LinkContainer } from 'react-router-bootstrap';
 
 const EditErrorReportButton = ({ _id, ...props }) => (
-  <LinkContainer to={`/error-reports/${_id}/edit`}>
+  <LinkContainer to={`/admin/error-reports/${_id}/edit`}>
     <Button type="primary" icon={<EditIcon />} {...props}>
       {i18n.__('ErrorReports.edit_error_report')}
     </Button>

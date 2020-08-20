@@ -31,6 +31,7 @@ function ErrorReportsTable({
   roles,
   showNewErrorReportButton,
   showSearch,
+  showSizeChanger,
   ...props
 }) {
   const history = useHistory();
@@ -38,12 +39,8 @@ function ErrorReportsTable({
   const [queryStringObject, setQueryStringObject] = useQueryStringObject(queryKeyPrefix);
   const { level, order, page, pageSize, search, sort } = { ...props, ...queryStringObject };
 
-  const paginationObject = {
-    pageSize,
-    //  onChange: this.onPageChange,
-  };
-
   const [currentPage, setCurrentPage] = useState(parseInt(page, 10));
+  const [currentPageSize, setCurrentPageSize] = useState(parseInt(pageSize, 10));
   const [currentSort, setCurrentSort] = useState(sort);
   const [currentOrder, setCurrentOrder] = useState(order);
   const [currentSearch, setCurrentSearch] = useState(search);
@@ -54,7 +51,7 @@ function ErrorReportsTable({
   const { loading, data: { errorReports } = {} } = useQuery(errorReportsQuery, {
     fetchPolicy: 'cache-and-network',
     variables: {
-      pageSize: paginationObject.pageSize,
+      pageSize: currentPageSize,
       page: currentPage,
       sort: currentSort,
       order: currentOrder,
@@ -63,16 +60,24 @@ function ErrorReportsTable({
     },
   });
 
+  const paginationObject = {
+    currentPageSize,
+    // onChange: this.onPageChange,
+  };
+
   const columns = [
     {
       title: i18n.__('ErrorReports.user'),
-      dataIndex: ['user', 'fullName'],
+      dataIndex: 'user.fullName',
     },
     {
       title: i18n.__('ErrorReports.level'),
       dataIndex: 'level',
       sorter: true,
-      defaultSortOrder: 'ascend',
+      // defaultSortOrder: 'ascend',
+      // render: (value, record) => value, // eslint-disable-line
+      sorter: true,
+      // defaultSortOrder: 'ascend',
       sortOrder: currentSort === 'level' && currentOrder,
       render: (value, record) => i18n.__(`ErrorReports.level_${value}`), // eslint-disable-line
       filteredValue: currentLevel,
@@ -106,7 +111,6 @@ function ErrorReportsTable({
       title: i18n.__('ErrorReports.created_at_utc'),
       dataIndex: 'createdAtUTC',
       sorter: true,
-      defaultSortOrder: 'descend',
       sortOrder: currentSort === 'createdAtUTC' && currentOrder,
       render: (value, record) => <PrettyDate timestamp={value} />,
     },
@@ -130,12 +134,14 @@ function ErrorReportsTable({
     const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
 
     setCurrentPage(pagination.current);
+    setCurrentPage(pagination.pageSize);
     setCurrentOrder(sorter.order);
     setCurrentSort(sorter.field);
     setCurrentLevel(newLevel);
 
     setQueryStringObject({
       page: pagination.current,
+      pageSize: pagination.pageSize,
       sort: currentField,
       order: sorter.order,
       level: newLevel,
@@ -145,7 +151,7 @@ function ErrorReportsTable({
   function handleTableRow(record) {
     return {
       onClick: () => {
-        history.push(`/error-reports/${record._id}`);
+        history.push(`/admin/error-reports/${record._id}`);
       },
     };
   }
@@ -175,6 +181,7 @@ function ErrorReportsTable({
         rowKey="_id"
         pagination={paginationObject}
         rowClassName="clickable"
+        showSizeChanger={showSizeChanger}
       />
     </>
   );
@@ -183,12 +190,13 @@ function ErrorReportsTable({
 ErrorReportsTable.defaultProps = {
   showNewErrorReportButton: false,
   queryKeyPrefix: undefined,
-  pageSize: 10,
   page: 1,
+  pageSize: 10,
   sort: 'createdAtUTC',
   order: 'descend',
   search: undefined,
   showSearch: true,
+  showSizeChanger: true,
   level: undefined,
 };
 
@@ -196,12 +204,14 @@ ErrorReportsTable.propTypes = {
   roles: PropTypes.array.isRequired,
   showNewErrorReportButton: PropTypes.bool,
   queryKeyPrefix: PropTypes.string,
-  pageSize: PropTypes.number,
   page: PropTypes.number,
+  pageSize: PropTypes.number,
   sort: PropTypes.string,
   order: PropTypes.string,
   search: PropTypes.string,
   showSearch: PropTypes.bool,
+  showSizeChanger: PropTypes.bool,
+  level: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
 };
 
 export default ErrorReportsTable;

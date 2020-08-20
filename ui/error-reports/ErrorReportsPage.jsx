@@ -5,22 +5,22 @@ import PageBreadcrumbs, { Breadcrumb } from '../components/PageBreadcrumbs';
 import PageHeader from '../components/PageHeader';
 import ErrorReportsTable from './components/ErrorReportsTable';
 
-import StyledErrorReports from './StyledErrorReports';
+import StyledErrorReportsPage from './StyledErrorReportsPage';
 
-function ErrorReports({ roles }) {
+function ErrorReportsPage({ roles }) {
   return (
-    <StyledErrorReports>
+    <StyledErrorReportsPage>
       <PageBreadcrumbs>
         <Breadcrumb>{i18n.__('ErrorReports.error_report_plural')}</Breadcrumb>
       </PageBreadcrumbs>
       <PageHeader title={i18n.__('ErrorReports.error_report_plural')} />
       <ErrorReportsTable roles={roles} showNewErrorReportButton />
-    </StyledErrorReports>
+    </StyledErrorReportsPage>
   );
 }
 
-ErrorReports.propTypes = {
+ErrorReportsPage.propTypes = {
   roles: PropTypes.array.isRequired,
 };
 
-export default ErrorReports;
+export default ErrorReportsPage;

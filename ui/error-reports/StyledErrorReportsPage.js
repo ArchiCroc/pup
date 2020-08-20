@@ -1,5 +1,5 @@
 import styled from 'styled-components';
 import PageWrapper from '../components/PageWrapper';
 
-const StyledErrorReports = styled(PageWrapper)``;
-export default StyledErrorReports;
+const StyledErrorReportsPage = styled(PageWrapper)``;
+export default StyledErrorReportsPage;
