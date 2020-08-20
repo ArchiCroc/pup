@@ -1,0 +1,67 @@
+{{#*inline "paramsImport"}}
+  {{#ifPartialHasValue @partial-block}}
+import { useParams } from 'react-router-dom';
+  {{/ifPartialHasValue}}
+{{/inline}}
+{{#*inline "paramsWrapper"}}
+  {{#ifPartialHasValue @partial-block}}
+const  {
+  {{> @partial-block}}
+} = useParams();
+
+  {{/ifPartialHasValue}}
+{{/inline}}
+import React from 'react';
+{{#if hasFieldPermissions}}
+import PropTypes from 'prop-types';
+{{/if}}
+import i18n from 'meteor/universe:i18n';
+{{#uniqueImports}}
+import PageBreadcrumbs, { Breadcrumb } from '{{uiPathOffset}}../components/PageBreadcrumbs';
+import PageHeader from '{{uiPathOffset}}../components/PageHeader';
+import {{ pascalCase singularName }}Editor from './components/{{ pascalCase singularName }}Editor';
+{{#> paramsImport}}
+  {{#each schema.fields}}
+    {{#if this.filterable}}
+      {{> (lookup . 'filterTemplateFile' ) template='ui/paramVariables'}}
+    {{/if}}
+  {{/each}}
+{{/paramsImport}}
+{{/uniqueImports}}
+
+import Styled{{ pascalCase pluralName }}Page from './Styled{{ pascalCase pluralName }}Page';
+
+function New{{ pascalCase singularName }}Page({{#if hasFieldPermissions }}{ roles }{{/if}}) {
+  {{#> paramsWrapper}}
+  {{#each schema.fields}}
+    {{#if this.filterable}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/paramVariables'}}
+    {{/if}}
+  {{/each}}
+  {{/paramsWrapper}}  
+  return (
+    <Styled{{ pascalCase pluralName }}Page md={16} lg={12} xl={10} xxl={8}>
+      <PageBreadcrumbs>
+        <Breadcrumb to={{#quoteStringForJSX}}{{ convertParamsToTemplateVars uiRouteBasePath }}{{/quoteStringForJSX}}>{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
+        <Breadcrumb>{i18n.__('{{ pascalCase pluralName }}.new_{{ snakeCase shortSingularName }}')}</Breadcrumb>
+      </PageBreadcrumbs>
+      <PageHeader title={i18n.__('{{ pascalCase pluralName }}.new_{{ snakeCase shortSingularName }}')} />
+      <{{ pascalCase singularName }}Editor 
+        {{#if hasFieldPermissions}}roles={roles} {{/if}}
+{{~#each schema.fields}}
+  {{#if this.filterable}}
+        {{> (lookup . 'filterTemplateFile' ) template='ui/componentProps'}}
+  {{/if}}
+{{/each~}}
+      />
+    </Styled{{ pascalCase pluralName }}Page>
+  );
+}
+
+{{#if hasFieldPermissions}}
+New{{ pascalCase singularName }}Page.propTypes = {
+  roles: PropTypes.array.isRequired,
+};
+
+{{/if}}
+export default New{{ pascalCase singularName }}Page;

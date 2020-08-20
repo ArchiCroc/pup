@@ -10,7 +10,7 @@ import PageHeader from '../../components/PageHeader';
 import AdminUserProfile from './components/AdminUserProfile';
 import UserSettings from '../components/UserSettings';
 import Loading from '../../components/Loading';
-import NotFound from '../../pages/NotFound';
+import NotFound from '../../pages/NotFoundPage';
 
 import StyledAdminUser from './StyledAdminUser';
 

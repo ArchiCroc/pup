@@ -1,0 +1,14 @@
+fragment UsersRoleAttributes on UsersRole {
+  _id
+  name
+  createdAtUTC
+  createdBy { 
+    _id
+    fullName
+  }
+  updatedAtUTC
+  updatedBy { 
+    _id
+    fullName
+  }
+}

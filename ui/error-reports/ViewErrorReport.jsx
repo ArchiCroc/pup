@@ -9,7 +9,7 @@ import FormatDate from '../components/FormatDate';
 import Loading from '../components/Loading';
 import PageBreadcrumbs, { Breadcrumb } from '../components/PageBreadcrumbs';
 import PageHeader from '../components/PageHeader';
-import NotFound from '../pages/NotFound';
+import NotFound from '../pages/NotFoundPage';
 
 import EditErrorReportButton from './components/EditErrorReportButton';
 

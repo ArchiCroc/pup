@@ -1,0 +1,63 @@
+{{#*inline "paramsImport"}}
+  {{#ifPartialHasValue @partial-block}}
+import { useParams } from 'react-router-dom';
+  {{/ifPartialHasValue}}
+{{/inline}}
+{{#*inline "paramsWrapper"}}
+  {{#ifPartialHasValue @partial-block}}
+const  {
+  {{> @partial-block}}
+} = useParams();
+
+  {{/ifPartialHasValue}}
+{{/inline}}
+import React from 'react';
+import PropTypes from 'prop-types';
+import i18n from 'meteor/universe:i18n';
+{{#uniqueImports}}
+import PageBreadcrumbs, { Breadcrumb } from '{{uiPathOffset}}../components/PageBreadcrumbs';
+import PageHeader from '{{uiPathOffset}}../components/PageHeader';
+import {{ pascalCase pluralName }}Table from './components/{{ pascalCase pluralName }}Table';
+{{#> paramsImport}}
+  {{#each schema.fields}}
+    {{#if this.filterable}}
+      {{> (lookup . 'filterTemplateFile' ) template='ui/paramVariables'}}
+    {{/if}}
+  {{/each}}
+{{/paramsImport}}
+{{/uniqueImports}}
+
+import Styled{{ pascalCase pluralName }}Page from './Styled{{ pascalCase pluralName }}Page';
+
+function {{ pascalCase pluralName }}Page({ roles }) {
+  {{#> paramsWrapper}}
+  {{#each schema.fields}}
+    {{#if this.filterable}}
+  {{> (lookup . 'filterTemplateFile' ) template='ui/paramVariables'}}
+    {{/if}}
+  {{/each}}
+  {{/paramsWrapper}}
+  return (
+    <Styled{{ pascalCase pluralName }}Page{{#compare schema.indexWidth '===' 'full'}} md={24} lg={24} xl={24}{{/compare}}>
+      <PageBreadcrumbs>
+        <Breadcrumb>{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
+      </PageBreadcrumbs>
+      <PageHeader title={i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')} />
+      <{{ pascalCase pluralName }}Table 
+        roles={roles} 
+        showNew{{ pascalCase singularName }}Button 
+{{#each schema.fields}}
+  {{#if this.filterable}}
+        {{> (lookup . 'filterTemplateFile' ) template='ui/componentProps'}}
+  {{/if}}
+{{/each}}
+      />
+    </Styled{{ pascalCase pluralName }}Page>
+  );
+}
+
+{{ pascalCase pluralName }}Page.propTypes = {
+  roles: PropTypes.array.isRequired,
+};
+
+export default {{ pascalCase pluralName }}Page;

@@ -15,8 +15,8 @@ const AuthenticatedNavigation = ({ name, history, roles, location = { pathname: 
       style={{ float: 'left', lineHeight: '64px' }}
     >
       {/* #### PLOP_USER_MENU_ITEMS_START #### */}
-      {/* #### ROLES_USER_MENU_ITEMS_START #### */}
-      {/* #### ROLES_USER_MENU_ITEMS_END #### */}
+      {/* #### USERS_ROLES_USER_MENU_ITEMS_START #### */}
+      {/* #### USERS_ROLES_USER_MENU_ITEMS_END #### */}
       {/* #### ERROR_REPORTS_USER_MENU_ITEMS_START #### */}
       {/* #### ERROR_REPORTS_USER_MENU_ITEMS_END #### */}
       {/* #### PAGES_USER_MENU_ITEMS_START #### */}
@@ -27,12 +27,12 @@ const AuthenticatedNavigation = ({ name, history, roles, location = { pathname: 
       {hasRole(roles, 'admin') && (
         <Menu.SubMenu title={i18n.__('admin')}>
           {/* #### PLOP_ADMIN_MENU_ITEMS_START #### */}
-          {/* #### ROLES_ADMIN_MENU_ITEMS_START #### */}
-          <Menu.Item key="/roles">
-            {i18n.__('Roles.role_plural')}
+          {/* #### USERS_ROLES_ADMIN_MENU_ITEMS_START #### */}
+          <Menu.Item key="/admin/users/roles">
+            {i18n.__('UsersRoles.role_plural')}
             <Link to="/admin/users/roles" />
           </Menu.Item>
-          {/* #### ROLES_ADMIN_MENU_ITEMS_END #### */}
+          {/* #### USERS_ROLES_ADMIN_MENU_ITEMS_END #### */}
           {/* #### PAGES_ADMIN_MENU_ITEMS_START #### */}
           {/* #### PAGES_ADMIN_MENU_ITEMS_END #### */}
           {/* #### ERROR_REPORTS_ADMIN_MENU_ITEMS_START #### */}

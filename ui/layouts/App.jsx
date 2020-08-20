@@ -21,13 +21,6 @@ import PublicRoute from '../components/PublicRoute';
 
 /* #### PLOP_IMPORTS_START #### */
 
-/* #### ROLES_IMPORTS_START #### */
-import Roles from '../roles/Roles';
-import ViewRole from '../roles/ViewRole';
-import NewRole from '../roles/NewRole';
-import EditRole from '../roles/EditRole';
-/* #### ROLES_IMPORTS_END #### */
-
 /* #### PAGES_IMPORTS_START #### */
 import Index from '../pages/Index';
 import Terms from '../pages/Terms';
@@ -42,11 +35,19 @@ import NewErrorReport from '../error-reports/NewErrorReport';
 import EditErrorReport from '../error-reports/EditErrorReport';
 /* #### ERROR_REPORTS_IMPORTS_END #### */
 
+/* #### USERS_ROLES_IMPORTS_START #### */
+import UsersRolesPage from '../users/admin/roles/UsersRolesPage';
+import ViewUsersRolePage from '../users/admin/roles/ViewUsersRolePage';
+import NewUsersRolePage from '../users/admin/roles/NewUsersRolePage';
+import EditUsersRolePage from '../users/admin/roles/EditUsersRolePage';
+/* #### USERS_ROLES_IMPORTS_END #### */
+
 /* #### USERS_IMPORTS_START #### */
 import Profile from '../users/Profile';
 import Signup from '../users/Signup';
 import Login from '../users/Login';
 import Logout from '../users/Logout';
+import NotFound from '../pages/NotFoundPage';
 
 import VerifyEmail from '../users/VerifyEmail';
 import RecoverPassword from '../users/RecoverPassword';
@@ -57,7 +58,6 @@ import AdminUser from '../users/admin/AdminUser';
 /* #### USERS_IMPORTS_END #### */
 /* #### PLOP_IMPORTS_END #### */
 
-import NotFound from '../pages/NotFound';
 import Footer from '../components/Footer';
 
 import VerifyEmailAlert from '../users/components/VerifyEmailAlert';
@@ -155,44 +155,40 @@ class App extends React.Component {
                     />
                     {/* #### ERROR_REPORTS_ROUTES_END #### */}
 
-                    {/* #### ROLES_ROUTES_START #### */}
-                    <AuthorizedRoute
+                    {/* #### USERS_ROLES_ROUTES_START #### */}
+                    <AuthenticatedRoute
                       exact
-                      allowedRoles={['admin']}
                       path="/admin/users/roles"
-                      component={Roles}
+                      component={UsersRolesPage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
-                    <AuthorizedRoute
+                    <AuthenticatedRoute
                       exact
-                      allowedRoles={['admin']}
                       path="/admin/users/roles/new"
-                      component={NewRole}
+                      component={NewUsersRolePage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
-                    <AuthorizedRoute
+                    <AuthenticatedRoute
                       exact
-                      allowedRoles={['admin']}
                       path="/admin/users/roles/:name"
-                      component={ViewRole}
+                      component={ViewUsersRolePage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
-                    <AuthorizedRoute
+                    <AuthenticatedRoute
                       exact
-                      allowedRoles={['admin']}
                       path="/admin/users/roles/:name/edit"
-                      component={EditRole}
+                      component={EditUsersRolePage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
-                    {/* #### ROLES_ROUTES_END #### */}
+                    {/* #### USERS_ROLES_ROUTES_END #### */}
 
                     {/* #### USERS_ROUTES_START #### */}
                     <AuthenticatedRoute

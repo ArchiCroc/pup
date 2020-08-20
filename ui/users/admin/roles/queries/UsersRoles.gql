@@ -1,0 +1,39 @@
+#import "../fragments/UsersRoles.gql"
+
+query usersRoles(
+  $_ids: [String]
+  $page: Int, 
+  $pageSize: Int, 
+  $search: String, 
+  $sort: String, 
+  $order: String,
+) {
+  usersRoles(
+    _ids: $_ids,
+    page: $page, 
+    pageSize: $pageSize, 
+    search: $search, 
+    sort: $sort, 
+    order: $order,
+  ) {
+    total
+    usersRoles {
+      _id
+      name
+      createdAtUTC
+      updatedAtUTC
+    }
+  }
+}
+
+query editUsersRole($_id: String, $name: String) {
+  usersRole(_id: $_id, name: $name) {
+    ...UsersRoleAttributes
+  }
+}
+
+query usersRole($_id: String, $name: String) {
+  usersRole(_id: $_id, name: $name) {
+    ...UsersRoleAttributes
+  }
+}

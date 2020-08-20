@@ -8,7 +8,7 @@ import hasRole from '../../libs/hasRole';
 import Loading from '../components/Loading';
 import PageBreadcrumbs, { Breadcrumb } from '../components/PageBreadcrumbs';
 import PageHeader from '../components/PageHeader';
-import NotFound from '../pages/NotFound';
+import NotFound from '../pages/NotFoundPage';
 import ErrorReportEditor from './components/ErrorReportEditor';
 import RemoveErrorReportButton from './components/RemoveErrorReportButton';
 

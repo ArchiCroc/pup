@@ -145,6 +145,7 @@ function processSchema(input) {
   data.uiFolderName = (schema.uiFolderName || data.rawName)
     .split('/')
     .map((folder) => changeCase.param(folder))
+    .filter((folder) => folder !== '')
     .join('/');
   data.uiPathOffset = '../'.repeat(data.uiFolderName.split('/').length - 1);
 

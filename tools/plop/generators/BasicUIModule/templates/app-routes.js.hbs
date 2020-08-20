@@ -1,7 +1,7 @@
 <AuthenticatedRoute
   exact
   path="{{ uiRouteBasePath }}"
-  component={ {{~ pascalCase pluralName ~}} }
+  component={ {{~ pascalCase pluralName ~}}Page}
   setAfterLoginPath={setAfterLoginPath}
   {...props}
   {...state}
@@ -9,7 +9,7 @@
 <AuthenticatedRoute
   exact
   path="{{ uiRouteBasePath }}/new"
-  component={New{{ pascalCase singularName ~}} }
+  component={New{{ pascalCase singularName ~}}Page}
   setAfterLoginPath={setAfterLoginPath}
   {...props}
   {...state}
@@ -17,7 +17,7 @@
 <AuthenticatedRoute
   exact
   path="{{ uiRouteBasePath }}/:{{urlFieldKey}}"
-  component={View{{ pascalCase singularName ~}}}
+  component={View{{ pascalCase singularName ~}}Page}
   setAfterLoginPath={setAfterLoginPath}
   {...props}
   {...state}
@@ -25,7 +25,7 @@
 <AuthenticatedRoute
   exact
   path="{{ uiRouteBasePath }}/:{{urlFieldKey}}/edit"
-  component={Edit{{ pascalCase singularName ~}}}
+  component={Edit{{ pascalCase singularName ~}}Page}
   setAfterLoginPath={setAfterLoginPath}
   {...props}
   {...state}

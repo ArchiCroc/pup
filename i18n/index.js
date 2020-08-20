@@ -6,7 +6,7 @@ import appEnI18n from './en/app.en.i18n.yml';
 import usersEnI18n from './en/users.en.i18n.yml';
 
 /* #### PLOP_IMPORTS_START #### */
-import rolesEnI18n from './en/roles.en.i18n.yml';
+import usersRolesEnI18n from './en/usersRoles.en.i18n.yml';
 import errorReportsEnI18n from './en/errorReports.en.i18n.yml';
 /* #### PLOP_IMPORTS_END #### */
 
