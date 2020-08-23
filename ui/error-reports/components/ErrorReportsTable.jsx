@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
-import Input from 'antd/lib/input';
+
 import Table from 'antd/lib/table';
 import isString from 'lodash/isString';
 import i18n from 'meteor/universe:i18n';
@@ -10,12 +10,11 @@ import hasRole from '../../../libs/hasRole';
 import useQueryStringObject from '../../../libs/hooks/useQueryStringObject';
 import PrettyDate from '../../components/PrettyDate';
 import NewErrorReportButton from './NewErrorReportButton';
+import SearchInput from '../../components/SearchInput';
 
 // import StyledErrorReportsTable from './StyledErrorReportsTable';
 
 import { errorReports as errorReportsQuery } from '../queries/ErrorReports.gql';
-
-const { Search } = Input;
 
 function getLevelFilters() {
   const choices = [0, 1, 2, 3, 4, 5];
@@ -161,15 +160,13 @@ function ErrorReportsTable({
       <p>
         {showNewErrorReportButton && hasRole(roles, ['admin']) && <NewErrorReportButton />}&nbsp;
         {showSearch && (
-          <span className="pull-right" style={{ width: 300 }}>
-            <Search
-              placeholder={i18n.__('ErrorReports.search_placeholder')}
-              onSearch={handleSearch}
-              defaultValue={currentSearch}
-              allowClear
-              enterButton
-            />
-          </span>
+          <SearchInput
+            className="pull-right"
+            style={{ width: 300 }}
+            placeholder={i18n.__('ErrorReports.search_placeholder')}
+            onSearch={handleSearch}
+            defaultValue={currentSearch}
+          />
         )}
       </p>
       <Table

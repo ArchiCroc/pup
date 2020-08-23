@@ -2,7 +2,7 @@ import getUserName from './getUserName';
 
 describe('getUserName.js', () => {
   test('it returns a string when passed an object', () => {
-    const name = getUserName({ first: 'Andy', last: 'Warhol' });
+    const name = getUserName({ firstName: 'Andy', lastName: 'Warhol' });
     expect(name).toBe('Andy Warhol');
   });
 

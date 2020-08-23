@@ -1,31 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SearchIcon from '@ant-design/icons/SearchOutlined';
-import StyledSearchInput from './StyledSearchInput';
+import Input from 'antd/lib/input';
 
-const SearchInput = ({ placeholder, value, onChange }) => (
-  <StyledSearchInput className="SearchInput">
-    <SearchIcon />
-    <input
-      type="text"
-      name="search"
-      className="form-control"
+const { Search } = Input;
+
+const SearchInput = ({ className, style, onSearch, placeholder, defaultValue }) => (
+  <span className={className} style={style} role="search">
+    <Search
       placeholder={placeholder}
-      value={value}
-      onChange={onChange}
+      onSearch={onSearch}
+      defaultValue={defaultValue}
+      allowClear
+      enterButton
     />
-  </StyledSearchInput>
+  </span>
 );
 
 SearchInput.defaultProps = {
+  className: undefined,
+  style: undefined,
   placeholder: 'Search...',
-  value: '',
+  defaultValue: undefined,
 };
 
 SearchInput.propTypes = {
+  className: PropTypes.string,
+  style: PropTypes.object,
   placeholder: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
+  defaultValue: PropTypes.string,
+  onSearch: PropTypes.func.isRequired,
 };
 
 export default SearchInput;

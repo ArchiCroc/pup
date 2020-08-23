@@ -7,4 +7,5 @@ module.exports = {
     '^meteor/(.*):(.*)$': '<rootDir>/tests/__mocks__/meteor/$1_$2',
   },
   unmockedModulePathPatterns: ['/^node_modules/'],
+  modulePathIgnorePatterns: ['\\.meteor'],
 };
