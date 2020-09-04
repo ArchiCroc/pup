@@ -29,8 +29,7 @@ An Opinionated take on an even better version of "Pup: The Ultimate Boilerplate 
 
 The Bundle size is bigger.
 - [moment](https://www.npmjs.com/package/moment) and [moment-timezone](https://www.npmjs.com/package/moment-timezone) are big and it would be great to use one of the newer alternatves but several other modules used depend on them
-- [AntDesign](https://www.npmjs.com/package/antd) while the app only includes the components as needed, The icon import includes EVERYTING which is less than idea. There are some options to investigate in https://github.com/ant-design/ant-design/issues/12011 but I haven't gotten thier import helper working yet
-- AntD imports should be split out into specific modules like to prevent loading unused components 
+- [AntDesign](https://www.npmjs.com/package/antd) imports should be split out into specific modules like to prevent loading unused components 
     import Table from 'antd/lib/table';
 
 Mobile Formating needs work
