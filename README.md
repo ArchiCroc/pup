@@ -39,6 +39,8 @@ Testing Coverage still sucks
 - Creating default tests via the Plop code generator is on the Roadmap
 
 ### Getting Started - Install Prereqs and run the local dev server
+Install Meteor from https://www.meteor.com/install
+then:
 ```shell
     meteor npm install
     meteor npm run dev
