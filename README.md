@@ -11,7 +11,7 @@ An Opinionated take on an even better version of "Pup: The Ultimate Boilerplate 
 - Groups related React page components into folders by module. One component per file. Page Components in the root, sub components in the components sub folder. 
 - Most React Components have been refactored to functions and hooks.
 - Removes packages that had dependency on the Meteor Blaze and jQuery modules to help offset the other added packages
-- Adds [Simple-Schema] (https://github.com/aldeed/simple-schema-js) to clean and validate all the data coming into the app
+- Adds [Simple-Schema](https://github.com/aldeed/simple-schema-js) to clean and validate all the data coming into the app
 - Adds [Uniforms](https://github.com/vazco/uniforms) to handle validation of forms
 - Switches to [Ant Design](https://ant.design) as the primary UI Component Library
 - Adds [Universe i18n](https://github.com/vazco/meteor-universe-i18n) for i18n support. (Work in Progress)
