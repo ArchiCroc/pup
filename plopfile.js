@@ -168,6 +168,15 @@ function quoteIfString(text) {
   if (typeof text === 'boolean') {
     return text === true ? 'true' : 'false';
   }
+  if (Array.isArray(text)) {
+    return `[${text.map(quoteIfString).join(', ')}]`;
+  } else if (typeof text === 'object') {
+    const keys = [];
+    for (const [key, value] of Object.entries(text)) {
+      keys.push(`'${key}': ${quoteIfString(value)}`);
+    }
+    return `{${keys.join(', ')}}`;
+  }
   return text;
 }
 

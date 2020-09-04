@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import getPrivateFile from '../../../modules/server/getPrivateFile';
-import templateToHtml from '../../../modules/server/handlebarsEmailToHtml';
-import templateToText from '../../../modules/server/handlebarsEmailToText';
+import getPrivateFile from '../../../libs/server/getPrivateFile';
+import templateToHtml from '../../../libs/server/handlebarsEmailToHtml';
+import templateToText from '../../../libs/server/handlebarsEmailToText';
 
 const { emailTemplates } = Accounts;
 const { productName } = Meteor.settings.public;

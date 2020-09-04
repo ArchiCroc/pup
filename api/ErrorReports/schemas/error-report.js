@@ -4,7 +4,7 @@ import SimpleSchema from 'simpl-schema';
 import i18n from 'meteor/universe:i18n';
 /* #### PLOP_IMPORTS_START #### */
 /* #### PLOP_IMPORTS_END #### */
-import parseObjectID from '../../../modules/parseObjectID';
+import parseObjectID from '../../../libs/parseObjectID';
 
 const cleanLevel = (item) => parseInt(item, 10);
 
@@ -38,7 +38,7 @@ const ErrorReportSchema = new SimpleSchema({
     type: SimpleSchema.Integer,
     label: () => i18n.__('ErrorReports.level_label'),
     autoValue() {
-      if (this.value !== undefined && this.value !== null) {
+      if (this.value != null) {
         return cleanLevel(this.value);
       }
       return this.value;

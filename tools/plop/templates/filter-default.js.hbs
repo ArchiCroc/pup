@@ -1,7 +1,7 @@
 {{#compare template '===' 'ui/imports'}}
 import isString from 'lodash/isString';
 {{#if reference}}
-import useQueryForFilters from '{{@root.uiPathOffset}}../../../modules/hooks/useQueryForFilters';
+import useQueryForFilters from '{{@root.uiPathOffset}}../../../libs/hooks/useQueryForFilters';
 {{/if}}
 {{/compare}}
 {{#compare template '===' 'ui/helpers'}}
@@ -74,7 +74,7 @@ setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
 {{#compare template '===' 'ui/queryStringDefaultPropsKeys'}}
 {{fieldName}}: undefined,
 {{/compare}}
-{{#compare template '===' 'ui/queryStringPropsTypes'}}
+{{#compare template '===' 'ui/queryStringPropTypes'}}
   {{#compare (stripBrackets fieldType) 'in' 'Float|Number|Int' }}
 {{fieldName}}: PropTypes.oneOfType([
   PropTypes.string,
@@ -112,7 +112,7 @@ import isArray from 'lodash/isArray';
 {{#compare template '===' 'api/multiItemQueryModifiers'}}
 if (isArray({{fieldName}}) && {{fieldName}}.length > 0) {
   query.{{fieldName}} = { $in: {{fieldName}} };
-} else if ({{fieldName}} !== undefined && {{fieldName}} !== null) {
+} else if ({{fieldName}} != null) {
   query.{{fieldName}} = {{fieldName}};
 }
 

@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 {{#uniqueImports}}
 import { useHistory } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
   {{#if isSearchable}}
 import Input from 'antd/lib/input';
   {{/if}}
 import Table from 'antd/lib/table';
 import New{{ pascalCase singularName }}Button from './New{{ pascalCase singularName }}Button';
   {{#if schema.permissions.create}}
-import hasRole from '{{uiPathOffset}}../../../modules/hasRole';
+import hasRole from '{{uiPathOffset}}../../../libs/hasRole';
   {{/if}}
-import useQueryStringObject from '{{uiPathOffset}}../../../modules/hooks/useQueryStringObject';
+import useQueryStringObject from '{{uiPathOffset}}../../../libs/hooks/useQueryStringObject';
   {{#each schema.fields ~}}
     {{#compare this.filterable '&&' this.showInTableView}}
 {{> (lookup . 'filterTemplateFile' ) template='ui/imports' uiPathOffset=(concat @root.uiPathOffset "../")}}
@@ -46,6 +46,7 @@ function {{ pascalCase pluralName }}Table({{#prettyProps}}
 {{#if isSearchable}}
   showSearch, 
 {{/if}}
+  showSizeChanger,
   queryKeyPrefix, 
 {{#each schema.fields}}
   {{#compare this.filterable '&&' this.showInTableView}}
@@ -72,12 +73,8 @@ function {{ pascalCase pluralName }}Table({{#prettyProps}}
 {{/each}}
   {{/prettyProps}} = { ...props, ...queryStringObject };
 
-  const paginationObject = {
-    pageSize,
-    //  onChange: this.onPageChange,
-  };
-
   const [currentPage, setCurrentPage] = useState(parseInt(page, 10));
+  const [currentPageSize, setCurrentPageSize] = useState(parseInt(pageSize, 10));
   const [currentSort, setCurrentSort] = useState(sort);
   const [currentOrder, setCurrentOrder] = useState(order);
 {{#if isSearchable}}
@@ -92,7 +89,7 @@ function {{ pascalCase pluralName }}Table({{#prettyProps}}
   const { loading, data: { {{ camelCase pluralName }} } = {} } = useQuery({{ camelCase pluralName }}Query, {
     fetchPolicy: 'cache-and-network',
     variables: {
-      pageSize: paginationObject.pageSize,
+      pageSize: currentPageSize,
       page: currentPage,
       sort: currentSort,
       order: currentOrder,
@@ -113,16 +110,24 @@ function {{ pascalCase pluralName }}Table({{#prettyProps}}
 
   {{/compare}}
 {{/each}}
+
+
+const paginationObject = {
+    currentPageSize,
+    // onChange: this.onPageChange,
+  };
+
   const columns = [
 {{#each schema.fields ~}}
   {{#compare this.input '!==' 'Hidden' '&&' this.showInTableView '!==' false}}
     {{~#compare this.input '||' this.showInTableView }}
     {
       title: i18n.__(' {{~ pascalCase @root.name ~}} .{{ snakeCase @key }}'),
-      dataIndex: '{{ @key }}{{#if this.dataIndex}}{{#compare this.type '!startsWith' '['}}.{{ this.dataIndex }}{{/compare}}{{/if}}',
+      dataIndex: {{#if this.dataIndex}}['{{ @key }}'{{#compare this.type '!startsWith' '['}}, '{{ this.dataIndex }}'{{/compare}}]{{else}}'{{ @key }}'{{/if}}',
       {{#compare this.tableTemplateFile '||' this.tableTemplate}}
         {{#compare this.type 'in' 'Date|DateTime|Time'}}
       sorter: true,
+      sortOrder: currentSort === '{{ @key }}' && currentOrder,
          {{/compare}}
         {{#if this.tableTemplateFile}}
       render: (value, record) => ({{> (lookup . 'tableTemplateFile' ) value='value' parent='record' key=@key template='render'}}),
@@ -134,12 +139,14 @@ function {{ pascalCase pluralName }}Table({{#prettyProps}}
         {{#compare this.choices '!typeof' 'object'}}
       sorter: true,
       defaultSortOrder: 'ascend',
+      sortOrder: currentSort === '{{ @key }}' && currentOrder,
       // render: (value, record) => <Link to={`/{{ dashCase @root.name }}/${record.{{ @root.urlFieldKey ~}} }/edit`}>{value}</Link>, // eslint-disable-line
         {{/compare}}
       {{/compare}}
       {{#compare this.type '===' 'Boolean'}}
       sorter: true,
       // defaultSortOrder: 'ascend',
+      sortOrder: currentSort === '{{ @key }}' && currentOrder,
       render: (value, record, index) => i18n.__(`{{ pascalCase @root.name }}.${value ? 'yes' : 'no'}`),
       {{/compare}}
       {{#compare this.type 'in' 'Int|Number|Float'}}
@@ -150,10 +157,12 @@ function {{ pascalCase pluralName }}Table({{#prettyProps}}
       {{#compare this.choices 'typeof' 'object'  }}
       sorter: true,
       // defaultSortOrder: 'ascend',
+      sortOrder: currentSort === '{{ @key }}' && currentOrder,
       render: (value, record) => i18n.__(`{{ pascalCase @root.name }}.{{@key}}_${value}`), // eslint-disable-line
       {{/compare}}
       {{#compare this.type 'startsWith' '['}}
       sorter: true,
+      sortOrder: currentSort === '{{ @key }}' && currentOrder,
       render: (value) => value && value{{#if this.dataIndex}}.map((item) => item && item.{{ this.dataIndex }}){{/if}}
       {{~#compare this.type '===' '[String]'}}.map((item) => i18n.__(`{{ pascalCase @root.name }}.{{@key}}_${item}`)){{/compare}}.join(', '),
       {{/compare}}
@@ -194,8 +203,11 @@ function {{ pascalCase pluralName }}Table({{#prettyProps}}
 {{/if}}
     const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
 
+    const $newOrder = sorter.order ? sorter.order : null;
+
     setCurrentPage(pagination.current);
-    setCurrentOrder(sorter.order);
+    setCurrentPageSize(pagination.pageSize);
+    setCurrentOrder($newOrder);
     setCurrentSort(sorter.field);
 {{#each schema.fields}}
   {{#compare this.filterable '&&' this.showInTableView}}
@@ -205,8 +217,9 @@ function {{ pascalCase pluralName }}Table({{#prettyProps}}
 
     setQueryStringObject({
       page: pagination.current,
+      pageSize: pagination.pageSize,
       sort: currentField,
-      order: sorter.order,
+      order: $newOrder,
 {{#each schema.fields}}
   {{#compare this.filterable '&&' this.showInTableView}}
       {{> (lookup . 'filterTemplateFile' ) template='ui/handleTableChangeSetQueryObjectKey'}}
@@ -255,6 +268,7 @@ function {{ pascalCase pluralName }}Table({{#prettyProps}}
         rowKey="{{ primaryFieldKey }}"
         pagination={paginationObject}
         rowClassName="clickable"
+        showSizeChanger={showSizeChanger}
       />
     </>
   );
@@ -263,13 +277,14 @@ function {{ pascalCase pluralName }}Table({{#prettyProps}}
 {{ pascalCase pluralName }}Table.defaultProps = {
   showNew{{ pascalCase singularName }}Button: false,
   queryKeyPrefix: undefined,
-  pageSize: 10,
   page: 1,
+  pageSize: 10,
   sort: '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelKeyKey}}{{/if}}',
   order: '{{#if schema.defaultSortOrder}}{{schema.defaultSortOrder}}{{else}}ascend{{/if}}',
 {{#if isSearchable}}
   search: undefined,
   showSearch: true,
+  showSizeChanger: true,
 {{/if}}
 {{#each schema.fields}}
   {{#compare this.filterable '&&' this.showInTableView}}
@@ -287,13 +302,14 @@ function {{ pascalCase pluralName }}Table({{#prettyProps}}
 {{/each}}
   showNew{{ pascalCase singularName }}Button: PropTypes.bool,
   queryKeyPrefix: PropTypes.string,
-  pageSize: PropTypes.number,
   page: PropTypes.number,
+  pageSize: PropTypes.number,
   sort: PropTypes.string,
   order: PropTypes.string,
 {{#if isSearchable}}
   search: PropTypes.string,
   showSearch: PropTypes.bool,
+  showSizeChanger: PropTypes.bool,
 {{/if}}
 {{#each schema.fields}}
   {{#compare this.filterable '&&' this.showInTableView}}

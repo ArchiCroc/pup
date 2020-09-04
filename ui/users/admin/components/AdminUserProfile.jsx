@@ -1,14 +1,14 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
-import AutoForm from 'uniforms/AutoForm';
-import TextField from 'uniforms-antd/TextField';
-// import SelectField from 'uniforms-antd/SelectField';
+
+import { TextField } from 'uniforms-antd';
+import AutoForm from '../../../components/AutoForm';
 import AdminPasswordField from './AdminPasswordField';
 import CrossReferenceSelectField from '../../../components/CrossReferenceSelectField';
 import AdminUserProfileSchema from '../../../../api/Users/schemas/admin-profile';
@@ -97,9 +97,7 @@ function AdminUserProfile({ user }) {
         schema={AdminUserProfileSchema}
         model={model}
         onSubmit={handleSubmit}
-        ref={formRef}
-        showInlineError
-        placeholder
+        formRef={formRef}
       >
         {user && (
           <Row>
@@ -135,7 +133,10 @@ function AdminUserProfile({ user }) {
                   <CrossReferenceSelectField
                     transform={(value) => value}
                     name="roles"
-                    options={[{ label: 'User', value: 'user' }, { label: 'Admin', value: 'admin' }]}
+                    options={[
+                      { label: 'User', value: 'user' },
+                      { label: 'Admin', value: 'admin' },
+                    ]}
                     checkboxes
                   />
                 </Col>

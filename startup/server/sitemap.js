@@ -2,7 +2,7 @@ import xml from 'xml';
 import { Meteor } from 'meteor/meteor';
 import { JsonRoutes } from 'meteor/simple:json-routes';
 // import Documents from '../../api/Documents/Documents';
-import { iso } from '../../modules/dates.js';
+import { iso } from '../../libs/dates.js';
 
 const baseUrl = Meteor.absoluteUrl();
 

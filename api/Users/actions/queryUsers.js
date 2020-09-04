@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import checkIfAuthorized from './checkIfAuthorized';
 import mapMeteorUserToSchema from './mapMeteorUserToSchema';
-import hasRole from '../../../modules/hasRole';
+import hasRole from '../../../libs/hasRole';
 
 /* eslint-disable consistent-return */
 

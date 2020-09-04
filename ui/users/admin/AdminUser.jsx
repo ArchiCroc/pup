@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { generatePath } from 'react-router';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import Tabs from 'antd/lib/tabs';
 import PageBreadcrumbs, { Breadcrumb } from '../../components/PageBreadcrumbs';
 import PageHeader from '../../components/PageHeader';
 import AdminUserProfile from './components/AdminUserProfile';
 import UserSettings from '../components/UserSettings';
 import Loading from '../../components/Loading';
-import NotFound from '../../pages/NotFound';
+import NotFound from '../../pages/NotFoundPage';
 
 import StyledAdminUser from './StyledAdminUser';
 

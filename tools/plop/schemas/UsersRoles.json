@@ -1,0 +1,71 @@
+{ 
+  "name": "Users/Roles",
+  "uiFolderName": "users/admin/roles",
+  "uiRouteBasePath": "/admin/users/roles",
+  "collectionName": "Roles",
+  "permissions": {
+    "read": "admin",
+    "create": "admin",
+    "update": "admin",
+    "delete": "admin"
+  },
+  "menu": {
+    "index": "admin"
+  },   
+  "schemaImports": ["import slugify from 'slugify';"], 
+  "fields": {
+    "_id": {
+      "primaryKey": true,
+      "type": "String",
+      "input": "Hidden",
+      "validate" : {
+        "optional": true
+      }
+    },
+    "name": {
+      "labelKey": true,
+      "urlKey": true,
+      "type": "String",
+      "input": "Text",
+      "validate" : {
+          "max": 64
+      },
+      "clean": "(item) => slugify(item, { lower: true});"
+    },
+    "createdAtUTC": {
+      "type": "DateTime",
+      "showInTableView": "Created At"
+    },
+    "createdBy": {
+      "type": "User",
+      "input": {
+        "name": "createdById",
+        "type": "String"
+      },
+      "reference": {
+        "labelKey": "fullName",
+        "valueKey": "_id"
+      },
+      "showInTableView": false
+    },
+    "updatedAtUTC": {
+      "type": "DateTime",
+      "showInTableView": "Updated At"
+    },
+    "updatedBy": {
+      "type": "User",
+      "input": {
+        "name": "updatedById",
+        "type": "String"
+      },
+      "reference": {
+        "labelKey": "fullName",
+        "valueKey": "_id"
+      },
+      "showInTableView": false
+    }
+  },
+  "defaultSortField": "name",
+  "defaultSortOrder": "ascend"
+}
+  

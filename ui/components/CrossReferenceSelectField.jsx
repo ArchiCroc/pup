@@ -1,16 +1,25 @@
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
+import { gql, useQuery } from '@apollo/client';
 import Select from 'antd/lib/select';
-import connectField from 'uniforms/connectField';
-import filterDOMProps from 'uniforms/filterDOMProps';
-import wrapField from 'uniforms-antd/wrapField';
-import gql from 'graphql-tag';
+import { connectField, filterDOMProps } from 'uniforms';
+import { wrapField } from 'uniforms-antd';
 
 const { Option } = Select;
 
+export const createCrossReferenceSelectFieldQuery = ({ query, edges, labelKey, valueKey }) => gql`
+        query selectData {
+          ${query}(pageSize: 100) {
+            ${edges ? edges + ' {' : ''}
+              ${labelKey}
+              ${valueKey}
+            ${edges ? '}' : ''}
+          }
+        }`;
+
 const CrossReferenceSelectField = (props) => {
   const {
+    id,
     query,
     labelKey,
     valueKey,
@@ -34,15 +43,7 @@ const CrossReferenceSelectField = (props) => {
   // }`);
 
   const gqlQuery = useMemo(() => {
-    return gql`
-        query selectData {
-          ${query}(pageSize: 100) {
-            ${edges ? edges + ' {' : ''}
-              ${labelKey}
-              ${valueKey}
-            ${edges ? '}' : ''}
-          }
-        }`;
+    return createCrossReferenceSelectFieldQuery(props);
   }, [query, labelKey, valueKey]);
 
   const { loading, error, data } = useQuery(gqlQuery);
@@ -59,6 +60,7 @@ const CrossReferenceSelectField = (props) => {
   return wrapField(
     props,
     <Select
+      id={id}
       showSearch
       value={value || undefined}
       placeholder={placeholder}
@@ -81,7 +83,7 @@ const CrossReferenceSelectField = (props) => {
 
 CrossReferenceSelectField.defaultProps = {
   label: '',
-  // id: undefined,
+  id: undefined,
   value: undefined,
   edges: undefined,
   placeholder: null,
@@ -90,7 +92,7 @@ CrossReferenceSelectField.defaultProps = {
 };
 
 CrossReferenceSelectField.propTypes = {
-  // id: PropTypes.string,
+  id: PropTypes.string,
   label: PropTypes.string,
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,

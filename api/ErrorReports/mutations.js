@@ -2,7 +2,7 @@ import ErrorReports from './ErrorReports';
 import ErrorReportSchema from './schemas/error-report';
 // import sanitizeHtml from 'sanitize-html';
 import checkUserRole from '../Users/actions/checkUserRole';
-import createMongoModifier from '../../modules/server/createMongoModifier';
+import createMongoModifier from '../../libs/server/createMongoModifier';
 
 export default {
   saveErrorReport: (root, args, { user }) => {

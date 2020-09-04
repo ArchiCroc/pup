@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 // import { Meteor } from 'meteor/meteor';
 import i18n from 'meteor/universe:i18n';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
-import AutoForm from 'uniforms/AutoForm';
-import LongTextField from 'uniforms-antd/LongTextField';
+import AutoForm from '../../components/AutoForm';
+import { LongTextField } from 'uniforms-antd';
 
 import StyledCommentComposer from './StyledCommentComposer';
 
@@ -55,8 +55,6 @@ const CommentComposer = ({ {{ camelCase singularName }}Id }) => {
         model={doc}
         schema={CommentSchema}
         onSubmit={handleSubmit}
-        showInlineError
-        placeholder
       >
         <LongTextField
           name="comment"

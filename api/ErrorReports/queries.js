@@ -42,7 +42,7 @@ export default {
 
     if (isArray(level) && level.length > 0) {
       query.level = { $in: level };
-    } else if (level !== undefined && level !== null) {
+    } else if (level != null) {
       query.level = level;
     }
 
@@ -82,7 +82,7 @@ export default {
 
     if (isArray(level) && level.length > 0) {
       query.level = { $in: level };
-    } else if (level !== undefined && level !== null) {
+    } else if (level != null) {
       query.level = level;
     }
 

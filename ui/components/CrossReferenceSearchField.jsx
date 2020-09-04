@@ -1,23 +1,49 @@
 import React, { useMemo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
-import BaseField from 'uniforms/BaseField';
+import { gql, useQuery } from '@apollo/client';
 import Select from 'antd/lib/select';
-import connectField from 'uniforms/connectField';
-import filterDOMProps from 'uniforms/filterDOMProps';
-import wrapField from 'uniforms-antd/wrapField';
+import { connectField, filterDOMProps } from 'uniforms';
+import { wrapField } from 'uniforms-antd';
 
 import debounce from 'lodash/debounce';
-import gql from 'graphql-tag';
 
 const { Option } = Select;
 
+export const createCrossReferenceSearchFieldQueries = ({
+  query,
+  edges,
+  labelKey,
+  valueKey,
+  idType,
+}) => ({
+  search: gql`
+        query searchData($search: String) {
+          ${query}(pageSize: 10, search: $search) {
+            ${edges ? edges + ' {' : ''}
+              ${labelKey}
+              ${valueKey}
+            ${edges ? '}' : ''}
+          }
+        }`,
+  initialValue: gql`
+        query searchData($_ids: [${idType}]) {
+          ${query}(_ids: $_ids) {
+            ${edges ? edges + ' {' : ''}
+              ${labelKey}
+              ${valueKey}
+            ${edges ? '}' : ''}
+          }
+        }`,
+});
+
 const CrossReferenceSearchField = (props, { uniforms }) => {
   const {
+    id,
     query,
     labelKey,
     valueKey,
     initialLabelKey,
+    initialSearch,
     idType,
     name,
     value: initialValue,
@@ -29,7 +55,7 @@ const CrossReferenceSearchField = (props, { uniforms }) => {
 
   // console.log(uniforms, props);
 
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(initialSearch);
   const [value, setValue] = useState(null);
   const [loadingComplete, setLoadingComplete] = useState(false);
   const selectRef = useRef(null);
@@ -67,34 +93,17 @@ const CrossReferenceSearchField = (props, { uniforms }) => {
   }
 
   const gqlQueries = useMemo(() => {
-    return {
-      search: gql`
-        query searchData($search: String) {
-          ${query}(pageSize: 10, search: $search) {
-            ${edges ? edges + ' {' : ''}
-              ${labelKey}
-              ${valueKey}
-            ${edges ? '}' : ''}
-          }
-        }`,
-      initialValue: gql`
-        query searchData($_ids: [${idType}]) {
-          ${query}(_ids: $_ids) {
-            ${edges ? edges + ' {' : ''}
-              ${labelKey}
-              ${valueKey}
-            ${edges ? '}' : ''}
-          }
-        }`,
-    };
+    return createCrossReferenceSearchFieldQueries(props);
   }, [query, labelKey, valueKey]);
 
   const { loading, error, data } = useQuery(gqlQueries.search, {
     variables: { search },
     skip: !search,
     fetchPolicy: 'cache-and-network', // network-only
-    onCompleted: () => console.log('complete'),
+    // onCompleted: () => console.log('complete'),
   });
+
+  //console.log({ search, loading, error, data });
 
   const { loading: loading2, error: error2 } = useQuery(gqlQueries.initialValue, {
     variables: { _ids: initialValue },
@@ -143,6 +152,7 @@ const CrossReferenceSearchField = (props, { uniforms }) => {
   return wrapField(
     props,
     <Select
+      id={id}
       disabled={disabled}
       filterOption={(input, option) =>
         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -168,17 +178,18 @@ const CrossReferenceSearchField = (props, { uniforms }) => {
 
 CrossReferenceSearchField.defaultProps = {
   label: '',
-  // id: undefined,
+  id: undefined,
   value: undefined,
   edges: undefined,
   placeholder: null,
   disabled: false,
   multiple: false,
   idType: 'ObjectID',
+  initialSearch: '',
 };
 
 CrossReferenceSearchField.propTypes = {
-  // id: PropTypes.string,
+  id: PropTypes.string,
   label: PropTypes.string,
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
@@ -191,9 +202,10 @@ CrossReferenceSearchField.propTypes = {
   valueKey: PropTypes.string.isRequired,
   multiple: PropTypes.bool,
   idType: PropTypes.string,
+  initialSearch: PropTypes.string,
 };
 
-CrossReferenceSearchField.contextTypes = BaseField.contextTypes;
+// CrossReferenceSearchField.contextTypes = BaseField.contextTypes;
 
 export default connectField(CrossReferenceSearchField);
 
@@ -206,4 +218,5 @@ filterDOMProps.register(
   'multiple',
   'queryParameters',
   'initalValueKey',
+  'initialSearch',
 );

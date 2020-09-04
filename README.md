@@ -29,8 +29,7 @@ An Opinionated take on an even better version of "Pup: The Ultimate Boilerplate 
 
 The Bundle size is bigger.
 - [moment](https://www.npmjs.com/package/moment) and [moment-timezone](https://www.npmjs.com/package/moment-timezone) are big and it would be great to use one of the newer alternatves but several other modules used depend on them
-- [AntDesign](https://www.npmjs.com/package/antd) while the app only includes the components as needed, The icon import includes EVERYTING which is less than idea. There are some options to investigate in https://github.com/ant-design/ant-design/issues/12011 but I haven't gotten thier import helper working yet
-- AntD imports should be split out into specific modules like to prevent loading unused components 
+- [AntDesign](https://www.npmjs.com/package/antd) imports should be split out into specific modules like to prevent loading unused components 
     import Table from 'antd/lib/table';
 
 Mobile Formating needs work
@@ -73,7 +72,11 @@ Starts default dev server at http://localhost:3000
 #### Example Module Schema
 ```js
 { 
-  "name": "ErrorReports", // module name
+  "name": "ErrorReports", // module name, sperate segments with a / to use subfolders
+  "uiFolderName": "CustomPath/ErrorReports", //optional uiFolderName 
+  "uiRouteBasePath": "/custom/path/error-reports", //optional 
+  "apiFolderName": "CustomPath/ErrorReports", //optional custom api foldernam,e 
+
   "permissions": { // what api role is required to preform the action
     "read":"admin", // default possible values: everyone|user|admin
     "save": "admin",
@@ -152,8 +155,21 @@ Starts default dev server at http://localhost:3000
       "showInTableView": false
     }
   },
+  // i18n
+  "i18n": { // optional
+    "en": {
+      "additional_i18n_string": "More ${text} Text"
+    }
+  },
+  // table options
   "defaultSortField": "createdAtUTC", // in the table and search, default field to sort by
-  "defaultSortOrder": "descend" // in the table and search, default field way to order the sort by field
+  "defaultSortOrder": "descend", // in the table and search, default field way to order the sort by field
+  "tableRowClickUrl": "/collection/elements/${record.element._id}", // optional for use with connecting to sub items
+  // detail page options
+  "detailImports": [ // optional
+    "import Divider from 'antd/lib/divider';"
+  ],
+  "detailAddtionalContent": "<Divider /><h2>{i18n.__('CollectionColors.additional_i18n_string', { text: 'example' })}</h2><p>More </p>" //optional
 }
 ```
 

@@ -3,16 +3,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 import { useHistory } from 'react-router-dom';
-import HiddenField from 'uniforms-antd/HiddenField';
-import ListField from 'uniforms-antd/ListField';
-import ListItemField from 'uniforms-antd/ListItemField';
-import TextField from 'uniforms-antd/TextField';
-import AutoForm from 'uniforms/AutoForm';
-import prepareFormModel from '../../../modules/prepareFormModel';
+import { HiddenField, ListField, ListItemField, TextField } from 'uniforms-antd';
+import AutoForm from '../../components/AutoForm';
 import CrossReferenceSearchField from '../../components/CrossReferenceSearchField';
 import SelectField from '../../components/SelectField';
 
@@ -33,7 +29,7 @@ function ErrorReportEditor({ doc }) {
     ignoreResults: true,
     onCompleted: () => {
       message.success(i18n.__('ErrorReports.error_report_saved'));
-      history.push('/error-reports');
+      history.push('/admin/error-reports');
     },
     onError: (error) => {
       message.error(error.message);
@@ -56,14 +52,7 @@ function ErrorReportEditor({ doc }) {
 
   return (
     <StyledErrorReportEditor>
-      <AutoForm
-        name="errorReport"
-        schema={ErrorReportSchema}
-        onSubmit={handleSubmit}
-        model={prepareFormModel(doc)}
-        showInlineError
-        placeholder
-      >
+      <AutoForm name="errorReport" schema={ErrorReportSchema} onSubmit={handleSubmit} model={doc}>
         <HiddenField name="_id" />
         <CrossReferenceSearchField name="userId" />
         <SelectField name="level" />

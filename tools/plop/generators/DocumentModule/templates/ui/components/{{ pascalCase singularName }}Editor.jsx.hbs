@@ -3,15 +3,20 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import AutoForm from 'uniforms/AutoForm';
-import AutoField from 'uniforms-antd/AutoField';
-import LongTextField from 'uniforms-antd/LongTextField';
+import AutoForm from '../../components/AutoForm';
+import { AutoField, LongTextField } from 'uniforms-antd';
 import i18n from 'meteor/universe:i18n';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import message from 'antd/lib/message';
 import Modal from 'antd/lib/modal';
 import Icon from 'antd/lib/icon';
 import Menu from 'antd/lib/menu';
+import SettingIcon from '@ant-design/icons/SettingOutlined';
+import FileIcon from '@ant-design/icons/FileOutlined';
+import LockIcon from '@ant-design/icons/LockOutlined';
+import UnlockIcon from '@ant-design/icons/UnlockOutlined';
+import LockFilledIcon from '@ant-design/icons/LockFilled';
+import UnlockFilledIcon from '@ant-design/icons/UnlockFilled';
 import Dropdown from '../../components/Dropdown';
 
 import { edit{{ pascalCase singularName }} as edit{{ pascalCase singularName }}Query, {{ camelCase singularName }} } from '../queries/{{ pascalCase pluralName }}.gql';
@@ -20,8 +25,8 @@ import {
   remove{{ pascalCase singularName }} as remove{{ pascalCase singularName }}Mutation,
   update{{ pascalCase singularName }}Key as update{{ pascalCase singularName }}KeyMutation,
 } from '../mutations/{{ pascalCase pluralName }}.gql';
-import delay from '../../../modules/delay';
-import { timeago } from '../../../modules/dates';
+import delay from '../../../libs/delay';
+import { timeago } from '../../../libs/dates';
 import {{ pascalCase singularName }}Schema from '../../../api/{{ pascalCase pluralName }}/schemas/{{ camelCase singularName }}';
 
 import {
@@ -124,10 +129,10 @@ const {{ pascalCase singularName }}Editor = ({ doc, history }) => {
           )}
         </p>
 
-        <Dropdown title={<Icon type="setting" />} id="set-{{ dashCase singularName }}-public">
+        <Dropdown title={<SettingIcon />} id="set-{{ dashCase singularName }}-public">
           <Menu>
             <Menu.Item key="view" onClick={() => history.push(`/{{ uiFolderName }}/${doc._id}`)}>
-              <Icon type="file" />
+              <FileIcon />
               {i18n.__('{{ pascalCase pluralName }}.view_{{ snakeCase singularName }}')}
             </Menu.Item>
             <Menu.Divider />
@@ -138,7 +143,7 @@ const {{ pascalCase singularName }}Editor = ({ doc, history }) => {
                 key="public"
                 onClick={() => handleSetVisibility('public')}
               >
-                <Icon type="unlock" theme={doc.isPublic ? 'filled' : 'outlined'} />
+                {!doc.isPublic ? <UnlockFilledIcon /> : <UnlockIcon />}
                 {i18n.__('{{ pascalCase pluralName }}.public')}
               </Menu.Item>
               <Menu.Item
@@ -146,7 +151,7 @@ const {{ pascalCase singularName }}Editor = ({ doc, history }) => {
                 key="private"
                 onClick={() => handleSetVisibility('private')}
               >
-                <Icon type="lock" theme={!doc.isPublic ? 'filled' : 'outlined'} />
+                {!doc.isPublic ? <LockFilledIcon /> : <LockIcon />}
                 {i18n.__('{{ pascalCase pluralName }}.private')}
               </Menu.Item>
             </Menu.ItemGroup>
@@ -165,8 +170,6 @@ const {{ pascalCase singularName }}Editor = ({ doc, history }) => {
           model={doc}
           schema={{{ pascalCase singularName }}Schema}
           onChange={handleUpdate{{ pascalCase singularName }}}
-          showInlineError
-          placeholder
         >
           <{{ pascalCase singularName }}EditorTitle>
             <AutoField name="title" placeholder={i18n.__('{{ pascalCase pluralName }}.title_placeholder')} />

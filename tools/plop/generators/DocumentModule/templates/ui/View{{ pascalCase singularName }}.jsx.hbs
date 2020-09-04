@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { Meteor } from 'meteor/meteor';
 import SEO from '../components/SEO';
 import BlankState from '../components/BlankState';
+import FileIcon from '@ant-design/icons/FileOutlined';
 import Comments from './components/Comments';
 import { {{ camelCase singularName }} as {{ camelCase singularName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
-import parseMarkdown from '../../modules/parseMarkdown';
+import parseMarkdown from '../../libs/parseMarkdown';
 import CommentComposer from './components/CommentComposer';
 
 import { StyledView{{ pascalCase singularName }}, {{ pascalCase singularName }}Body } from './StyledView{{ pascalCase singularName }}';
@@ -73,7 +74,7 @@ const View{{ pascalCase singularName }} = ({ match }) => {
   if (!data.loading && !data.{{ camelCase singularName }}) {
     return (
       <BlankState
-        icon={{ style: 'solid', symbol: 'file-alt' }}
+        icon={<FileIcon />}
         title={i18n.__('blank_state_title')}
         subtitle={i18n.__('blank_state_subtitle')}
       />

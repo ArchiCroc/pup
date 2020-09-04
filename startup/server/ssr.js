@@ -1,9 +1,6 @@
 import React from 'react';
-import { renderToStringWithData } from 'react-apollo';
-import { ApolloProvider } from '@apollo/react-hooks';
-import { ApolloClient } from 'apollo-client';
-import { createHttpLink } from 'apollo-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { renderToStringWithData } from '@apollo/react-ssr';
 import 'isomorphic-fetch';
 import { onPageLoad } from 'meteor/server-render';
 import { StaticRouter } from 'react-router';
@@ -18,7 +15,7 @@ import enUS from 'antd/lib/locale-provider/en_US';
 
 import GlobalStyle from '../../ui/layouts/GlobalStyle';
 import App from '../../ui/layouts/App';
-import checkIfBlacklisted from '../../modules/server/checkIfBlacklisted';
+import checkIfBlacklisted from '../../libs/server/checkIfBlacklisted';
 
 onPageLoad(async (sink) => {
   if (checkIfBlacklisted(sink.request.url.path)) {
@@ -33,9 +30,7 @@ onPageLoad(async (sink) => {
 
   const apolloClient = new ApolloClient({
     ssrMode: true,
-    link: createHttpLink({
-      uri: Meteor.settings.public.graphQL.httpUri,
-    }),
+    uri: Meteor.settings.public.graphQL.httpUri,
     cache: new InMemoryCache(),
   });
 

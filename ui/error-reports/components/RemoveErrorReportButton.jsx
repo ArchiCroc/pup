@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 import modal from 'antd/lib/modal';
@@ -17,7 +17,7 @@ function RemoveErrorReportButton({ _id, message, ...props }) {
     ignoreResults: true,
     onCompleted: () => {
       message.success(i18n.__('ErrorReports.error_report_saved'));
-      history.push('/error-reports');
+      history.push('/admin/error-reports');
     },
     onError: (error) => {
       message.error(error.message);

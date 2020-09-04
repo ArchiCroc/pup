@@ -3,8 +3,8 @@
 import omit from 'lodash/omit';
   {{#compare fieldType '==' 'ObjectID'}}
 import { Mongo } from 'meteor/mongo';
-import convertMeteorToMongo from '{{@root.apiPathOffset}}../../modules/server/convertMeteorToMongo';
-import convertMongoToMeteor from '{{@root.apiPathOffset}}../../modules/server/convertMongoToMeteor';
+import convertMeteorToMongo from '{{@root.apiPathOffset}}../../libs/server/convertMeteorToMongo';
+import convertMongoToMeteor from '{{@root.apiPathOffset}}../../libs/server/convertMongoToMeteor';
   {{/compare}}
 {{/compare}}
 {{#compare template '===' 'api/multiItemAsyncFunction'}}

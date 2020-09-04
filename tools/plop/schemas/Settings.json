@@ -1,4 +1,5 @@
 { "name": "Settings",
+    "uiRouteBasePath": "/admin/settings",
     "permissions": {
       "read": "user",
       "create": "admin",

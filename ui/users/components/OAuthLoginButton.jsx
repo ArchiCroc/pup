@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import message from 'antd/lib/message';
-import Icon from '../../components/Icon';
-import Styles from './StyledOAuthLoginButton';
+import FacebookIcon from '@ant-design/icons/FacebookOutlined';
+import GithubIcon from '@ant-design/icons/GithubOutlined';
+import GoogleIcon from '@ant-design/icons/GoogleOutlined';
+import StyledOAuthLoginButton from './StyledOAuthLoginButton';
 
 const handleLogin = (service, callback) => {
   const options = {
@@ -32,32 +34,32 @@ const handleLogin = (service, callback) => {
 const serviceLabel = {
   facebook: (
     <span>
-      <Icon iconStyle="brand" icon="facebook" />
+      <FacebookIcon />
       {' Log In with Facebook'}
     </span>
   ),
   github: (
     <span>
-      <Icon iconStyle="brand" icon="github" />
+      <GithubIcon />
       {' Log In with GitHub'}
     </span>
   ),
   google: (
     <span>
-      <Icon iconStyle="brand" icon="google" />
+      <GoogleIcon />
       {' Log In with Google'}
     </span>
   ),
 };
 
 const OAuthLoginButton = ({ service, callback }) => (
-  <Styles.OAuthLoginButton
+  <StyledOAuthLoginButton
     className={`OAuthLoginButton OAuthLoginButton-${service}`}
     type="button"
     onClick={() => handleLogin(service, callback)}
   >
     {serviceLabel[service]}
-  </Styles.OAuthLoginButton>
+  </StyledOAuthLoginButton>
 );
 
 OAuthLoginButton.defaultProps = {

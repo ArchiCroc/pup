@@ -1,0 +1,13 @@
+#import "../fragments/UsersRoles.gql"
+
+mutation saveUsersRole($usersRole: UsersRoleInput!) {
+  saveUsersRole(usersRole: $usersRole) {
+    ...UsersRoleAttributes
+  }
+}
+
+mutation removeUsersRole($_id: String!) {
+  removeUsersRole(_id: $_id) {
+    _id
+  }
+}

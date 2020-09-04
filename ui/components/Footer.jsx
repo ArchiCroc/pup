@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import i18n from 'meteor/universe:i18n';
 import { Link } from 'react-router-dom';
 
-import { year } from '../../modules/dates';
+import { year } from '../../libs/dates';
 import StyledFooter from './StyledFooter';
 
 const copyrightYear = () => {

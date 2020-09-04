@@ -1,6 +1,7 @@
 /* eslint-disable  */
 const fs = require('fs');
 const _ = require('lodash');
+const changeCase = require('change-case');
 const processSchema = require('../../libs/processSchema');
 const prettierTransform = require('../../libs/prettierTransform');
 const addMenuItem = require('../AddMenuItem');
@@ -73,39 +74,43 @@ module.exports = {
     });
 
     let fieldImports = [];
+    let uniformsImports = [];
 
     if (hasList) {
-      fieldImports.push({
-        variable: `ListField`,
-        path: `uniforms-antd/ListField`,
-      });
-      fieldImports.push({
-        variable: `ListItemField`,
-        path: `uniforms-antd/ListItemField`,
-      });
+      uniformsImports.push('List');
+      uniformsImports.push('ListItem');
     }
 
-    fieldImports = fieldImports.concat(
-      schemaValues
-        .filter(
-          (field) =>
-            (typeof field.input === 'object' && field.input.input) ||
-            typeof field.input === 'string',
-        )
-        .map(({ input, type }) => {
-          if (typeof input === 'object') {
-            type = input.type;
-            input = input.input;
-          }
+    schemaValues
+      .filter(
+        (field) =>
+          (typeof field.input === 'object' && field.input.input) || typeof field.input === 'string',
+      )
+      .forEach(({ input, type }) => {
+        if (typeof input === 'object') {
+          type = input.type;
+          input = input.input;
+        }
 
-          return {
+        if (uniformsFields.includes(input)) {
+          if (!uniformsImports.includes(input)) {
+            uniformsImports.push(input);
+          }
+        } else {
+          fieldImports.push({
             variable: `${input}Field`,
-            path: uniformsFields.includes(input)
-              ? `uniforms-antd/${input}Field`
-              : `${data.uiPathOffset}../../components/${input}Field`,
-          };
-        }),
-    );
+            path: `${data.uiPathOffset}../../components/${input}Field`, //@todo figure out a way to define a custom import in the schema
+          });
+        }
+      });
+
+    // pack all the uniforms imports into a single line
+    if (uniformsImports.length > 0) {
+      fieldImports.push({
+        variable: `{ ${uniformsImports.sort().join('Field, ')}Field }`,
+        path: 'uniforms-antd', //@todo figure out a way to define a custom import in the schema
+      });
+    }
 
     data.fieldImports = _.uniqBy(fieldImports, 'variable');
     data.hasListField = hasList;
@@ -132,6 +137,15 @@ module.exports = {
         type: 'append',
         path: 'ui/layouts/App.jsx',
         pattern: '/* #### PLOP_IMPORTS_START #### */',
+        template: `
+          /* #### {{ constantCase pluralName }}_IMPORTS_START #### */
+          /* #### {{ constantCase pluralName }}_IMPORTS_END #### */`,
+        data,
+      },
+      {
+        type: 'append',
+        path: 'ui/layouts/App.jsx',
+        pattern: `/* #### ${changeCase.constantCase(data.pluralName)}_IMPORTS_START #### */`,
         templateFile: 'tools/plop/generators/BasicUIModule/templates/app-imports.js.hbs',
         data,
       },
@@ -139,7 +153,22 @@ module.exports = {
         type: 'append',
         path: 'ui/layouts/App.jsx',
         pattern: '{/* #### PLOP_ROUTES_START #### */}',
+        template: `
+          {/* #### {{ constantCase pluralName }}_ROUTES_START #### */}
+          {/* #### {{ constantCase pluralName }}_ROUTES_END #### */}`,
+        data,
+      },
+      {
+        type: 'append',
+        path: 'ui/layouts/App.jsx',
+        pattern: `{/* #### ${changeCase.constantCase(data.pluralName)}_ROUTES_START #### */}`,
         templateFile: 'tools/plop/generators/BasicUIModule/templates/app-routes.js.hbs',
+        data,
+      },
+      {
+        type: 'modify',
+        path: 'ui/layouts/App.jsx',
+        transform: prettierTransform,
         data,
       },
     ];

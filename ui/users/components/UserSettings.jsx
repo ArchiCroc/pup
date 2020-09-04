@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
-import { useMutation } from '@apollo/react-hooks';
-import AutoForm from 'uniforms-antd/AutoForm';
-import BoolField from 'uniforms-antd/BoolField';
-import SubmitField from 'uniforms-antd/SubmitField';
+import { useMutation } from '@apollo/client';
+import { BoolField, SubmitField } from 'uniforms-antd';
 import message from 'antd/lib/message';
+import AutoForm from '../../components/AutoForm';
 import UserSettingsSchema from '../../../api/Users/schemas/user-settings';
 import StyledUserSettings from './StyledUserSettings';
 import { user as userQuery } from '../queries/Users.gql';
@@ -48,8 +47,6 @@ const UserSettings = ({ user }) => {
         onSubmit={handleSubmit}
         autosave
         autosaveDelay={250}
-        showInlineError
-        placeholder
         submitField={renderSubmitButton}
       >
         <BoolField name="gdpr.canSendMarketingEmails" />

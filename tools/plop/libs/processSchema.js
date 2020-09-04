@@ -145,10 +145,17 @@ function processSchema(input) {
   data.uiFolderName = (schema.uiFolderName || data.rawName)
     .split('/')
     .map((folder) => changeCase.param(folder))
+    .filter((folder) => folder !== '')
     .join('/');
   data.uiPathOffset = '../'.repeat(data.uiFolderName.split('/').length - 1);
 
-  data.uiRouteBasePath = schema.uiRouteBasePath || '/' + data.uiFolderName;
+  // set the uiRouteBasePath fromthe foldername if it blank
+  data.uiRouteBasePath = schema.uiRouteBasePath || `/${data.uiFolderName}`;
+
+  // make uiRouteBasePath starts with a slash
+  if (!data.uiRouteBasePath.startsWith('/')) {
+    data.uiRouteBasePath = `/${data.uiRouteBasePath}`;
+  }
 
   // clean the name. collection/bigItem into Collection/BigItem
   // if (data.rawName.includes('/')) {
@@ -221,10 +228,20 @@ function processSchema(input) {
   //   // data.groupKeyField = 'parentId';
   // }
 
+  // Process each entry
+  Object.entries(schemaFields).forEach(processFields);
+
   let labelKeyIndex = schemaFieldValues.findIndex((field) => field.labelKey);
   // if primary key isn't found, set it to the first field that is a string
   if (labelKeyIndex === -1) {
-    labelKeyIndex = schemaFieldValues.findIndex((field) => field.type === 'String');
+    labelKeyIndex = schemaFieldValues.findIndex(
+      (field) => field.fieldType === 'String' && field.key !== '_id',
+    );
+    if (labelKeyIndex === -1) {
+      throw new Error(
+        "A Valid Label key wasn't found. Update your Schema or try a different plop template",
+      );
+    }
   }
   data.labelKeyKey = schemaFieldKeys[labelKeyIndex];
   data.labelKey = schemaFields[data.labelKeyKey];
@@ -241,7 +258,7 @@ function processSchema(input) {
   // clean up field permissions
   data.hasFieldPermissions = schemaFieldValues.findIndex((field) => field.permissions) !== -1;
   // if (data.hasFieldPermissions) {
-  Object.entries(schemaFields).forEach(processFields);
+
   //}
 
   // stash these back to cover the case where they got built from scratch

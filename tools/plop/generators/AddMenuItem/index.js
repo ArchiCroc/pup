@@ -4,6 +4,7 @@ const processSchema = require('../../libs/processSchema');
 const listDirectories = require('../../libs/listDirectories');
 const slugify = require('slugify');
 const changeCase = require('change-case');
+const prettierTransform = require('../../libs/prettierTransform');
 
 const requireField = (fieldName) => {
   return (value) => {
@@ -30,6 +31,13 @@ module.exports = {
       ]);
 
       const values2 = await inquirer.prompt([
+        {
+          type: 'input',
+          name: 'uiRouteBasePath',
+          message: `What is Route Base Path?`,
+          validate: requireField('URL Slug'),
+          default: `/${changeCase.paramCase(values.uiFolderName)}`,
+        },
         {
           type: 'input',
           name: 'pluralName',
@@ -73,6 +81,10 @@ module.exports = {
   },
   actions: (data) => {
     const actions = [];
+    if (!data.uiRouteBasePath) {
+      data.uiRouteBasePath = `/${data.uiFolderName}`;
+    }
+
     if (data.addWrapper) {
       actions.push(
         {
@@ -110,6 +122,12 @@ module.exports = {
         data,
       });
     }
+    actions.push({
+      type: 'modify',
+      path: 'ui/components/AuthenticatedNavigation.jsx',
+      transform: prettierTransform,
+      data,
+    });
     return actions;
   },
 };

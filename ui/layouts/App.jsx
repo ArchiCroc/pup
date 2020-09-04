@@ -21,50 +21,50 @@ import PublicRoute from '../components/PublicRoute';
 
 /* #### PLOP_IMPORTS_START #### */
 
-/* #### ROLES_IMPORTS_START #### */
-import Roles from '../roles/Roles';
-import ViewRole from '../roles/ViewRole';
-import NewRole from '../roles/NewRole';
-import EditRole from '../roles/EditRole';
-/* #### ROLES_IMPORTS_END #### */
-
-/* #### PAGES_IMPORTS_START #### */
-import Index from '../pages/Index';
-import Terms from '../pages/Terms';
-import Privacy from '../pages/Privacy';
-import ExamplePage from '../pages/ExamplePage';
-/* #### PAGES_IMPORTS_END #### */
-
 /* #### ERROR_REPORTS_IMPORTS_START #### */
-import ErrorReports from '../error-reports/ErrorReports';
-import ViewErrorReport from '../error-reports/ViewErrorReport';
-import NewErrorReport from '../error-reports/NewErrorReport';
-import EditErrorReport from '../error-reports/EditErrorReport';
+import ErrorReportsPage from '../error-reports/ErrorReportsPage';
+import ViewErrorReportPage from '../error-reports/ViewErrorReportPage';
+import NewErrorReportPage from '../error-reports/NewErrorReportPage';
+import EditErrorReportPage from '../error-reports/EditErrorReportPage';
 /* #### ERROR_REPORTS_IMPORTS_END #### */
 
-/* #### USERS_IMPORTS_START #### */
-import Profile from '../users/Profile';
-import Signup from '../users/Signup';
-import Login from '../users/Login';
-import Logout from '../users/Logout';
+/* #### USERS_ROLES_IMPORTS_START #### */
+import UsersRolesPage from '../users/admin/roles/UsersRolesPage';
+import ViewUsersRolePage from '../users/admin/roles/ViewUsersRolePage';
+import NewUsersRolePage from '../users/admin/roles/NewUsersRolePage';
+import EditUsersRolePage from '../users/admin/roles/EditUsersRolePage';
+/* #### USERS_ROLES_IMPORTS_END #### */
 
-import VerifyEmail from '../users/VerifyEmail';
-import RecoverPassword from '../users/RecoverPassword';
-import ResetPassword from '../users/ResetPassword';
+/* #### USERS_IMPORTS_START #### */
+import ProfilePage from '../users/ProfilePage';
+import SignupPage from '../users/SignupPage';
+import LoginPage from '../users/LoginPage';
+import LogoutPage from '../users/LogoutPage';
+import NotFoundPage from '../pages/NotFoundPage';
+import VerifyEmailPage from '../users/VerifyEmailPage';
+import RecoverPasswordPage from '../users/RecoverPasswordPage';
+import ResetPasswordPage from '../users/ResetPasswordPage';
 
 import AdminUsers from '../users/admin/AdminUsers';
 import AdminUser from '../users/admin/AdminUser';
 /* #### USERS_IMPORTS_END #### */
+
+/* #### PAGES_IMPORTS_START #### */
+import IndexPage from '../pages/IndexPage';
+import TermsPage from '../pages/TermsPage';
+import PrivacyPage from '../pages/PrivacyPage';
+import ExamplePage from '../pages/ExamplePage';
+/* #### PAGES_IMPORTS_END #### */
+
 /* #### PLOP_IMPORTS_END #### */
 
-import NotFound from '../pages/NotFound';
 import Footer from '../components/Footer';
 
 import VerifyEmailAlert from '../users/components/VerifyEmailAlert';
 import GDPRConsentModal from '../users/components/GDPRConsentModal';
 
-import withTrackerSsr from '../../modules/withTrackerSsr';
-import getUserName from '../../modules/getUserName';
+import withTrackerSsr from '../../libs/withTrackerSsr';
+import getUserName from '../../libs/getUserName';
 
 import StyledApp from './StyledApp';
 
@@ -121,46 +121,50 @@ class App extends React.Component {
                     {/* #### PLOP_ROUTES_START #### */}
 
                     {/* #### ERROR_REPORTS_ROUTES_START #### */}
-                    <AuthenticatedRoute
+                    <AuthorizedRoute
                       exact
-                      path="/error-reports"
-                      component={ErrorReports}
+                      allowedRoles={['admin']}
+                      path="/admin/error-reports"
+                      component={ErrorReportsPage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
-                    <AuthenticatedRoute
+                    <AuthorizedRoute
                       exact
-                      path="/error-reports/new"
-                      component={NewErrorReport}
+                      allowedRoles={['admin']}
+                      path="/admin/error-reports/new"
+                      component={NewErrorReportPage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
-                    <AuthenticatedRoute
+                    <AuthorizedRoute
                       exact
-                      path="/error-reports/:_id"
-                      component={ViewErrorReport}
+                      allowedRoles={['admin']}
+                      path="/admin/error-reports/:_id"
+                      component={ViewErrorReportPage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
-                    <AuthenticatedRoute
+                    <AuthorizedRoute
                       exact
-                      path="/error-reports/:_id/edit"
-                      component={EditErrorReport}
+                      allowedRoles={['admin']}
+                      path="/admin/error-reports/:_id/edit"
+                      component={EditErrorReportPage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
                     {/* #### ERROR_REPORTS_ROUTES_END #### */}
 
-                    {/* #### ROLES_ROUTES_START #### */}
+                    {/* #### USERS_ROLES_ROUTES_START #### */}
                     <AuthorizedRoute
                       exact
                       allowedRoles={['admin']}
                       path="/admin/users/roles"
-                      component={Roles}
+                      component={UsersRolesPage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
@@ -169,7 +173,7 @@ class App extends React.Component {
                       exact
                       allowedRoles={['admin']}
                       path="/admin/users/roles/new"
-                      component={NewRole}
+                      component={NewUsersRolePage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
@@ -178,7 +182,7 @@ class App extends React.Component {
                       exact
                       allowedRoles={['admin']}
                       path="/admin/users/roles/:name"
-                      component={ViewRole}
+                      component={ViewUsersRolePage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
@@ -187,28 +191,28 @@ class App extends React.Component {
                       exact
                       allowedRoles={['admin']}
                       path="/admin/users/roles/:name/edit"
-                      component={EditRole}
+                      component={EditUsersRolePage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
-                    {/* #### ROLES_ROUTES_END #### */}
+                    {/* #### USERS_ROLES_ROUTES_END #### */}
 
                     {/* #### USERS_ROUTES_START #### */}
                     <AuthenticatedRoute
                       exact
                       path="/user/:tab?"
-                      component={Profile}
+                      component={ProfilePage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
-                    <PublicOnlyRoute path="/signup" component={Signup} {...props} {...state} />
-                    <PublicOnlyRoute path="/login" component={Login} {...props} {...state} />
+                    <PublicOnlyRoute path="/signup" component={SignupPage} {...props} {...state} />
+                    <PublicOnlyRoute path="/login" component={LoginPage} {...props} {...state} />
                     <Route
                       path="/logout"
                       render={(routeProps) => (
-                        <Logout {...routeProps} setAfterLoginPath={setAfterLoginPath} />
+                        <LogoutPage {...routeProps} setAfterLoginPath={setAfterLoginPath} />
                       )}
                       {...props}
                       {...state}
@@ -217,17 +221,17 @@ class App extends React.Component {
                     <PublicRoute
                       name="verify-email"
                       path="/verify-email/:token"
-                      component={VerifyEmail}
+                      component={VerifyEmailPage}
                     />
                     <PublicRoute
                       name="recover-password"
                       path="/recover-password"
-                      component={RecoverPassword}
+                      component={RecoverPasswordPage}
                     />
                     <PublicRoute
                       name="reset-password"
                       path="/reset-password/:token"
-                      component={ResetPassword}
+                      component={ResetPasswordPage}
                     />
                     <AuthorizedRoute
                       exact
@@ -252,13 +256,13 @@ class App extends React.Component {
                     {/* #### USERS_ROUTES_END #### */}
 
                     {/* #### PAGES_ROUTES_START #### */}
-                    <PublicRoute exact name="index" path="/" component={Index} />
-                    <PublicRoute name="terms" path="/terms" component={Terms} />
-                    <PublicRoute name="privacy" path="/privacy" component={Privacy} />
+                    <PublicRoute exact name="index" path="/" component={IndexPage} />
+                    <PublicRoute name="terms" path="/terms" component={TermsPage} />
+                    <PublicRoute name="privacy" path="/privacy" component={PrivacyPage} />
                     {/* #### PAGES_ROUTES_END #### */}
 
                     {/* #### PLOP_ROUTES_END #### */}
-                    <Route component={NotFound} />
+                    <Route component={NotFoundPage} />
                   </Switch>
                 </PageErrorBoundary>
               </PageContainer>

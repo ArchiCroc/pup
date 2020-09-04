@@ -9,7 +9,7 @@ import BooleanFilterDropdown from '{{@root.uiPathOffset}}../../components/Boolea
 {{/compare}}
 {{#compare template '===' 'ui/useState'}}
 const [current{{ pascalCase fieldName }}, setCurrent{{ pascalCase fieldName }}] = useState(
-  {{ fieldName }} === undefined 
+  {{ fieldName }} == null 
   ? [] 
   : [isString({{ fieldName }}) ? !!({{ fieldName }}.toLowerCase() === 'true') : {{ fieldName }}],
 );
@@ -35,7 +35,7 @@ setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
 {{#compare template '===' 'ui/queryStringDefaultPropsKeys'}}
 {{fieldName}}: undefined,
 {{/compare}}
-{{#compare template '===' 'ui/queryStringPropsTypes'}}
+{{#compare template '===' 'ui/queryStringPropTypes'}}
 {{fieldName}}: PropTypes.oneOfType([
   PropTypes.string,
   PropTypes.bool,

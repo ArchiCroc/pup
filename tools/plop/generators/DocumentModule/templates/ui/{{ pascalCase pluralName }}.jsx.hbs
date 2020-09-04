@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'antd/lib/button';
 import { Link } from 'react-router-dom';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/client';
 import i18n from 'meteor/universe:i18n';
-import { timeago } from '../../modules/dates';
+import { timeago } from '../../libs/dates';
 import BlankState from '../components/BlankState';
+import FileIcon from '@ant-design/icons/FileOutlined';
 import Loading from '../components/Loading';
 import { Styled{{ pascalCase pluralName }}, {{ pascalCase pluralName }}List, {{ pascalCase singularName }} } from './Styled{{ pascalCase pluralName }}';
 import { {{ camelCase singularName }} as {{ camelCase singularName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
@@ -50,7 +51,7 @@ const {{ pascalCase pluralName }} = ({ history }) => {
             </{{ pascalCase pluralName }}List>
           ) : (
             <BlankState
-              icon={{ style: 'solid', symbol: 'file-alt' }}
+              icon={<FileIcon />}
               title={i18n.__('{{ pascalCase pluralName }}.no_{{ snakeCase singularName }}_title')}
               subtitle={i18n.__('{{ pascalCase pluralName }}.no_{{ snakeCase singularName }}_subtitle')}
               action={{
