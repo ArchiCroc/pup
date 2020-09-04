@@ -121,32 +121,36 @@ class App extends React.Component {
                     {/* #### PLOP_ROUTES_START #### */}
 
                     {/* #### ERROR_REPORTS_ROUTES_START #### */}
-                    <AuthenticatedRoute
+                    <AuthorizedRoute
                       exact
+                      allowedRoles={['admin']}
                       path="/admin/error-reports"
                       component={ErrorReportsPage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
-                    <AuthenticatedRoute
+                    <AuthorizedRoute
                       exact
+                      allowedRoles={['admin']}
                       path="/admin/error-reports/new"
                       component={NewErrorReportPage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
-                    <AuthenticatedRoute
+                    <AuthorizedRoute
                       exact
+                      allowedRoles={['admin']}
                       path="/admin/error-reports/:_id"
                       component={ViewErrorReportPage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
-                    <AuthenticatedRoute
+                    <AuthorizedRoute
                       exact
+                      allowedRoles={['admin']}
                       path="/admin/error-reports/:_id/edit"
                       component={EditErrorReportPage}
                       setAfterLoginPath={setAfterLoginPath}
@@ -156,32 +160,36 @@ class App extends React.Component {
                     {/* #### ERROR_REPORTS_ROUTES_END #### */}
 
                     {/* #### USERS_ROLES_ROUTES_START #### */}
-                    <AuthenticatedRoute
+                    <AuthorizedRoute
                       exact
+                      allowedRoles={['admin']}
                       path="/admin/users/roles"
                       component={UsersRolesPage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
-                    <AuthenticatedRoute
+                    <AuthorizedRoute
                       exact
+                      allowedRoles={['admin']}
                       path="/admin/users/roles/new"
                       component={NewUsersRolePage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
-                    <AuthenticatedRoute
+                    <AuthorizedRoute
                       exact
+                      allowedRoles={['admin']}
                       path="/admin/users/roles/:name"
                       component={ViewUsersRolePage}
                       setAfterLoginPath={setAfterLoginPath}
                       {...props}
                       {...state}
                     />
-                    <AuthenticatedRoute
+                    <AuthorizedRoute
                       exact
+                      allowedRoles={['admin']}
                       path="/admin/users/roles/:name/edit"
                       component={EditUsersRolePage}
                       setAfterLoginPath={setAfterLoginPath}

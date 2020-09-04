@@ -8,4 +8,8 @@ module.exports = {
   },
   unmockedModulePathPatterns: ['/^node_modules/'],
   modulePathIgnorePatterns: ['\\.meteor'],
+  transform: {
+    '\\.(gql|graphql)$': 'jest-transform-graphql',
+    '.*': 'babel-jest',
+  },
 };

@@ -1,3 +1,5 @@
+import * as Apollo from '@apollo/client';
+
 // NOTE: Place unit test helpers in this file.
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -11,4 +13,13 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
   })),
+});
+
+jest.spyOn(Apollo, 'useQuery').mockImplementation(() => {
+  return {
+    loading: false,
+    error: undefined,
+    data: {},
+    refetch: jest.fn(),
+  };
 });
