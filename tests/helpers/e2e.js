@@ -1,8 +1,12 @@
 import { ClientFunction, Selector } from 'testcafe';
 
-export const login = async ({ email, password, browser }) => {
+export async function logout(browser) {
   console.log('logout');
-  await browser.navigateTo('/logout'); //.wait(1); // clear current session
+  await browser.navigateTo('/logout');//.wait(1); // clear current session
+}
+
+export async function login({ email, password, browser }) {
+  await logout(browser)
   console.log('load login page');
   // await Selector('[data-test="user-nav-dropdown"]')();
   await browser.navigateTo('/login');
@@ -14,20 +18,21 @@ export const login = async ({ email, password, browser }) => {
   console.log('login complete');
 };
 
-export const loginAsAdmin = async (browser) => {
+export async function loginAsAdmin(browser) {
   await login({
-    email: 'admin@admin.com',
+    email: 'admin@example.com',
     password: 'password',
     browser,
   });
 };
 
-export const loginAsUser = async (browser) => {
+export async function loginAsUser (browser) {
   await login({
-    email: 'user+1@test.com',
+    email: 'user01@example.com',
     password: 'password',
     browser,
   });
 };
 
+export const getPagePath = ClientFunction(() => window.location.pathname);
 export const getPageUrl = ClientFunction(() => window.location.href);

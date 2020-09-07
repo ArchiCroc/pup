@@ -32,7 +32,7 @@
       "type": "String",
       "input": "LongText",
       "validate" : {
-          "max": 64
+          "max": 256
       }
     },
     "category": {

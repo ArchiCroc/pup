@@ -1,0 +1,9 @@
+{{#compare template '===' 'import'}}
+import faker from 'faker';
+{{/compare}}
+{{#compare template '===' 'value'}}
+faker.lorem.number({
+{{~#if this.validate.min}}min: {{this.validate.max}}, {{/if ~}}
+{{~#if this.validate.max}}max: {{this.validate.max}}, {{/if ~}}
+})
+{{/compare}}

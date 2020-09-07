@@ -2,7 +2,58 @@
 const changeCase = require('change-case');
 const pluralize = require('pluralize');
 
-function processFields([key, item]) {
+function pickMock(item, data) {
+  const itemType = item.type.replace('[','').replace(']','');
+  if(item.key === '_id') {
+    return undefined;
+  }
+  if(item.choices) {
+    return 'mock-choices';
+  }
+  if(itemType === 'Boolean'){
+    return 'mock-boolean';
+  }
+  if(itemType === 'Int'){
+    return 'mock-int';
+  }
+  if(itemType === 'Float'){
+    return 'mock-float';
+  }
+  if(item.key == 'email') {
+    return 'mock-email';
+  }
+  if(item.input === 'LongText'){
+    return 'mock-long-text';
+  }
+  if(itemType === 'String'){
+    return 'mock-text';
+  }
+  if(item.key == 'createdAtUTC'){
+    return 'mock-far-past-date';
+  }
+  if(item.key == 'updatedAtUTC'){
+    return 'mock-near-past-date';
+  }
+  if(item.key == 'createdBy'){
+    if(data.schema.permissions.create === 'admin') {
+      return 'mock-admin-user';
+    } 
+    return 'mock-user';
+  }
+  if(item.key == 'updatedBy'){
+    if(data.schema.permissions.update === 'admin') {
+      return 'mock-admin-user';
+    } 
+    return 'mock-user';
+  }
+
+  // if(['Date', 'DateTime'].includes(itemType)){
+  //   return 'mock-near-past-date';
+  // }
+  return undefined;
+}
+
+function processFields([key, item], data) {
   if (item.permissions) {
     // eslint-disable-next-line
     for (let permissionKey in item.permissions) {
@@ -24,7 +75,7 @@ function processFields([key, item]) {
     item.dataIndex = item.reference.labelKey;
   }
   if (item.fields) {
-    Object.entries(item.fields).forEach(processFields);
+    Object.entries(item.fields).forEach((x) => processFields(x, data));
   }
   if (item.templateFile && !item.tableTemplateFile) {
     item.tableTemplateFile = item.templateFile;
@@ -94,6 +145,12 @@ function processFields([key, item]) {
     item.detailLabel = item.showInDetailView;
     item.showInDetailView = true;
   }
+
+  //clean up mock data
+  if(!item.mockTemplateFile && !item.mockTemplate){
+    item.mockTemplateFile = pickMock(item, data);
+  }
+
 }
 
 function processSchema(input) {
@@ -229,7 +286,7 @@ function processSchema(input) {
   // }
 
   // Process each entry
-  Object.entries(schemaFields).forEach(processFields);
+  Object.entries(schemaFields).forEach((x) => processFields(x, data));
 
   let labelKeyIndex = schemaFieldValues.findIndex((field) => field.labelKey);
   // if primary key isn't found, set it to the first field that is a string

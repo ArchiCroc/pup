@@ -1,5 +1,6 @@
 const apiModule = require('../BasicApiModule');
 const i18nFile = require('../BasicI18nFile');
+const fixtureFile = require('../BasicFixtureFile');
 const uiModule = require('../BasicUIModule');
 
 const requireField = (fieldName) => {
@@ -40,6 +41,7 @@ module.exports = {
     ];
     actions.push(...apiModule.actions(data));
     actions.push(...i18nFile.actions(data));
+    actions.push(...fixtureFile.actions(data));
     actions.push(...uiModule.actions(data));
     return actions;
   },
