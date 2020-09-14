@@ -37,7 +37,13 @@ function RemoveUsersRoleButton({ _id, name, ...props }) {
   }
 
   return (
-    <Button key={_id} type="danger" onClick={showConfirmModal} {...props}>
+    <Button
+      key={_id}
+      type="danger"
+      onClick={showConfirmModal}
+      data-testid="remove-users-role-button"
+      {...props}
+    >
       {i18n.__('UsersRoles.remove_role')}
     </Button>
   );

@@ -1,57 +1,7 @@
 /* eslint-disable no-param-reassign */
 const changeCase = require('change-case');
 const pluralize = require('pluralize');
-
-function pickMock(item, data) {
-  const itemType = item.type.replace('[','').replace(']','');
-  if(item.key === '_id') {
-    return undefined;
-  }
-  if(item.choices) {
-    return 'mock-choices';
-  }
-  if(itemType === 'Boolean'){
-    return 'mock-boolean';
-  }
-  if(itemType === 'Int'){
-    return 'mock-int';
-  }
-  if(itemType === 'Float'){
-    return 'mock-float';
-  }
-  if(item.key == 'email') {
-    return 'mock-email';
-  }
-  if(item.input === 'LongText'){
-    return 'mock-long-text';
-  }
-  if(itemType === 'String'){
-    return 'mock-text';
-  }
-  if(item.key == 'createdAtUTC'){
-    return 'mock-far-past-date';
-  }
-  if(item.key == 'updatedAtUTC'){
-    return 'mock-near-past-date';
-  }
-  if(item.key == 'createdBy'){
-    if(data.schema.permissions.create === 'admin') {
-      return 'mock-admin-user';
-    } 
-    return 'mock-user';
-  }
-  if(item.key == 'updatedBy'){
-    if(data.schema.permissions.update === 'admin') {
-      return 'mock-admin-user';
-    } 
-    return 'mock-user';
-  }
-
-  // if(['Date', 'DateTime'].includes(itemType)){
-  //   return 'mock-near-past-date';
-  // }
-  return undefined;
-}
+const pickFieldMock = require('./pickFieldMock');
 
 function processFields([key, item], data) {
   if (item.permissions) {
@@ -148,7 +98,7 @@ function processFields([key, item], data) {
 
   //clean up mock data
   if(!item.mockTemplateFile && !item.mockTemplate){
-    item.mockTemplateFile = pickMock(item, data);
+    item.mockTemplateFile = pickFieldMock(item, data);
   }
 
 }

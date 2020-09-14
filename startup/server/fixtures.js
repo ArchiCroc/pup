@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import seeder from '../../libs/seeder';
-import userFixtures from '../../tests/fixtures/users';
+import usersFixtures from '../../tests/fixtures/users';
 /* #### PLOP_IMPORTS_START #### */
 import UsersRoles from '../../api/Users/Roles/UsersRoles';
 import usersRolesFixtures from '../../tests/fixtures/usersRoles';
@@ -10,10 +10,10 @@ seeder(Meteor.users, {
   seedIfExistingData: false,
   environments: ['development', 'staging'],
   data: {
-    static: userFixtures.getInitialItems(),
+    static: usersFixtures.getInitialItems(),
     dynamic: {
       count: 100,
-      seed: userFixtures.getMockItem,
+      seed: usersFixtures.getMockItem,
     },
   },
 });

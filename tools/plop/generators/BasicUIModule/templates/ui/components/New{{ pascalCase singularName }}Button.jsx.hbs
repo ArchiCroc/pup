@@ -33,7 +33,7 @@ const New{{ pascalCase singularName }}Button = ({{#prettyProps}}
   ...props
 {{/prettyProps}}) => (
   <LinkContainer to={{#quoteStringForJSX}}{{convertParamsToTemplateVars uiRouteBasePath }}/new{{/quoteStringForJSX}}>
-    <Button type="primary" icon={<PlusIcon />} {...props}>
+    <Button type="primary" icon={<PlusIcon />} data-testid="new-{{ dashCase singularName }}-button" {...props}>
       {i18n.__('{{ pascalCase pluralName }}.new_{{ snakeCase shortSingularName }}')}
     </Button>
   </LinkContainer>

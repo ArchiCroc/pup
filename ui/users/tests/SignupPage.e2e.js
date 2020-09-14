@@ -1,8 +1,9 @@
 import { Selector } from 'testcafe';
-import { logout, getPagePath } from '../../../tests/helpers/e2e';
+import { logout, getPagePath, serverUrl } from '../../../tests/helpers/e2e';
 import { getMockItem } from '../../../tests/fixtures/users'
 
-fixture('/signup').page('http://localhost:3000/');
+fixture `Users/Signup`
+  .page `${serverUrl}/`;
 
 test('should allow users to create an new account', async (t) => {
   
@@ -19,6 +20,6 @@ test('should allow users to create an new account', async (t) => {
   .typeText(form.find('input[name=password]'), data.password)
   .click(form.find('button[type=submit]'));
 
-  await Selector('[data-test="user-nav-dropdown"]')();
+  await Selector('[data-testid="user-nav-dropdown"]')();
   await t.expect(getPagePath()).eql('/');
 });

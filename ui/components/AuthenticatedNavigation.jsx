@@ -60,7 +60,7 @@ function AuthenticatedNavigation({ name, roles }) {
         mode="horizontal"
         defaultSelectedKeys={[pathname]}
         style={{ float: 'right', lineHeight: '64px' }}
-        data-test="user-nav-dropdown"
+        data-testid="user-nav-dropdown"
       >
         <Menu.SubMenu title={name}>
           <Menu.Item key="/user/profile">

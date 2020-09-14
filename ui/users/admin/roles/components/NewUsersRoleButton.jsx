@@ -6,7 +6,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 const NewUsersRoleButton = (props) => (
   <LinkContainer to="/admin/users/roles/new">
-    <Button type="primary" icon={<PlusIcon />} {...props}>
+    <Button type="primary" icon={<PlusIcon />} data-testid="new-users-role-button" {...props}>
       {i18n.__('UsersRoles.new_role')}
     </Button>
   </LinkContainer>

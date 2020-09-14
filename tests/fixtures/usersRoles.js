@@ -11,7 +11,7 @@ export function getMockItem(random, includeOptional = true) {
 
   return {
     _id: undefined,
-    name: faker.lorem.words().substr(0, 64),
+    name: faker.lorem.slug().substr(0, 64),
     createdAtUTC: faker.date.past(10),
     createdBy: {
       __crossReference: 'Users',

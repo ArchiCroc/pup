@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { AutoForm as UniformsAutoForm } from 'uniforms-antd';
+import kebabCase from 'lodash/kebabCase';
 import SimpleSchema2Bridge from '../../libs/uniforms-bridge-simple-schema-2/index';
 import prepareFormModel from '../../libs/prepareFormModel';
 
@@ -13,7 +14,7 @@ function AutoForm({ id, name, schema, model, formComponent, formRef, ...props })
 
   return (
     <FormComponent
-      id={id || `form-${name}`}
+      id={id || `form-${kebabCase(name)}`}
       schema={bridgedSchema}
       model={preparedFormModel}
       ref={formRef}

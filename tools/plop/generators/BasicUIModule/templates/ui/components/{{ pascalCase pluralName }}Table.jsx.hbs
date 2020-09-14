@@ -59,8 +59,8 @@ function {{ pascalCase pluralName }}Table({{#prettyProps}}
 
   const [queryStringObject, setQueryStringObject] = useQueryStringObject(queryKeyPrefix);
   const {{#prettyProps 40}}
-    pageSize,
     page,
+    pageSize,
     sort,
     order,
 {{#if isSearchable}}
@@ -89,8 +89,8 @@ function {{ pascalCase pluralName }}Table({{#prettyProps}}
   const { loading, data: { {{ camelCase pluralName }} } = {} } = useQuery({{ camelCase pluralName }}Query, {
     fetchPolicy: 'cache-and-network',
     variables: {
-      pageSize: currentPageSize,
       page: currentPage,
+      pageSize: currentPageSize,
       sort: currentSort,
       order: currentOrder,
 {{#if isSearchable}}
@@ -123,7 +123,7 @@ const paginationObject = {
     {{~#compare this.input '||' this.showInTableView }}
     {
       title: i18n.__(' {{~ pascalCase @root.name ~}} .{{ snakeCase @key }}'),
-      dataIndex: {{#if this.dataIndex}}['{{ @key }}'{{#compare this.type '!startsWith' '['}}, '{{ this.dataIndex }}'{{/compare}}]{{else}}'{{ @key }}'{{/if}}',
+      dataIndex: {{#if this.dataIndex}}['{{ @key }}'{{#compare this.type '!startsWith' '['}}, '{{ this.dataIndex }}'{{/compare}}]{{else}}'{{ @key }}'{{/if}},
       {{#compare this.tableTemplateFile '||' this.tableTemplate}}
         {{#compare this.type 'in' 'Date|DateTime|Time'}}
       sorter: true,
