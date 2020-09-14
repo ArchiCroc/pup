@@ -1,0 +1,6 @@
+{{#compare template '===' 'import'}}
+import faker from 'faker';
+{{/compare}}
+{{#compare template '===' 'value'}}
+faker.lorem.words(){{#if this.validate.max}}.substr(0, {{this.validate.max}}){{/if}}
+{{/compare}}

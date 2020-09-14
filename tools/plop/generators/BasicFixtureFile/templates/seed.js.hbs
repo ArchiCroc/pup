@@ -1,0 +1,13 @@
+/* #### {{ constantCase pluralName }}_FIXTURES_START #### */
+seeder({{ pascalCase pluralName }}, {
+  seedIfExistingData: false,
+  environments: ['development', 'staging'],
+  data: {
+    static: {{camelCase name}}Fixtures.getInitialItems(),
+    dynamic: {
+      count: {{#if schema.mock.itemCount}}{{schema.mock.itemCount}}{{else}}0{{/if}},
+      seed: {{camelCase name}}Fixtures.getMockItem,
+    },
+  },
+});
+/* #### {{ constantCase pluralName }}_FIXTURES_END #### */

@@ -30,6 +30,7 @@
       "validate" : {
           "max": 64
       },
+      "mockTemplateFile": "mock-slug",
       "clean": "(item) => slugify(item, { lower: true});"
     },
     "createdAtUTC": {

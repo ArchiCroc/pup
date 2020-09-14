@@ -71,7 +71,7 @@ const CrossReferenceSelectField = (props) => {
       disabled={disabled}
       optionFilterProp="children"
       filterOption={(input, option) =>
-        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
     >
       {selectData.map((item) => (

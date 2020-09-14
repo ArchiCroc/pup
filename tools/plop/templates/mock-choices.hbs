@@ -1,0 +1,6 @@
+{{#compare template '===' 'import'}}
+import faker from 'faker';
+{{/compare}}
+{{#compare template '===' 'value'}}
+faker.helpers.randomize([{{#each this.choices}}{{quoteIfString this}}{{#unless @last}}, {{/unless}}{{/each}}])
+{{/compare}}

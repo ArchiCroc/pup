@@ -2,7 +2,7 @@ import React, { useMemo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { gql, useQuery } from '@apollo/client';
 import Select from 'antd/lib/select';
-import { connectField, filterDOMProps } from 'uniforms';
+import { connectField, filterDOMProps, useForm } from 'uniforms';
 import { wrapField } from 'uniforms-antd';
 
 import debounce from 'lodash/debounce';
@@ -36,7 +36,7 @@ export const createCrossReferenceSearchFieldQueries = ({
         }`,
 });
 
-const CrossReferenceSearchField = (props, { uniforms }) => {
+const CrossReferenceSearchField = (props) => {
   const {
     id,
     query,
@@ -54,6 +54,7 @@ const CrossReferenceSearchField = (props, { uniforms }) => {
   } = props;
 
   // console.log(uniforms, props);
+  const uniforms = useForm();
 
   const [search, setSearch] = useState(initialSearch);
   const [value, setValue] = useState(null);
@@ -155,7 +156,7 @@ const CrossReferenceSearchField = (props, { uniforms }) => {
       id={id}
       disabled={disabled}
       filterOption={(input, option) =>
-        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
       // filterOption={false}
       labelInValue

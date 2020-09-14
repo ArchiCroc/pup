@@ -7,7 +7,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 const EditUsersRoleButton = ({ name, ...props }) => (
   <LinkContainer to={`/admin/users/roles/${name}/edit`}>
-    <Button type="primary" icon={<EditIcon />} {...props}>
+    <Button type="primary" icon={<EditIcon />} data-testid="edit-users-role-button" {...props}>
       {i18n.__('UsersRoles.edit_role')}
     </Button>
   </LinkContainer>

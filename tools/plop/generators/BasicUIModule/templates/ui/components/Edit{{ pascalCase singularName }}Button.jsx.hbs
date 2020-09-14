@@ -15,7 +15,7 @@ const Edit{{ pascalCase singularName }}Button = ({{#prettyProps}}
   ...props
   {{/prettyProps}}) => (
   <LinkContainer to={{#quoteStringForJSX}}{{ convertParamsToTemplateVars uiRouteBasePath }}/${ {{~ urlFieldKey ~}} }/edit{{/quoteStringForJSX}}>
-    <Button type="primary" icon={<EditIcon />} {...props}>
+    <Button type="primary" icon={<EditIcon />} data-testid="edit-{{ dashCase singularName }}-button" {...props}>
       {i18n.__('{{ pascalCase pluralName }}.edit_{{ snakeCase shortSingularName }}')}
     </Button>
   </LinkContainer>

@@ -1,8 +1,14 @@
-module.exports = {
-  users: [
+// import { Meteor } from 'meteor/meteor';
+import faker from 'faker';
+import seeder from '../../libs/seeder'
+
+const mockItemCount = 100;
+
+export function getInitialItems() {
+  return [
     {
-      _id: 'abc123',
-      emails: [{ verified: true, address: 'admin@admin.com' }],
+      email: 'admin@example.com',
+      password: 'password',
       profile: {
         firstName: 'Andy',
         lastName: 'Warhol',
@@ -10,22 +16,49 @@ module.exports = {
       roles: ['admin'],
     },
     {
-      _id: 'def123',
-      emails: [{ verified: true, address: 'user+1@test.com' }],
+      email: 'user01@example.com',
+      password: 'password',
       profile: {
-        firstName: 'Hieronymus',
-        lastName: 'Bosch',
+        firstName: 'Test',
+        lastName: 'User01',
       },
       roles: ['user'],
     },
     {
-      _id: 'ghi123',
-      emails: [{ verified: true, address: 'user+2@test.com' }],
+      email: 'user02@example.com',
+      password: 'password',
       profile: {
-        firstName: 'Jean-Michel',
-        lastName: 'Basquiat',
+        firstName: 'Test',
+        lastName: 'User02',
       },
       roles: ['user'],
     },
-  ],
-};
+  ];
+}
+
+export function getMockItem(random) {
+
+  random = random || Math.floor(Math.random * 1000);
+
+  faker.seed(random);
+
+  const profile = {
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+  }
+
+  return {
+      emails: [{ 
+        verified: true, 
+        address: faker.internet.exampleEmail(
+          profile.firstName, 
+          profile.lastName + random) 
+      }],
+      password: faker.internet.password(),
+      profile,
+      roles: ['user'],
+    }
+}
+
+export default { getInitialItems, getMockItem };
+

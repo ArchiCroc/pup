@@ -1,8 +1,9 @@
 /* eslint-disable no-param-reassign */
 const changeCase = require('change-case');
 const pluralize = require('pluralize');
+const pickFieldMock = require('./pickFieldMock');
 
-function processFields([key, item]) {
+function processFields([key, item], data) {
   if (item.permissions) {
     // eslint-disable-next-line
     for (let permissionKey in item.permissions) {
@@ -24,7 +25,7 @@ function processFields([key, item]) {
     item.dataIndex = item.reference.labelKey;
   }
   if (item.fields) {
-    Object.entries(item.fields).forEach(processFields);
+    Object.entries(item.fields).forEach((x) => processFields(x, data));
   }
   if (item.templateFile && !item.tableTemplateFile) {
     item.tableTemplateFile = item.templateFile;
@@ -94,6 +95,12 @@ function processFields([key, item]) {
     item.detailLabel = item.showInDetailView;
     item.showInDetailView = true;
   }
+
+  //clean up mock data
+  if(!item.mockTemplateFile && !item.mockTemplate){
+    item.mockTemplateFile = pickFieldMock(item, data);
+  }
+
 }
 
 function processSchema(input) {
@@ -229,7 +236,7 @@ function processSchema(input) {
   // }
 
   // Process each entry
-  Object.entries(schemaFields).forEach(processFields);
+  Object.entries(schemaFields).forEach((x) => processFields(x, data));
 
   let labelKeyIndex = schemaFieldValues.findIndex((field) => field.labelKey);
   // if primary key isn't found, set it to the first field that is a string

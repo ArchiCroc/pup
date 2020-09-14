@@ -6,7 +6,6 @@ import { useQuery, useMutation } from '@apollo/client';
 import i18n from 'meteor/universe:i18n';
 import { timeago } from '../../libs/dates';
 import BlankState from '../components/BlankState';
-import FileIcon from '@ant-design/icons/FileOutlined';
 import Loading from '../components/Loading';
 import { Styled{{ pascalCase pluralName }}, {{ pascalCase pluralName }}List, {{ pascalCase singularName }} } from './Styled{{ pascalCase pluralName }}';
 import { {{ camelCase singularName }} as {{ camelCase singularName }}Query } from './queries/{{ pascalCase pluralName }}.gql';
@@ -51,7 +50,6 @@ const {{ pascalCase pluralName }} = ({ history }) => {
             </{{ pascalCase pluralName }}List>
           ) : (
             <BlankState
-              icon={<FileIcon />}
               title={i18n.__('{{ pascalCase pluralName }}.no_{{ snakeCase singularName }}_title')}
               subtitle={i18n.__('{{ pascalCase pluralName }}.no_{{ snakeCase singularName }}_subtitle')}
               action={{

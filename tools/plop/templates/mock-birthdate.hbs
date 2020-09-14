@@ -1,0 +1,6 @@
+{{#compare template '===' 'import'}}
+import faker from 'faker';
+{{/compare}}
+{{#compare template '===' 'value'}}
+faker.date.between(new Date(18 * 365 * 24 * 3600 * 1000), new Date(99 * 365 * 24 * 3600 * 1000));
+{{/compare}}

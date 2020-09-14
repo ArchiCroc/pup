@@ -1,0 +1,62 @@
+{{#*inline "mockObject" ~}}
+{
+  {{#each this.fields}}
+  {{this.key}}: 
+    {{#if this.optional}}
+    !includeOptional ? undefined : 
+    {{/if}}
+    {{#if this.mockTemplateFile}}
+      {{#compare this.type 'startsWith' '['}}
+  Array.from({length: faker.random.number({
+    min: {{#if this.validate.minCount}}{{this.validate.minCount}}{{else}}1{{/if}},
+    max: {{#if this.validate.minCount}}{{this.validate.minCount}}{{else}}10{{/if}}
+  })}, () => {{> (lookup . 'mockTemplateFile' ) template='value'}})
+      {{else}}
+  {{> (lookup . 'mockTemplateFile' ) template='value'}}
+      {{/compare}}
+    {{else}}
+      {{#if this.mockTemplate}}
+  {{this.mockTemplate this}}
+      {{else}}
+        {{#if this.fields}}
+  {{> mockObject this}}
+        {{else}}
+  undefined
+        {{/if}}
+      {{/if}}
+    {{/if}},
+  {{/each}}
+}
+{{/inline~}}
+{{#*inline "mockImports" ~}}
+  {{#each this.fields}}
+    {{#if this.mockTemplateFile}}
+{{> (lookup . 'mockTemplateFile' ) template='import'}};
+    {{/if}}
+    {{#if this.mockImport}}
+{{this.mockTemplate}};
+    {{/if}}
+     {{#if this.fields}}
+{{> mockImports this}}
+    {{/if}}
+  {{/each}}
+{{/inline~}}
+{{#uniqueImports}}
+{{> mockImports schema}}
+import faker from 'faker';
+{{/uniqueImports}}
+
+export function getInitialItems() {
+  return {{#if mock.initialItems}}{{quoteIfString mock.initialItems}}{{else}}[]{{/if}};
+}
+
+export function getMockItem(random, includeOptional = true) {
+
+  random = random || Math.floor(Math.random * 1000);
+
+  faker.seed(random);
+
+  return {{> mockObject schema}}
+}
+
+export default { getInitialItems, getMockItem };
