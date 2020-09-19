@@ -1,0 +1,30 @@
+{{#compare template '===' 'form/imports'}}
+import { TextField } from 'uniforms-antd';
+{{/compare}}
+{{#compare template '===' 'form/render'}}
+<TextField name="{{name}}" />
+{{/compare}}
+{{#compare template '===' 'e2eTest/import'}}
+import { getByTestId, getByText, queryByText } from '@testing-library/testcafe';
+{{/compare}}
+{{#compare template '===' 'e2eTest/new'}}
+// change Text {{name}} field
+await t.typeText(form.find('input[name={{name}}'), mockNew{{pascalCase @root.singularName}}.{{name}});
+{{/compare}}
+{{#compare template '===' 'e2eTest/edit'}}
+// change Text {{name}} field
+  const {{name}}Field = form.find('input[name={{name}}]');
+  await t
+    .expect({{name}}Field.value)
+    .eql(mockNew{{pascalCase @root.singularName}}.{{name}}) //make sure orginal vlaue is present
+    .click({{name}}Field)
+    .pressKey('ctrl+a delete') //clear field
+    .typeText({{name}}Field, mockEdit{{pascalCase @root.singularName}}.{{name}}); // type new value
+
+{{/compare}}
+{{#compare template '===' 'e2eTest/viewNew'}}
+{{!-- define mock to eql mockNew{{pascalCase singularName}} or mockEdit{{pascalCase singularName}} --}}
+// validate Text {{name}} field
+await t.expect(getByTestId('{{dashCase @root.singularName}}-{{dashCase name}}').textContent).eql({{mock}}.{{name}});
+
+{{/compare}}

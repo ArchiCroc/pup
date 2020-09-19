@@ -13,9 +13,9 @@ import { {{ camelCase pluralName }} as {{ camelCase pluralName }}Query } from '.
 import { remove{{ pascalCase singularName }} as remove{{ pascalCase singularName }}Mutation } from '../mutations/{{ pascalCase pluralName }}.gql';
 
 function Remove{{ pascalCase singularName }}Button({{#prettyProps}} 
-{{#compare primaryFieldKey '!==' labelKeyKey}}
+{{#compare primaryFieldKey '!==' labelFieldKey}}
   {{ primaryFieldKey }}, 
-  {{ labelKeyKey }},
+  {{ labelFieldKey }},
 {{else}}
   {{ primaryFieldKey }},
 {{/compare}}
@@ -43,7 +43,7 @@ function Remove{{ pascalCase singularName }}Button({{#prettyProps}}
 
   function showConfirmModal() {
     modal.confirm({
-      title: i18n.___('{{ pascalCase pluralName }}.confirm_remove_{{ snakeCase shortSingularName }}', { {{#compare labelKeyKey '!==' 'name'}}name: {{/compare}}{{ labelKeyKey }}{{#if labelKey.dataIndex}}.{{labelKey.dataIndex}}{{/if}} }),
+      title: i18n.___('{{ pascalCase pluralName }}.confirm_remove_{{ snakeCase shortSingularName }}', { {{#compare labelFieldKey '!==' 'name'}}name: {{/compare}}{{ labelFieldKey }}{{#if labelKey.dataIndex}}.{{labelKey.dataIndex}}{{/if}} }),
       onOk: remove{{ pascalCase singularName }},
       okText: i18n.__('{{ pascalCase pluralName }}.remove'),
       okType: 'danger',
@@ -68,7 +68,7 @@ function Remove{{ pascalCase singularName }}Button({{#prettyProps}}
 
 Remove{{ pascalCase singularName }}Button.propTypes = {
   {{ primaryFieldKey }}: PropTypes.string.isRequired,
-  {{ labelKeyKey }}: PropTypes.string.isRequired,
+  {{ labelFieldKey }}: PropTypes.string.isRequired,
 {{#each schema.fields}}
   {{#if this.filterable}}
   {{> (lookup . 'filterTemplateFile' ) template='ui/paramPropTypes'}}

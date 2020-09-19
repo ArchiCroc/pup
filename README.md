@@ -138,7 +138,13 @@ Starts default dev server at http://localhost:3000
         "max": 1024,
         "optional": true
       },
-      "searchable": true
+      "searchable": true,
+      "e2e" {
+        "imports": "import { getByTestId, getByText, queryByText } from '@testing-library/testcafe'",
+        "new": "await t.typeText(form.find('input[name=path'), mockNewErrorReports.path);",
+        "edit": "// @todo",
+        "view": "// @todo",
+      }
     },
     "createdAtUTC": {
       "type": "DateTime",

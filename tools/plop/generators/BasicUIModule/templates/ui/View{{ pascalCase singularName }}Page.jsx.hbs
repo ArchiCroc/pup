@@ -82,7 +82,7 @@ import hasRole from '{{uiPathOffset}}../../libs/hasRole';
   {{#each schema.fields ~}}
     {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
       {{#if this.detailTemplateFile}}
-{{> (lookup . 'detailTemplateFile' ) template='import' uiPathOffset=@root.uiPathOffset }} 
+{{> (lookup . 'detailTemplateFile' ) template='imports' uiPathOffset=@root.uiPathOffset }} 
       {{/if}}
     {{/compare~}}
   {{~/each}}
@@ -124,9 +124,9 @@ function View{{ pascalCase singularName }}Page({{#compare hasFieldPermissions '|
         <>
           <PageBreadcrumbs>
             <Breadcrumb to={{#quoteStringForJSX}}{{ convertParamsToTemplateVars uiRouteBasePath }}{{/quoteStringForJSX}}>{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
-            <Breadcrumb>{ {{~#if schema.singleItemTitle}}{{{schema.singleItemTitle}}}{{else}}{{~ camelCase singularName }}.{{labelKeyKey ~}}{{#if labelKey.dataIndex}}.{{labelKey.dataIndex}}{{/if}}{{/if~}} }</Breadcrumb>
+            <Breadcrumb>{ {{~#if schema.singleItemTitle}}{{{schema.singleItemTitle}}}{{else}}{{~ camelCase singularName }}.{{labelFieldKey ~}}{{#if labelKey.dataIndex}}.{{labelKey.dataIndex}}{{/if}}{{/if~}} }</Breadcrumb>
           </PageBreadcrumbs>
-          <PageHeader title={ {{~#if schema.singleItemTitle}}{{{schema.singleItemTitle}}}{{else}}{{~ camelCase singularName }}.{{labelKeyKey ~}}{{/if~}} } />
+          <PageHeader title={ {{~#if schema.singleItemTitle}}{{{schema.singleItemTitle}}}{{else}}{{~ camelCase singularName }}.{{labelFieldKey ~}}{{/if~}} } />
           { {{~ camelCase singularName }}{{#if schema.permissions.update}} && hasRole(roles, [{{#each schema.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]){{/if}} && (
             <p>
               <Edit{{ pascalCase singularName }}Button 
@@ -186,7 +186,7 @@ const View{{ pascalCase singularName }}Fields = ({{#prettyProps}}
 {{#each schema.fields ~}}
   {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
     <Descriptions.Item label={i18n.__('{{ pascalCase @root.name }}.{{ snakeCase @key }}')}>
-      <div data-testid="{{ dashCase @root.name }}-{{ dashCase @key }}">{{> renderValue name=(camelCase @root.singularName)}}</div>
+      <div data-testid="{{ dashCase @root.singularName }}-{{ dashCase @key }}">{{> renderValue name=(camelCase @root.singularName)}}</div>
     </Descriptions.Item>
   {{/compare~}}
 {{~/each}}

@@ -61,19 +61,23 @@ ViewUsersRolePage.propTypes = {
 const ViewUsersRoleFields = ({ usersRole }) => (
   <Descriptions bordered column={1}>
     <Descriptions.Item label={i18n.__('UsersRoles.name')}>
-      <div data-testid="users-roles-name">{usersRole.name}</div>
+      <div data-testid="users-role-name">{usersRole.name}</div>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('UsersRoles.created_at_utc')}>
-      <>{usersRole.createdAtUTC && <FormatDate timestamp={usersRole.createdAtUTC} />}</>
+      <div data-testid="users-role-created-at-utc">
+        <>{usersRole.createdAtUTC && <FormatDate timestamp={usersRole.createdAtUTC} />}</>
+      </div>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('UsersRoles.created_by')}>
-      {usersRole.createdBy?.fullName}
+      <div data-testid="users-role-created-by">{usersRole.createdBy?.fullName}</div>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('UsersRoles.updated_at_utc')}>
-      <>{usersRole.updatedAtUTC && <FormatDate timestamp={usersRole.updatedAtUTC} />}</>
+      <div data-testid="users-role-updated-at-utc">
+        <>{usersRole.updatedAtUTC && <FormatDate timestamp={usersRole.updatedAtUTC} />}</>
+      </div>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('UsersRoles.updated_by')}>
-      {usersRole.updatedBy?.fullName}
+      <div data-testid="users-role-updated-by">{usersRole.updatedBy?.fullName}</div>
     </Descriptions.Item>
   </Descriptions>
 );

@@ -1,0 +1,12 @@
+{{#compare template '===' 'form/imports'}}
+import { ChainedSlugField } from '{{@root.uiPathOffset}}../../components/ChainedSlugField';
+{{/compare}}
+{{#compare template '===' 'form/render'}}
+<ChainedSlugField name="{{name}}" />
+{{/compare}}
+{{#compare template '===' 'e2eTest/new'}}
+// @todo change ChainedSlug {{name}} field
+{{/compare}}
+{{#compare template '===' 'e2eTest/edit'}}
+// @todo change  ChainedSlug {{name}} field
+{{/compare}}

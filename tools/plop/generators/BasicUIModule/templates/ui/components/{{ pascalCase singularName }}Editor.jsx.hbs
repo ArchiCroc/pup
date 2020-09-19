@@ -22,6 +22,7 @@
 {{/inline}}
 {{#*inline "fieldInput" }}
 {{#compare this.input '||' this.fields}}
+{{!-- see if we can use the inputlist template for this when a template isn't set --}}
   {{#compare this.type 'startsWith' '[' '&&' this.input '!in' 'CrossReferenceSelect|CrossReferenceSearch|Select|Checkboxes'}}
 <ListField name="{{keyPrefix}}{{name }}">
     {{#if this.fields}}
@@ -37,10 +38,23 @@
   {{> fieldInputs this.fields keyPrefix=(concat name '.')}}
 </fieldset>
     {{else}}
-<{{ pascalCase this.input }}Field name="{{keyPrefix}}{{name}}" />
+{{> (lookup . 'inputTemplateFile' ) template='form/render' name=(concat keyPrefix name )}}
     {{/compare}}
   {{/compare}}
 {{/compare}}
+{{/inline~}}
+{{#*inline "inputImports" ~}}
+  {{#each this.fields}}
+    {{#if this.inputTemplateFile}}
+{{> (lookup . 'inputTemplateFile' ) template='form/imports'}};
+    {{/if}}
+    {{#if this.inputImport}}
+{{this.inputTemplate}};
+    {{/if}}
+     {{#if this.fields}}
+{{> inputImports this}}
+    {{/if}}
+  {{/each}}
 {{/inline~}}
 
 /* eslint-disable max-len, no-return-assign */
@@ -57,9 +71,7 @@ import AutoForm from '{{uiPathOffset}}../../components/AutoForm';
   {{#if hasFieldPermissions }}
 import hasRole from '{{uiPathOffset}}../../../libs/hasRole';
   {{/if}}
-  {{#each fieldImports}}
-import {{this.variable}} from '{{this.path}}';
-  {{/each}}
+{{> inputImports schema}}
 {{/uniqueImports}}
 
 /* #### PLOP_IMPORTS_START #### */

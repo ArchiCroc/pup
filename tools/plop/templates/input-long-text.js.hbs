@@ -1,0 +1,12 @@
+{{#compare template '===' 'form/imports'}}
+import { LongTextField } from 'uniforms-antd';
+{{/compare}}
+{{#compare template '===' 'form/render'}}
+<LongTextField name="{{name}}" />
+{{/compare}}
+{{#compare template '===' 'e2eTest/new'}}
+// @todo change LongText {{name}} field
+{{/compare}}
+{{#compare template '===' 'e2eTest/edit'}}
+// @todo change  LongText {{name}} field
+{{/compare}}

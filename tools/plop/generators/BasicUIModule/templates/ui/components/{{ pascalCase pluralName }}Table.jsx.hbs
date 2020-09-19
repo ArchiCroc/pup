@@ -19,7 +19,7 @@ import useQueryStringObject from '{{uiPathOffset}}../../../libs/hooks/useQuerySt
     {{/compare}}
     {{#compare this.input '!==' 'Hidden' '&&' this.showInTableView '===' true}}
       {{#if this.tableTemplateFile}}
-{{> (lookup . 'tableTemplateFile' ) template='import' uiPathOffset=(concat @root.uiPathOffset "../")}} 
+{{> (lookup . 'tableTemplateFile' ) template='imports' uiPathOffset=(concat @root.uiPathOffset "../")}} 
       {{/if}}
     {{/compare~}}
   {{~/each}}
@@ -279,7 +279,7 @@ const paginationObject = {
   queryKeyPrefix: undefined,
   page: 1,
   pageSize: 10,
-  sort: '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelKeyKey}}{{/if}}',
+  sort: '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelFieldKey}}{{/if}}',
   order: '{{#if schema.defaultSortOrder}}{{schema.defaultSortOrder}}{{else}}ascend{{/if}}',
 {{#if isSearchable}}
   search: undefined,

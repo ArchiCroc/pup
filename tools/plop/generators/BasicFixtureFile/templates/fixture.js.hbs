@@ -16,7 +16,7 @@
       {{/compare}}
     {{else}}
       {{#if this.mockTemplate}}
-  {{this.mockTemplate this}}
+  {{this.mock.template this}}
       {{else}}
         {{#if this.fields}}
   {{> mockObject this}}
@@ -31,10 +31,10 @@
 {{#*inline "mockImports" ~}}
   {{#each this.fields}}
     {{#if this.mockTemplateFile}}
-{{> (lookup . 'mockTemplateFile' ) template='import'}};
+{{> (lookup . 'mockTemplateFile' ) template='imports'}};
     {{/if}}
-    {{#if this.mockImport}}
-{{this.mockTemplate}};
+    {{#if this.mock.imports}}
+{{this.mock.imports}};
     {{/if}}
      {{#if this.fields}}
 {{> mockImports this}}

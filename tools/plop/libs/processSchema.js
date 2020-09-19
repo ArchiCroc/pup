@@ -56,6 +56,7 @@ function processFields([key, item], data) {
   //   item.queryable = 'single';
   // }
   // this is so we can always get the reference field name to use in the queries
+  // perhaps we should always exand input so it's always an object?
   item.key = key;
   if (item.input && item.input.name) {
     item.fieldName = item.input.name;
@@ -97,10 +98,21 @@ function processFields([key, item], data) {
   }
 
   //clean up mock data
-  if(!item.mockTemplateFile && !item.mockTemplate){
+  if (!item.mockTemplateFile && (!item.mock || !item.mock.template)) {
     item.mockTemplateFile = pickFieldMock(item, data);
   }
 
+  // process input field
+  if (item.input && item.input.input) {
+    item.inputField = item.input.input;
+  } else if (typeof item.input === 'string') {
+    item.inputField = item.input;
+  }
+
+  //input template
+  if (item.input && item.inputField && !item.inputTemplateFile && !item.input.template) {
+    item.inputTemplateFile = `input-${changeCase.pathCase(item.inputField)}`;
+  }
 }
 
 function processSchema(input) {
@@ -250,10 +262,10 @@ function processSchema(input) {
       );
     }
   }
-  data.labelKeyKey = schemaFieldKeys[labelKeyIndex];
-  data.labelKey = schemaFields[data.labelKeyKey];
-  if (data.labelKey && data.labelKey.searchable !== false) {
-    data.labelKey.searchable = true;
+  data.labelFieldKey = schemaFieldKeys[labelKeyIndex];
+  data.labelField = schemaFields[data.labelFieldKey];
+  if (data.labelField && data.labelField.searchable !== false) {
+    data.labelField.searchable = true;
   }
 
   data.isSearchable = !!schemaFieldValues.find((field) => field.searchable);

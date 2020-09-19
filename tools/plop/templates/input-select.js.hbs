@@ -1,0 +1,12 @@
+{{#compare template '===' 'form/imports'}}
+import { SelectField } from '{{@root.uiPathOffset}}../../components/Select';
+{{/compare}}
+{{#compare template '===' 'form/render'}}
+<SelectField name="{{name}}" />
+{{/compare}}
+{{#compare template '===' 'e2eTest/new'}}
+// @todo change Select {{name}} field
+{{/compare}}
+{{#compare template '===' 'e2eTest/edit'}}
+// @todo change  Select {{name}} field
+{{/compare}}

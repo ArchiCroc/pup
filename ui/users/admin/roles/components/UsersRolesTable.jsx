@@ -38,8 +38,8 @@ function UsersRolesTable({
   const { loading, data: { usersRoles } = {} } = useQuery(usersRolesQuery, {
     fetchPolicy: 'cache-and-network',
     variables: {
-      pageSize: currentPageSize,
       page: currentPage,
+      pageSize: currentPageSize,
       sort: currentSort,
       order: currentOrder,
       search: currentSearch,
@@ -91,16 +91,18 @@ function UsersRolesTable({
   function handleTableChange(pagination, filters, sorter) {
     const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
 
+    const $newOrder = sorter.order ? sorter.order : null;
+
     setCurrentPage(pagination.current);
     setCurrentPageSize(pagination.pageSize);
-    setCurrentOrder(sorter.order);
+    setCurrentOrder($newOrder);
     setCurrentSort(sorter.field);
 
     setQueryStringObject({
       page: pagination.current,
       pageSize: pagination.pageSize,
       sort: currentField,
-      order: sorter.order,
+      order: $newOrder,
     });
   }
 

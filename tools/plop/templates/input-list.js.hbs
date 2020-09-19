@@ -1,0 +1,12 @@
+{{#compare template '===' 'form/imports'}}
+import { ListField } from 'uniforms-antd';
+{{/compare}}
+{{#compare template '===' 'form/render'}}
+<ListField name="{{name}}" />
+{{/compare}}
+{{#compare template '===' 'e2eTest/new'}}
+// @todo change List {{name}} field
+{{/compare}}
+{{#compare template '===' 'e2eTest/edit'}}
+// @todo change  List {{name}} field
+{{/compare}}

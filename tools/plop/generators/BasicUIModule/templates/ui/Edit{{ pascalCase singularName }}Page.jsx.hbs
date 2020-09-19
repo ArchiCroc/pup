@@ -71,7 +71,7 @@ function Edit{{ pascalCase singularName }}Page({ roles }) {
       { {{~ camelCase singularName }} && {{#if schema.permissions.delete}}hasRole(roles, [{{#each schema.permissions.delete }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && {{/if}}(
         <Remove{{ pascalCase singularName }}Button
           {{primaryFieldKey}}={ {{~ camelCase singularName }}.{{primaryFieldKey ~}} } 
-          {{labelKeyKey}}={ {{~ camelCase singularName}}.{{labelKeyKey ~}} } 
+          {{labelFieldKey}}={ {{~ camelCase singularName}}.{{labelFieldKey ~}} } 
 {{#each schema.fields}}
   {{#if this.filterable}}
           {{> (lookup . 'filterTemplateFile' ) template='ui/componentProps'}}

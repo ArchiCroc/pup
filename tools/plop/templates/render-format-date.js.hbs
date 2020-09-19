@@ -1,4 +1,4 @@
-{{#compare template '===' 'import'}}
+{{#compare template '===' 'imports'}}
 import FormatDate from '{{uiPathOffset}}../components/FormatDate';
 {{else}}
 <>{ {{~value}} && (<FormatDate timestamp={ {{~value ~}} }{{#compare type '===' 'Date' }} format="MMMM Do, YYYY"{{/compare}} />)}</>

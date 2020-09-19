@@ -1,0 +1,188 @@
+{{#*inline "inputImports" ~}}
+  {{#each this.fields}}
+    {{#if this.inputTemplateFile}}
+{{> (lookup . 'inputTemplateFile' ) template='e2eTest/imports'}};
+    {{/if}}
+    {{#if this.e2e.imports}}
+{{this.e2e.imports}};
+    {{/if}}
+     {{#if this.fields}}
+{{> inputImports this}}
+    {{/if}}
+  {{/each}}
+{{/inline~}}
+{{#*inline "newFieldTests" ~}}
+  {{#each this.fields}}
+    {{#if this.e2e.new}}
+{{this.e2e.new}};
+    {{else}}
+      {{#if this.inputTemplateFile}}
+{{> (lookup . 'inputTemplateFile' ) name=fieldName template='e2eTest/new'}};
+      {{/if}}
+    {{/if}}
+    {{#if this.fields}}
+{{> newFieldTests this}}
+    {{/if}}
+  {{/each}}
+{{/inline~}}
+{{#*inline "editFieldTests" ~}}
+  {{#each this.fields}}
+    {{#if this.e2e.edit}}
+{{this.e2e.edit}};
+    {{else}}
+      {{#if this.inputTemplateFile}}
+{{> (lookup . 'inputTemplateFile' ) name=fieldName template='e2eTest/edit'}};
+      {{/if}}
+    {{/if}}
+    {{#if this.fields}}
+{{> editFieldTests this}}
+    {{/if}}
+  {{/each}}
+{{/inline~}}
+{{#*inline "viewFieldTests" ~}}
+  {{#each this.fields}}
+    {{#if this.e2e.view}}
+{{this.e2e.view}};
+    {{else}}
+      {{#if this.inputTemplateFile}}
+{{> (lookup . 'inputTemplateFile' ) template='e2eTest/view' name=fieldName mock=mock}};
+      {{/if}}
+    {{/if}}
+    {{#if this.fields}}
+{{> viewFieldTests this mock=mock}}
+    {{/if}}
+  {{/each}}
+{{/inline~}}
+{{#uniqueImports}}
+import { getByTestId, getByText, queryByText } from '@testing-library/testcafe';
+import { Selector } from 'testcafe';
+import { adminRole, userRole, anonymousRole, getPagePath, serverUrl } from '{{uiPathOffset}}../../../../tests/helpers/e2e';
+import { getMockItem } from '{{uiPathOffset}}../../../../tests/fixtures/{{camelCase pluralName}}';
+{{> inputImports schema}}
+{{/uniqueImports}}
+
+const mockNew{{pascalCase singularName}} = getMockItem(1);
+const mockEdit{{pascalCase singularName}} = getMockItem(2);
+const {{camelCase pluralName}}BasePath = {{#quoteString}}{{convertParamsToTemplateVars uiRouteBasePath }}{{/quoteString}};
+
+fixture('{{pascalCase pluralName}}').page(`${serverUrl}/`);
+
+test('redirect anonymous user to login', async (t) => {
+  await t.useRole(anonymousRole).navigateTo({{camelCase pluralName}}BasePath);
+
+  await t.expect(getPagePath()).eql('/login');
+});
+
+test('should only allow admins to view', async (t) => {
+  await t.useRole(userRole).navigateTo({{camelCase pluralName}}BasePath);
+
+  await t.expect(getPagePath()).eql('/');
+});
+
+test('should load {{pascalCase pluralName}} index page', async (t) => {
+  await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
+
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+});
+
+test('should navigate to new {{pascalCase singularName}} form', async (t) => {
+  await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
+
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+
+  await t.click(getByTestId('new-{{dashCase singularName}}-button'));
+
+  await t.expect(getPagePath()).eql(`${ {{~camelCase pluralName}}BasePath}/new`);
+});
+
+test('should create new {{pascalCase singularName}}', async (t) => {
+  await t.useRole(adminRole).navigateTo(`${ {{~camelCase pluralName}}BasePath}/new`);
+  await t.expect(getPagePath()).eql(`${ {{~camelCase pluralName}}BasePath}/new`);
+
+  const form = Selector('#form-{{dashCase singularName}}');
+
+  {{> newFieldTests schema}}
+  await t.click(form.find('button[type=submit]'));
+
+  // make sure new item is listed
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+  await t.expect(getByText(mockNew{{pascalCase singularName}}.{{labelFieldKey}}).exists).ok();
+});
+
+test('should display {{pascalCase singularName}} detail page', async (t) => {
+  await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+
+  await t.click(getByText(mockNew{{pascalCase singularName}}.{{labelFieldKey}}));
+
+  await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)`));
+
+  {{> viewFieldTests schema mock=(concat 'mockNew' (pascalCase singularName))}}
+});
+
+test('should navigate to the edit {{pascalCase singularName}} form', async (t) => {
+  await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+  await t.click(getByText(mockNew{{pascalCase singularName}}.{{labelFieldKey}}));
+  await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)`));
+
+  // navigate to the correct item
+  await t.click(getByTestId('edit-{{dashCase singularName}}-button'));
+  await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)/edit`));
+});
+
+test('should edit {{pascalCase singularName}}', async (t) => {
+  await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+
+  // navigate to the correct item
+  await t.click(getByText(mockNew{{pascalCase singularName}}.{{labelFieldKey}}));
+  await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)`));
+
+  //click the edit button
+  await t.click(getByTestId('edit-{{dashCase singularName}}-button'));
+  await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)/edit`));
+
+  const form = Selector('#form-{{dashCase singularName}}');
+  
+  {{> editFieldTests schema}}  
+  await t.click(form.find('button[type=submit]'));
+
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+
+  //verify edited item is listed on the page
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+  await t.expect(getByText(mockEdit{{pascalCase singularName}}.{{labelFieldKey}}).exists).ok();
+});
+
+test('should show detail of edited {{pascalCase singularName}}', async (t) => {
+  await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+
+  // navigate to the correct item
+  await t.click(getByText(mockEdit{{pascalCase singularName}}.{{labelFieldKey}}));
+  await t.expect(getPagePath(mockEdit{{pascalCase singularName}}.{{labelFieldKey}})).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)`));
+  
+  {{> viewFieldTests schema mock=(concat 'mockEdit' (pascalCase singularName))}}
+});
+
+test('should delete {{pascalCase singularName}}', async (t) => {
+  await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+
+  // navigate to the correct item
+  await t.click(getByText(mockEdit{{pascalCase singularName}}.{{labelFieldKey}}));
+  await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)`));
+
+  //click the edit button
+  await t.click(getByTestId('edit-{{dashCase singularName}}-button'));
+  await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)/edit`));
+
+  // click delete
+  await t.click(getByTestId('remove-{{dashCase singularName}}-button'));
+  await t.click(getByTestId('remove-{{dashCase singularName}}-ok-button'));
+
+  // navigate to index page and make sure it is gone
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+  await t.expect(queryByText(mockEdit{{pascalCase singularName}}.{{labelFieldKey}})).notOk();
+});
