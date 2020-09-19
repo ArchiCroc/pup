@@ -1,6 +1,6 @@
 // import { Meteor } from 'meteor/meteor';
 import faker from 'faker';
-import seeder from '../../libs/seeder'
+// import seeder from '../../libs/seeder'
 
 const mockItemCount = 100;
 
@@ -37,28 +37,21 @@ export function getInitialItems() {
 }
 
 export function getMockItem(random) {
-
-  random = random || Math.floor(Math.random * 1000);
+  random = random || Math.floor(Math.random() * 1000);
 
   faker.seed(random);
 
   const profile = {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
-  }
+  };
 
   return {
-      emails: [{ 
-        verified: true, 
-        address: faker.internet.exampleEmail(
-          profile.firstName, 
-          profile.lastName + random) 
-      }],
-      password: faker.internet.password(),
-      profile,
-      roles: ['user'],
-    }
+    email: faker.internet.exampleEmail(profile.firstName, profile.lastName + random),
+    password: faker.internet.password(),
+    profile,
+    roles: ['user'],
+  };
 }
 
 export default { getInitialItems, getMockItem };
-

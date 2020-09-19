@@ -5,7 +5,7 @@ export function getInitialItems() {
 }
 
 export function getMockItem(random, includeOptional = true) {
-  random = random || Math.floor(Math.random * 1000);
+  random = random || Math.floor(Math.random() * 1000);
 
   faker.seed(random);
 

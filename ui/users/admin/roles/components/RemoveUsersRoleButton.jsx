@@ -32,7 +32,9 @@ function RemoveUsersRoleButton({ _id, name, ...props }) {
       onOk: removeUsersRole,
       okText: i18n.__('UsersRoles.remove'),
       okType: 'danger',
+      okButtonProps: { 'data-testid': 'remove-users-role-ok-button' },
       cancelText: i18n.__('UsersRoles.cancel'),
+      cancelButtonProps: { 'data-testid': 'remove-users-role-cancel-button' },
     });
   }
 

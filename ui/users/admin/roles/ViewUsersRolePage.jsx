@@ -60,7 +60,9 @@ ViewUsersRolePage.propTypes = {
 
 const ViewUsersRoleFields = ({ usersRole }) => (
   <Descriptions bordered column={1}>
-    <Descriptions.Item label={i18n.__('UsersRoles.name')}>{usersRole.name}</Descriptions.Item>
+    <Descriptions.Item label={i18n.__('UsersRoles.name')}>
+      <div data-testid="users-roles-name">{usersRole.name}</div>
+    </Descriptions.Item>
     <Descriptions.Item label={i18n.__('UsersRoles.created_at_utc')}>
       <>{usersRole.createdAtUTC && <FormatDate timestamp={usersRole.createdAtUTC} />}</>
     </Descriptions.Item>

@@ -47,7 +47,9 @@ function Remove{{ pascalCase singularName }}Button({{#prettyProps}}
       onOk: remove{{ pascalCase singularName }},
       okText: i18n.__('{{ pascalCase pluralName }}.remove'),
       okType: 'danger',
+      okButtonProps: { 'data-testid': 'remove-{{ dashCase singularName }}-ok-button' },
       cancelText: i18n.__('{{ pascalCase pluralName }}.cancel'),
+      cancelButtonProps: { 'data-testid': 'remove-{{ dashCase singularName }}-cancel-button' },
     });
   }
 
