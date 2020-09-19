@@ -1,12 +1,10 @@
-import { Meteor } from 'meteor/meteor';
-// import { Mongo } from 'meteor/mongo';
-// import { graphql } from 'graphql';
-// import { gql } from '@apollo/client';
-// import { getGraphqlSchema } from '../../../startup/server/graphql-api';
-// import {{pascalCase apiFolderName }} from '../{{pascalCase apiFolderName }}';
+import React from 'react';
+import { render } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 
-const {{camelCase name }} = (data, context) => {
-  
-};
+import {{name }} from '../{{name }}';
 
-export default {{camelCase name }};
+test('loads and displays {{name }}', async () => {
+  const { getByText } = render(<{{name }}>Hello, world!</{{name }}>);
+  expect(getByText('Hello, world!')).toBeInTheDocument();
+});
