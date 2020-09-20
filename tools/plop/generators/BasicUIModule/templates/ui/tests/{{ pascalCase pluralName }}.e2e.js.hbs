@@ -67,6 +67,7 @@ const {{camelCase pluralName}}BasePath = {{#quoteString}}{{convertParamsToTempla
 
 fixture('{{pascalCase pluralName}}').page(`${serverUrl}/`);
 
+{{!-- @todo These need to be based on the schema permissions --}}
 test('redirect anonymous user to login', async (t) => {
   await t.useRole(anonymousRole).navigateTo({{camelCase pluralName}}BasePath);
 

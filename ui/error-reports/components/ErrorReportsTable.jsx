@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
-
 import Table from 'antd/lib/table';
 import isString from 'lodash/isString';
 import i18n from 'meteor/universe:i18n';
@@ -9,8 +8,8 @@ import { useHistory } from 'react-router-dom';
 import hasRole from '../../../libs/hasRole';
 import useQueryStringObject from '../../../libs/hooks/useQueryStringObject';
 import PrettyDate from '../../components/PrettyDate';
-import NewErrorReportButton from './NewErrorReportButton';
 import SearchInput from '../../components/SearchInput';
+import NewErrorReportButton from './NewErrorReportButton';
 
 // import StyledErrorReportsTable from './StyledErrorReportsTable';
 
@@ -50,8 +49,8 @@ function ErrorReportsTable({
   const { loading, data: { errorReports } = {} } = useQuery(errorReportsQuery, {
     fetchPolicy: 'cache-and-network',
     variables: {
-      pageSize: currentPageSize,
       page: currentPage,
+      pageSize: currentPageSize,
       sort: currentSort,
       order: currentOrder,
       search: currentSearch,
@@ -66,8 +65,12 @@ function ErrorReportsTable({
 
   const columns = [
     {
+      title: i18n.__('ErrorReports.id'),
+      dataIndex: '_id',
+    },
+    {
       title: i18n.__('ErrorReports.user'),
-      dataIndex: 'user.fullName',
+      dataIndex: ['user', 'fullName'],
     },
     {
       title: i18n.__('ErrorReports.level'),
@@ -132,9 +135,11 @@ function ErrorReportsTable({
 
     const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
 
+    const $newOrder = sorter.order ? sorter.order : null;
+
     setCurrentPage(pagination.current);
     setCurrentPageSize(pagination.pageSize);
-    setCurrentOrder(sorter.order);
+    setCurrentOrder($newOrder);
     setCurrentSort(sorter.field);
     setCurrentLevel(newLevel);
 
@@ -142,7 +147,7 @@ function ErrorReportsTable({
       page: pagination.current,
       pageSize: pagination.pageSize,
       sort: currentField,
-      order: sorter.order,
+      order: $newOrder,
       level: newLevel,
     });
   }

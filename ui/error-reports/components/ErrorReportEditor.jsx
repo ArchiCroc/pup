@@ -7,7 +7,7 @@ import { useMutation } from '@apollo/client';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 import { useHistory } from 'react-router-dom';
-import { HiddenField, ListField, ListItemField, TextField } from 'uniforms-antd';
+import { HiddenField, ListField, TextField } from 'uniforms-antd';
 import AutoForm from '../../components/AutoForm';
 import CrossReferenceSearchField from '../../components/CrossReferenceSearchField';
 import SelectField from '../../components/SelectField';
@@ -60,10 +60,10 @@ function ErrorReportEditor({ doc }) {
         <TextField name="path" />
         <TextField name="userAgent" />
         <ListField name="stack">
-          <ListItemField name="$" />
+          <TextField name="$" />
         </ListField>
         <ListField name="reactStack">
-          <ListItemField name="$" />
+          <TextField name="$" />
         </ListField>
         <Button htmlType="submit" type="primary" block>
           {i18n.__('ErrorReports.save')}

@@ -2,7 +2,9 @@
 import { ListField } from 'uniforms-antd';
 {{/compare}}
 {{#compare template '===' 'form/render'}}
-<ListField name="{{name}}" />
+<ListField name="{{name}}">
+  {{> @partial-block }}
+</ListField>
 {{/compare}}
 {{#compare template '===' 'e2eTest/new'}}
 // @todo change List {{name}} field

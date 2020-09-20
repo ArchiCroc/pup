@@ -2,6 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import seeder from '../../libs/seeder';
 import usersFixtures from '../../tests/fixtures/users';
 /* #### PLOP_IMPORTS_START #### */
+import ErrorReports from '../../api/ErrorReports/ErrorReports';
+import errorReportsFixtures from '../../tests/fixtures/errorReports';
 import UsersRoles from '../../api/Users/Roles/UsersRoles';
 import usersRolesFixtures from '../../tests/fixtures/usersRoles';
 /* #### PLOP_IMPORTS_END #### */
@@ -19,6 +21,20 @@ seeder(Meteor.users, {
 });
 
 /* #### PLOP_FIXTURE_START #### */
+/* #### ERROR_REPORTS_FIXTURES_START #### */
+seeder(ErrorReports, {
+  seedIfExistingData: false,
+  environments: ['development', 'staging'],
+  data: {
+    static: errorReportsFixtures.getInitialItems(),
+    dynamic: {
+      count: 0,
+      seed: errorReportsFixtures.getMockItem,
+    },
+  },
+});
+/* #### ERROR_REPORTS_FIXTURES_END #### */
+
 /* #### USERS_ROLES_FIXTURES_START #### */
 seeder(UsersRoles, {
   seedIfExistingData: false,

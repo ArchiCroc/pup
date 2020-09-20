@@ -8,12 +8,8 @@
   doc.{{@root.primaryFieldKey}} ? [{{#each this.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]:[{{#each this.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) && (
       {{/compare}}
     {{/compare}}
-    {{#if this.type}}
-      {{#compare this.input 'typeof' 'object'}}
-{{> fieldInput this.input keyPrefix=../keyPrefix}}
-      {{else}}
-{{> fieldInput name=@key keyPrefix=../keyPrefix}}
-      {{/compare}}
+    {{#if this.input.input}}
+{{> fieldInput this keyPrefix=../keyPrefix}}
     {{/if}}
     {{#compare this.permissions.create '||' this.permissions.update}}
 )}
@@ -21,14 +17,15 @@
   {{~/each}}
 {{/inline}}
 {{#*inline "fieldInput" }}
-{{#compare this.input '||' this.fields}}
+{{#compare this.input.input '||' this.fields}}
 {{!-- see if we can use the inputlist template for this when a template isn't set --}}
-  {{#compare this.type 'startsWith' '[' '&&' this.input '!in' 'CrossReferenceSelect|CrossReferenceSearch|Select|Checkboxes'}}
+  {{#compare this.input.type 'startsWith' '[' '&&' this.input '!in' 'CrossReferenceSelect|CrossReferenceSearch|Select|Checkboxes'}}
 <ListField name="{{keyPrefix}}{{name }}">
     {{#if this.fields}}
-  {{> fieldInputs this.fields keyPrefix=(concat '$.')}}
+  {{> fieldInputs this.fields keyPrefix='$.'}}
     {{else}}
-  <ListItemField name="$" />
+  {{!-- <ListItemField name="$" /> --}}
+  {{> renderField this keyPrefix='' name='$'}}
     {{/if}}
 </ListField>
   {{else}}
@@ -38,18 +35,28 @@
   {{> fieldInputs this.fields keyPrefix=(concat name '.')}}
 </fieldset>
     {{else}}
-{{> (lookup . 'inputTemplateFile' ) template='form/render' name=(concat keyPrefix name )}}
+  {{> renderField this keyPrefix=keyPrefix name=this.input.name}}
     {{/compare}}
   {{/compare}}
 {{/compare}}
+{{/inline~}}
+{{#*inline "renderField" }}
+  {{#if this.inputTemplateFile}}
+{{> (lookup . 'inputTemplateFile' ) template='form/render' name=(concat keyPrefix name )}}
+  {{else}}
+{/* @todo {{keyPrefix}}{{name}} {{inputTemplateFile}} */}      
+  {{/if}}
+  {{#if this.input.template}}
+{{this.input.template}}
+  {{/if}}
 {{/inline~}}
 {{#*inline "inputImports" ~}}
   {{#each this.fields}}
     {{#if this.inputTemplateFile}}
 {{> (lookup . 'inputTemplateFile' ) template='form/imports'}};
     {{/if}}
-    {{#if this.inputImport}}
-{{this.inputTemplate}};
+    {{#if this.input.imports}}
+{{this.input.imports}};
     {{/if}}
      {{#if this.fields}}
 {{> inputImports this}}
@@ -72,6 +79,9 @@ import AutoForm from '{{uiPathOffset}}../../components/AutoForm';
 import hasRole from '{{uiPathOffset}}../../../libs/hasRole';
   {{/if}}
 {{> inputImports schema}}
+  {{#if hasListField}}
+import { ListField } from 'uniforms-antd';
+  {{/if}}
 {{/uniqueImports}}
 
 /* #### PLOP_IMPORTS_START #### */

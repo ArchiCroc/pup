@@ -32,12 +32,20 @@ function RemoveErrorReportButton({ _id, message, ...props }) {
       onOk: removeErrorReport,
       okText: i18n.__('ErrorReports.remove'),
       okType: 'danger',
+      okButtonProps: { 'data-testid': 'remove-error-report-ok-button' },
       cancelText: i18n.__('ErrorReports.cancel'),
+      cancelButtonProps: { 'data-testid': 'remove-error-report-cancel-button' },
     });
   }
 
   return (
-    <Button key={_id} type="danger" onClick={showConfirmModal} {...props}>
+    <Button
+      key={_id}
+      type="danger"
+      onClick={showConfirmModal}
+      data-testid="remove-error-report-button"
+      {...props}
+    >
       {i18n.__('ErrorReports.remove_error_report')}
     </Button>
   );

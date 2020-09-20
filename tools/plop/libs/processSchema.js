@@ -55,9 +55,10 @@ function processFields([key, item], data) {
   // if (item.groupKey) {
   //   item.queryable = 'single';
   // }
-  // this is so we can always get the reference field name to use in the queries
-  // perhaps we should always exand input so it's always an object?
+  // this is normalize the input object
+  // @todo would this be better name field? Probably not -M
   item.key = key;
+  item.name = key;
   if (item.input && item.input.name) {
     item.fieldName = item.input.name;
   } else {
@@ -68,6 +69,32 @@ function processFields([key, item], data) {
   } else {
     item.fieldType = item.type;
   }
+
+  if (item.input) {
+    if (typeof item.input === 'string') {
+      item.input = { input: item.input, name: key, type: item.type };
+    }
+    if (item.input.input) {
+      item.inputField = item.input.input;
+    }
+    //backwards compatibility
+    if (item.inputTemplateFile) {
+      item.input.templateFile = item.inputTemplateFile;
+    }
+    if (item.inputTemplate) {
+      item.input.template = item.inputTemplate;
+    }
+    if (item.inputImports) {
+      item.input.imports = item.inputImports;
+    }
+    //input template
+    if (item.inputField && !item.input.templateFile && !item.input.template) {
+      item.input.templateFile = `input-${changeCase.paramCase(item.inputField)}`;
+      item.inputTemplateFile = item.input.templateFile; //the lookup command can't do sub items
+    }
+  }
+
+  // console.log(key, item.input);
 
   // set default filter for value that are true so it matches a template
   if (item.filterable === true && !item.filterTemplateFile) {
@@ -100,18 +127,6 @@ function processFields([key, item], data) {
   //clean up mock data
   if (!item.mockTemplateFile && (!item.mock || !item.mock.template)) {
     item.mockTemplateFile = pickFieldMock(item, data);
-  }
-
-  // process input field
-  if (item.input && item.input.input) {
-    item.inputField = item.input.input;
-  } else if (typeof item.input === 'string') {
-    item.inputField = item.input;
-  }
-
-  //input template
-  if (item.input && item.inputField && !item.inputTemplateFile && !item.input.template) {
-    item.inputTemplateFile = `input-${changeCase.pathCase(item.inputField)}`;
   }
 }
 

@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/client';
   {{#if isSearchable}}
-import Input from 'antd/lib/input';
+import SearchInput from '{{uiPathOffset}}../../components/SearchInput';
   {{/if}}
 import Table from 'antd/lib/table';
 import New{{ pascalCase singularName }}Button from './New{{ pascalCase singularName }}Button';
@@ -23,15 +23,12 @@ import useQueryStringObject from '{{uiPathOffset}}../../../libs/hooks/useQuerySt
       {{/if}}
     {{/compare~}}
   {{~/each}}
+
 {{/uniqueImports}}
 
 // import Styled{{ pascalCase pluralName }}Table from './Styled{{ pascalCase pluralName }}Table';
 
 import { {{ camelCase pluralName }} as {{ camelCase pluralName }}Query } from '../queries/{{ pascalCase pluralName }}.gql';
-{{#if isSearchable}}
-
-const { Search } = Input;
-{{/if}}
 
 {{!-- if a filterable field has choices create a function to generate the correct object for antd Table  --}}
 {{#each schema.fields}}
@@ -248,15 +245,15 @@ const paginationObject = {
 {{/each}}
           />)}&nbsp;
         {{#if isSearchable}}
-        { showSearch && (<span className="pull-right" style=\{{ width: 300 }}>
-          <Search
+        { showSearch && (
+          <SearchInput
+            className="pull-right"
+            style=\{{ width: 300 }}
             placeholder={i18n.__('{{ pascalCase pluralName }}.search_placeholder')}
             onSearch={handleSearch}
             defaultValue={currentSearch}
-            allowClear
-            enterButton
           />
-        </span>)}
+        )}
         {{/if}}
       </p>
       <Table

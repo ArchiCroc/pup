@@ -1,15 +1,22 @@
 fragment ErrorReportAttributes on ErrorReport {
   _id
+  _id
   user { 
     _id
     fullName
   }
   userId
   level
+  level
+  message
   message
   path
+  path
+  userAgent
   userAgent
   stack
+  stack
+  reactStack
   reactStack
   createdAtUTC
   createdBy { 
@@ -17,5 +24,3 @@ fragment ErrorReportAttributes on ErrorReport {
     fullName
   }
 }
-
-
