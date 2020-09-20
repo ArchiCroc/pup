@@ -222,3 +222,14 @@ Defined in Pup+
 |`ChainedSlugField`| autocompletes a slug based on the field it's "chained" to |
 |`CrossReferenceSearchField`| Autocomplete one or multiple values from a different module |
 |`CrossReferenceSelectField`| Select one or multiple values from a different module       | 
+
+#### Testing
+```shell
+    # run testcafe e2e
+    meteor npm run test-e2e
+    #run e2e test by name
+    meteor npx testcafe chrome:headless ./**/ErrorReports.e2e.js
+
+    # run jest unit tests
+    meteor npm run test
+```

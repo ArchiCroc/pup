@@ -2,6 +2,7 @@
   {{#each this.fields}}
     {{#if this.inputTemplateFile}}
 {{> (lookup . 'inputTemplateFile' ) template='e2eTest/imports'}};
+
     {{/if}}
     {{#if this.e2e.imports}}
 {{this.e2e.imports}};
@@ -32,6 +33,7 @@
     {{else}}
       {{#if this.inputTemplateFile}}
 {{> (lookup . 'inputTemplateFile' ) name=fieldName template='e2eTest/edit'}};
+
       {{/if}}
     {{/if}}
     {{#if this.fields}}
@@ -46,6 +48,7 @@
     {{else}}
       {{#if this.inputTemplateFile}}
 {{> (lookup . 'inputTemplateFile' ) template='e2eTest/view' name=fieldName mock=mock}};
+
       {{/if}}
     {{/if}}
     {{#if this.fields}}
@@ -56,8 +59,8 @@
 {{#uniqueImports}}
 import { getByTestId, getByText, queryByText } from '@testing-library/testcafe';
 import { Selector } from 'testcafe';
-import { adminRole, userRole, anonymousRole, getPagePath, serverUrl } from '{{uiPathOffset}}../../../../tests/helpers/e2e';
-import { getMockItem } from '{{uiPathOffset}}../../../../tests/fixtures/{{camelCase pluralName}}';
+import { adminRole, userRole, anonymousRole, getPagePath, serverUrl } from '{{uiPathOffset}}../../../tests/helpers/e2e';
+import { getMockItem } from '{{uiPathOffset}}../../../tests/fixtures/{{camelCase pluralName}}';
 {{> inputImports schema}}
 {{/uniqueImports}}
 

@@ -154,6 +154,7 @@ const CrossReferenceSearchField = (props) => {
     props,
     <Select
       id={id}
+      name={name}
       disabled={disabled}
       filterOption={(input, option) =>
         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
