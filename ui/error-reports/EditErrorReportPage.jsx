@@ -48,7 +48,7 @@ function EditErrorReportPage({ roles }) {
       )}
       <Divider />
       {errorReport && hasRole(roles, ['admin']) && (
-        <RemoveErrorReportButton _id={errorReport._id} message={errorReport.message} />
+        <RemoveErrorReportButton _id={errorReport._id} title={errorReport.message} />
       )}
     </StyledErrorReportsPage>
   );

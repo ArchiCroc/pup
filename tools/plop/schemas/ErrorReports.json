@@ -35,7 +35,11 @@
         "valueKey": "_id",
         "idType": "String"
       },
-      "showInTableView": true
+      "validate" : {
+        "optional": true
+      },
+      "showInTableView": true,
+      "mockTemplateFile": "mock-user"
     },
     "level": {
       "type": "Int",

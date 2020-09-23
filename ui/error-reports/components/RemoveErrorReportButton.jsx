@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { errorReports as errorReportsQuery } from '../queries/ErrorReports.gql';
 import { removeErrorReport as removeErrorReportMutation } from '../mutations/ErrorReports.gql';
 
-function RemoveErrorReportButton({ _id, message, ...props }) {
+function RemoveErrorReportButton({ _id, title, ...props }) {
   const history = useHistory();
 
   const [removeErrorReport] = useMutation(removeErrorReportMutation, {
@@ -28,7 +28,7 @@ function RemoveErrorReportButton({ _id, message, ...props }) {
 
   function showConfirmModal() {
     modal.confirm({
-      title: i18n.___('ErrorReports.confirm_remove_error_report', { name: message }),
+      title: i18n.___('ErrorReports.confirm_remove_error_report', { title }),
       onOk: removeErrorReport,
       okText: i18n.__('ErrorReports.remove'),
       okType: 'danger',
@@ -53,7 +53,7 @@ function RemoveErrorReportButton({ _id, message, ...props }) {
 
 RemoveErrorReportButton.propTypes = {
   _id: PropTypes.string.isRequired,
-  message: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default RemoveErrorReportButton;

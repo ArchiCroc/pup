@@ -23,7 +23,7 @@ type ErrorReports {
 
 input ErrorReportInput {
   _id: ObjectID
-  userId: String!
+  userId: String
   level: Int!
   message: String!
   path: String

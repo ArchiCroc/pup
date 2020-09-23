@@ -6,7 +6,7 @@ view_error_report: View Error Report
 new_error_report: New Error Report
 edit_error_report: Edit Error Report
 remove_error_report: Remove Error Report
-confirm_remove_error_report: 'Are you sure? This is permanent!'
+confirm_remove_error_report: 'Are you sure you want to remove ${title}? This is permanent!'
 error_report_removed_success: Error Report removed!
 error_report_saved: Error Report saved!
 

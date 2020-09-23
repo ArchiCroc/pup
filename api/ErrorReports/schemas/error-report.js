@@ -23,6 +23,7 @@ const ErrorReportSchema = new SimpleSchema({
   },
   userId: {
     type: String,
+    optional: true,
     label: () => i18n.__('ErrorReports.user_label'),
     uniforms: {
       placeholder: () => i18n.__('ErrorReports.user_placeholder'),
