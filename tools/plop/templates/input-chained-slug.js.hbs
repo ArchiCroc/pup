@@ -2,7 +2,7 @@
 import { ChainedSlugField } from '{{@root.uiPathOffset}}../../components/ChainedSlugField';
 {{/compare}}
 {{#compare template '===' 'form/render'}}
-<ChainedSlugField name="{{name}}" />
+<ChainedSlugField {{> input-props}}/>
 {{/compare}}
 {{#compare template '===' 'e2eTest/new'}}
 // @todo change ChainedSlug {{name}} field

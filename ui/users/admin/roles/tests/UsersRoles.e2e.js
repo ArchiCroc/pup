@@ -1,5 +1,6 @@
 import { getByTestId, getByText, queryByText } from '@testing-library/testcafe';
 import { Selector } from 'testcafe';
+import { ReactSelector } from 'testcafe-react-selectors';
 import { getMockItem } from '../../../../../tests/fixtures/usersRoles';
 import {
   adminRole,
@@ -38,7 +39,7 @@ test('should navigate to new UsersRole form', async (t) => {
 
   await t.expect(getPagePath()).eql(usersRolesBasePath);
 
-  await t.click(getByTestId('new-users-role-button'));
+  await t.click(ReactSelector('NewUsersRoleButton'));
 
   await t.expect(getPagePath()).eql(`${usersRolesBasePath}/new`);
 });
@@ -47,11 +48,13 @@ test('should create new UsersRole', async (t) => {
   await t.useRole(adminRole).navigateTo(`${usersRolesBasePath}/new`);
   await t.expect(getPagePath()).eql(`${usersRolesBasePath}/new`);
 
-  const form = Selector('#form-users-role');
+  const form = ReactSelector('AutoForm').withProps({ name: 'usersRole' });
 
   // @todo change Hidden _id field
   // change Text name field
-  await t.typeText(form.find('input[name=name'), mockNewUsersRole.name);
+  const nameField = form.findReact('TextField').withProps({ name: 'name' }).find('input');
+  await t.typeText(nameField, mockNewUsersRole.name);
+
   await t.click(form.find('button[type=submit]'));
 
   // make sure new item is listed
@@ -75,7 +78,7 @@ test('should navigate to the edit UsersRole form', async (t) => {
   await t.expect(getPagePath()).match(new RegExp(`${usersRolesBasePath}/([a-z0-9-_]+)`));
 
   // navigate to the correct item
-  await t.click(getByTestId('edit-users-role-button'));
+  await t.click(ReactSelector('EditUsersRoleButton'));
   await t.expect(getPagePath()).match(new RegExp(`${usersRolesBasePath}/([a-z0-9-_]+)/edit`));
 });
 
@@ -88,14 +91,14 @@ test('should edit UsersRole', async (t) => {
   await t.expect(getPagePath()).match(new RegExp(`${usersRolesBasePath}/([a-z0-9-_]+)`));
 
   //click the edit button
-  await t.click(getByTestId('edit-users-role-button'));
+  await t.click(ReactSelector('EditUsersRoleButton'));
   await t.expect(getPagePath()).match(new RegExp(`${usersRolesBasePath}/([a-z0-9-_]+)/edit`));
 
-  const form = Selector('#form-users-role');
+  const form = ReactSelector('AutoForm').withProps({ name: 'usersRole' });
 
   // @todo change  Hidden _id field
   // change Text name field
-  const nameField = form.find('input[name=name]');
+  const nameField = form.findReact('TextField').withProps({ name: 'name' }).find('input');
   await t
     .expect(nameField.value)
     .eql(mockNewUsersRole.name) //make sure orginal vlaue is present
@@ -132,11 +135,11 @@ test('should delete UsersRole', async (t) => {
   await t.expect(getPagePath()).match(new RegExp(`${usersRolesBasePath}/([a-z0-9-_]+)`));
 
   //click the edit button
-  await t.click(getByTestId('edit-users-role-button'));
+  await t.click(ReactSelector('EditUsersRoleButton'));
   await t.expect(getPagePath()).match(new RegExp(`${usersRolesBasePath}/([a-z0-9-_]+)/edit`));
 
   // click delete
-  await t.click(getByTestId('remove-users-role-button'));
+  await t.click(ReactSelector('RemoveUsersRoleButton'));
   await t.click(getByTestId('remove-users-role-ok-button'));
 
   // navigate to index page and make sure it is gone

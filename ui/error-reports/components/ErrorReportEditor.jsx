@@ -5,11 +5,13 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { useMutation } from '@apollo/client';
 import Button from 'antd/lib/button';
+import Input from 'antd/lib/input';
 import message from 'antd/lib/message';
 import { useHistory } from 'react-router-dom';
-import { HiddenField, ListField, TextField } from 'uniforms-antd';
+import { HiddenField, ListField, TextField, ListDelField, ListItemField } from 'uniforms-antd';
 import AutoForm from '../../components/AutoForm';
 import CrossReferenceSearchField from '../../components/CrossReferenceSearchField';
+import ListInlineItemField from '../../components/ListInlineItemField';
 import SelectField from '../../components/SelectField';
 
 /* #### PLOP_IMPORTS_START #### */
@@ -59,11 +61,15 @@ function ErrorReportEditor({ doc }) {
         <TextField name="message" />
         <TextField name="path" />
         <TextField name="userAgent" />
-        <ListField name="stack">
-          <TextField name="$" />
+        <ListField name="stack" initialCount={1}>
+          <ListItemField name="$" label={null}>
+            <TextField label={null} name="" />
+          </ListItemField>
         </ListField>
-        <ListField name="reactStack">
-          <TextField name="$" />
+        <ListField name="reactStack" initialCount={1}>
+          <ListInlineItemField name="$" fieldComponent={TextField}>
+            <TextField />
+          </ListInlineItemField>
         </ListField>
         <Button htmlType="submit" type="primary" block>
           {i18n.__('ErrorReports.save')}

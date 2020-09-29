@@ -20,12 +20,12 @@
 {{#compare this.input.input '||' this.fields}}
 {{!-- see if we can use the inputlist template for this when a template isn't set --}}
   {{#compare this.input.type 'startsWith' '[' '&&' this.input '!in' 'CrossReferenceSelect|CrossReferenceSearch|Select|Checkboxes'}}
-<ListField name="{{keyPrefix}}{{name }}">
+<ListField name="{{keyPrefix}}{{name}}" initialCount={1}>
     {{#if this.fields}}
   {{> fieldInputs this.fields keyPrefix='$.'}}
     {{else}}
   {{!-- <ListItemField name="$" /> --}}
-  {{> renderField this keyPrefix='' name='$'}}
+  {{> renderField this keyPrefix='' name='$' label=null}}
     {{/if}}
 </ListField>
   {{else}}

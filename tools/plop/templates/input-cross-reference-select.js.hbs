@@ -1,8 +1,11 @@
+{{#compare template '===' 'input/multiple'}}
+true /*supports array values natively */
+{{/compare}}
 {{#compare template '===' 'form/imports'}}
 import CrossReferenceSearchField from '{{@root.uiPathOffset}}../../components/CrossReferenceSearchField';
 {{/compare}}
 {{#compare template '===' 'form/render'}}
-<CrossReferenceSearchField name="{{name}}" />
+<CrossReferenceSearchField {{> input-props}}/>
 {{/compare}}
 {{#compare template '===' 'e2eTest/new'}}
 // @todo change CrossReferenceSearch {{name}} field

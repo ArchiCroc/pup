@@ -20,7 +20,7 @@ export default {
     const query = {
       _ids,
       currentUser: context.user,
-      search: search ? new RegExp(search, 'i') : null,
+      search: search || null,
       limit: pageSize,
       skip: page * pageSize - pageSize,
     };

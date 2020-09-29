@@ -2,7 +2,7 @@
 import { NumField } from 'uniforms-antd';
 {{/compare}}
 {{#compare template '===' 'form/render'}}
-<NumField name="{{name}}" />
+<NumField {{> input-props}}/>
 {{/compare}}
 {{#compare template '===' 'e2eTest/new'}}
 // @todo change Num {{name}} field

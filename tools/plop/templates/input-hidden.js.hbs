@@ -2,7 +2,7 @@
 import { HiddenField } from 'uniforms-antd';
 {{/compare}}
 {{#compare template '===' 'form/render'}}
-<HiddenField name="{{name}}" />
+<HiddenField {{> input-props}}/>
 {{/compare}}
 {{#compare template '===' 'e2eTest/new'}}
 // @todo change Hidden {{name}} field

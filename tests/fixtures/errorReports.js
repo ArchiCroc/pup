@@ -11,7 +11,12 @@ export function getMockItem(random, includeOptional = true) {
 
   return {
     _id: undefined,
-    user: undefined,
+    user: {
+      __crossReference: 'Users',
+      query: { roles: 'user' },
+      key: 'userId',
+      label: faker.helpers.randomize(['Test Admin01', 'Test User01', 'Test User02']),
+    },
     level: faker.helpers.randomize([0, 1, 2, 3, 4, 5]),
     message: faker.lorem.words().substr(0, 2048),
     path: faker.lorem.words().substr(0, 1024),

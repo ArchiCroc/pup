@@ -2,18 +2,20 @@
 import { TextField } from 'uniforms-antd';
 {{/compare}}
 {{#compare template '===' 'form/render'}}
-<TextField name="{{name}}" />
+<TextField {{> input-props}}/>
 {{/compare}}
 {{#compare template '===' 'e2eTest/import'}}
 import { getByTestId, getByText, queryByText } from '@testing-library/testcafe';
 {{/compare}}
 {{#compare template '===' 'e2eTest/new'}}
 // change Text {{name}} field
-await t.typeText(form.find('input[name={{name}}'), mockNew{{pascalCase @root.singularName}}.{{name}});
+const {{name}}Field = form.findReact('TextField').withProps({ name: '{{name}}' }).find('input');
+await t.typeText({{name}}Field, mockNew{{pascalCase @root.singularName}}.{{name}});
+
 {{/compare}}
 {{#compare template '===' 'e2eTest/edit'}}
 // change Text {{name}} field
-  const {{name}}Field = form.find('input[name={{name}}]');
+  const {{name}}Field = form.findReact('TextField').withProps({ name: '{{name}}' }).find('input');
   await t
     .expect({{name}}Field.value)
     .eql(mockNew{{pascalCase @root.singularName}}.{{name}}) //make sure orginal vlaue is present

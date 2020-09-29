@@ -2,7 +2,7 @@
 import { LongTextField } from 'uniforms-antd';
 {{/compare}}
 {{#compare template '===' 'form/render'}}
-<LongTextField name="{{name}}" />
+<LongTextField {{> input-props}}/>
 {{/compare}}
 {{#compare template '===' 'e2eTest/new'}}
 // @todo change LongText {{name}} field

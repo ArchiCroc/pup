@@ -39,19 +39,23 @@ const getProjection = (options) => {
 const getQuery = (options) => {
   try {
     if (options.search) {
+      const searchParts = options.search.split(/[, ]/);
+      const search = new RegExp(`(${searchParts.join('|')})`, 'i');
+      //console.log('[getQuery]', `(${searchParts.join('|')})`);
+
       return {
         // _id: { $ne: options.currentUser._id }, // I'm not sure the use of this
         $or: [
-          { 'profile.firstName': options.search },
-          { 'profile.lastName': options.search },
-          { 'emails.address': options.search },
-          { 'services.facebook.first_name': options.search },
-          { 'services.facebook.last_name': options.search },
-          { 'services.facebook.email': options.search },
-          { 'services.google.name': options.search },
-          { 'services.google.email': options.search },
-          { 'services.github.email': options.search },
-          { 'services.github.username': options.search },
+          { 'profile.firstName': search },
+          { 'profile.lastName': search },
+          { 'emails.address': search },
+          { 'services.facebook.first_name': search },
+          { 'services.facebook.last_name': search },
+          { 'services.facebook.email': search },
+          { 'services.google.name': search },
+          { 'services.google.email': search },
+          { 'services.github.email': search },
+          { 'services.github.username': search },
         ],
       };
     }

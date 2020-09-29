@@ -2,7 +2,7 @@
 import { DateField } from 'uniforms-antd';
 {{/compare}}
 {{#compare template '===' 'form/render'}}
-<DateField name="{{name}}" />
+<DateField {{> input-props}}/>
 {{/compare}}
 {{#compare template '===' 'e2eTest/new'}}
 // @todo change Date {{name}} field

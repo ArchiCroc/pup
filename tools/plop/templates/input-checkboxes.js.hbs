@@ -2,7 +2,7 @@
 import CheckboxesField from '{{@root.uiPathOffset}}../../components/Checkboxes';
 {{/compare}}
 {{#compare template '===' 'form/render'}}
-<CheckboxesField name="{{name}}" />
+<CheckboxesField {{> input-props}}/>
 {{/compare}}
 {{#compare template '===' 'e2eTest/new'}}
 // @todo change Checkboxes {{name}} field

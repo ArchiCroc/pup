@@ -37,7 +37,7 @@ const SelectField = (props) => {
     >
       {options.map(({ label, value }) => (
         <Select.Option key={value} value={value}>
-          <span data-testid={value}>{label}</span>
+          {label}
         </Select.Option>
       ))}
     </Select>,

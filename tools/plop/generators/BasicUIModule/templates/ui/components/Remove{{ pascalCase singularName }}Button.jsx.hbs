@@ -58,7 +58,6 @@ function Remove{{ pascalCase singularName }}Button({{#prettyProps}}
       key={ {{~ primaryFieldKey ~}} }
       type="danger"
       onClick={showConfirmModal}
-      data-testid="remove-{{ dashCase singularName }}-button"
       {...props}
     >
       {i18n.__('{{ pascalCase pluralName }}.remove_{{ snakeCase shortSingularName }}')}

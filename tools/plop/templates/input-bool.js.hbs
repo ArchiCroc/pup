@@ -2,7 +2,7 @@
 import { BoolField } from 'uniforms-antd';
 {{/compare}}
 {{#compare template '===' 'form/render'}}
-<BoolField name="{{name}}" />
+<BoolField {{> input-props}}/>
 {{/compare}}
 {{#compare template '===' 'e2eTest/new'}}
 // @todo change Bool {{name}} field

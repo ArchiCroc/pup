@@ -168,6 +168,14 @@ function quoteIfString(text) {
   if (typeof text === 'boolean') {
     return text === true ? 'true' : 'false';
   }
+
+  if (text === null) {
+    return 'null';
+  }
+  if (text === undefined) {
+    return 'undefined';
+  }
+
   if (Array.isArray(text)) {
     return `[${text.map(quoteIfString).join(', ')}]`;
   } else if (typeof text === 'object') {
@@ -256,6 +264,15 @@ function quoteString(options) {
   return `'${contents}'`;
 }
 
+function jsxProp(value) {
+  if (typeof value === 'string') {
+    const string = Handlebars.Utils.escapeExpression(text);
+    return new Handlebars.SafeString(`"${string}"`); // mark as already escaped
+  }
+  const contents = quoteIfString(value);
+  return '{`' + contents + '`}';
+}
+
 function quoteStringForJSX(options) {
   const contents = options.fn(this);
   // }
@@ -341,6 +358,7 @@ module.exports = (plop) => {
     return text;
   });
   plop.setHelper('quoteIfString', quoteIfString);
+  plop.setHelper('jsxProp', jsxProp);
   plop.setHelper('convertParamsToTemplateVars', convertParamsToTemplateVars);
   plop.setHelper('apiDirCase', apiDirCase);
 

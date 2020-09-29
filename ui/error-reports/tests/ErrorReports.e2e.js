@@ -8,6 +8,7 @@ import {
   serverUrl,
   userRole,
 } from '../../../tests/helpers/e2e';
+import { ReactSelector } from 'testcafe-react-selectors';
 
 const mockNewErrorReport = getMockItem(1);
 const mockEditErrorReport = getMockItem(2);
@@ -49,42 +50,61 @@ test('should create new ErrorReport', async (t) => {
   await t.useRole(adminRole).navigateTo(`${errorReportsBasePath}/new`);
   await t.expect(getPagePath()).eql(`${errorReportsBasePath}/new`);
 
-  const form = Selector('#form-error-report');
+  const form = ReactSelector('AutoForm').withProps({ name: 'errorReport' });
 
   // @todo change Hidden _id field
   // @todo change CrossReferenceSearch userId field
   // const userIdField = form.find('div[name=userId] input');
-  // await t
-  //   //.expect(pathField.value)
-  //   //.eql(mockNewErrorReport.path) //make sure orginal vlaue is present
-  //   .click(userIdField)
-  //   .typeText(userIdField.withAttribute('role', 'combobox'), 'A')
-  //   .click(userIdField.withText('Andy Warhol'));
-
-  // @todo change Select level field
-  const levelField = form.find('div[name="level"]');
-  const levelFieldInput = await levelField.find('input')();
-  console.log('[levelFieldNode.id]', levelFieldInput.id);
-  const levelDropdown = Selector(`#${levelFieldInput.id}_list`);
+  const userIdField = form.findReact('CrossReferenceSearchField').withProps({ name: 'userId' });
   await t
-    //.expect(pathField.value)
-    //.eql(mockNewErrorReport.path) //make sure orginal vlaue is present
-    .click(levelField)
-    .expect(levelDropdown.exists)
+    //   //.expect(pathField.value)
+    //   //.eql(mockNewErrorReport.path) //make sure orginal vlaue is present
+    .click(userIdField)
+    .typeText(userIdField.find('input'), mockNewErrorReport.user.label)
+    .expect(userIdField.findReact('List').exists)
     .ok()
-    .click(levelDropdown.nextSibling().find(`[data-testid="${mockNewErrorReport.level}"]`));
+    .click(userIdField.findReact('Item').withText(mockNewErrorReport.user.label));
+
+  // change Select level field
+  const levelField = form.findReact('SelectField').withProps({ name: 'level' });
+  await t
+    .click(levelField)
+    .expect(levelField.findReact('List').exists)
+    .ok()
+    .click(levelField.findReact('Item').withKey(mockNewErrorReport.level));
 
   // change Text message field
-  await t.typeText(form.find('input[name=message'), mockNewErrorReport.message);
+  const messageField = form.findReact('Text').withProps({ name: 'message' });
+  await t.typeText(messageField, mockNewErrorReport.message);
   // change Text path field
   await t.typeText(form.find('input[name=path'), mockNewErrorReport.path);
   // change Text userAgent field
   await t.typeText(form.find('input[name=userAgent'), mockNewErrorReport.userAgent);
+
   // change Text stack field
   //await t.typeText(form.find('input[name=stack'), mockNewErrorReport.stack);
+  // list
+  const stackField = form.findReact('ListField').withProps({ name: 'stack' });
+  //get current listItemCount
+  const stackFieldList = await stackField.findReact('List').getReact(({ props }) => props.value);
+  const stackFieldItemCount = Array.isArray(stackFieldList) ? stackFieldList.length : 0;
+  const stackFieldMockLength = mockNewErrorReport.stack.length;
+  //loop over mock values
+  for (let i = 0; i < stackFieldMockLength; i++) {
+    //if newMockItems > listItemCount
+    console.log(i);
+    if (i >= stackFieldItemCount) {
+      // click add button
+      console.log('click button');
+      await t.click(stackField.findReact('ListAddField'));
+    }
+    const iField = stackField.findReact('Text').withProps({ name: `stack.${i}` });
+    await t.typeText(iField, mockNewErrorReport.stack[i]);
+  }
+
   // change Text reactStack field
   //await t.typeText(form.find('input[name=reactStack'), mockNewErrorReport.reactStack);
-  await t.click(form.find('button[type=submit]'));
+  await t.debug().click(form.find('button[type=submit]'));
 
   //make sure there are not any errors
   // ant-form-item-has-error
@@ -129,23 +149,19 @@ test('should edit ErrorReport', async (t) => {
   await t.click(getByTestId('edit-error-report-button'));
   await t.expect(getPagePath()).match(new RegExp(`${errorReportsBasePath}/([a-z0-9-_]+)/edit`));
 
-  const form = Selector('#form-error-report');
+  const form = ReactSelector('AutoForm').withProps({ name: 'errorReport' });
 
   // @todo change  Hidden _id field
   // @todo change  CrossReferenceSearch userId field
-  // @todo change  Select level field
-  const levelField = form.find('div[name="level"]');
-  const levelFieldInput = await levelField.find('input')();
-  const levelFieldValue = await levelField.find('[data-testid]')();
-  // console.log('[levelFieldValue]', levelFieldValue);
-  const levelDropdown = Selector(`#${levelFieldInput.id}_list`);
+  // change  Select level field
+  const levelField = form.findReact('SelectField').withProps({ name: 'level' });
   await t
-    .expect(levelFieldValue.attributes['data-testid'])
-    .eql(`${mockNewErrorReport.level}`) //make sure orginal vlaue is present
+    .expect(levelField.getReact(({ props }) => props.value))
+    .eql(mockNewErrorReport.level)
     .click(levelField)
-    .expect(levelDropdown.exists)
+    .expect(levelField.findReact('List').exists)
     .ok()
-    .click(levelDropdown.nextSibling().find(`[data-testid="${mockEditErrorReport.level}"]`));
+    .click(levelField.findReact('Item').withKey(mockEditErrorReport.level));
 
   // change Text message field
   const messageField = form.find('input[name=message]');
@@ -175,14 +191,46 @@ test('should edit ErrorReport', async (t) => {
     .typeText(userAgentField, mockEditErrorReport.userAgent); // type new value
 
   // change Text stack field
-  // const stackField = form.find('input[name=stack]');
-  // await t
-  //   .expect(stackField.value)
-  //   .eql(mockNewErrorReport.stack) //make sure orginal vlaue is present
-  //   .click(stackField)
-  //   .pressKey('ctrl+a delete') //clear field
-  //   .typeText(stackField, mockEditErrorReport.stack); // type new value
+  const stackField = form.findReact('ListField').withProps({ name: 'stack' });
+  //get current listItemCount
+  const stackFieldList = await stackField.findReact('List').getReact(({ props }) => props.value);
+  const stackFieldItemCount = Array.isArray(stackFieldList) ? stackFieldList.length : 0;
+  const stackFieldMockLength = mockEditErrorReport.stack.length;
 
+  //loop over mock values
+  for (let i = 0; i < stackFieldMockLength; i++) {
+    //if newMockItems > listItemCount
+    console.log(i);
+    if (i >= stackFieldItemCount) {
+      // click add button
+      console.log('click button');
+      await t.click(stackField.findReact('ListAddField'));
+    }
+    const iField = stackField.findReact('Text').withProps({ name: `stack.${i}` });
+    await t
+      .expect(iField.find('input').value) // @todo this throws a warning but might be false alarm https://github.com/DevExpress/testcafe/issues/5389
+      .eql(mockNewErrorReport.stack[i]) //make sure orginal vlaue is present
+      .click(iField)
+      .pressKey('ctrl+a delete') //clear field
+      .typeText(iField, mockEditErrorReport.stack[i]);
+  }
+
+  if (stackFieldItemCount > stackFieldMockLength) {
+    for (let i = stackFieldMockLength; i < stackFieldItemCount; i++) {
+      const iField = stackField
+        .findReact('ListDel')
+        .withProps({ name: `stack.${stackFieldMockLength}` });
+      await t.click(iField);
+    }
+
+    const updatedStackFieldList = await stackField
+      .findReact('List')
+      .getReact(({ props }) => props.value);
+    const updatedStackFieldItemCount = Array.isArray(updatedStackFieldList)
+      ? updatedStackFieldList.length
+      : 0;
+    await t.expect(updatedStackFieldItemCount).eql(stackFieldMockLength);
+  }
   // change Text reactStack field
   // const reactStackField = form.find('input[name=reactStack]');
   // await t

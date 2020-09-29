@@ -2,7 +2,7 @@
 import { ListField } from 'uniforms-antd';
 {{/compare}}
 {{#compare template '===' 'form/render'}}
-<ListField name="{{name}}">
+<ListField {{> input-props}}>
   {{> @partial-block }}
 </ListField>
 {{/compare}}

@@ -1,12 +1,29 @@
+{{#compare template '===' 'input/multiple'}}
+true /*supports array values natively */
+{{/compare}}
 {{#compare template '===' 'form/imports'}}
 import SelectField from '{{@root.uiPathOffset}}../../components/SelectField';
 {{/compare}}
 {{#compare template '===' 'form/render'}}
-<SelectField name="{{name}}" />
+<SelectField {{> input-props}}/>
 {{/compare}}
 {{#compare template '===' 'e2eTest/new'}}
-// @todo change Select {{name}} field
+// set Select {{name}} field
+const {{name}}Field = form.findReact('SelectField').withProps({ name: '{{name}}' });
+await t
+.click(levelField)
+.expect(levelField.findReact('List').exists)
+.ok()
+.click(levelField.findReact('Item').withKey(mockEditErrorReport.{{name}}));
 {{/compare}}
 {{#compare template '===' 'e2eTest/edit'}}
 // @todo change  Select {{name}} field
+const {{name}}Field = form.findReact('SelectField').withProps({ name: '{{name}}' });
+await t
+.expect(levelField.getReact(({ props }) => props.value))
+.eql(mockNewErrorReport.{{name}})
+.click(levelField)
+.expect(levelField.findReact('List').exists)
+.ok()
+.click(levelField.findReact('Item').withKey(mockEditErrorReport.{{name}}));
 {{/compare}}
