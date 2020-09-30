@@ -9,16 +9,16 @@ import SelectField from '{{@root.uiPathOffset}}../../components/SelectField';
 {{/compare}}
 {{#compare template '===' 'e2eTest/new'}}
 // set Select {{name}} field
-const {{name}}Field = form.findReact('SelectField').withProps({ name: '{{name}}' });
+const {{name}}Field = form.findReact('Select').withProps({ name: '{{name}}' });
 await t
 .click(levelField)
 .expect(levelField.findReact('List').exists)
 .ok()
-.click(levelField.findReact('Item').withKey(mockEditErrorReport.{{name}}));
+.click(levelField.findReact('Item').withKey(mockNewErrorReport.{{name}}));
 {{/compare}}
 {{#compare template '===' 'e2eTest/edit'}}
 // @todo change  Select {{name}} field
-const {{name}}Field = form.findReact('SelectField').withProps({ name: '{{name}}' });
+const {{name}}Field = form.findReact('Select').withProps({ name: '{{name}}' });
 await t
 .expect(levelField.getReact(({ props }) => props.value))
 .eql(mockNewErrorReport.{{name}})

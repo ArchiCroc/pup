@@ -2,7 +2,6 @@
   {{#each this.fields}}
     {{#if this.inputTemplateFile}}
 {{> (lookup . 'inputTemplateFile' ) template='e2eTest/imports'}};
-
     {{/if}}
     {{#if this.e2e.imports}}
 {{this.e2e.imports}};
@@ -18,12 +17,25 @@
 {{this.e2e.new}};
     {{else}}
       {{#if this.inputTemplateFile}}
-{{> (lookup . 'inputTemplateFile' ) name=fieldName template='e2eTest/new'}};
+        {{#compare this.inputType 'startsWith' '['}}
+          {{!-- field is an array input type --}}
+          {{#ifPartialExists this partial=inputTemplateFile template='input/multiple'}}
+            {{!-- Input Handles array types on it's own --}}
+            {{> (lookup . 'inputTemplateFile' ) name=fieldName template='e2eTest/new'}};
+          {{else}}
+            {{!-- needs to be wrapped in ListField --}}
+            {{> input-list name=fieldName template='e2eTest/new'}};
+          {{/ifPartialExists}}
+        {{else}}
+            {{!-- Single field --}}
+           {{> (lookup . 'inputTemplateFile' ) name=fieldName template='e2eTest/new'}};
+        {{/compare}}
       {{/if}}
     {{/if}}
     {{#if this.fields}}
 {{> newFieldTests this}}
     {{/if}}
+    
   {{/each}}
 {{/inline~}}
 {{#*inline "editFieldTests" ~}}
@@ -32,28 +44,41 @@
 {{this.e2e.edit}};
     {{else}}
       {{#if this.inputTemplateFile}}
-{{> (lookup . 'inputTemplateFile' ) name=fieldName template='e2eTest/edit'}};
-
+        {{#compare this.inputType 'startsWith' '['}}
+          {{!-- field is an array input type --}}
+          {{#ifPartialExists this partial=inputTemplateFile template='input/multiple'}}
+            {{!-- Input Handles array types on it's own --}}
+            {{> (lookup . 'inputTemplateFile' ) name=fieldName template='e2eTest/edit'}};
+          {{else}}
+            {{!-- needs to be wrapped in ListField --}}
+            {{> input-list name=fieldName template='e2eTest/edit'}};
+          {{/ifPartialExists}}
+        {{else}}
+            {{!-- Single field --}}
+           {{> (lookup . 'inputTemplateFile' ) name=fieldName template='e2eTest/edit'}};
+        {{/compare}}
       {{/if}}
     {{/if}}
     {{#if this.fields}}
 {{> editFieldTests this}}
     {{/if}}
+
   {{/each}}
 {{/inline~}}
 {{#*inline "viewFieldTests" ~}}
+//viewFieldTests {{mock}}
   {{#each this.fields}}
     {{#if this.e2e.view}}
 {{this.e2e.view}};
     {{else}}
       {{#if this.inputTemplateFile}}
-{{> (lookup . 'inputTemplateFile' ) template='e2eTest/view' name=fieldName mock=mock}};
-
+{{> (lookup . 'inputTemplateFile' ) template='e2eTest/view' name=key mock=../mock}};
       {{/if}}
     {{/if}}
     {{#if this.fields}}
 {{> viewFieldTests this mock=mock}}
     {{/if}}
+
   {{/each}}
 {{/inline~}}
 {{#uniqueImports}}
@@ -67,7 +92,7 @@ import { getMockItem } from '{{uiPathOffset}}../../../tests/fixtures/{{camelCase
 
 const mockNew{{pascalCase singularName}} = getMockItem(1);
 const mockEdit{{pascalCase singularName}} = getMockItem(2);
-const {{camelCase pluralName}}BasePath = {{#quoteString}}{{convertParamsToTemplateVars uiRouteBasePath }}{{/quoteString}};
+const {{camelCase pluralName}}BasePath = {{quoteString (convertParamsToTemplateVars uiRouteBasePath)}};
 
 fixture('{{pascalCase pluralName}}').page(`${serverUrl}/`);
 
@@ -88,6 +113,32 @@ test('should load {{pascalCase pluralName}} index page', async (t) => {
   await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
 
   await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+});
+
+test('make sure we have a clean slate', async (t) => {
+  await t.useRole(adminRole).navigateTo(errorReportsBasePath);
+  await t.expect(getPagePath()).eql(errorReportsBasePath);
+
+  const items = [
+    Selector(queryByText(mockNew{{pascalCase singularName}}.{{labelFieldKey}})),
+    Selector(queryByText(mockEdit{{pascalCase singularName}}.{{labelFieldKey}}))
+  ];
+  items.forEach(async (item)=> {
+    if (await item.exists) {
+      await t.click(item);
+      // navigate to the correct item
+      await t.click(getByText(mockEdit{{pascalCase singularName}}.{{labelFieldKey}}));
+      await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)`));
+
+      //click the edit button
+      await t.click(ReactSelector('Edit{{pascalCase singularName}}Button'));
+      await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)/edit`));
+
+      // click delete
+      await t.click(ReactSelector('Remove{{pascalCase singularName}}Button'));
+      await t.click(getByTestId('remove-{{dashCase singularName}}-ok-button'));
+    }
+  });
 });
 
 test('should navigate to new {{pascalCase singularName}} form', async (t) => {
@@ -122,6 +173,7 @@ test('should display {{pascalCase singularName}} detail page', async (t) => {
 
   await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)`));
 
+  const page = ReactSelector('View{{pascalCase singularName}}Fields');
   {{> viewFieldTests schema mock=(concat 'mockNew' (pascalCase singularName))}}
 });
 
@@ -168,6 +220,7 @@ test('should show detail of edited {{pascalCase singularName}}', async (t) => {
   await t.click(getByText(mockEdit{{pascalCase singularName}}.{{labelFieldKey}}));
   await t.expect(getPagePath(mockEdit{{pascalCase singularName}}.{{labelFieldKey}})).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)`));
   
+  const page = ReactSelector('ViewErrorReportFields');
   {{> viewFieldTests schema mock=(concat 'mockEdit' (pascalCase singularName))}}
 });
 
@@ -189,5 +242,5 @@ test('should delete {{pascalCase singularName}}', async (t) => {
 
   // navigate to index page and make sure it is gone
   await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
-  await t.expect(queryByText(mockEdit{{pascalCase singularName}}.{{labelFieldKey}}).count).notOk();
+  await t.expect(queryByText(mockEdit{{pascalCase singularName}}.{{labelFieldKey}}).exists).notOk();
 });

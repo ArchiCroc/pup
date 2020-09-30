@@ -64,43 +64,35 @@ ViewErrorReportPage.propTypes = {
 
 const ViewErrorReportFields = ({ errorReport }) => (
   <Descriptions bordered column={1}>
-    <Descriptions.Item label={i18n.__('ErrorReports.id')}>
-      <div data-testid="error-report-id">{errorReport._id}</div>
+    <Descriptions.Item key="_id" label={i18n.__('ErrorReports.id')}>
+      {errorReport._id}
     </Descriptions.Item>
-    <Descriptions.Item label={i18n.__('ErrorReports.user')}>
-      <div data-testid="error-report-user">{errorReport.user?.fullName}</div>
+    <Descriptions.Item key="user" label={i18n.__('ErrorReports.user')}>
+      {errorReport.user?.fullName}
     </Descriptions.Item>
-    <Descriptions.Item label={i18n.__('ErrorReports.level')}>
-      <div data-testid="error-report-level">
-        {errorReport.level && i18n.__(`ErrorReports.level_${errorReport.level}`)}
-      </div>
+    <Descriptions.Item key="level" label={i18n.__('ErrorReports.level')}>
+      {errorReport.level && i18n.__(`ErrorReports.level_${errorReport.level}`)}
     </Descriptions.Item>
-    <Descriptions.Item label={i18n.__('ErrorReports.message')}>
-      <div data-testid="error-report-message">{errorReport.message}</div>
+    <Descriptions.Item key="message" label={i18n.__('ErrorReports.message')}>
+      {errorReport.message}
     </Descriptions.Item>
-    <Descriptions.Item label={i18n.__('ErrorReports.path')}>
-      <div data-testid="error-report-path">{errorReport.path}</div>
+    <Descriptions.Item key="path" label={i18n.__('ErrorReports.path')}>
+      {errorReport.path}
     </Descriptions.Item>
-    <Descriptions.Item label={i18n.__('ErrorReports.user_agent')}>
-      <div data-testid="error-report-user-agent">{errorReport.userAgent}</div>
+    <Descriptions.Item key="userAgent" label={i18n.__('ErrorReports.user_agent')}>
+      {errorReport.userAgent}
     </Descriptions.Item>
-    <Descriptions.Item label={i18n.__('ErrorReports.stack')}>
-      <div data-testid="error-report-stack">
-        {errorReport.stack && errorReport.stack.join(', ')}
-      </div>
+    <Descriptions.Item key="stack" label={i18n.__('ErrorReports.stack')}>
+      {errorReport.stack && errorReport.stack.join(', ')}
     </Descriptions.Item>
-    <Descriptions.Item label={i18n.__('ErrorReports.react_stack')}>
-      <div data-testid="error-report-react-stack">
-        {errorReport.reactStack && errorReport.reactStack.join(', ')}
-      </div>
+    <Descriptions.Item key="reactStack" label={i18n.__('ErrorReports.react_stack')}>
+      {errorReport.reactStack && errorReport.reactStack.join(', ')}
     </Descriptions.Item>
-    <Descriptions.Item label={i18n.__('ErrorReports.created_at_utc')}>
-      <div data-testid="error-report-created-at-utc">
-        <>{errorReport.createdAtUTC && <FormatDate timestamp={errorReport.createdAtUTC} />}</>
-      </div>
+    <Descriptions.Item key="createdAtUTC" label={i18n.__('ErrorReports.created_at_utc')}>
+      <>{errorReport.createdAtUTC && <FormatDate timestamp={errorReport.createdAtUTC} />}</>
     </Descriptions.Item>
-    <Descriptions.Item label={i18n.__('ErrorReports.created_by')}>
-      <div data-testid="error-report-created-by">{errorReport.createdBy?.fullName}</div>
+    <Descriptions.Item key="createdBy" label={i18n.__('ErrorReports.created_by')}>
+      {errorReport.createdBy?.fullName}
     </Descriptions.Item>
   </Descriptions>
 );

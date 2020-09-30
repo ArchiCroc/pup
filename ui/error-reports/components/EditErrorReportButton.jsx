@@ -7,7 +7,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 const EditErrorReportButton = ({ _id, ...props }) => (
   <LinkContainer to={`/admin/error-reports/${_id}/edit`}>
-    <Button type="primary" icon={<EditIcon />} data-testid="edit-error-report-button" {...props}>
+    <Button type="primary" icon={<EditIcon />}>
       {i18n.__('ErrorReports.edit_error_report')}
     </Button>
   </LinkContainer>

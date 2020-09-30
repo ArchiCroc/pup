@@ -252,16 +252,18 @@ function uniqueImports(options) {
 
 const templateLiteralRegex = /\${.*}/gm;
 
-function quoteString(options) {
-  const contents = options.fn(this);
-  // }
-  // function uniqueImportsTest(contents) {
-  let match = contents.match(templateLiteralRegex);
-  if (match) {
-    return '`' + contents + '`';
+function quoteString(contents, options) {
+  if (!options) {
+    options = contents;
+    contents = options.fn(this);
   }
 
-  return `'${contents}'`;
+  let match = contents.match(templateLiteralRegex);
+  if (match) {
+    return new Handlebars.SafeString('`' + contents + '`');
+  }
+
+  return new Handlebars.SafeString(`'${contents}'`);
 }
 
 function jsxProp(value) {
@@ -384,6 +386,16 @@ module.exports = (plop) => {
     return arguments.join('');
   });
 
+  plop.setHelper('first', function () {
+    arguments = [...arguments].slice(0, -1);
+    for (const argument of arguments) {
+      if (argument != undefined) {
+        return argument;
+      }
+    }
+    return;
+  });
+
   plop.setHelper('convertDataIndexToGraphqlSubQuery', convertDataIndexToGraphqlSubQuery);
   plop.setHelper('uniqueImports', uniqueImports);
   plop.setHelper('quoteString', quoteString);
@@ -398,6 +410,35 @@ module.exports = (plop) => {
     const object = require(`./tools/plop/generators/${folder}`);
     plop.setGenerator(folder, object);
   });
+
+  // console.log(plop);
+
+  plop.setHelper('ifPartialExists', (context, opts, more) => {
+    let isTrue = false;
+    // console.log('ifPartialExists', opts.data._parent, more, 'context', context);
+
+    var attrs = Object.keys(opts.hash)
+      .map(function (key) {
+        return key + '="' + opts.hash[key] + '"';
+      })
+      .join(' ');
+
+    const { partial = 'missing' } = opts.hash;
+
+    const partialExists = plop.getPartial(partial);
+    //console.log('partial', partial, attrs, p);
+    if (partialExists) {
+      const value = plop.renderString(`{{>${partial} ${attrs} }}`, context);
+
+      if (typeof value === 'string' && value.trim() !== '') {
+        isTrue = true;
+      }
+    }
+
+    return isTrue ? opts.fn(context) : opts.inverse(context);
+  });
+
+  plop.setHelper('prettyProps', prettyProps);
 
   const partials = files('./tools/plop/templates');
   partials.forEach((partialFileName) => {

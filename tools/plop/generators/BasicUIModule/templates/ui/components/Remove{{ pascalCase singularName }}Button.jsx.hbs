@@ -32,7 +32,7 @@ function Remove{{ pascalCase singularName }}Button({{#prettyProps}}
     ignoreResults: true,
     onCompleted: () => {
       message.success(i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_saved'));
-      history.push({{#quoteString}}{{convertParamsToTemplateVars uiRouteBasePath }}{{/quoteString}});
+      history.push({{quoteString (convertParamsToTemplateVars uiRouteBasePath)}});
     },
     onError: (error) => {
       message.error(error.message);

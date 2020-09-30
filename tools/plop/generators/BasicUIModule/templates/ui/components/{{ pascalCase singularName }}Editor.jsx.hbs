@@ -9,7 +9,7 @@
       {{/compare}}
     {{/compare}}
     {{#if this.input.input}}
-{{> fieldInput this keyPrefix=../keyPrefix}}
+{{> fieldInput this name=(concat ../keyPrefix this.input.name )}}
     {{/if}}
     {{#compare this.permissions.create '||' this.permissions.update}}
 )}
@@ -17,38 +17,39 @@
   {{~/each}}
 {{/inline}}
 {{#*inline "fieldInput" }}
-{{#compare this.input.input '||' this.fields}}
-{{!-- see if we can use the inputlist template for this when a template isn't set --}}
-  {{#compare this.input.type 'startsWith' '[' '&&' this.input '!in' 'CrossReferenceSelect|CrossReferenceSearch|Select|Checkboxes'}}
-<ListField name="{{keyPrefix}}{{name}}" initialCount={1}>
-    {{#if this.fields}}
+  {{#compare this.input.input '||' this.fields}}
+    {{#compare this.inputType 'startsWith' '['}}
+      {{#ifPartialExists this partial=inputTemplateFile template='input/multiple'}}
+{{> renderField}}
+      {{else}}
+        {{#> input-list this name=name template='form/render' }}
+         {{#if this.fields}}
   {{> fieldInputs this.fields keyPrefix='$.'}}
-    {{else}}
+          {{else}}
   {{!-- <ListItemField name="$" /> --}}
-  {{> renderField this keyPrefix='' name='$' label=null}}
-    {{/if}}
-</ListField>
-  {{else}}
-    {{#compare (stripBrackets this.type) 'in' 'Object' '&&' this.fields 'typeof' 'object'}}
-<fieldset>
-  <legend>{i18n.__('{{pascalCase @root.pluralName}}.{{name}}')}:</legend>
-  {{> fieldInputs this.fields keyPrefix=(concat name '.')}}
-</fieldset>
+  {{> renderField this name='' label=null}}
+          {{/if}}
+        {{/input-list}}
+      {{/ifPartialExists}}
     {{else}}
-  {{> renderField this keyPrefix=keyPrefix name=this.input.name}}
+      {{> renderField this}}
     {{/compare}}
   {{/compare}}
-{{/compare}}
 {{/inline~}}
 {{#*inline "renderField" }}
-  {{#if this.inputTemplateFile}}
-{{> (lookup . 'inputTemplateFile' ) template='form/render' name=(concat keyPrefix name )}}
+  {{#compare (stripBrackets this.type) 'in' 'Object' '&&' this.fields 'typeof' 'object'}}
+<fieldset>
+  <legend>{i18n.__('{{pascalCase @root.pluralName}}.{{name}}')}:</legend>
+    {{> fieldInputs this.fields keyPrefix=(concat name '.')}}
+</fieldset>
   {{else}}
-{/* @todo {{keyPrefix}}{{name}} {{inputTemplateFile}} */}      
-  {{/if}}
-  {{#if this.input.template}}
-{{this.input.template}}
-  {{/if}}
+    {{#if this.inputTemplateFile}}
+{{> (lookup . 'inputTemplateFile' ) template='form/render' name=(concat keyPrefix name )}}
+    {{else}}
+{/* @todo {{keyPrefix}}{{name}} {{inputTemplateFile}} */}  
+        {{this.input.template}}
+    {{/if}}
+  {{/compare}}
 {{/inline~}}
 {{#*inline "inputImports" ~}}
   {{#each this.fields}}
@@ -80,7 +81,7 @@ import hasRole from '{{uiPathOffset}}../../../libs/hasRole';
   {{/if}}
 {{> inputImports schema}}
   {{#if hasListField}}
-import { ListField } from 'uniforms-antd';
+{{> input-list template='form/imports'}};
   {{/if}}
 {{/uniqueImports}}
 
@@ -109,7 +110,7 @@ function {{ pascalCase singularName }}Editor({{#prettyProps}}
     ignoreResults: true,
     onCompleted: () => {
       message.success(i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_saved'));
-      history.push({{#quoteString}}{{convertParamsToTemplateVars uiRouteBasePath }}{{/quoteString}});
+      history.push({{quoteString (convertParamsToTemplateVars uiRouteBasePath)}});
     },
     onError: (error) => {
       message.error(error.message);
@@ -119,15 +120,9 @@ function {{ pascalCase singularName }}Editor({{#prettyProps}}
 
   function handleSubmit(form) {
     const cleanForm = {{ pascalCase singularName }}Schema.clean(form);
-    // console.log('cleanForm', cleanForm);
     save{{ pascalCase singularName }}({
       variables: { {{ camelCase singularName }}: cleanForm },
     });
-  }
-
-  // fix issue with uniforms getting a null for visionNames
-  if (doc && !doc.visionNames) {
-    doc.visionNames = []; //eslint-disable-line
   }
 
   return (

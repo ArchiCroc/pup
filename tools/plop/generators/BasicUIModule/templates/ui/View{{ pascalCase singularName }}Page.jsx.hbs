@@ -185,8 +185,8 @@ const View{{ pascalCase singularName }}Fields = ({{#prettyProps}}
   <Descriptions bordered column={1}>
 {{#each schema.fields ~}}
   {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
-    <Descriptions.Item label={i18n.__('{{ pascalCase @root.name }}.{{ snakeCase @key }}')}>
-      <div data-testid="{{ dashCase @root.singularName }}-{{ dashCase @key }}">{{> renderValue name=(camelCase @root.singularName)}}</div>
+    <Descriptions.Item key="{{@key}}" label={i18n.__('{{ pascalCase @root.name }}.{{ snakeCase @key }}')}>
+      {{> renderValue name=(camelCase @root.singularName)}}
     </Descriptions.Item>
   {{/compare~}}
 {{~/each}}

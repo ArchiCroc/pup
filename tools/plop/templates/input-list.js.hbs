@@ -1,14 +1,80 @@
 {{#compare template '===' 'form/imports'}}
 import { ListField } from 'uniforms-antd';
+import ListInlineItemField from '{{@root.uiPathOffset}}../../components/ListInlineItemField';
 {{/compare}}
 {{#compare template '===' 'form/render'}}
-<ListField {{> input-props}}>
+<ListField {{> input-props}} initialCount={1}>
+  <ListInlineItemField name="$">
   {{> @partial-block }}
+  </ListInlineItemField>
 </ListField>
 {{/compare}}
+{{#compare template '===' 'e2eTest/imports'}}
+  {{#if this.inputTemplateFile}}
+{{> (lookup . 'inputTemplateFile' ) template='e2eTest/imports'}};
+  {{/if}}
+  {{#if this.e2e.imports}}
+{{this.e2e.imports}};
+  {{/if}}
+{{/compare}}
 {{#compare template '===' 'e2eTest/new'}}
-// @todo change List {{name}} field
+// set List {{name}} field
+const {{name}}ListField = form.findReact('ListField').withProps({ name: '{{name}}' });
+const {{name}}FieldList = await {{name}}ListField.findReact('List').getReact(({ props }) => props.value);
+const {{name}}FieldItemCount = Array.isArray({{name}}FieldList) ? {{name}}FieldList.length : 0;
+const {{name}}MockLength = mockNew{{pascalCase @root.singularName}}.{{name}}.length;
+//loop over mock values
+for (let i = 0; i < {{name}}MockLength; i++) {
+  if (i >= {{name}}FieldItemCount) {
+    // click add button
+    await t.click({{name}}ListField.findReact('ListAddField'));
+  }
+  {{#if this.e2e.new}}
+{{this.e2e.new}};
+  {{else}}
+    {{#if this.inputTemplateFile}}
+{{> (lookup . 'inputTemplateFile' ) name=name propName=(concat name '.${i}') mockSuffix="[i]" template='e2eTest/new'}};
+    {{/if}}
+  {{/if}}
+}
 {{/compare}}
 {{#compare template '===' 'e2eTest/edit'}}
-// @todo change  List {{name}} field
+// change  List {{name}} field
+const {{name}}ListField = form.findReact('ListField').withProps({ name: '{{name}}' });
+//get current listItemCount
+const {{name}}FieldList = await {{name}}ListField.findReact('List').getReact(({ props }) => props.value);
+const {{name}}FieldItemCount = Array.isArray({{name}}FieldList) ? {{name}}FieldList.length : 0;
+const {{name}}MockLength = mockEdit{{pascalCase @root.singularName}}.{{name}}.length;
+
+//loop over mock values
+for (let i = 0; i < {{name}}MockLength; i++) {
+  if (i >= {{name}}FieldItemCount) {
+    // click add button
+    await t.click({{name}}ListField.findReact('ListAddField'));
+  }
+{{#if this.e2e.edit}}
+{{this.e2e.edit}};
+{{else}}
+  {{#if this.inputTemplateFile}}
+{{> (lookup . 'inputTemplateFile' ) name=name propName=(concat name '.${i}') mockSuffix="[i]" template='e2eTest/edit'}};
+  {{/if}}
+{{/if}}
+}
+
+if ({{name}}FieldItemCount > {{name}}MockLength) {
+  for (let i = {{name}}MockLength; i < {{name}}FieldItemCount; i++) {
+    const iField = {{name}}ListField
+      .findReact('ListDel')
+      .withProps({ name: `{{name}}.${ {{~name}}MockLength}` });
+    await t.click(iField);
+  }
+}
+
+const updated{{name}}FieldList = await {{name}}ListField
+  .findReact('List')
+  .getReact(({ props }) => props.value);
+const updated{{name}}FieldItemCount = Array.isArray(updated{{name}}FieldList)
+  ? updated{{name}}FieldList.length
+  : 0;
+await t.expect(updated{{name}}FieldItemCount).eql({{name}}MockLength);
 {{/compare}}

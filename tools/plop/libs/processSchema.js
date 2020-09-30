@@ -61,13 +61,17 @@ function processFields([key, item], data) {
   item.name = key;
   if (item.input && item.input.name) {
     item.fieldName = item.input.name;
+    item.inputName = item.input.name;
   } else {
     item.fieldName = key;
+    item.inputName = key;
   }
   if (item.input && item.input.type) {
     item.fieldType = item.input.type;
+    item.inputType = item.input.type;
   } else {
     item.fieldType = item.type;
+    item.inputType = item.type;
   }
 
   if (item.input) {

@@ -39,13 +39,7 @@ function RemoveErrorReportButton({ _id, title, ...props }) {
   }
 
   return (
-    <Button
-      key={_id}
-      type="danger"
-      onClick={showConfirmModal}
-      data-testid="remove-error-report-button"
-      {...props}
-    >
+    <Button key={_id} type="danger" onClick={showConfirmModal} {...props}>
       {i18n.__('ErrorReports.remove_error_report')}
     </Button>
   );

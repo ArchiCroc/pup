@@ -8,7 +8,14 @@ import CrossReferenceSearchField from '{{@root.uiPathOffset}}../../components/Cr
 <CrossReferenceSearchField {{> input-props}}/>
 {{/compare}}
 {{#compare template '===' 'e2eTest/new'}}
-// @todo change CrossReferenceSearch {{name}} field
+// set CrossReferenceSearch {{name}} field
+  const {{name}}Field = form.findReact('CrossReferenceSearchField').withProps({ name: {{quoteString (first propName name)}} });
+  await t
+    .click({{name}}Field)
+    .typeText({{name}}Field.find('input'), mockNew{{pascalCase @root.singularName}}.{{name}}.label)
+    .expect({{name}}Field.findReact('List').exists)
+    .ok()
+    .click({{name}}Field.findReact('Item').withText(mockNew{{pascalCase @root.singularName}}.{{name}}.label));
 {{/compare}}
 {{#compare template '===' 'e2eTest/edit'}}
 // @todo change  CrossReferenceSearch {{name}} field

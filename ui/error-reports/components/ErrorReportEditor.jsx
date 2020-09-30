@@ -5,10 +5,9 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { useMutation } from '@apollo/client';
 import Button from 'antd/lib/button';
-import Input from 'antd/lib/input';
 import message from 'antd/lib/message';
 import { useHistory } from 'react-router-dom';
-import { HiddenField, ListField, TextField, ListDelField, ListItemField } from 'uniforms-antd';
+import { HiddenField, ListField, TextField } from 'uniforms-antd';
 import AutoForm from '../../components/AutoForm';
 import CrossReferenceSearchField from '../../components/CrossReferenceSearchField';
 import ListInlineItemField from '../../components/ListInlineItemField';
@@ -41,15 +40,9 @@ function ErrorReportEditor({ doc }) {
 
   function handleSubmit(form) {
     const cleanForm = ErrorReportSchema.clean(form);
-    // console.log('cleanForm', cleanForm);
     saveErrorReport({
       variables: { errorReport: cleanForm },
     });
-  }
-
-  // fix issue with uniforms getting a null for visionNames
-  if (doc && !doc.visionNames) {
-    doc.visionNames = []; //eslint-disable-line
   }
 
   return (
@@ -62,13 +55,13 @@ function ErrorReportEditor({ doc }) {
         <TextField name="path" />
         <TextField name="userAgent" />
         <ListField name="stack" initialCount={1}>
-          <ListItemField name="$" label={null}>
-            <TextField label={null} name="" />
-          </ListItemField>
+          <ListInlineItemField name="$">
+            <TextField name="" />
+          </ListInlineItemField>
         </ListField>
         <ListField name="reactStack" initialCount={1}>
-          <ListInlineItemField name="$" fieldComponent={TextField}>
-            <TextField />
+          <ListInlineItemField name="$">
+            <TextField name="" />
           </ListInlineItemField>
         </ListField>
         <Button htmlType="submit" type="primary" block>

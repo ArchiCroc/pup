@@ -11,7 +11,7 @@ export function getMockItem(random, includeOptional = true) {
 
   return {
     _id: undefined,
-    user: {
+    userId: {
       __crossReference: 'Users',
       query: { roles: 'user' },
       key: 'userId',
@@ -40,11 +40,11 @@ export function getMockItem(random, includeOptional = true) {
       () => faker.lorem.words(),
     ),
     createdAtUTC: faker.date.past(10),
-    createdBy: {
+    createdById: {
       __crossReference: 'Users',
       query: { roles: 'user' },
       key: 'createdById',
-      displayValue: faker.helpers.randomize(['Test Admin01', 'Test User01', 'Test User02']),
+      label: faker.helpers.randomize(['Test Admin01', 'Test User01', 'Test User02']),
     },
   };
 }
