@@ -47,6 +47,9 @@ export default {
 
     if (isArray(role) && role.length > 0) {
       query.roles = { $in: role };
+    } else {
+      // exclude api users by default
+      query.roles = { $ne: 'api' };
     }
 
     if (isArray(status) && status.length > 0) {

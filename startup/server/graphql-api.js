@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { GraphQLDate, GraphQLDateTime } from 'graphql-iso-date';
+import { DateResolver, TimeResolver, DateTimeResolver } from 'graphql-scalars';
 import { makeExecutableSchema } from 'graphql-tools';
 import { ObjectID } from '../../libs/server/GraphQLObjectIdScalar';
 
@@ -42,6 +42,7 @@ const schema = {
     #### PLOP_TYPES_END ####
 
     scalar DateTime
+    scalar Time
     scalar Date
     scalar ObjectID
 
@@ -126,8 +127,9 @@ const schema = {
     }
   `,
   resolvers: {
-    Date: GraphQLDate,
-    DateTime: GraphQLDateTime,
+    Date: DateResolver,
+    Time: TimeResolver,
+    DateTime: DateTimeResolver,
     ObjectID,
     Query: {
       ...UserQueries,
