@@ -39,7 +39,7 @@ export function getMockItem(random, includeOptional = true) {
       },
       () => faker.lorem.words(),
     ),
-    createdAtUTC: faker.date.past(10),
+    createdAt: faker.date.past(10),
     createdById: {
       __crossReference: 'Users',
       query: { roles: 'user' },

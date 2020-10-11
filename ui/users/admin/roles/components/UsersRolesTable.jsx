@@ -61,17 +61,17 @@ function UsersRolesTable({
       // render: (value, record) => <Link to={`/users-roles/${record.name}/edit`}>{value}</Link>, // eslint-disable-line
     },
     {
-      title: i18n.__('UsersRoles.created_at_utc'),
-      dataIndex: 'createdAtUTC',
+      title: i18n.__('UsersRoles.created_at'),
+      dataIndex: 'createdAt',
       sorter: true,
-      sortOrder: currentSort === 'createdAtUTC' && currentOrder,
+      sortOrder: currentSort === 'createdAt' && currentOrder,
       render: (value, record) => <PrettyDate timestamp={value} />,
     },
     {
-      title: i18n.__('UsersRoles.updated_at_utc'),
-      dataIndex: 'updatedAtUTC',
+      title: i18n.__('UsersRoles.updated_at'),
+      dataIndex: 'updatedAt',
       sorter: true,
-      sortOrder: currentSort === 'updatedAtUTC' && currentOrder,
+      sortOrder: currentSort === 'updatedAt' && currentOrder,
       render: (value, record) => <PrettyDate timestamp={value} />,
     },
   ];
@@ -89,7 +89,7 @@ function UsersRolesTable({
   }
 
   function handleTableChange(pagination, filters, sorter) {
-    const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
+    const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAt';
 
     const $newOrder = sorter.order ? sorter.order : null;
 

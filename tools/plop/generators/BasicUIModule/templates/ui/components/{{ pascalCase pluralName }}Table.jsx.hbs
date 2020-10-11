@@ -198,7 +198,7 @@ const paginationObject = {
     } = filters;
 
 {{/if}}
-    const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
+    const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAt';
 
     const $newOrder = sorter.order ? sorter.order : null;
 

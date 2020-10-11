@@ -33,11 +33,11 @@ blank_state_subtitle: ""
 name: Name
 name_label: Name
 name_placeholder: Name
-created_at_utc: Created At
+created_at: Created At
 created_by: Created By
 created_by_label: Created By
 created_by_placeholder: Created By
-updated_at_utc: Updated At
+updated_at: Updated At
 updated_by: Updated By
 updated_by_label: Updated By
 updated_by_placeholder: Updated By

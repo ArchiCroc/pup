@@ -93,7 +93,7 @@
       "showInTableView": false,
       "searchable": true
     },
-    "createdAtUTC": {
+    "createdAt": {
       "type": "DateTime",
       "showInTableView": "Created At"
     },
@@ -110,6 +110,6 @@
       "showInTableView": false
     }
   },
-  "defaultSortField": "createdAtUTC",
+  "defaultSortField": "createdAt",
   "defaultSortOrder": "descend"
 }

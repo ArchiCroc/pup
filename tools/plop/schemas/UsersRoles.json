@@ -33,7 +33,7 @@
       "mockTemplateFile": "mock-slug",
       "clean": "(item) => slugify(item, { lower: true});"
     },
-    "createdAtUTC": {
+    "createdAt": {
       "type": "DateTime",
       "showInTableView": "Created At"
     },
@@ -49,7 +49,7 @@
       },
       "showInTableView": false
     },
-    "updatedAtUTC": {
+    "updatedAt": {
       "type": "DateTime",
       "showInTableView": "Updated At"
     },

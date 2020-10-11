@@ -1,12 +1,12 @@
 fragment UsersRoleAttributes on UsersRole {
   _id
   name
-  createdAtUTC
+  createdAt
   createdBy { 
     _id
     fullName
   }
-  updatedAtUTC
+  updatedAt
   updatedBy { 
     _id
     fullName

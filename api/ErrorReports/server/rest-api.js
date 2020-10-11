@@ -20,7 +20,7 @@ ApiRoutes.add('post', '/public-api/v1/error-reports', (request, response) => {
   const userId = (request.user && request.user._id) || null;
 
   cleanDoc.createdById = userId;
-  cleanDoc.createdAtUTC = new Date();
+  cleanDoc.createdAt = new Date();
 
   const errorReportId = ErrorReports.insert(cleanDoc);
   // console.log(errorReportId);

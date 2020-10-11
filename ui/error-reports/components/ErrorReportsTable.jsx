@@ -110,10 +110,10 @@ function ErrorReportsTable({
       // render: (value, record) => <Link to={`/error-reports/${record._id}/edit`}>{value}</Link>, // eslint-disable-line
     },
     {
-      title: i18n.__('ErrorReports.created_at_utc'),
-      dataIndex: 'createdAtUTC',
+      title: i18n.__('ErrorReports.created_at'),
+      dataIndex: 'createdAt',
       sorter: true,
-      sortOrder: currentSort === 'createdAtUTC' && currentOrder,
+      sortOrder: currentSort === 'createdAt' && currentOrder,
       render: (value, record) => <PrettyDate timestamp={value} />,
     },
   ];
@@ -133,7 +133,7 @@ function ErrorReportsTable({
   function handleTableChange(pagination, filters, sorter) {
     const { level: newLevel } = filters;
 
-    const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
+    const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAt';
 
     const $newOrder = sorter.order ? sorter.order : null;
 
@@ -194,7 +194,7 @@ ErrorReportsTable.defaultProps = {
   queryKeyPrefix: undefined,
   page: 1,
   pageSize: 10,
-  sort: 'createdAtUTC',
+  sort: 'createdAt',
   order: 'descend',
   search: undefined,
   showSearch: true,

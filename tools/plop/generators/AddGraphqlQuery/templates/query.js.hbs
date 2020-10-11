@@ -16,7 +16,7 @@
       {{/each}}
     };
 
-    const options = { /* sort: { createdAtUTC: 1 } */ };
+    const options = { /* sort: { createdAt: 1 } */ };
 
     return {{pascalCase apiFolderName}}.find(query, options).fetch();
     // .map((item) => {

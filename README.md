@@ -146,7 +146,7 @@ Starts default dev server at http://localhost:3000
         "view": "// @todo",
       }
     },
-    "createdAtUTC": {
+    "createdAt": {
       "type": "DateTime",
       "showInTableView": "Created At"
     },
@@ -170,7 +170,7 @@ Starts default dev server at http://localhost:3000
     }
   },
   // table options
-  "defaultSortField": "createdAtUTC", // in the table and search, default field to sort by
+  "defaultSortField": "createdAt", // in the table and search, default field to sort by
   "defaultSortOrder": "descend", // in the table and search, default field way to order the sort by field
   "tableRowClickUrl": "/collection/elements/${record.element._id}", // optional for use with connecting to sub items
   // detail page options

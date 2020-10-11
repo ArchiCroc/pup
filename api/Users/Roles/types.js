@@ -3,10 +3,10 @@ export default `
 type UsersRole {
   _id: String
   name: String
-  createdAtUTC: DateTime
+  createdAt: DateTime
   createdById: String
   createdBy: User
-  updatedAtUTC: DateTime
+  updatedAt: DateTime
   updatedById: String
   updatedBy: User
 }

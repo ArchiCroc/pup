@@ -63,17 +63,17 @@ const ViewUsersRoleFields = ({ usersRole }) => (
     <Descriptions.Item label={i18n.__('UsersRoles.name')}>
       <div data-testid="users-role-name">{usersRole.name}</div>
     </Descriptions.Item>
-    <Descriptions.Item label={i18n.__('UsersRoles.created_at_utc')}>
-      <div data-testid="users-role-created-at-utc">
-        <>{usersRole.createdAtUTC && <FormatDate timestamp={usersRole.createdAtUTC} />}</>
+    <Descriptions.Item label={i18n.__('UsersRoles.created_at')}>
+      <div data-testid="users-role-created-at">
+        <>{usersRole.createdAt && <FormatDate timestamp={usersRole.createdAt} />}</>
       </div>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('UsersRoles.created_by')}>
       <div data-testid="users-role-created-by">{usersRole.createdBy?.fullName}</div>
     </Descriptions.Item>
-    <Descriptions.Item label={i18n.__('UsersRoles.updated_at_utc')}>
-      <div data-testid="users-role-updated-at-utc">
-        <>{usersRole.updatedAtUTC && <FormatDate timestamp={usersRole.updatedAtUTC} />}</>
+    <Descriptions.Item label={i18n.__('UsersRoles.updated_at')}>
+      <div data-testid="users-role-updated-at">
+        <>{usersRole.updatedAt && <FormatDate timestamp={usersRole.updatedAt} />}</>
       </div>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('UsersRoles.updated_by')}>

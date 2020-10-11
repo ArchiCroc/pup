@@ -15,7 +15,7 @@ export default {
       _ids,
       pageSize = 10,
       page = 1,
-      sort = 'createdAtUTC',
+      sort = 'createdAt',
       order = 'descend',
       search,
       level,

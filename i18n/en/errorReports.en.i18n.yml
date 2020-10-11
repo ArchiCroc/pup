@@ -55,7 +55,7 @@ stack_placeholder: Stack
 react_stack: React Stack
 react_stack_label: React Stack
 react_stack_placeholder: React Stack
-created_at_utc: Created At
+created_at: Created At
 created_by: Created By
 created_by_label: Created By
 created_by_placeholder: Created By

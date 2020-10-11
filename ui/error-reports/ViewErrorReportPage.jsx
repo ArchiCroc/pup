@@ -88,8 +88,8 @@ const ViewErrorReportFields = ({ errorReport }) => (
     <Descriptions.Item key="reactStack" label={i18n.__('ErrorReports.react_stack')}>
       {errorReport.reactStack && errorReport.reactStack.join(', ')}
     </Descriptions.Item>
-    <Descriptions.Item key="createdAtUTC" label={i18n.__('ErrorReports.created_at_utc')}>
-      <>{errorReport.createdAtUTC && <FormatDate timestamp={errorReport.createdAtUTC} />}</>
+    <Descriptions.Item key="createdAt" label={i18n.__('ErrorReports.created_at')}>
+      <>{errorReport.createdAt && <FormatDate timestamp={errorReport.createdAt} />}</>
     </Descriptions.Item>
     <Descriptions.Item key="createdBy" label={i18n.__('ErrorReports.created_by')}>
       {errorReport.createdBy?.fullName}

@@ -5,8 +5,8 @@ const pluralize = require('pluralize');
 const defaultKeyMapping = {
   _id: undefined,
   email: 'mock-email',
-  createdAtUTC: 'mock-far-past-date',
-  updatedAtUTC: 'mock-near-past-date',
+  createdAt: 'mock-far-past-date',
+  updatedAt: 'mock-near-past-date',
 };
 
 const defaultTypeMapping = {

@@ -44,9 +44,9 @@ export default {
       const { {{ primaryFieldKey }} } = cleanDoc;
 
       cleanDoc.updatedById = userId;
-      cleanDoc.updatedAtUTC = timestamp;
+      cleanDoc.updatedAt = timestamp;
 
-      const currentDoc = {{ pascalCase pluralName }}.findOne(_id, { fields: { createdById: 0, createdAtUTC: 0 } });
+      const currentDoc = {{ pascalCase pluralName }}.findOne(_id, { fields: { createdById: 0, createdAt: 0 } });
       if (!currentDoc) {
         throw new Error('Cannot find {{ titleCase singularName }} to update');
       }
@@ -71,9 +71,9 @@ export default {
     }
 
     cleanDoc.createdById = userId;
-    cleanDoc.createdAtUTC = timestamp;
+    cleanDoc.createdAt = timestamp;
     cleanDoc.updatedById = userId;
-    cleanDoc.updatedAtUTC = timestamp;
+    cleanDoc.updatedAt = timestamp;
 
     /* #### PLOP_MUTATION_PRE_INSERT_START #### */
     {{~schema.hooks.mutationPreInsert}}

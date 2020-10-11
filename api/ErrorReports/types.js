@@ -10,7 +10,7 @@ type ErrorReport {
   userAgent: String
   stack: [String]
   reactStack: [String]
-  createdAtUTC: DateTime
+  createdAt: DateTime
   createdById: String
   createdBy: User
 }
