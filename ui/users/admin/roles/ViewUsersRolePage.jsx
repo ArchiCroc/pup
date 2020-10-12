@@ -10,6 +10,7 @@ import ItemNotFound from '../../../components/ItemNotFound';
 import Loading from '../../../components/Loading';
 import PageBreadcrumbs, { Breadcrumb } from '../../../components/PageBreadcrumbs';
 import PageHeader from '../../../components/PageHeader';
+import ValueWrapper from '../../../components/ValueWrapper';
 
 import EditUsersRoleButton from './components/EditUsersRoleButton';
 
@@ -60,24 +61,35 @@ ViewUsersRolePage.propTypes = {
 
 const ViewUsersRoleFields = ({ usersRole }) => (
   <Descriptions bordered column={1}>
+    <Descriptions.Item label={i18n.__('UsersRoles.id')}>
+      <ValueWrapper name="_id" value={usersRole._id}>
+        {usersRole._id}
+      </ValueWrapper>
+    </Descriptions.Item>
     <Descriptions.Item label={i18n.__('UsersRoles.name')}>
-      <div data-testid="users-role-name">{usersRole.name}</div>
+      <ValueWrapper name="name" value={usersRole.name}>
+        {usersRole.name}
+      </ValueWrapper>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('UsersRoles.created_at')}>
-      <div data-testid="users-role-created-at">
+      <ValueWrapper name="createdAt" value={usersRole.createdAt}>
         <>{usersRole.createdAt && <FormatDate timestamp={usersRole.createdAt} />}</>
-      </div>
+      </ValueWrapper>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('UsersRoles.created_by')}>
-      <div data-testid="users-role-created-by">{usersRole.createdBy?.fullName}</div>
+      <ValueWrapper name="createdBy" value={usersRole.createdBy}>
+        {usersRole.createdBy?.fullName}
+      </ValueWrapper>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('UsersRoles.updated_at')}>
-      <div data-testid="users-role-updated-at">
+      <ValueWrapper name="updatedAt" value={usersRole.updatedAt}>
         <>{usersRole.updatedAt && <FormatDate timestamp={usersRole.updatedAt} />}</>
-      </div>
+      </ValueWrapper>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('UsersRoles.updated_by')}>
-      <div data-testid="users-role-updated-by">{usersRole.updatedBy?.fullName}</div>
+      <ValueWrapper name="updatedBy" value={usersRole.updatedBy}>
+        {usersRole.updatedBy?.fullName}
+      </ValueWrapper>
     </Descriptions.Item>
   </Descriptions>
 );

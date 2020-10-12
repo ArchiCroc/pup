@@ -116,7 +116,7 @@ const paginationObject = {
 
   const columns = [
 {{#each schema.fields ~}}
-  {{#compare this.input '!==' 'Hidden' '&&' this.showInTableView '!==' false}}
+  {{#compare this.inputField '!==' 'Hidden' '&&' this.showInTableView '!==' false}}
     {{~#compare this.input '||' this.showInTableView }}
     {
       title: i18n.__(' {{~ pascalCase @root.name ~}} .{{ snakeCase @key }}'),

@@ -116,8 +116,8 @@ test('should load {{pascalCase pluralName}} index page', async (t) => {
 });
 
 test('make sure we have a clean slate', async (t) => {
-  await t.useRole(adminRole).navigateTo(errorReportsBasePath);
-  await t.expect(getPagePath()).eql(errorReportsBasePath);
+  await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
 
   const items = [
     Selector(queryByText(mockNew{{pascalCase singularName}}.{{labelFieldKey}})),
@@ -141,7 +141,7 @@ test('make sure we have a clean slate', async (t) => {
   });
 });
 
-test('should navigate to new {{pascalCase singularName}} form', async (t) => {
+test('should navigate to New{{pascalCase singularName}}Page', async (t) => {
   await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
 
   await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
@@ -165,7 +165,7 @@ test('should create new {{pascalCase singularName}}', async (t) => {
   await t.expect(getByText(mockNew{{pascalCase singularName}}.{{labelFieldKey}}).exists).ok();
 });
 
-test('should display {{pascalCase singularName}} detail page', async (t) => {
+test('should display View{{pascalCase singularName}}Page', async (t) => {
   await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
   await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
 
@@ -177,7 +177,7 @@ test('should display {{pascalCase singularName}} detail page', async (t) => {
   {{> viewFieldTests schema mock=(concat 'mockNew' (pascalCase singularName))}}
 });
 
-test('should navigate to the edit {{pascalCase singularName}} form', async (t) => {
+test('should navigate to the Edit{{pascalCase singularName}}Page', async (t) => {
   await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
   await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
   await t.click(getByText(mockNew{{pascalCase singularName}}.{{labelFieldKey}}));
@@ -212,7 +212,7 @@ test('should edit {{pascalCase singularName}}', async (t) => {
   await t.expect(getByText(mockEdit{{pascalCase singularName}}.{{labelFieldKey}}).exists).ok();
 });
 
-test('should show detail of edited {{pascalCase singularName}}', async (t) => {
+test('should show ViewPage of edited {{pascalCase singularName}}', async (t) => {
   await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
   await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
 
@@ -220,7 +220,7 @@ test('should show detail of edited {{pascalCase singularName}}', async (t) => {
   await t.click(getByText(mockEdit{{pascalCase singularName}}.{{labelFieldKey}}));
   await t.expect(getPagePath(mockEdit{{pascalCase singularName}}.{{labelFieldKey}})).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)`));
   
-  const page = ReactSelector('ViewErrorReportFields');
+  const page = ReactSelector('View{{pascalCase singularName}}Fields');
   {{> viewFieldTests schema mock=(concat 'mockEdit' (pascalCase singularName))}}
 });
 

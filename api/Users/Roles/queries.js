@@ -1,4 +1,4 @@
-import checkUserRole from '../actions/checkUserRole';
+import checkUserRole from '../../Users/actions/checkUserRole';
 import UsersRoles from './UsersRoles';
 
 export default {

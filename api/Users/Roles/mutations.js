@@ -1,7 +1,7 @@
 import UsersRoles from './UsersRoles';
 import UsersRoleSchema from './schemas/users-role';
 // import sanitizeHtml from 'sanitize-html';
-import checkUserRole from '../actions/checkUserRole';
+import checkUserRole from '../../Users/actions/checkUserRole';
 import createMongoModifier from '../../../libs/server/createMongoModifier';
 
 export default {

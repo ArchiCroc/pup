@@ -6,7 +6,7 @@ view_role: View Role
 new_role: New Role
 edit_role: Edit Role
 remove_role: Remove Role
-confirm_remove_role: 'Are you sure? This is permanent!'
+confirm_remove_role: 'Are you sure you want to remove ${title}? This is permanent!'
 role_removed_success: Role removed!
 role_saved: Role saved!
 role_not_found_title: Role could not be found
@@ -30,6 +30,9 @@ blank_state_subtitle: ""
 #### PLOP_PAGES_END ####
 
 #### PLOP_FIELDS_START ####
+id: Id
+id_label: Id
+id_placeholder: Id
 name: Name
 name_label: Name
 name_placeholder: Name

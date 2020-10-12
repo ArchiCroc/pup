@@ -10,6 +10,7 @@ import ItemNotFound from '../components/ItemNotFound';
 import Loading from '../components/Loading';
 import PageBreadcrumbs, { Breadcrumb } from '../components/PageBreadcrumbs';
 import PageHeader from '../components/PageHeader';
+import ValueWrapper from '../components/ValueWrapper';
 
 import EditErrorReportButton from './components/EditErrorReportButton';
 
@@ -68,7 +69,9 @@ const ViewErrorReportFields = ({ errorReport }) => (
       {errorReport._id}
     </Descriptions.Item>
     <Descriptions.Item key="user" label={i18n.__('ErrorReports.user')}>
-      {errorReport.user?.fullName}
+      <ValueWrapper key="user" value={errorReport.userId}>
+        {errorReport.user?.fullName}
+      </ValueWrapper>
     </Descriptions.Item>
     <Descriptions.Item key="level" label={i18n.__('ErrorReports.level')}>
       {errorReport.level && i18n.__(`ErrorReports.level_${errorReport.level}`)}

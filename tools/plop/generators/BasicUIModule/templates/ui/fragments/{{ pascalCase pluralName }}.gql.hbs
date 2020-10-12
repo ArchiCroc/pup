@@ -25,7 +25,7 @@
 {{@key}}
       {{/compare}}  
     {{/compare}}
-    {{~#compare this.input 'typeof' 'object' '&&' this.input.input 'typeof' 'string'}}
+    {{~#compare this.input.input 'typeof' 'string' '&&' @key '!==' this.input.name}}
 {{this.input.name}}
     {{/compare}}
   {{~/each}}

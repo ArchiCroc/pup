@@ -25,5 +25,5 @@ await t.typeText({{name}}Field, mockNew{{pascalCase @root.singularName}}.{{name}
 {{#compare template '===' 'e2eTest/view'}}
 {{!-- define mock to eql mockNew{{pascalCase singularName}} or mockEdit{{pascalCase singularName}} --}}
 // validate Text {{name}} field //textContent
-await t.expect(page.findReact('Row').withKey('content-{{name}}').withText({{mock}}.{{name}}{{mockSuffix}}).exists).ok();
+await t.expect(page.findReact('ValueWrapper').withProps({name: '{{name}}'}).withText({{mock}}.{{name}}{{mockSuffix}}).exists).ok();
 {{/compare}}

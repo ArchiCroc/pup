@@ -74,6 +74,7 @@ import { useParams } from 'react-router-dom';
 import Descriptions from 'antd/lib/descriptions';
 import PageBreadcrumbs, { Breadcrumb } from '{{uiPathOffset}}../components/PageBreadcrumbs';
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
+import ValueWrapper from '{{uiPathOffset}}../components/ValueWrapper';
 import Loading from '{{uiPathOffset}}../components/Loading';
 import ItemNotFound from '{{uiPathOffset}}../components/ItemNotFound';
   {{#compare hasFieldPermissions '||' schema.permissions.update}}
@@ -185,8 +186,10 @@ const View{{ pascalCase singularName }}Fields = ({{#prettyProps}}
   <Descriptions bordered column={1}>
 {{#each schema.fields ~}}
   {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
-    <Descriptions.Item key="{{@key}}" label={i18n.__('{{ pascalCase @root.name }}.{{ snakeCase @key }}')}>
-      {{> renderValue name=(camelCase @root.singularName)}}
+    <Descriptions.Item label={i18n.__('{{ pascalCase @root.name }}.{{ snakeCase @key }}')}>
+      <ValueWrapper name="{{@key}}" value={ {{~ camelCase  @root.singularName }}.{{@key~}} }>
+        {{> renderValue name=(camelCase @root.singularName)}}
+      </ValueWrapper>
     </Descriptions.Item>
   {{/compare~}}
 {{~/each}}

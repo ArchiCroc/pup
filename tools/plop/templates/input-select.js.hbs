@@ -27,3 +27,8 @@ await t
 .ok()
 .click(levelField.findReact('Item').withKey(mockEditErrorReport.{{name}}));
 {{/compare}}
+{{#compare template '===' 'e2eTest/view'}}
+{{!-- define mock to eql mockNew{{pascalCase singularName}} or mockEdit{{pascalCase singularName}} --}}
+// validate Select {{name}} field
+await t.expect(page.findReact('ValueWrapper').withProps({ name: '{{name}}', value: {{mock}}.{{name}}{{mockSuffix}} }).exists).ok();
+{{/compare}}

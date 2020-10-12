@@ -34,7 +34,7 @@ export default `
 type {{ pascalCase @root.singularName }}{{ pascalCase @key }} {
       {{#each this.fields ~}}
         {{#if this.type}}
-          {{#compare this.input 'typeof' 'object'}}
+          {{#compare this.input 'typeof' 'object' '&&' @key '!==' this.input.name}}
   {{> schemaFieldType this.input }}
           {{/compare}}
   {{> schemaFieldType name=@key}}
@@ -48,13 +48,14 @@ type {{ pascalCase @root.singularName }}{{ pascalCase @key }} {
 type {{ pascalCase singularName }} {
 {{#each schema.fields ~}}
   {{~#if this.type}}
-    {{#compare this.input 'typeof' 'object'}}
+    {{#compare this.input 'typeof' 'object' '&&' @key '!==' this.input.name}}
   {{> schemaFieldType this.input }}
     {{/compare}}
   {{> schemaFieldType name=@key}}
   {{/if~}}
 {{~/each}}
 }
+
 {{#if this.isFilterable}}
 {{#> typeFilterWrapper}}
   {{#each schema.fields}}
@@ -91,26 +92,18 @@ type {{ pascalCase pluralName }} {
 input {{ pascalCase @root.singularName }}{{ pascalCase @key }}Input {
       {{#each this.fields ~}}
         {{~#compare this.type '&&' this.input}}
-          {{#compare this.input 'typeof' 'object'}}
   {{> schemaFieldInput this.input }}
-          {{else}}
-  {{> schemaFieldInput name=@key}}
-          {{/compare}}
         {{/compare~}}
       {{/each}}
 }
+
     {{/if}}
   {{/compare}}
 {{~/each}}
-
 input {{ pascalCase singularName }}Input {
 {{#each schema.fields }}
   {{~#compare this.type '&&' this.input '||' this.type '&&' this.fields}}
-    {{#compare this.input 'typeof' 'object' }}
   {{> schemaFieldInput this.input }}
-    {{else}}
-  {{> schemaFieldInput name=@key}}
-    {{/compare}}
   {{/compare~}}
 {{/each~}}
 }

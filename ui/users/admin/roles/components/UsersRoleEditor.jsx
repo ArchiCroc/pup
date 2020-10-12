@@ -37,15 +37,9 @@ function UsersRoleEditor({ doc }) {
 
   function handleSubmit(form) {
     const cleanForm = UsersRoleSchema.clean(form);
-    // console.log('cleanForm', cleanForm);
     saveUsersRole({
       variables: { usersRole: cleanForm },
     });
-  }
-
-  // fix issue with uniforms getting a null for visionNames
-  if (doc && !doc.visionNames) {
-    doc.visionNames = []; //eslint-disable-line
   }
 
   return (

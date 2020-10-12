@@ -81,6 +81,13 @@ function processFields([key, item], data) {
     if (item.input.input) {
       item.inputField = item.input.input;
     }
+    // since we moved all the input properties to the object, we need to move validation too
+    if (!item.input.validate && item.validate) {
+      item.input.validate = item.validate;
+    }
+    if (!item.input.clean && item.clean) {
+      item.input.clean = item.clean;
+    }
     //backwards compatibility
     if (item.inputTemplateFile) {
       item.input.templateFile = item.inputTemplateFile;

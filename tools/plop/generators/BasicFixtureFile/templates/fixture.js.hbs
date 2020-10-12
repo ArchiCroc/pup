@@ -1,7 +1,7 @@
 {{#*inline "mockObject" ~}}
 {
   {{#each this.fields}}
-  {{this.fieldName}}: 
+  {{this.key}}: 
     {{#if this.optional}}
     !includeOptional ? undefined : 
     {{/if}}
