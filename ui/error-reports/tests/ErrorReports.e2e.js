@@ -60,7 +60,7 @@ test('make sure we have a clean slate', async (t) => {
   });
 });
 
-test('should navigate to new ErrorReport form', async (t) => {
+test('should navigate to NewErrorReportPage', async (t) => {
   await t.useRole(adminRole).navigateTo(errorReportsBasePath);
 
   await t.expect(getPagePath()).eql(errorReportsBasePath);
@@ -144,7 +144,7 @@ test('should create new ErrorReport', async (t) => {
   await t.expect(getByText(mockNewErrorReport.message).exists).ok();
 });
 
-test('should display ErrorReport detail page', async (t) => {
+test('should display ViewErrorReportPage', async (t) => {
   await t.useRole(adminRole).navigateTo(errorReportsBasePath);
   await t.expect(getPagePath()).eql(errorReportsBasePath);
 
@@ -154,39 +154,64 @@ test('should display ErrorReport detail page', async (t) => {
 
   const page = ReactSelector('ViewErrorReportFields');
   //viewFieldTests mockNewErrorReport
+  // validate CrossReferenceSearch user field
+  await t
+    .expect(
+      page.findReact('ValueWrapper').withProps({ name: 'user', value: mockNewErrorReport.user })
+        .exists,
+    )
+    .ok();
+  // validate Select level field
+  await t
+    .expect(
+      page.findReact('ValueWrapper').withProps({ name: 'level', value: mockNewErrorReport.level })
+        .exists,
+    )
+    .ok();
   // validate Text message field //textContent
   await t
     .expect(
-      page.findReact('Row').withKey('content-message').withText(mockNewErrorReport.message).exists,
+      page
+        .findReact('ValueWrapper')
+        .withProps({ name: 'message' })
+        .withText(mockNewErrorReport.message).exists,
     )
     .ok();
   // validate Text path field //textContent
   await t
-    .expect(page.findReact('Row').withKey('content-path').withText(mockNewErrorReport.path).exists)
+    .expect(
+      page.findReact('ValueWrapper').withProps({ name: 'path' }).withText(mockNewErrorReport.path)
+        .exists,
+    )
     .ok();
   // validate Text userAgent field //textContent
   await t
     .expect(
-      page.findReact('Row').withKey('content-userAgent').withText(mockNewErrorReport.userAgent)
-        .exists,
+      page
+        .findReact('ValueWrapper')
+        .withProps({ name: 'userAgent' })
+        .withText(mockNewErrorReport.userAgent).exists,
     )
     .ok();
   // validate Text stack field //textContent
   await t
     .expect(
-      page.findReact('Row').withKey('content-stack').withText(mockNewErrorReport.stack).exists,
+      page.findReact('ValueWrapper').withProps({ name: 'stack' }).withText(mockNewErrorReport.stack)
+        .exists,
     )
     .ok();
   // validate Text reactStack field //textContent
   await t
     .expect(
-      page.findReact('Row').withKey('content-reactStack').withText(mockNewErrorReport.reactStack)
-        .exists,
+      page
+        .findReact('ValueWrapper')
+        .withProps({ name: 'reactStack' })
+        .withText(mockNewErrorReport.reactStack).exists,
     )
     .ok();
 });
 
-test('should navigate to the edit ErrorReport form', async (t) => {
+test('should navigate to the EditErrorReportPage', async (t) => {
   await t.useRole(adminRole).navigateTo(errorReportsBasePath);
   await t.expect(getPagePath()).eql(errorReportsBasePath);
   await t.click(getByText(mockNewErrorReport.message));
@@ -339,7 +364,7 @@ test('should edit ErrorReport', async (t) => {
   await t.expect(getByText(mockEditErrorReport.message).exists).ok();
 });
 
-test('should show detail of edited ErrorReport', async (t) => {
+test('should show ViewPage of edited ErrorReport', async (t) => {
   await t.useRole(adminRole).navigateTo(errorReportsBasePath);
   await t.expect(getPagePath()).eql(errorReportsBasePath);
 
@@ -349,36 +374,63 @@ test('should show detail of edited ErrorReport', async (t) => {
     .expect(getPagePath(mockEditErrorReport.message))
     .match(new RegExp(`${errorReportsBasePath}/([a-z0-9-_]+)`));
 
-  //viewFieldTests mockEditErrorReport
   const page = ReactSelector('ViewErrorReportFields');
+  //viewFieldTests mockEditErrorReport
+  // validate CrossReferenceSearch user field
+  await t
+    .expect(
+      page.findReact('ValueWrapper').withProps({ name: 'user', value: mockEditErrorReport.user })
+        .exists,
+    )
+    .ok();
+  // validate Select level field
+  await t
+    .expect(
+      page.findReact('ValueWrapper').withProps({ name: 'level', value: mockEditErrorReport.level })
+        .exists,
+    )
+    .ok();
   // validate Text message field //textContent
   await t
     .expect(
-      page.findReact('Row').withKey('content-message').withText(mockEditErrorReport.message).exists,
+      page
+        .findReact('ValueWrapper')
+        .withProps({ name: 'message' })
+        .withText(mockEditErrorReport.message).exists,
     )
     .ok();
   // validate Text path field //textContent
   await t
-    .expect(page.findReact('Row').withKey('content-path').withText(mockEditErrorReport.path).exists)
+    .expect(
+      page.findReact('ValueWrapper').withProps({ name: 'path' }).withText(mockEditErrorReport.path)
+        .exists,
+    )
     .ok();
   // validate Text userAgent field //textContent
   await t
     .expect(
-      page.findReact('Row').withKey('content-userAgent').withText(mockEditErrorReport.userAgent)
-        .exists,
+      page
+        .findReact('ValueWrapper')
+        .withProps({ name: 'userAgent' })
+        .withText(mockEditErrorReport.userAgent).exists,
     )
     .ok();
   // validate Text stack field //textContent
   await t
     .expect(
-      page.findReact('Row').withKey('content-stack').withText(mockEditErrorReport.stack).exists,
+      page
+        .findReact('ValueWrapper')
+        .withProps({ name: 'stack' })
+        .withText(mockEditErrorReport.stack).exists,
     )
     .ok();
   // validate Text reactStack field //textContent
   await t
     .expect(
-      page.findReact('Row').withKey('content-reactStack').withText(mockEditErrorReport.reactStack)
-        .exists,
+      page
+        .findReact('ValueWrapper')
+        .withProps({ name: 'reactStack' })
+        .withText(mockEditErrorReport.reactStack).exists,
     )
     .ok();
 });
@@ -401,5 +453,5 @@ test('should delete ErrorReport', async (t) => {
 
   // navigate to index page and make sure it is gone
   await t.expect(getPagePath()).eql(errorReportsBasePath);
-  await t.expect(queryByText(mockEditErrorReport.message)).eql(null);
+  await t.expect(queryByText(mockEditErrorReport.message).exists).notOk();
 });

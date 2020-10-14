@@ -20,6 +20,7 @@
 type {{ pascalCase pluralName }}Filters {
   {{> @partial-block}}
 }
+
   {{/ifPartialHasValue}}
 {{/inline}}
 {{#*inline "multiItemFilterField"}}
@@ -41,10 +42,10 @@ type {{ pascalCase @root.singularName }}{{ pascalCase @key }} {
         {{/if}}
       {{/each}}
 }
+
     {{/if}}
   {{/compare}}
 {{~/each}}
-
 type {{ pascalCase singularName }} {
 {{#each schema.fields ~}}
   {{~#if this.type}}
@@ -64,7 +65,6 @@ type {{ pascalCase singularName }} {
     {{/if}}
   {{/each}}
 {{/typeFilterWrapper}}
-
 {{/if}}
 type {{ pascalCase pluralName }} {
   total: Int

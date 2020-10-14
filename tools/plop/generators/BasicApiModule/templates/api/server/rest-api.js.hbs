@@ -1,9 +1,20 @@
 // import { Meteor } from 'meteor/meteor';
 // import { Mongo } from 'meteor/mongo';
+{{#uniqueImports}}
 import {{ pascalCase pluralName }} from '../{{ pascalCase pluralName }}';
 import { JsonRoutes as ApiRoutes } from 'meteor/simple:json-routes';
 import {{ pascalCase singularName }}Schema from '../schemas/{{ dashCase singularName }}';
+{{#each schema.restApi.imports }}
+{{render this}};
+{{/each}}
+{{/uniqueImports}}
 
+{{#each schema.restApi.routes }}
+ApiRoutes.add('{{method}}', '/api/v1/{{ dashCase @root.apiFolderName }}{{#if path}}{{#compare path '!startsWith' '/'}}/{{/compare}}{{path}}{{/if}}', {{#if async}}async {{/if}}(request, response) => {
+  {{render code}}
+});
+
+{{/each}}
 /*
 ApiRoutes.add('post', '/api/v1/{{ dashCase apiFolderName }}', async (request, response) => {
   if (!request.body) {
@@ -18,5 +29,5 @@ ApiRoutes.add('post', '/api/v1/{{ dashCase apiFolderName }}', async (request, re
   // return success
   response.writeHead(204);
   response.end();
-}
+});
 */

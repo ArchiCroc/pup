@@ -65,10 +65,6 @@ function ErrorReportsTable({
 
   const columns = [
     {
-      title: i18n.__('ErrorReports.id'),
-      dataIndex: '_id',
-    },
-    {
       title: i18n.__('ErrorReports.user'),
       dataIndex: ['user', 'fullName'],
     },

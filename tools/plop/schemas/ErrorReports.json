@@ -110,6 +110,17 @@
       "showInTableView": false
     }
   },
+  "restApi": {
+    "imports": [],
+    "routes": [
+      {
+        "method": "post",
+        "path": "",
+        "async": false,
+        "code": "if (!request.body) { throw ApiRoutes.Error('Api Error', 'Missing Post Data'); } const cleanDoc = {{pascalCase singularName}}Schema.clean(request.body); {{pascalCase singularName}}Schema.validate(cleanDoc); if (request.body.userToken) { Meteor.users.findOne(); } const userId = (request.user && request.user._id) || null; cleanDoc.createdById = userId; cleanDoc.createdAt = new Date(); const {{camelCase singularName}}Id = {{pascalCase pluralName}}.insert(cleanDoc); response.writeHead(204); response.end();"
+      }
+    ]
+  },
   "defaultSortField": "createdAt",
   "defaultSortOrder": "descend"
 }

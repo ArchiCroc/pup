@@ -179,9 +179,11 @@ import Uniforms from 'uniforms';
 import SimpleSchema from 'simpl-schema';
 import i18n from 'meteor/universe:i18n';
 /* #### PLOP_IMPORTS_START #### */
+{{#uniqueImports ~}}
 {{#each schema.schemaImports }}
 {{{this}}};
 {{/each}}
+{{~/uniqueImports}}
 /* #### PLOP_IMPORTS_END #### */
 {{#compare fieldTypes 'includes' 'ObjectID'}}
 import parseObjectID from '{{apiPathOffset}}../../../libs/parseObjectID';

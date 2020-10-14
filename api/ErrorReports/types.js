@@ -1,5 +1,4 @@
 export default `
-
 type ErrorReport {
   _id: ObjectID
   userId: String
@@ -19,7 +18,6 @@ type ErrorReports {
   total: Int
   errorReports: [ErrorReport]
 }
-
 
 input ErrorReportInput {
   _id: ObjectID

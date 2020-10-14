@@ -329,12 +329,12 @@ function prettyProps(maxStringLength, options) {
 
 // console.log(uniqueImportsTest(testImports));
 
-function render(text, options) {
-  const renderedString = plop.renderString('text', options.data);
-  return Handlebars.Utils.escapeExpression(renderedString);
-}
-
 module.exports = (plop) => {
+  function render(template, options) {
+    const renderedString = plop.renderString(template, options.data);
+    return Handlebars.SafeString(renderedString);
+  }
+
   plop.setPrompt('jsonFile', jsonFilePath);
   plop.setPrompt('file', filePath);
   plop.setActionType('comment', comment);

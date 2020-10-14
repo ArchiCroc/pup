@@ -88,6 +88,9 @@ function processFields([key, item], data) {
     if (!item.input.clean && item.clean) {
       item.input.clean = item.clean;
     }
+    if (!item.input.choices && item.choices) {
+      item.input.choices = item.choices;
+    }
     //backwards compatibility
     if (item.inputTemplateFile) {
       item.input.templateFile = item.inputTemplateFile;
