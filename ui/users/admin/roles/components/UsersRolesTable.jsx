@@ -45,7 +45,7 @@ function UsersRolesTable({
   });
 
   const paginationObject = {
-    currentPageSize,
+    pageSize: currentPageSize,
     // onChange: this.onPageChange,
   };
 

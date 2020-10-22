@@ -51,6 +51,7 @@ const CrossReferenceSearchField = (props) => {
     disabled,
     edges,
     multiple,
+    autoClose,
   } = props;
 
   // console.log(uniforms, props);
@@ -144,7 +145,9 @@ const CrossReferenceSearchField = (props) => {
     setSearch('');
     if (newValue) {
       props.onChange(multiple ? newValue.map((item) => item.key) : newValue.key);
-      // selectRef.current.blur();
+      if (autoClose) {
+        selectRef.current.blur();
+      }
     }
   }
   // eslint-disable-next-line
@@ -157,7 +160,7 @@ const CrossReferenceSearchField = (props) => {
       name={name}
       disabled={disabled}
       filterOption={(input, option) =>
-        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        option.children?.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
       // filterOption={false}
       labelInValue
@@ -188,6 +191,7 @@ CrossReferenceSearchField.defaultProps = {
   multiple: false,
   idType: 'ObjectID',
   initialSearch: '',
+  autoClose: false,
 };
 
 CrossReferenceSearchField.propTypes = {
@@ -203,6 +207,7 @@ CrossReferenceSearchField.propTypes = {
   labelKey: PropTypes.string.isRequired,
   valueKey: PropTypes.string.isRequired,
   multiple: PropTypes.bool,
+  autoClose: PropTypes.bool,
   idType: PropTypes.string,
   initialSearch: PropTypes.string,
 };

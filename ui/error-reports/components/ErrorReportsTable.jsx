@@ -59,7 +59,7 @@ function ErrorReportsTable({
   });
 
   const paginationObject = {
-    currentPageSize,
+    pageSize: currentPageSize,
     // onChange: this.onPageChange,
   };
 
@@ -78,7 +78,7 @@ function ErrorReportsTable({
       // defaultSortOrder: 'ascend',
       sortOrder: currentSort === 'level' && currentOrder,
       render: (value, record) => i18n.__(`ErrorReports.level_${value}`), // eslint-disable-line
-      filteredValue: currentLevel,
+      filteredValue: currentLevel?.map(String),
       filters: props.level ? undefined : getLevelFilters(),
     },
     {
@@ -137,7 +137,7 @@ function ErrorReportsTable({
     setCurrentPageSize(pagination.pageSize);
     setCurrentOrder($newOrder);
     setCurrentSort(sorter.field);
-    setCurrentLevel(newLevel);
+    setCurrentLevel(newLevel?.map((x) => parseInt(x, 10)));
 
     setQueryStringObject({
       page: pagination.current,

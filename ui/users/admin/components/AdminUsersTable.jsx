@@ -5,9 +5,10 @@ import queryString from 'query-string';
 // import { Roles } from 'meteor/alanning:roles';
 import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/client';
-import useQueryStringObject from '../../../../libs/hooks/useQueryStringObject';
 import isString from 'lodash/isString';
 import Table from 'antd/lib/table';
+import useQueryStringObject from '../../../../libs/hooks/useQueryStringObject';
+import SearchInput from '../../../components/SearchInput';
 
 import { users as usersQuery } from '../../queries/Users.gql';
 
@@ -92,6 +93,13 @@ function AdminUsersList({
     history.push(`${window.location.pathname}/${row._id}`);
   }
 
+  function handleSearch(value) {
+    setCurrentSearch(value);
+    setQueryStringObject({
+      search: value,
+    });
+  }
+
   function handleTableChange(pagination, filters, sorter) {
     // console.log(pagination, filters, sorter);
     const { roles: newRoles = null } = filters;
@@ -115,6 +123,17 @@ function AdminUsersList({
 
   return (
     <>
+      <div style={{ minHeight: 32, marginBottom: 16 }}>
+        {showSearch && (
+          <SearchInput
+            className="pull-right"
+            style={{ width: 300 }}
+            placeholder={i18n.__('Users.search_placeholder')}
+            onSearch={handleSearch}
+            defaultValue={currentSearch}
+          />
+        )}
+      </div>
       {error && `Error! ${error.message}`}
       <Table
         dataSource={users && users.users}
