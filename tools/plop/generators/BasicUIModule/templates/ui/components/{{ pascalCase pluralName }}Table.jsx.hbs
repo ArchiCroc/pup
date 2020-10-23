@@ -235,7 +235,7 @@ const paginationObject = {
 
   return (
     <>
-      <div style={{ minHeight: 32, marginBottom: 16 }}>
+      <div style=\{{ minHeight: 32, marginBottom: 16 }}>
         { showNew{{ pascalCase singularName }}Button {{#if schema.permissions.create}}&& hasRole(roles, [{{#each schema.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) {{/if}}&& (
           <New{{ pascalCase singularName }}Button 
 {{#each schema.fields}}
