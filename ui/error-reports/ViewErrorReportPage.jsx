@@ -71,7 +71,7 @@ const ViewErrorReportFields = ({ errorReport }) => (
       </ValueWrapper>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('ErrorReports.user')}>
-      <ValueWrapper name="user" value={errorReport.user}>
+      <ValueWrapper name="user" value={errorReport.user?.fullName}>
         {errorReport.user?.fullName}
       </ValueWrapper>
     </Descriptions.Item>

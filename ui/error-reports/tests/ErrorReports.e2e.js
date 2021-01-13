@@ -81,10 +81,10 @@ test('should create new ErrorReport', async (t) => {
   const userIdField = form.findReact('CrossReferenceSearchField').withProps({ name: 'userId' });
   await t
     .click(userIdField)
-    .typeText(userIdField.find('input'), mockNewErrorReport.userId.label)
+    .typeText(userIdField.find('input'), mockNewErrorReport.user.label)
     .expect(userIdField.findReact('List').exists)
     .ok()
-    .click(userIdField.findReact('Item').withText(mockNewErrorReport.userId.label));
+    .click(userIdField.findReact('Item').withText(mockNewErrorReport.user.label));
   // set Select level field
   const levelField = form.findReact('Select').withProps({ name: 'level' });
   await t
@@ -157,8 +157,9 @@ test('should display ViewErrorReportPage', async (t) => {
   // validate CrossReferenceSearch user field
   await t
     .expect(
-      page.findReact('ValueWrapper').withProps({ name: 'user', value: mockNewErrorReport.user })
-        .exists,
+      page
+        .findReact('ValueWrapper')
+        .withProps({ name: 'user', value: mockNewErrorReport.user.label }).exists,
     )
     .ok();
   // validate Select level field
@@ -196,8 +197,10 @@ test('should display ViewErrorReportPage', async (t) => {
   // validate Text stack field //textContent
   await t
     .expect(
-      page.findReact('ValueWrapper').withProps({ name: 'stack' }).withText(mockNewErrorReport.stack)
-        .exists,
+      page
+        .findReact('ValueWrapper')
+        .withProps({ name: 'stack' })
+        .withText(mockNewErrorReport.stack[0]).exists,
     )
     .ok();
   // validate Text reactStack field //textContent
@@ -206,7 +209,7 @@ test('should display ViewErrorReportPage', async (t) => {
       page
         .findReact('ValueWrapper')
         .withProps({ name: 'reactStack' })
-        .withText(mockNewErrorReport.reactStack).exists,
+        .withText(mockNewErrorReport.reactStack[0]).exists,
     )
     .ok();
 });
@@ -375,12 +378,14 @@ test('should show ViewPage of edited ErrorReport', async (t) => {
     .match(new RegExp(`${errorReportsBasePath}/([a-z0-9-_]+)`));
 
   const page = ReactSelector('ViewErrorReportFields');
+  //console.log(mockEditErrorReport.user);
   //viewFieldTests mockEditErrorReport
   // validate CrossReferenceSearch user field
   await t
     .expect(
-      page.findReact('ValueWrapper').withProps({ name: 'user', value: mockEditErrorReport.user })
-        .exists,
+      page
+        .findReact('ValueWrapper')
+        .withProps({ name: 'user', value: mockEditErrorReport.user.label }).exists,
     )
     .ok();
   // validate Select level field
@@ -421,7 +426,7 @@ test('should show ViewPage of edited ErrorReport', async (t) => {
       page
         .findReact('ValueWrapper')
         .withProps({ name: 'stack' })
-        .withText(mockEditErrorReport.stack).exists,
+        .withText(mockEditErrorReport.stack[0]).exists,
     )
     .ok();
   // validate Text reactStack field //textContent
@@ -430,7 +435,7 @@ test('should show ViewPage of edited ErrorReport', async (t) => {
       page
         .findReact('ValueWrapper')
         .withProps({ name: 'reactStack' })
-        .withText(mockEditErrorReport.reactStack).exists,
+        .withText(mockEditErrorReport.reactStack[0]).exists,
     )
     .ok();
 });
