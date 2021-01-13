@@ -56,7 +56,7 @@ module.exports = {
         // set component name from file name
         tasks.push({
           type: 'add',
-          path: 'ui/{{uiFolderName}}/{{fileParts.name}}.test.jsx',
+          path: `ui/{{uiFolderName}}/${fileParts.name}.test.jsx`,
           templateFile:
             'tools/plop/generators/AddUIUnitTests/templates/{{template}}/page.test.jsx.hbs',
           data: { ...data, name: fileParts.name },
@@ -66,7 +66,7 @@ module.exports = {
         //else if the name matches .jsx
         tasks.push({
           type: 'add',
-          path: 'ui/{{uiFolderName}}/{{fileParts.name}}.test.jsx',
+          path: `ui/{{uiFolderName}}/${fileParts.name}.test.jsx`,
           templateFile:
             'tools/plop/generators/AddUIUnitTests/templates/{{template}}/component.test.jsx.hbs',
           data: { ...data, name: fileParts.name },

@@ -6,9 +6,11 @@ view_error_report: View Error Report
 new_error_report: New Error Report
 edit_error_report: Edit Error Report
 remove_error_report: Remove Error Report
-confirm_remove_error_report: 'Are you sure? This is permanent!'
+confirm_remove_error_report: 'Are you sure you want to remove ${title}? This is permanent!'
 error_report_removed_success: Error Report removed!
 error_report_saved: Error Report saved!
+error_report_not_found_title: Error Report could not be found
+error_report_not_found_message: The desired Error Report may have been deleted
 
 save: Save
 yes: 'Yes'
@@ -28,12 +30,15 @@ blank_state_subtitle: ""
 #### PLOP_PAGES_END ####
 
 #### PLOP_FIELDS_START ####
+id: Id
+id_label: Id
+id_placeholder: Id
 user: User
 user_label: User
 user_placeholder: User
 level: Level
 level_label: Level
-level_placeholder: Select Level
+level_placeholder: Level
 level_0: Silly
 level_1: Debug
 level_2: Verbose
@@ -55,7 +60,7 @@ stack_placeholder: Stack
 react_stack: React Stack
 react_stack_label: React Stack
 react_stack_placeholder: React Stack
-created_at_utc: Created At
+created_at: Created At
 created_by: Created By
 created_by_label: Created By
 created_by_placeholder: Created By

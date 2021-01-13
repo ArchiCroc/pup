@@ -1,7 +1,7 @@
 import UsersRoles from './UsersRoles';
 import UsersRoleSchema from './schemas/users-role';
 // import sanitizeHtml from 'sanitize-html';
-import checkUserRole from '../actions/checkUserRole';
+import checkUserRole from '../../Users/actions/checkUserRole';
 import createMongoModifier from '../../../libs/server/createMongoModifier';
 
 export default {
@@ -26,9 +26,9 @@ export default {
       const { _id } = cleanDoc;
 
       cleanDoc.updatedById = userId;
-      cleanDoc.updatedAtUTC = timestamp;
+      cleanDoc.updatedAt = timestamp;
 
-      const currentDoc = UsersRoles.findOne(_id, { fields: { createdById: 0, createdAtUTC: 0 } });
+      const currentDoc = UsersRoles.findOne(_id, { fields: { createdById: 0, createdAt: 0 } });
       if (!currentDoc) {
         throw new Error('Cannot find Users Role to update');
       }
@@ -45,9 +45,9 @@ export default {
     }
 
     cleanDoc.createdById = userId;
-    cleanDoc.createdAtUTC = timestamp;
+    cleanDoc.createdAt = timestamp;
     cleanDoc.updatedById = userId;
-    cleanDoc.updatedAtUTC = timestamp;
+    cleanDoc.updatedAt = timestamp;
 
     /* #### PLOP_MUTATION_PRE_INSERT_START #### */
     /* #### PLOP_MUTATION_PRE_INSERT_END #### */

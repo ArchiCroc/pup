@@ -33,7 +33,7 @@
       "mockTemplateFile": "mock-slug",
       "clean": "(item) => slugify(item, { lower: true});"
     },
-    "createdAtUTC": {
+    "createdAt": {
       "type": "DateTime",
       "showInTableView": "Created At"
     },
@@ -44,12 +44,15 @@
         "type": "String"
       },
       "reference": {
+        "query": "users",
+        "edges": "users",
         "labelKey": "fullName",
-        "valueKey": "_id"
+        "valueKey": "_id",
+        "idType": "String"
       },
       "showInTableView": false
     },
-    "updatedAtUTC": {
+    "updatedAt": {
       "type": "DateTime",
       "showInTableView": "Updated At"
     },
@@ -60,8 +63,11 @@
         "type": "String"
       },
       "reference": {
+        "query": "users",
+        "edges": "users",
         "labelKey": "fullName",
-        "valueKey": "_id"
+        "valueKey": "_id",
+        "idType": "String"
       },
       "showInTableView": false
     }

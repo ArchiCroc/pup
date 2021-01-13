@@ -1,0 +1,246 @@
+{{#*inline "inputImports" ~}}
+  {{#each this.fields}}
+    {{#if this.inputTemplateFile}}
+{{> (lookup . 'inputTemplateFile' ) template='e2eTest/imports'}};
+    {{/if}}
+    {{#if this.e2e.imports}}
+{{this.e2e.imports}};
+    {{/if}}
+     {{#if this.fields}}
+{{> inputImports this}}
+    {{/if}}
+  {{/each}}
+{{/inline~}}
+{{#*inline "newFieldTests" ~}}
+  {{#each this.fields}}
+    {{#if this.e2e.new}}
+{{this.e2e.new}};
+    {{else}}
+      {{#if this.inputTemplateFile}}
+        {{#compare this.inputType 'startsWith' '['}}
+          {{!-- field is an array input type --}}
+          {{#ifPartialExists this partial=inputTemplateFile template='input/multiple'}}
+            {{!-- Input Handles array types on it's own --}}
+            {{> (lookup . 'inputTemplateFile' ) name=fieldName template='e2eTest/new'}};
+          {{else}}
+            {{!-- needs to be wrapped in ListField --}}
+            {{> input-list name=fieldName template='e2eTest/new'}};
+          {{/ifPartialExists}}
+        {{else}}
+            {{!-- Single field --}}
+           {{> (lookup . 'inputTemplateFile' ) name=fieldName template='e2eTest/new'}};
+        {{/compare}}
+      {{/if}}
+    {{/if}}
+    {{#if this.fields}}
+{{> newFieldTests this}}
+    {{/if}}
+    
+  {{/each}}
+{{/inline~}}
+{{#*inline "editFieldTests" ~}}
+  {{#each this.fields}}
+    {{#if this.e2e.edit}}
+{{this.e2e.edit}};
+    {{else}}
+      {{#if this.inputTemplateFile}}
+        {{#compare this.inputType 'startsWith' '['}}
+          {{!-- field is an array input type --}}
+          {{#ifPartialExists this partial=inputTemplateFile template='input/multiple'}}
+            {{!-- Input Handles array types on it's own --}}
+            {{> (lookup . 'inputTemplateFile' ) name=fieldName template='e2eTest/edit'}};
+          {{else}}
+            {{!-- needs to be wrapped in ListField --}}
+            {{> input-list name=fieldName template='e2eTest/edit'}};
+          {{/ifPartialExists}}
+        {{else}}
+            {{!-- Single field --}}
+           {{> (lookup . 'inputTemplateFile' ) name=fieldName template='e2eTest/edit'}};
+        {{/compare}}
+      {{/if}}
+    {{/if}}
+    {{#if this.fields}}
+{{> editFieldTests this}}
+    {{/if}}
+
+  {{/each}}
+{{/inline~}}
+{{#*inline "viewFieldTests" ~}}
+//viewFieldTests {{mock}}
+  {{#each this.fields}}
+    {{#if this.e2e.view}}
+{{this.e2e.view}};
+    {{else}}
+      {{#if this.inputTemplateFile}}
+{{> (lookup . 'inputTemplateFile' ) template='e2eTest/view' name=key mock=../mock}};
+      {{/if}}
+    {{/if}}
+    {{#if this.fields}}
+{{> viewFieldTests this mock=mock}}
+    {{/if}}
+
+  {{/each}}
+{{/inline~}}
+{{#uniqueImports}}
+import { getByTestId, getByText, queryByText } from '@testing-library/testcafe';
+import { Selector } from 'testcafe';
+import { ReactSelector } from 'testcafe-react-selectors';
+import { adminRole, userRole, anonymousRole, getPagePath, serverUrl } from '{{uiPathOffset}}../../../tests/helpers/e2e';
+import { getMockItem } from '{{uiPathOffset}}../../../tests/fixtures/{{camelCase pluralName}}';
+{{> inputImports schema}}
+{{/uniqueImports}}
+
+const mockNew{{pascalCase singularName}} = getMockItem(1);
+const mockEdit{{pascalCase singularName}} = getMockItem(2);
+const {{camelCase pluralName}}BasePath = {{quoteString (convertParamsToTemplateVars uiRouteBasePath)}};
+
+fixture('{{pascalCase pluralName}}').page(`${serverUrl}/`);
+
+{{!-- @todo These need to be based on the schema permissions --}}
+test('redirect anonymous user to login', async (t) => {
+  await t.useRole(anonymousRole).navigateTo({{camelCase pluralName}}BasePath);
+
+  await t.expect(getPagePath()).eql('/login');
+});
+
+test('should only allow admins to view', async (t) => {
+  await t.useRole(userRole).navigateTo({{camelCase pluralName}}BasePath);
+
+  await t.expect(getPagePath()).eql('/');
+});
+
+test('should load {{pascalCase pluralName}} index page', async (t) => {
+  await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
+
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+});
+
+test('make sure we have a clean slate', async (t) => {
+  await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+
+  const items = [
+    Selector(queryByText(mockNew{{pascalCase singularName}}.{{labelFieldKey}})),
+    Selector(queryByText(mockEdit{{pascalCase singularName}}.{{labelFieldKey}}))
+  ];
+  items.forEach(async (item)=> {
+    if (await item.exists) {
+      await t.click(item);
+      // navigate to the correct item
+      await t.click(getByText(mockEdit{{pascalCase singularName}}.{{labelFieldKey}}));
+      await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)`));
+
+      //click the edit button
+      await t.click(ReactSelector('Edit{{pascalCase singularName}}Button'));
+      await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)/edit`));
+
+      // click delete
+      await t.click(ReactSelector('Remove{{pascalCase singularName}}Button'));
+      await t.click(getByTestId('remove-{{dashCase singularName}}-ok-button'));
+    }
+  });
+});
+
+test('should navigate to New{{pascalCase singularName}}Page', async (t) => {
+  await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
+
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+
+  await t.click(ReactSelector('New{{pascalCase singularName}}Button'));
+
+  await t.expect(getPagePath()).eql(`${ {{~camelCase pluralName}}BasePath}/new`);
+});
+
+test('should create new {{pascalCase singularName}}', async (t) => {
+  await t.useRole(adminRole).navigateTo(`${ {{~camelCase pluralName}}BasePath}/new`);
+  await t.expect(getPagePath()).eql(`${ {{~camelCase pluralName}}BasePath}/new`);
+
+  const form = ReactSelector('AutoForm').withProps({ name: '{{camelCase singularName}}' });
+
+  {{> newFieldTests schema}}
+  await t.click(form.find('button[type=submit]'));
+
+  // make sure new item is listed
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+  await t.expect(getByText(mockNew{{pascalCase singularName}}.{{labelFieldKey}}).exists).ok();
+});
+
+test('should display View{{pascalCase singularName}}Page', async (t) => {
+  await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+
+  await t.click(getByText(mockNew{{pascalCase singularName}}.{{labelFieldKey}}));
+
+  await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)`));
+
+  const page = ReactSelector('View{{pascalCase singularName}}Fields');
+  {{> viewFieldTests schema mock=(concat 'mockNew' (pascalCase singularName))}}
+});
+
+test('should navigate to the Edit{{pascalCase singularName}}Page', async (t) => {
+  await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+  await t.click(getByText(mockNew{{pascalCase singularName}}.{{labelFieldKey}}));
+  await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)`));
+
+  // navigate to the correct item
+  await t.click(ReactSelector('Edit{{pascalCase singularName}}Button'));
+  await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)/edit`));
+});
+
+test('should edit {{pascalCase singularName}}', async (t) => {
+  await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+
+  // navigate to the correct item
+  await t.click(getByText(mockNew{{pascalCase singularName}}.{{labelFieldKey}}));
+  await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)`));
+
+  //click the edit button
+  await t.click(ReactSelector('Edit{{pascalCase singularName}}Button'));
+  await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)/edit`));
+
+  const form = ReactSelector('AutoForm').withProps({ name: '{{camelCase singularName}}' });
+  
+  {{> editFieldTests schema}}  
+  await t.click(form.find('button[type=submit]'));
+
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+
+  //verify edited item is listed on the page
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+  await t.expect(getByText(mockEdit{{pascalCase singularName}}.{{labelFieldKey}}).exists).ok();
+});
+
+test('should show ViewPage of edited {{pascalCase singularName}}', async (t) => {
+  await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+
+  // navigate to the correct item
+  await t.click(getByText(mockEdit{{pascalCase singularName}}.{{labelFieldKey}}));
+  await t.expect(getPagePath(mockEdit{{pascalCase singularName}}.{{labelFieldKey}})).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)`));
+  
+  const page = ReactSelector('View{{pascalCase singularName}}Fields');
+  {{> viewFieldTests schema mock=(concat 'mockEdit' (pascalCase singularName))}}
+});
+
+test('should delete {{pascalCase singularName}}', async (t) => {
+  await t.useRole(adminRole).navigateTo({{camelCase pluralName}}BasePath);
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+
+  // navigate to the correct item
+  await t.click(getByText(mockEdit{{pascalCase singularName}}.{{labelFieldKey}}));
+  await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)`));
+
+  //click the edit button
+  await t.click(ReactSelector('Edit{{pascalCase singularName}}Button'));
+  await t.expect(getPagePath()).match(new RegExp(`${ {{~camelCase pluralName}}BasePath}/([a-z0-9-_]+)/edit`));
+
+  // click delete
+  await t.click(ReactSelector('Remove{{pascalCase singularName}}Button'));
+  await t.click(getByTestId('remove-{{dashCase singularName}}-ok-button'));
+
+  // navigate to index page and make sure it is gone
+  await t.expect(getPagePath()).eql({{camelCase pluralName}}BasePath);
+  await t.expect(queryByText(mockEdit{{pascalCase singularName}}.{{labelFieldKey}}).exists).notOk();
+});

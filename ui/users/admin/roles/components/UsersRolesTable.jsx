@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
-import Input from 'antd/lib/input';
 import Table from 'antd/lib/table';
 import i18n from 'meteor/universe:i18n';
 import { useHistory } from 'react-router-dom';
 import hasRole from '../../../../../libs/hasRole';
 import useQueryStringObject from '../../../../../libs/hooks/useQueryStringObject';
 import PrettyDate from '../../../../components/PrettyDate';
+import SearchInput from '../../../../components/SearchInput';
 import NewUsersRoleButton from './NewUsersRoleButton';
 
 // import StyledUsersRolesTable from './StyledUsersRolesTable';
 
 import { usersRoles as usersRolesQuery } from '../queries/UsersRoles.gql';
-
-const { Search } = Input;
 
 function UsersRolesTable({
   queryKeyPrefix,
@@ -38,8 +36,8 @@ function UsersRolesTable({
   const { loading, data: { usersRoles } = {} } = useQuery(usersRolesQuery, {
     fetchPolicy: 'cache-and-network',
     variables: {
-      pageSize: currentPageSize,
       page: currentPage,
+      pageSize: currentPageSize,
       sort: currentSort,
       order: currentOrder,
       search: currentSearch,
@@ -47,7 +45,7 @@ function UsersRolesTable({
   });
 
   const paginationObject = {
-    currentPageSize,
+    pageSize: currentPageSize,
     // onChange: this.onPageChange,
   };
 
@@ -61,17 +59,17 @@ function UsersRolesTable({
       // render: (value, record) => <Link to={`/users-roles/${record.name}/edit`}>{value}</Link>, // eslint-disable-line
     },
     {
-      title: i18n.__('UsersRoles.created_at_utc'),
-      dataIndex: 'createdAtUTC',
+      title: i18n.__('UsersRoles.created_at'),
+      dataIndex: 'createdAt',
       sorter: true,
-      sortOrder: currentSort === 'createdAtUTC' && currentOrder,
+      sortOrder: currentSort === 'createdAt' && currentOrder,
       render: (value, record) => <PrettyDate timestamp={value} />,
     },
     {
-      title: i18n.__('UsersRoles.updated_at_utc'),
-      dataIndex: 'updatedAtUTC',
+      title: i18n.__('UsersRoles.updated_at'),
+      dataIndex: 'updatedAt',
       sorter: true,
-      sortOrder: currentSort === 'updatedAtUTC' && currentOrder,
+      sortOrder: currentSort === 'updatedAt' && currentOrder,
       render: (value, record) => <PrettyDate timestamp={value} />,
     },
   ];
@@ -89,18 +87,20 @@ function UsersRolesTable({
   }
 
   function handleTableChange(pagination, filters, sorter) {
-    const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
+    const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAt';
+
+    const $newOrder = sorter.order ? sorter.order : null;
 
     setCurrentPage(pagination.current);
     setCurrentPageSize(pagination.pageSize);
-    setCurrentOrder(sorter.order);
+    setCurrentOrder($newOrder);
     setCurrentSort(sorter.field);
 
     setQueryStringObject({
       page: pagination.current,
       pageSize: pagination.pageSize,
       sort: currentField,
-      order: sorter.order,
+      order: $newOrder,
     });
   }
 
@@ -117,15 +117,13 @@ function UsersRolesTable({
       <p>
         {showNewUsersRoleButton && hasRole(roles, ['admin']) && <NewUsersRoleButton />}&nbsp;
         {showSearch && (
-          <span className="pull-right" style={{ width: 300 }}>
-            <Search
-              placeholder={i18n.__('UsersRoles.search_placeholder')}
-              onSearch={handleSearch}
-              defaultValue={currentSearch}
-              allowClear
-              enterButton
-            />
-          </span>
+          <SearchInput
+            className="pull-right"
+            style={{ width: 300 }}
+            placeholder={i18n.__('UsersRoles.search_placeholder')}
+            onSearch={handleSearch}
+            defaultValue={currentSearch}
+          />
         )}
       </p>
       <Table

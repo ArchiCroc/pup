@@ -138,9 +138,15 @@ Starts default dev server at http://localhost:3000
         "max": 1024,
         "optional": true
       },
-      "searchable": true
+      "searchable": true,
+      "e2e" {
+        "imports": "import { getByTestId, getByText, queryByText } from '@testing-library/testcafe'",
+        "new": "await t.typeText(form.find('input[name=path'), mockNewErrorReports.path);",
+        "edit": "// @todo",
+        "view": "// @todo",
+      }
     },
-    "createdAtUTC": {
+    "createdAt": {
       "type": "DateTime",
       "showInTableView": "Created At"
     },
@@ -164,7 +170,7 @@ Starts default dev server at http://localhost:3000
     }
   },
   // table options
-  "defaultSortField": "createdAtUTC", // in the table and search, default field to sort by
+  "defaultSortField": "createdAt", // in the table and search, default field to sort by
   "defaultSortOrder": "descend", // in the table and search, default field way to order the sort by field
   "tableRowClickUrl": "/collection/elements/${record.element._id}", // optional for use with connecting to sub items
   // detail page options
@@ -216,3 +222,14 @@ Defined in Pup+
 |`ChainedSlugField`| autocompletes a slug based on the field it's "chained" to |
 |`CrossReferenceSearchField`| Autocomplete one or multiple values from a different module |
 |`CrossReferenceSelectField`| Select one or multiple values from a different module       | 
+
+#### Testing
+```shell
+    # run testcafe e2e
+    meteor npm run test-e2e
+    #run e2e test by name
+    meteor npx testcafe chrome:headless ./**/ErrorReports.e2e.js
+
+    # run jest unit tests
+    meteor npm run test
+```

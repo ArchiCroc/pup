@@ -36,7 +36,7 @@
           "optional": true
       }
     },   
-    "createdAtUTC": {
+    "createdAt": {
       "type": "DateTime",
       "showInTableView": "Created At"
     },
@@ -52,7 +52,7 @@
       },
       "showInTableView": false
     },
-    "updatedAtUTC": {
+    "updatedAt": {
       "type": "DateTime",
       "showInTableView": "Updated At"
     },

@@ -30,7 +30,7 @@ query errorReports(
       message
       path
       userAgent
-      createdAtUTC
+      createdAt
     }
   }
 }

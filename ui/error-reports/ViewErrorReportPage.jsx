@@ -10,6 +10,7 @@ import ItemNotFound from '../components/ItemNotFound';
 import Loading from '../components/Loading';
 import PageBreadcrumbs, { Breadcrumb } from '../components/PageBreadcrumbs';
 import PageHeader from '../components/PageHeader';
+import ValueWrapper from '../components/ValueWrapper';
 
 import EditErrorReportButton from './components/EditErrorReportButton';
 
@@ -64,30 +65,55 @@ ViewErrorReportPage.propTypes = {
 
 const ViewErrorReportFields = ({ errorReport }) => (
   <Descriptions bordered column={1}>
+    <Descriptions.Item label={i18n.__('ErrorReports.id')}>
+      <ValueWrapper name="_id" value={errorReport._id}>
+        {errorReport._id}
+      </ValueWrapper>
+    </Descriptions.Item>
     <Descriptions.Item label={i18n.__('ErrorReports.user')}>
-      {errorReport.user?.fullName}
+      <ValueWrapper name="user" value={errorReport.user}>
+        {errorReport.user?.fullName}
+      </ValueWrapper>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('ErrorReports.level')}>
-      {errorReport.level && i18n.__(`ErrorReports.level_${errorReport.level}`)}
+      <ValueWrapper name="level" value={errorReport.level}>
+        {errorReport.level && i18n.__(`ErrorReports.level_${errorReport.level}`)}
+      </ValueWrapper>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('ErrorReports.message')}>
-      {errorReport.message}
+      <ValueWrapper name="message" value={errorReport.message}>
+        {errorReport.message}
+      </ValueWrapper>
     </Descriptions.Item>
-    <Descriptions.Item label={i18n.__('ErrorReports.path')}>{errorReport.path}</Descriptions.Item>
+    <Descriptions.Item label={i18n.__('ErrorReports.path')}>
+      <ValueWrapper name="path" value={errorReport.path}>
+        {errorReport.path}
+      </ValueWrapper>
+    </Descriptions.Item>
     <Descriptions.Item label={i18n.__('ErrorReports.user_agent')}>
-      {errorReport.userAgent}
+      <ValueWrapper name="userAgent" value={errorReport.userAgent}>
+        {errorReport.userAgent}
+      </ValueWrapper>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('ErrorReports.stack')}>
-      {errorReport.stack && errorReport.stack.join(', ')}
+      <ValueWrapper name="stack" value={errorReport.stack}>
+        {errorReport.stack && errorReport.stack.join(', ')}
+      </ValueWrapper>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('ErrorReports.react_stack')}>
-      {errorReport.reactStack && errorReport.reactStack.join(', ')}
+      <ValueWrapper name="reactStack" value={errorReport.reactStack}>
+        {errorReport.reactStack && errorReport.reactStack.join(', ')}
+      </ValueWrapper>
     </Descriptions.Item>
-    <Descriptions.Item label={i18n.__('ErrorReports.created_at_utc')}>
-      <>{errorReport.createdAtUTC && <FormatDate timestamp={errorReport.createdAtUTC} />}</>
+    <Descriptions.Item label={i18n.__('ErrorReports.created_at')}>
+      <ValueWrapper name="createdAt" value={errorReport.createdAt}>
+        <>{errorReport.createdAt && <FormatDate timestamp={errorReport.createdAt} />}</>
+      </ValueWrapper>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('ErrorReports.created_by')}>
-      {errorReport.createdBy?.fullName}
+      <ValueWrapper name="createdBy" value={errorReport.createdBy}>
+        {errorReport.createdBy?.fullName}
+      </ValueWrapper>
     </Descriptions.Item>
   </Descriptions>
 );

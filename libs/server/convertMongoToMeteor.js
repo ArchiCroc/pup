@@ -31,7 +31,7 @@ export default function convertMongoToMeteor(document) {
     for (let [key, value] of Object.entries(document)) {
       newObject[key] = convertMongoToMeteor(value);
       // console.log(key, value instanceof MongoInternals.NpmModule.ObjectID);
-      // if (key === 'createdAtUTC') {
+      // if (key === 'createdAt') {
       //   console.log(key, value, value instanceof Date, value.);
       // }
     }

@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/client';
   {{#if isSearchable}}
-import Input from 'antd/lib/input';
+import SearchInput from '{{uiPathOffset}}../../components/SearchInput';
   {{/if}}
 import Table from 'antd/lib/table';
 import New{{ pascalCase singularName }}Button from './New{{ pascalCase singularName }}Button';
@@ -19,19 +19,16 @@ import useQueryStringObject from '{{uiPathOffset}}../../../libs/hooks/useQuerySt
     {{/compare}}
     {{#compare this.input '!==' 'Hidden' '&&' this.showInTableView '===' true}}
       {{#if this.tableTemplateFile}}
-{{> (lookup . 'tableTemplateFile' ) template='import' uiPathOffset=(concat @root.uiPathOffset "../")}} 
+{{> (lookup . 'tableTemplateFile' ) template='imports' uiPathOffset=(concat @root.uiPathOffset "../")}} 
       {{/if}}
     {{/compare~}}
   {{~/each}}
+
 {{/uniqueImports}}
 
 // import Styled{{ pascalCase pluralName }}Table from './Styled{{ pascalCase pluralName }}Table';
 
 import { {{ camelCase pluralName }} as {{ camelCase pluralName }}Query } from '../queries/{{ pascalCase pluralName }}.gql';
-{{#if isSearchable}}
-
-const { Search } = Input;
-{{/if}}
 
 {{!-- if a filterable field has choices create a function to generate the correct object for antd Table  --}}
 {{#each schema.fields}}
@@ -113,13 +110,13 @@ function {{ pascalCase pluralName }}Table({{#prettyProps}}
 
 
 const paginationObject = {
-    currentPageSize,
+    pageSize: currentPageSize,
     // onChange: this.onPageChange,
   };
 
   const columns = [
 {{#each schema.fields ~}}
-  {{#compare this.input '!==' 'Hidden' '&&' this.showInTableView '!==' false}}
+  {{#compare this.inputField '!==' 'Hidden' '&&' this.showInTableView '!==' false}}
     {{~#compare this.input '||' this.showInTableView }}
     {
       title: i18n.__(' {{~ pascalCase @root.name ~}} .{{ snakeCase @key }}'),
@@ -201,7 +198,7 @@ const paginationObject = {
     } = filters;
 
 {{/if}}
-    const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
+    const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAt';
 
     const $newOrder = sorter.order ? sorter.order : null;
 
@@ -238,7 +235,7 @@ const paginationObject = {
 
   return (
     <>
-      <p>
+      <div style=\{{ minHeight: 32, marginBottom: 16 }}>
         { showNew{{ pascalCase singularName }}Button {{#if schema.permissions.create}}&& hasRole(roles, [{{#each schema.permissions.create }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]) {{/if}}&& (
           <New{{ pascalCase singularName }}Button 
 {{#each schema.fields}}
@@ -248,17 +245,17 @@ const paginationObject = {
 {{/each}}
           />)}&nbsp;
         {{#if isSearchable}}
-        { showSearch && (<span className="pull-right" style=\{{ width: 300 }}>
-          <Search
+        { showSearch && (
+          <SearchInput
+            className="pull-right"
+            style=\{{ width: 300 }}
             placeholder={i18n.__('{{ pascalCase pluralName }}.search_placeholder')}
             onSearch={handleSearch}
             defaultValue={currentSearch}
-            allowClear
-            enterButton
           />
-        </span>)}
+        )}
         {{/if}}
-      </p>
+      </div>
       <Table
         columns={columns}
         dataSource={ {{~ camelCase pluralName }}?.{{ camelCase pluralName ~}} }
@@ -279,7 +276,7 @@ const paginationObject = {
   queryKeyPrefix: undefined,
   page: 1,
   pageSize: 10,
-  sort: '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelKeyKey}}{{/if}}',
+  sort: '{{#if schema.defaultSortField}}{{schema.defaultSortField}}{{else}}{{labelFieldKey}}{{/if}}',
   order: '{{#if schema.defaultSortOrder}}{{schema.defaultSortOrder}}{{else}}ascend{{/if}}',
 {{#if isSearchable}}
   search: undefined,

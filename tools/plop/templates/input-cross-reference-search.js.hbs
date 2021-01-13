@@ -1,0 +1,27 @@
+{{#compare template '===' 'input/multiple'}}
+true /*supports array values natively */
+{{/compare}}
+{{#compare template '===' 'form/imports'}}
+import CrossReferenceSearchField from '{{@root.uiPathOffset}}../../components/CrossReferenceSearchField';
+{{/compare}}
+{{#compare template '===' 'form/render'}}
+<CrossReferenceSearchField {{> input-props}}/>
+{{/compare}}
+{{#compare template '===' 'e2eTest/new'}}
+// set CrossReferenceSearch {{name}} field
+  const {{name}}Field = form.findReact('CrossReferenceSearchField').withProps({ name: {{quoteString (first propName name)}} });
+  await t
+    .click({{name}}Field)
+    .typeText({{name}}Field.find('input'), mockNew{{pascalCase @root.singularName}}.{{name}}.label)
+    .expect({{name}}Field.findReact('List').exists)
+    .ok()
+    .click({{name}}Field.findReact('Item').withText(mockNew{{pascalCase @root.singularName}}.{{name}}.label));
+{{/compare}}
+{{#compare template '===' 'e2eTest/edit'}}
+// @todo change  CrossReferenceSearch {{name}} field
+{{/compare}}
+{{#compare template '===' 'e2eTest/view'}}
+{{!-- define mock to eql mockNew{{pascalCase singularName}} or mockEdit{{pascalCase singularName}} --}}
+// validate CrossReferenceSearch {{name}} field
+await t.expect(page.findReact('ValueWrapper').withProps({ name: '{{name}}', value: {{mock}}.{{name}}{{mockSuffix}} }).exists).ok();
+{{/compare}}

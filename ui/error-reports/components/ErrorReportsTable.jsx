@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
-
 import Table from 'antd/lib/table';
 import isString from 'lodash/isString';
 import i18n from 'meteor/universe:i18n';
@@ -9,8 +8,8 @@ import { useHistory } from 'react-router-dom';
 import hasRole from '../../../libs/hasRole';
 import useQueryStringObject from '../../../libs/hooks/useQueryStringObject';
 import PrettyDate from '../../components/PrettyDate';
-import NewErrorReportButton from './NewErrorReportButton';
 import SearchInput from '../../components/SearchInput';
+import NewErrorReportButton from './NewErrorReportButton';
 
 // import StyledErrorReportsTable from './StyledErrorReportsTable';
 
@@ -50,8 +49,8 @@ function ErrorReportsTable({
   const { loading, data: { errorReports } = {} } = useQuery(errorReportsQuery, {
     fetchPolicy: 'cache-and-network',
     variables: {
-      pageSize: currentPageSize,
       page: currentPage,
+      pageSize: currentPageSize,
       sort: currentSort,
       order: currentOrder,
       search: currentSearch,
@@ -60,14 +59,14 @@ function ErrorReportsTable({
   });
 
   const paginationObject = {
-    currentPageSize,
+    pageSize: currentPageSize,
     // onChange: this.onPageChange,
   };
 
   const columns = [
     {
       title: i18n.__('ErrorReports.user'),
-      dataIndex: 'user.fullName',
+      dataIndex: ['user', 'fullName'],
     },
     {
       title: i18n.__('ErrorReports.level'),
@@ -79,7 +78,7 @@ function ErrorReportsTable({
       // defaultSortOrder: 'ascend',
       sortOrder: currentSort === 'level' && currentOrder,
       render: (value, record) => i18n.__(`ErrorReports.level_${value}`), // eslint-disable-line
-      filteredValue: currentLevel,
+      filteredValue: currentLevel?.map(String),
       filters: props.level ? undefined : getLevelFilters(),
     },
     {
@@ -107,10 +106,10 @@ function ErrorReportsTable({
       // render: (value, record) => <Link to={`/error-reports/${record._id}/edit`}>{value}</Link>, // eslint-disable-line
     },
     {
-      title: i18n.__('ErrorReports.created_at_utc'),
-      dataIndex: 'createdAtUTC',
+      title: i18n.__('ErrorReports.created_at'),
+      dataIndex: 'createdAt',
       sorter: true,
-      sortOrder: currentSort === 'createdAtUTC' && currentOrder,
+      sortOrder: currentSort === 'createdAt' && currentOrder,
       render: (value, record) => <PrettyDate timestamp={value} />,
     },
   ];
@@ -130,19 +129,21 @@ function ErrorReportsTable({
   function handleTableChange(pagination, filters, sorter) {
     const { level: newLevel } = filters;
 
-    const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAtUTC';
+    const currentField = sorter.field ? sorter.field.split('.')[0] : 'createdAt';
+
+    const $newOrder = sorter.order ? sorter.order : null;
 
     setCurrentPage(pagination.current);
     setCurrentPageSize(pagination.pageSize);
-    setCurrentOrder(sorter.order);
+    setCurrentOrder($newOrder);
     setCurrentSort(sorter.field);
-    setCurrentLevel(newLevel);
+    setCurrentLevel(newLevel?.map((x) => parseInt(x, 10)));
 
     setQueryStringObject({
       page: pagination.current,
       pageSize: pagination.pageSize,
       sort: currentField,
-      order: sorter.order,
+      order: $newOrder,
       level: newLevel,
     });
   }
@@ -189,7 +190,7 @@ ErrorReportsTable.defaultProps = {
   queryKeyPrefix: undefined,
   page: 1,
   pageSize: 10,
-  sort: 'createdAtUTC',
+  sort: 'createdAt',
   order: 'descend',
   search: undefined,
   showSearch: true,

@@ -7,9 +7,10 @@ import { useMutation } from '@apollo/client';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 import { useHistory } from 'react-router-dom';
-import { HiddenField, ListField, ListItemField, TextField } from 'uniforms-antd';
+import { HiddenField, ListField, TextField } from 'uniforms-antd';
 import AutoForm from '../../components/AutoForm';
 import CrossReferenceSearchField from '../../components/CrossReferenceSearchField';
+import ListInlineItemField from '../../components/ListInlineItemField';
 import SelectField from '../../components/SelectField';
 
 /* #### PLOP_IMPORTS_START #### */
@@ -39,15 +40,9 @@ function ErrorReportEditor({ doc }) {
 
   function handleSubmit(form) {
     const cleanForm = ErrorReportSchema.clean(form);
-    // console.log('cleanForm', cleanForm);
     saveErrorReport({
       variables: { errorReport: cleanForm },
     });
-  }
-
-  // fix issue with uniforms getting a null for visionNames
-  if (doc && !doc.visionNames) {
-    doc.visionNames = []; //eslint-disable-line
   }
 
   return (
@@ -59,11 +54,15 @@ function ErrorReportEditor({ doc }) {
         <TextField name="message" />
         <TextField name="path" />
         <TextField name="userAgent" />
-        <ListField name="stack">
-          <ListItemField name="$" />
+        <ListField name="stack" initialCount={1}>
+          <ListInlineItemField name="$">
+            <TextField name="" />
+          </ListInlineItemField>
         </ListField>
-        <ListField name="reactStack">
-          <ListItemField name="$" />
+        <ListField name="reactStack" initialCount={1}>
+          <ListInlineItemField name="$">
+            <TextField name="" />
+          </ListInlineItemField>
         </ListField>
         <Button htmlType="submit" type="primary" block>
           {i18n.__('ErrorReports.save')}

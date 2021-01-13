@@ -1,5 +1,4 @@
 export default `
-
 type ErrorReport {
   _id: ObjectID
   userId: String
@@ -10,7 +9,7 @@ type ErrorReport {
   userAgent: String
   stack: [String]
   reactStack: [String]
-  createdAtUTC: DateTime
+  createdAt: DateTime
   createdById: String
   createdBy: User
 }
@@ -20,10 +19,9 @@ type ErrorReports {
   errorReports: [ErrorReport]
 }
 
-
 input ErrorReportInput {
   _id: ObjectID
-  userId: String!
+  userId: String
   level: Int!
   message: String!
   path: String

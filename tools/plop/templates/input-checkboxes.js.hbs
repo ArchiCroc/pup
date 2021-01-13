@@ -1,0 +1,12 @@
+{{#compare template '===' 'form/imports'}}
+import CheckboxesField from '{{@root.uiPathOffset}}../../components/Checkboxes';
+{{/compare}}
+{{#compare template '===' 'form/render'}}
+<CheckboxesField {{> input-props}}/>
+{{/compare}}
+{{#compare template '===' 'e2eTest/new'}}
+// @todo change Checkboxes {{name}} field
+{{/compare}}
+{{#compare template '===' 'e2eTest/edit'}}
+// @todo change  Checkboxes {{name}} field
+{{/compare}}

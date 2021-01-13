@@ -13,9 +13,9 @@ import { {{ camelCase pluralName }} as {{ camelCase pluralName }}Query } from '.
 import { remove{{ pascalCase singularName }} as remove{{ pascalCase singularName }}Mutation } from '../mutations/{{ pascalCase pluralName }}.gql';
 
 function Remove{{ pascalCase singularName }}Button({{#prettyProps}} 
-{{#compare primaryFieldKey '!==' labelKeyKey}}
+{{#compare primaryFieldKey '!==' title}}
   {{ primaryFieldKey }}, 
-  {{ labelKeyKey }},
+  title,
 {{else}}
   {{ primaryFieldKey }},
 {{/compare}}
@@ -32,7 +32,7 @@ function Remove{{ pascalCase singularName }}Button({{#prettyProps}}
     ignoreResults: true,
     onCompleted: () => {
       message.success(i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_saved'));
-      history.push({{#quoteString}}{{convertParamsToTemplateVars uiRouteBasePath }}{{/quoteString}});
+      history.push({{quoteString (convertParamsToTemplateVars uiRouteBasePath)}});
     },
     onError: (error) => {
       message.error(error.message);
@@ -43,11 +43,13 @@ function Remove{{ pascalCase singularName }}Button({{#prettyProps}}
 
   function showConfirmModal() {
     modal.confirm({
-      title: i18n.___('{{ pascalCase pluralName }}.confirm_remove_{{ snakeCase shortSingularName }}', { {{#compare labelKeyKey '!==' 'name'}}name: {{/compare}}{{ labelKeyKey }}{{#if labelKey.dataIndex}}.{{labelKey.dataIndex}}{{/if}} }),
+      title: i18n.___('{{ pascalCase pluralName }}.confirm_remove_{{ snakeCase shortSingularName }}', { title }),
       onOk: remove{{ pascalCase singularName }},
       okText: i18n.__('{{ pascalCase pluralName }}.remove'),
       okType: 'danger',
+      okButtonProps: { 'data-testid': 'remove-{{ dashCase singularName }}-ok-button' },
       cancelText: i18n.__('{{ pascalCase pluralName }}.cancel'),
+      cancelButtonProps: { 'data-testid': 'remove-{{ dashCase singularName }}-cancel-button' },
     });
   }
 
@@ -56,7 +58,6 @@ function Remove{{ pascalCase singularName }}Button({{#prettyProps}}
       key={ {{~ primaryFieldKey ~}} }
       type="danger"
       onClick={showConfirmModal}
-      data-testid="remove-{{ dashCase singularName }}-button"
       {...props}
     >
       {i18n.__('{{ pascalCase pluralName }}.remove_{{ snakeCase shortSingularName }}')}
@@ -66,12 +67,7 @@ function Remove{{ pascalCase singularName }}Button({{#prettyProps}}
 
 Remove{{ pascalCase singularName }}Button.propTypes = {
   {{ primaryFieldKey }}: PropTypes.string.isRequired,
-  {{ labelKeyKey }}: PropTypes.string.isRequired,
-{{#each schema.fields}}
-  {{#if this.filterable}}
-  {{> (lookup . 'filterTemplateFile' ) template='ui/paramPropTypes'}}
-  {{/if}}
-{{/each}}
+  title: PropTypes.string.isRequired,
 };
 
 export default Remove{{ pascalCase singularName }}Button;

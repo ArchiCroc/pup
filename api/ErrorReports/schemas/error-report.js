@@ -3,6 +3,7 @@ import Uniforms from 'uniforms';
 import SimpleSchema from 'simpl-schema';
 import i18n from 'meteor/universe:i18n';
 /* #### PLOP_IMPORTS_START #### */
+
 /* #### PLOP_IMPORTS_END #### */
 import parseObjectID from '../../../libs/parseObjectID';
 
@@ -24,6 +25,7 @@ const ErrorReportSchema = new SimpleSchema({
   userId: {
     type: String,
     label: () => i18n.__('ErrorReports.user_label'),
+    optional: true,
     uniforms: {
       placeholder: () => i18n.__('ErrorReports.user_placeholder'),
       query: 'users',

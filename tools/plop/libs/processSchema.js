@@ -55,18 +55,60 @@ function processFields([key, item], data) {
   // if (item.groupKey) {
   //   item.queryable = 'single';
   // }
-  // this is so we can always get the reference field name to use in the queries
+  // this is normalize the input object
+  // @todo would this be better name field? Probably not -M
   item.key = key;
+  item.name = key;
   if (item.input && item.input.name) {
     item.fieldName = item.input.name;
+    item.inputName = item.input.name;
   } else {
     item.fieldName = key;
+    item.inputName = key;
   }
   if (item.input && item.input.type) {
     item.fieldType = item.input.type;
+    item.inputType = item.input.type;
   } else {
     item.fieldType = item.type;
+    item.inputType = item.type;
   }
+
+  if (item.input) {
+    if (typeof item.input === 'string') {
+      item.input = { input: item.input, name: key, type: item.type };
+    }
+    if (item.input.input) {
+      item.inputField = item.input.input;
+    }
+    // since we moved all the input properties to the object, we need to move validation too
+    if (!item.input.validate && item.validate) {
+      item.input.validate = item.validate;
+    }
+    if (!item.input.clean && item.clean) {
+      item.input.clean = item.clean;
+    }
+    if (!item.input.choices && item.choices) {
+      item.input.choices = item.choices;
+    }
+    //backwards compatibility
+    if (item.inputTemplateFile) {
+      item.input.templateFile = item.inputTemplateFile;
+    }
+    if (item.inputTemplate) {
+      item.input.template = item.inputTemplate;
+    }
+    if (item.inputImports) {
+      item.input.imports = item.inputImports;
+    }
+    //input template
+    if (item.inputField && !item.input.templateFile && !item.input.template) {
+      item.input.templateFile = `input-${changeCase.paramCase(item.inputField)}`;
+      item.inputTemplateFile = item.input.templateFile; //the lookup command can't do sub items
+    }
+  }
+
+  // console.log(key, item.input);
 
   // set default filter for value that are true so it matches a template
   if (item.filterable === true && !item.filterTemplateFile) {
@@ -97,10 +139,9 @@ function processFields([key, item], data) {
   }
 
   //clean up mock data
-  if(!item.mockTemplateFile && !item.mockTemplate){
+  if (!item.mockTemplateFile && (!item.mock || !item.mock.template)) {
     item.mockTemplateFile = pickFieldMock(item, data);
   }
-
 }
 
 function processSchema(input) {
@@ -250,10 +291,10 @@ function processSchema(input) {
       );
     }
   }
-  data.labelKeyKey = schemaFieldKeys[labelKeyIndex];
-  data.labelKey = schemaFields[data.labelKeyKey];
-  if (data.labelKey && data.labelKey.searchable !== false) {
-    data.labelKey.searchable = true;
+  data.labelFieldKey = schemaFieldKeys[labelKeyIndex];
+  data.labelField = schemaFields[data.labelFieldKey];
+  if (data.labelField && data.labelField.searchable !== false) {
+    data.labelField.searchable = true;
   }
 
   data.isSearchable = !!schemaFieldValues.find((field) => field.searchable);

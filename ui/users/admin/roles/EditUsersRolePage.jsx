@@ -46,7 +46,7 @@ function EditUsersRolePage({ roles }) {
       )}
       <Divider />
       {usersRole && hasRole(roles, ['admin']) && (
-        <RemoveUsersRoleButton _id={usersRole._id} name={usersRole.name} />
+        <RemoveUsersRoleButton _id={usersRole._id} title={usersRole.name} />
       )}
     </StyledUsersRolesPage>
   );

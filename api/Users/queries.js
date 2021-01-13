@@ -20,7 +20,7 @@ export default {
     const query = {
       _ids,
       currentUser: context.user,
-      search: search ? new RegExp(search, 'i') : null,
+      search: search || null,
       limit: pageSize,
       skip: page * pageSize - pageSize,
     };
@@ -47,6 +47,9 @@ export default {
 
     if (isArray(role) && role.length > 0) {
       query.roles = { $in: role };
+    } else {
+      // exclude api users by default
+      query.roles = { $ne: 'api' };
     }
 
     if (isArray(status) && status.length > 0) {

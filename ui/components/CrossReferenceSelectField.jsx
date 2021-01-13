@@ -20,6 +20,7 @@ export const createCrossReferenceSelectFieldQuery = ({ query, edges, labelKey, v
 const CrossReferenceSelectField = (props) => {
   const {
     id,
+    name,
     query,
     labelKey,
     valueKey,
@@ -61,6 +62,7 @@ const CrossReferenceSelectField = (props) => {
     props,
     <Select
       id={id}
+      name={name}
       showSearch
       value={value || undefined}
       placeholder={placeholder}
@@ -71,7 +73,7 @@ const CrossReferenceSelectField = (props) => {
       disabled={disabled}
       optionFilterProp="children"
       filterOption={(input, option) =>
-        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        option.children?.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
     >
       {selectData.map((item) => (

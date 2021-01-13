@@ -28,7 +28,7 @@
       // {{param}}: cleanDoc.{{param}},
       {{/each}}
       updatedById: user._id,
-      updatedAtUTC: new Date(),
+      updatedAt: new Date(),
     };
 
     {{pascalCase apiFolderName}}.update({ {{mutationParamSegments.0.param}} }, { $set: updateDoc });

@@ -11,11 +11,9 @@ fragment ErrorReportAttributes on ErrorReport {
   userAgent
   stack
   reactStack
-  createdAtUTC
+  createdAt
   createdBy { 
     _id
     fullName
   }
 }
-
-

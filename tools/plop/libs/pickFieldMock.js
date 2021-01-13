@@ -5,9 +5,9 @@ const pluralize = require('pluralize');
 const defaultKeyMapping = {
   _id: undefined,
   email: 'mock-email',
-  createdAtUTC: 'mock-far-past-date',
-  updatedAtUTC: 'mock-near-past-date',
-}
+  createdAt: 'mock-far-past-date',
+  updatedAt: 'mock-near-past-date',
+};
 
 const defaultTypeMapping = {
   Boolean: 'mock-boolean',
@@ -16,38 +16,37 @@ const defaultTypeMapping = {
   String: 'mock-text',
   DateTime: 'mock-near-past-date',
   Date: 'mock-near-past-date',
-}
+};
 
 function pickFieldMock(item, data) {
-  
-  if(item.choices) {
-    return 'mock-choices';
-  }
-
-  if(item.key == 'createdBy'){
-    if(data.schema.permissions.create === 'admin') {
-      return 'mock-admin-user';
-    } 
-    return 'mock-user';
-  }
-  if(item.key == 'updatedBy'){
-    if(data.schema.permissions.update === 'admin') {
-      return 'mock-admin-user';
-    } 
-    return 'mock-user';
-  }
-  
-  if(defaultKeyMapping[item.key]){
+  if (defaultKeyMapping.hasOwnProperty(item.key)) {
     return defaultKeyMapping[item.key];
   }
 
-  if(item.input === 'LongText'){
+  if (item.choices) {
+    return 'mock-choices';
+  }
+
+  if (item.key == 'createdBy') {
+    if (data.schema.permissions.create === 'admin') {
+      return 'mock-admin-user';
+    }
+    return 'mock-user';
+  }
+  if (item.key == 'updatedBy') {
+    if (data.schema.permissions.update === 'admin') {
+      return 'mock-admin-user';
+    }
+    return 'mock-user';
+  }
+
+  if (item.input === 'LongText') {
     return 'mock-long-text';
   }
 
-  const itemType = item.type.replace('[','').replace(']','');
+  const itemType = item.type.replace('[', '').replace(']', '');
 
-  if(defaultTypeMapping[itemType]){
+  if (defaultTypeMapping.hasOwnProperty(itemType)) {
     return defaultTypeMapping[itemType];
   }
 

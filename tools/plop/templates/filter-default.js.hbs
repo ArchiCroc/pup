@@ -22,7 +22,7 @@ function get{{pascalCase fieldName}}Filters() {
 {{#compare template '===' 'ui/useState'}}
   {{#compare (stripBrackets fieldType) '===' 'Int' }}
 const [current{{ pascalCase fieldName }}, setCurrent{{ pascalCase fieldName }}] = useState(
-  {{ fieldName }} && isString({{ fieldName }}) ? [parseInt({{ fieldName }}, 10)] : {{ fieldName }} && {{ fieldName }}.map(parseInt),
+  {{ fieldName }} && isString({{ fieldName }}) ? [parseInt({{ fieldName }}, 10)] : {{ fieldName }} && {{ fieldName }}.map((x) => parseInt(x, 10)),
 );
   {{/compare}}
   {{#compare (stripBrackets fieldType) 'in' 'Float|Number' }}
@@ -57,7 +57,12 @@ filteredValue: current{{pascalCase fieldName }},
 filters: props.{{ fieldName }} ? undefined : get{{pascalCase fieldName }}Filters(),
   {{else}}
     {{#if this.reference}}
-filteredValue: current{{pascalCase fieldName }},
+
+filteredValue: current{{pascalCase fieldName ~}}
+{{!-- Numbers need to be converted to Strings --}}
+{{~#compare (stripBrackets fieldType) '!==' 'String' ~}}
+?.map(String)
+{{~/compare}},
 filters: props.{{ fieldName }} ? undefined : {{camelCase fieldName}}Filters,
     {{/if}}
   {{/if}}  
@@ -66,7 +71,15 @@ filters: props.{{ fieldName }} ? undefined : {{camelCase fieldName}}Filters,
 {{#if dataIndex}}'{{key}}.{{dataIndex}}'{{else}}{{ key }}{{/if}}: new{{pascalCase fieldName }},
 {{/compare}}
 {{#compare template '===' 'ui/handleTableChangeSetState'}}
-setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName}});
+setCurrent{{pascalCase fieldName}}(new{{pascalCase fieldName~}}
+{{!-- non string values need to be convert back to their orginal types --}}
+{{~#compare (stripBrackets fieldType) '===' 'Int' ~}}
+?.map((x) => parseInt(x, 10))
+{{~/compare~}}
+{{~#compare (stripBrackets fieldType) 'in' 'Float|Number' ~}}
+?.map((x) => parseInt(x, 10))
+{{~/compare~}}
+);
 {{/compare}}
 {{#compare template '===' 'ui/handleTableChangeSetQueryObjectKey'}}
 {{ key }}: new{{pascalCase fieldName}},

@@ -10,6 +10,7 @@ import ItemNotFound from '../../../components/ItemNotFound';
 import Loading from '../../../components/Loading';
 import PageBreadcrumbs, { Breadcrumb } from '../../../components/PageBreadcrumbs';
 import PageHeader from '../../../components/PageHeader';
+import ValueWrapper from '../../../components/ValueWrapper';
 
 import EditUsersRoleButton from './components/EditUsersRoleButton';
 
@@ -60,18 +61,35 @@ ViewUsersRolePage.propTypes = {
 
 const ViewUsersRoleFields = ({ usersRole }) => (
   <Descriptions bordered column={1}>
-    <Descriptions.Item label={i18n.__('UsersRoles.name')}>{usersRole.name}</Descriptions.Item>
-    <Descriptions.Item label={i18n.__('UsersRoles.created_at_utc')}>
-      <>{usersRole.createdAtUTC && <FormatDate timestamp={usersRole.createdAtUTC} />}</>
+    <Descriptions.Item label={i18n.__('UsersRoles.id')}>
+      <ValueWrapper name="_id" value={usersRole._id}>
+        {usersRole._id}
+      </ValueWrapper>
+    </Descriptions.Item>
+    <Descriptions.Item label={i18n.__('UsersRoles.name')}>
+      <ValueWrapper name="name" value={usersRole.name}>
+        {usersRole.name}
+      </ValueWrapper>
+    </Descriptions.Item>
+    <Descriptions.Item label={i18n.__('UsersRoles.created_at')}>
+      <ValueWrapper name="createdAt" value={usersRole.createdAt}>
+        <>{usersRole.createdAt && <FormatDate timestamp={usersRole.createdAt} />}</>
+      </ValueWrapper>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('UsersRoles.created_by')}>
-      {usersRole.createdBy?.fullName}
+      <ValueWrapper name="createdBy" value={usersRole.createdBy}>
+        {usersRole.createdBy?.fullName}
+      </ValueWrapper>
     </Descriptions.Item>
-    <Descriptions.Item label={i18n.__('UsersRoles.updated_at_utc')}>
-      <>{usersRole.updatedAtUTC && <FormatDate timestamp={usersRole.updatedAtUTC} />}</>
+    <Descriptions.Item label={i18n.__('UsersRoles.updated_at')}>
+      <ValueWrapper name="updatedAt" value={usersRole.updatedAt}>
+        <>{usersRole.updatedAt && <FormatDate timestamp={usersRole.updatedAt} />}</>
+      </ValueWrapper>
     </Descriptions.Item>
     <Descriptions.Item label={i18n.__('UsersRoles.updated_by')}>
-      {usersRole.updatedBy?.fullName}
+      <ValueWrapper name="updatedBy" value={usersRole.updatedBy}>
+        {usersRole.updatedBy?.fullName}
+      </ValueWrapper>
     </Descriptions.Item>
   </Descriptions>
 );

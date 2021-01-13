@@ -1,12 +1,21 @@
+import React from 'react';
 import { Meteor } from 'meteor/meteor';
-// import { Mongo } from 'meteor/mongo';
-// import { graphql } from 'graphql';
-// import { gql } from '@apollo/client';
-// import { getGraphqlSchema } from '../../../startup/server/graphql-api';
-// import {{pascalCase apiFolderName }} from '../{{pascalCase apiFolderName }}';
+import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router';
+import { MockedProvider } from '@apollo/client/testing';
 
-const {{camelCase name }} = (data, context) => {
-  
-};
+import '@testing-library/jest-dom/extend-expect';
+import '../../../tests/helpers/unit';
 
-export default {{camelCase name }};
+import {{name}} from '../{{name}}';
+
+test('loads page {{name}}', async () => {
+  const { queryAllByRole } = render(
+    // <MockedProvider mocks={[]}>
+    //   <MemoryRouter>
+    <{{name}} />,
+    //   </MemoryRouter>
+    // </MockedProvider>,
+  );
+  expect(queryAllByRole('heading')).toHaveLength(1);
+});

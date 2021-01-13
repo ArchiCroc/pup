@@ -130,6 +130,7 @@ name: Name
 source: User Database
 admin_user_updated: User Updated!
 admin_user_removed: User Deleted!
+search_placeholder: Search
 
 #admin edit profile
 show_password: Show Password

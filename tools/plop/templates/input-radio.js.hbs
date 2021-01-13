@@ -1,0 +1,12 @@
+{{#compare template '===' 'form/imports'}}
+import { RadioField } from 'uniforms-antd';
+{{/compare}}
+{{#compare template '===' 'form/render'}}
+<RadioField {{> input-props}}/>
+{{/compare}}
+{{#compare template '===' 'e2eTest/new'}}
+// @todo change Radio {{name}} field
+{{/compare}}
+{{#compare template '===' 'e2eTest/edit'}}
+// @todo change  Radio {{name}} field
+{{/compare}}

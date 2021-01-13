@@ -1,9 +1,9 @@
-import { loginAsUser, getPagePath } from '../../../tests/helpers/e2e';
+import { userRole, getPagePath } from '../../../tests/helpers/e2e';
 
 fixture('/login').page('http://localhost:3000/login');
 
-test('should allow users to login and see the home page', async (browser) => {
-  await loginAsUser(browser);
+test('should allow users to login and see the home page', async (t) => {
+  await t.useRole(userRole);
 
-  await browser.expect(getPagePath()).eql('/');
+  await t.expect(getPagePath()).eql('/');
 });

@@ -74,6 +74,7 @@ import { useParams } from 'react-router-dom';
 import Descriptions from 'antd/lib/descriptions';
 import PageBreadcrumbs, { Breadcrumb } from '{{uiPathOffset}}../components/PageBreadcrumbs';
 import PageHeader from '{{uiPathOffset}}../components/PageHeader';
+import ValueWrapper from '{{uiPathOffset}}../components/ValueWrapper';
 import Loading from '{{uiPathOffset}}../components/Loading';
 import ItemNotFound from '{{uiPathOffset}}../components/ItemNotFound';
   {{#compare hasFieldPermissions '||' schema.permissions.update}}
@@ -82,7 +83,7 @@ import hasRole from '{{uiPathOffset}}../../libs/hasRole';
   {{#each schema.fields ~}}
     {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
       {{#if this.detailTemplateFile}}
-{{> (lookup . 'detailTemplateFile' ) template='import' uiPathOffset=@root.uiPathOffset }} 
+{{> (lookup . 'detailTemplateFile' ) template='imports' uiPathOffset=@root.uiPathOffset }} 
       {{/if}}
     {{/compare~}}
   {{~/each}}
@@ -124,9 +125,9 @@ function View{{ pascalCase singularName }}Page({{#compare hasFieldPermissions '|
         <>
           <PageBreadcrumbs>
             <Breadcrumb to={{#quoteStringForJSX}}{{ convertParamsToTemplateVars uiRouteBasePath }}{{/quoteStringForJSX}}>{i18n.__('{{ pascalCase pluralName }}.{{ snakeCase shortSingularName }}_plural')}</Breadcrumb>
-            <Breadcrumb>{ {{~#if schema.singleItemTitle}}{{{schema.singleItemTitle}}}{{else}}{{~ camelCase singularName }}.{{labelKeyKey ~}}{{#if labelKey.dataIndex}}.{{labelKey.dataIndex}}{{/if}}{{/if~}} }</Breadcrumb>
+            <Breadcrumb>{ {{~#if schema.singleItemTitle}}{{{schema.singleItemTitle}}}{{else}}{{~ camelCase singularName }}.{{labelFieldKey ~}}{{#if labelKey.dataIndex}}.{{labelKey.dataIndex}}{{/if}}{{/if~}} }</Breadcrumb>
           </PageBreadcrumbs>
-          <PageHeader title={ {{~#if schema.singleItemTitle}}{{{schema.singleItemTitle}}}{{else}}{{~ camelCase singularName }}.{{labelKeyKey ~}}{{/if~}} } />
+          <PageHeader title={ {{~#if schema.singleItemTitle}}{{{schema.singleItemTitle}}}{{else}}{{~ camelCase singularName }}.{{labelFieldKey ~}}{{/if~}} } />
           { {{~ camelCase singularName }}{{#if schema.permissions.update}} && hasRole(roles, [{{#each schema.permissions.update }}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}]){{/if}} && (
             <p>
               <Edit{{ pascalCase singularName }}Button 
@@ -185,8 +186,10 @@ const View{{ pascalCase singularName }}Fields = ({{#prettyProps}}
   <Descriptions bordered column={1}>
 {{#each schema.fields ~}}
   {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
-    <Descriptions.Item label={i18n.__('{{ pascalCase @root.name }}.{{ snakeCase @key }}')} data-testid="{{ dashCase @key }}">
-      {{> renderValue name=(camelCase @root.singularName)}}
+    <Descriptions.Item label={i18n.__('{{ pascalCase @root.name }}.{{ snakeCase @key }}')}>
+      <ValueWrapper name="{{@key}}" value={ {{~ camelCase  @root.singularName }}.{{@key~}} }>
+        {{> renderValue name=(camelCase @root.singularName)}}
+      </ValueWrapper>
     </Descriptions.Item>
   {{/compare~}}
 {{~/each}}

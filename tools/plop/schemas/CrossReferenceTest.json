@@ -82,7 +82,7 @@
         "optional": true
       }
     },
-    "createdAtUTC": {
+    "createdAt": {
       "type": "DateTime",
       "showInTableView": "Created At"
     },
