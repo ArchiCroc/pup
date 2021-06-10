@@ -12,18 +12,23 @@ import AutoForm from '/imports/ui/components/AutoForm';
 import CrossReferenceSearchField from '/imports/ui/components/CrossReferenceSearchField';
 import ListInlineItemField from '/imports/ui/components/ListInlineItemField';
 import SelectField from '/imports/ui/components/SelectField';
+import { ErrorReport } from 'imports/common/ErrorReports/interfaces';
 
 /* #### PLOP_IMPORTS_START #### */
 /* #### PLOP_IMPORTS_END #### */
 
-import { errorReports as errorReportsQuery } from '../queries/ErrorReports.gql';
-import { saveErrorReport as saveErrorReportMutation } from '../mutations/ErrorReports.gql';
+import { errorReports as errorReportsQuery } from '../graphql/queries.gql';
+import { saveErrorReport as saveErrorReportMutation } from '../graphql/mutations.gql';
 
 import ErrorReportSchema from '/imports/common/ErrorReports/schemas/error-report';
 
 import StyledErrorReportEditor from './StyledErrorReportEditor';
 
-function ErrorReportEditor({ doc }) {
+interface ErrorReportEditorProps {
+  doc: ErrorReport
+}
+
+function ErrorReportEditor({ doc }: ErrorReportEditorProps) {
   const history = useHistory();
 
   const [saveErrorReport] = useMutation(saveErrorReportMutation, {
@@ -38,12 +43,14 @@ function ErrorReportEditor({ doc }) {
     refetchQueries: [{ query: errorReportsQuery }],
   });
 
-  function handleSubmit(form) {
+  function handleSubmit(form: any) {
     const cleanForm = ErrorReportSchema.clean(form);
     saveErrorReport({
       variables: { errorReport: cleanForm },
     });
   }
+
+  //const Form = AutoForm<ErrorReport>();
 
   return (
     <StyledErrorReportEditor>

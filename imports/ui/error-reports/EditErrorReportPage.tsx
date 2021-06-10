@@ -12,12 +12,16 @@ import PageHeader from '/imports/ui/components/PageHeader';
 import ErrorReportEditor from './components/ErrorReportEditor';
 import RemoveErrorReportButton from './components/RemoveErrorReportButton';
 
-import { editErrorReport as editErrorReportQuery } from './queries/ErrorReports.gql';
+import { editErrorReport as editErrorReportQuery } from './graphql/queries.gql';
 
 import StyledErrorReportsPage from './StyledErrorReportsPage';
 
-function EditErrorReportPage({ roles }) {
-  const { _id } = useParams();
+interface EditErrorReportPageProps {
+  roles: string[]
+}
+
+function EditErrorReportPage({ roles }: EditErrorReportPageProps) {
+  const { _id } = useParams<{_id: string}>();
 
   const { loading, data: { errorReport = undefined } = {} } = useQuery(editErrorReportQuery, {
     variables: { _id },
@@ -55,7 +59,7 @@ function EditErrorReportPage({ roles }) {
 }
 
 EditErrorReportPage.propTypes = {
-  roles: PropTypes.array.isRequired,
+  
 };
 
 export default EditErrorReportPage;

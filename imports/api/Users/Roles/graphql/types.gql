@@ -1,8 +1,3 @@
-# scalar DateTime
-# scalar Time
-# scalar Date
-# scalar ObjectID
-
 type UsersRole {
   _id: String
   name: String

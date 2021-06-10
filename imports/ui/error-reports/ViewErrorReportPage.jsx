@@ -14,7 +14,7 @@ import ValueWrapper from '/imports/ui/components/ValueWrapper';
 
 import EditErrorReportButton from './components/EditErrorReportButton';
 
-import { errorReport as errorReportQuery } from './queries/ErrorReports.gql';
+import { errorReport as errorReportQuery } from './graphql/queries.gql';
 
 import StyledErrorReportsPage from './StyledErrorReportsPage';
 

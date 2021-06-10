@@ -7,8 +7,8 @@ import message from 'antd/lib/message';
 import modal from 'antd/lib/modal';
 import { useHistory } from 'react-router-dom';
 
-import { errorReports as errorReportsQuery } from '../queries/ErrorReports.gql';
-import { removeErrorReport as removeErrorReportMutation } from '../mutations/ErrorReports.gql';
+import { errorReports as errorReportsQuery } from '../graphql/queries.gql';
+import { removeErrorReport as removeErrorReportMutation } from '../graphql/mutations.gql';
 
 function RemoveErrorReportButton({ _id, title, ...props }) {
   const history = useHistory();

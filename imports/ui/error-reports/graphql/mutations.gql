@@ -1,4 +1,4 @@
-#import "../fragments/ErrorReports.gql"
+#import "./fragments.gql"
 
 mutation saveErrorReport($errorReport: ErrorReportInput!) {
   saveErrorReport(errorReport: $errorReport) {

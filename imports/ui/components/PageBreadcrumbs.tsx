@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
 import AntdBreadcrumb from 'antd/lib/breadcrumb';
@@ -15,7 +14,12 @@ import AntdBreadcrumb from 'antd/lib/breadcrumb';
 //   }
 // }
 
-function BreadcrumbItem({ to, children, ...props }) {
+interface BreadcrumbItemProps {
+  to?: string
+  children: React.ReactNode
+}
+
+function BreadcrumbItem({ to, children, ...props }: BreadcrumbItemProps) {
   return (
     <AntdBreadcrumb.Item key={to} {...props}>
       {to ? <Link to={to}>{children}</Link> : children}
@@ -26,18 +30,13 @@ function BreadcrumbItem({ to, children, ...props }) {
 // get mother element to accept this custom child element
 BreadcrumbItem.__ANT_BREADCRUMB_ITEM = true; // eslint-disable-line
 
-BreadcrumbItem.defaultProps = {
-  to: undefined,
-};
-
-BreadcrumbItem.propTypes = {
-  to: PropTypes.string,
-  children: PropTypes.node.isRequired,
-};
-
 export const Breadcrumb = BreadcrumbItem;
 
-export default function PageBreadcrumbs({ children }) {
+interface PageBreadcrumbsProps {
+  children: React.ReactNode
+}
+
+export default function PageBreadcrumbs({ children = null }: PageBreadcrumbsProps) {
   return (
     <AntdBreadcrumb>
       <Breadcrumb to="/">{i18n.__('home')}</Breadcrumb>
@@ -45,9 +44,4 @@ export default function PageBreadcrumbs({ children }) {
     </AntdBreadcrumb>
   );
 }
-PageBreadcrumbs.defaultProps = {
-  children: undefined,
-};
-PageBreadcrumbs.propTypes = {
-  children: PropTypes.node,
-};
+

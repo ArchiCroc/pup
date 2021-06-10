@@ -13,7 +13,7 @@ import NewErrorReportButton from './NewErrorReportButton';
 
 // import StyledErrorReportsTable from './StyledErrorReportsTable';
 
-import { errorReports as errorReportsQuery } from '../queries/ErrorReports.gql';
+import { errorReports as errorReportsQuery } from '../graphql/queries.gql';
 
 function getLevelFilters() {
   const choices = [0, 1, 2, 3, 4, 5];

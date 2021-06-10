@@ -1,4 +1,4 @@
-#import "../fragments/ErrorReports.gql"
+#import "./fragments.gql"
 
 query errorReports(
   $_ids: [ObjectID]
