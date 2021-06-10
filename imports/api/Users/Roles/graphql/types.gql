@@ -1,3 +1,8 @@
+# scalar DateTime
+# scalar Time
+# scalar Date
+# scalar ObjectID
+
 type UsersRole {
   _id: String
   name: String
@@ -17,4 +22,22 @@ type UsersRoles {
 input UsersRoleInput {
   _id: String
   name: String!
+}
+
+type Query {
+  usersRoles(
+    _ids: [String]
+    page: Int
+    pageSize: Int
+    sort: String
+    order: String
+    search: String
+  ): UsersRoles
+  myUsersRoles: [UsersRole]
+  usersRole(_id: String, name: String): UsersRole
+}
+
+type Mutation {
+  saveUsersRole(usersRole: UsersRoleInput): UsersRole
+  removeUsersRole(_id: String!): UsersRole
 }

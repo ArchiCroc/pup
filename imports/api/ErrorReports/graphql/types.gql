@@ -28,3 +28,22 @@ input ErrorReportInput {
   stack: [String]
   reactStack: [String]
 }
+
+type Query {
+  errorReports(
+    _ids: [ObjectID]
+    page: Int
+    pageSize: Int
+    sort: String
+    order: String
+    search: String
+    level: [Int]
+  ): ErrorReports
+  myErrorReports: [ErrorReport]
+  errorReport(_id: ObjectID): ErrorReport
+}
+
+type Mutation {
+  saveErrorReport(errorReport: ErrorReportInput): ErrorReport
+  removeErrorReport(_id: ObjectID!): ErrorReport
+}

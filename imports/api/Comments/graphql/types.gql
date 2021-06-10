@@ -6,3 +6,12 @@ type Comment {
   comment: String
   createdAt: DateTime
 }
+
+type Query {
+  comments(documentId: String!): [Comment]
+}
+
+type Mutation {
+  addComment(documentId: String!, comment: String!): Comment
+  removeComment(commentId: String!): Comment
+}

@@ -1,70 +1,93 @@
-  # @todo I think this can be removed now
-  type UserRole {
-    _id: String
-    name: String
-    inRole: Boolean
-  }
+# @todo I think this can be removed now
+type UserRole {
+  _id: String
+  name: String
+  inRole: Boolean
+}
 
-  input ProfileInput {
-    firstName: String
-    lastName: String
-  }
+input ProfileInput {
+  firstName: String
+  lastName: String
+}
 
-  input UserSettingsGDPRInput {
-    canSendMarketingEmails: Boolean
-    #### PLOP_USER_SETTINGS_GDPR_INPUT_START ####
-    #### PLOP_USER_SETTINGS_GDPR_INPUT_END ####
-  }
+input UserSettingsGDPRInput {
+  canSendMarketingEmails: Boolean
+  #### PLOP_USER_SETTINGS_GDPR_INPUT_START ####
+  #### PLOP_USER_SETTINGS_GDPR_INPUT_END ####
+}
 
-  input UserSettingsInput {
-    gdpr: UserSettingsGDPRInput
-    #### PLOP_USER_SETTINGS_INPUT_START ####
-    #### PLOP_USER_SETTINGS_INPUT_END ####
-  }
+input UserSettingsInput {
+  gdpr: UserSettingsGDPRInput
+  #### PLOP_USER_SETTINGS_INPUT_START ####
+  #### PLOP_USER_SETTINGS_INPUT_END ####
+}
 
-  type UserSettingsGDPR {
-    canSendMarketingEmails: Boolean
-    #### PLOP_USER_SETTINGS_GDPR_TYPE_START ####
-    #### PLOP_USER_SETTINGS_GDPR_TYPE_END ####
-  }
+type UserSettingsGDPR {
+  canSendMarketingEmails: Boolean
+  #### PLOP_USER_SETTINGS_GDPR_TYPE_START ####
+  #### PLOP_USER_SETTINGS_GDPR_TYPE_END ####
+}
 
-  type UserSettings {
-    gdpr: UserSettingsGDPR
-    #### PLOP_USER_SETTINGS_TYPE_START ####
-    #### PLOP_USER_SETTINGS_TYPE_END ####
-  }
+type UserSettings {
+  gdpr: UserSettingsGDPR
+  #### PLOP_USER_SETTINGS_TYPE_START ####
+  #### PLOP_USER_SETTINGS_TYPE_END ####
+}
 
-  type Profile {
-    firstName: String
-    lastName: String
-  }
+type Profile {
+  firstName: String
+  lastName: String
+}
 
-  input UserInput {
-    _id: String,
-    email: String,
-    password: String,
-    profile: ProfileInput,
-    roles: [String],
-    settings:  UserSettingsInput 
-  }
+input UserInput {
+  _id: String,
+  email: String,
+  password: String,
+  profile: ProfileInput,
+  roles: [String],
+  settings:  UserSettingsInput 
+}
 
-  type User {
-    _id: String
-    profile: Profile
-    username: String
-    emailAddress: String
-    oAuthProvider: String
-    roles: [String]
-    settings: UserSettings 
-    fullName: String
-  }
+type User {
+  _id: String
+  profile: Profile
+  username: String
+  emailAddress: String
+  oAuthProvider: String
+  roles: [String]
+  settings: UserSettings 
+  fullName: String
+}
 
-  type Users {
-    total: Int
-    users: [User]
-  }
+type Users {
+  total: Int
+  users: [User]
+}
 
-  type UserDataExport {
-    zip: String
-  }
+type UserDataExport {
+  zip: String
+}
 
+type Query {
+  user(_id: String): User
+  resolveUser(userId: String): User
+  users(
+    _ids: [String]
+    page: Int
+    pageSize: Int
+    sort: String
+    order: String
+    search: String
+    role: [String]
+  ): Users
+  resolveUsers(_ids: [String], sort: String, order: String): Users
+  exportUserData: UserDataExport
+}
+
+type Mutation {
+  updateUser(user: UserInput): User
+  updateUserSettings(_id: String, settings: UserSettingsInput): User
+  removeUser(_id: String): User
+  sendVerificationEmail: User
+  sendWelcomeEmail: User
+}
