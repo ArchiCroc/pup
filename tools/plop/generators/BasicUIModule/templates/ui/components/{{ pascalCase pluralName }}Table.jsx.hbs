@@ -5,14 +5,14 @@ import { useHistory } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/client';
   {{#if isSearchable}}
-import SearchInput from '{{uiPathOffset}}../../components/SearchInput';
+import SearchInput from '/imports/ui/components/SearchInput';
   {{/if}}
 import Table from 'antd/lib/table';
 import New{{ pascalCase singularName }}Button from './New{{ pascalCase singularName }}Button';
   {{#if schema.permissions.create}}
-import hasRole from '{{uiPathOffset}}../../../libs/hasRole';
+import hasRole from '/imports/common/libs/hasRole';
   {{/if}}
-import useQueryStringObject from '{{uiPathOffset}}../../../libs/hooks/useQueryStringObject';
+import useQueryStringObject from '/imports/ui/libs/hooks/useQueryStringObject';
   {{#each schema.fields ~}}
     {{#compare this.filterable '&&' this.showInTableView}}
 {{> (lookup . 'filterTemplateFile' ) template='ui/imports' uiPathOffset=(concat @root.uiPathOffset "../")}}

@@ -75,9 +75,9 @@ import { useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
-import AutoForm from '{{uiPathOffset}}../../components/AutoForm';
+import AutoForm from '/imports/ui/components/AutoForm';
   {{#if hasFieldPermissions }}
-import hasRole from '{{uiPathOffset}}../../../libs/hasRole';
+import hasRole from '/imports/common/libs/hasRole';
   {{/if}}
 {{> inputImports schema}}
   {{#if hasListField}}

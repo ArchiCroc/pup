@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import AutoForm from '../../components/AutoForm';
+import AutoForm from '/imports/ui/components/AutoForm';
 import { AutoField, LongTextField } from 'uniforms-antd';
 import i18n from 'meteor/universe:i18n';
 import { useMutation } from '@apollo/client';
@@ -17,7 +17,7 @@ import LockIcon from '@ant-design/icons/LockOutlined';
 import UnlockIcon from '@ant-design/icons/UnlockOutlined';
 import LockFilledIcon from '@ant-design/icons/LockFilled';
 import UnlockFilledIcon from '@ant-design/icons/UnlockFilled';
-import Dropdown from '../../components/Dropdown';
+import Dropdown from '/imports/ui/components/Dropdown';
 
 import { edit{{ pascalCase singularName }} as edit{{ pascalCase singularName }}Query, {{ camelCase singularName }} } from '../queries/{{ pascalCase pluralName }}.gql';
 import {

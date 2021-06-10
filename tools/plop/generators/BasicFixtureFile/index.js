@@ -43,7 +43,7 @@ module.exports = {
         type: 'append',
         path: 'startup/server/fixtures.js',
         pattern: '/* #### PLOP_IMPORTS_START #### */',
-        template: `import {{camelCase name}}Fixtures from '../../tests/fixtures/{{camelCase name}}';`,
+        template: `import {{camelCase name}}Fixtures from '/tests/fixtures/{{camelCase name}}';`,
         data,
       },
       {

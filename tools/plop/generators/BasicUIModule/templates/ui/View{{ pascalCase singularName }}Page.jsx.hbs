@@ -78,7 +78,7 @@ import ValueWrapper from '{{uiPathOffset}}../components/ValueWrapper';
 import Loading from '{{uiPathOffset}}../components/Loading';
 import ItemNotFound from '{{uiPathOffset}}../components/ItemNotFound';
   {{#compare hasFieldPermissions '||' schema.permissions.update}}
-import hasRole from '{{uiPathOffset}}../../libs/hasRole';
+import hasRole from '/imports/common/libs/hasRole';
   {{/compare}}
   {{#each schema.fields ~}}
     {{#compare this.input '!==' 'Hidden' '&&' this.showInDetailView '!==' false}}
