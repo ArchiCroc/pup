@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { generatePath } from 'react-router';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams, useRouteMatch } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/client';
 import Tabs from 'antd/lib/tabs';
@@ -14,20 +13,26 @@ import NotFound from '../../pages/NotFoundPage';
 
 import StyledAdminUser from './StyledAdminUser';
 
-import { user as userQuery } from '../queries/Users.gql';
+interface AdminUserParams {
+  _id: string;
+  tab?: string;
+}
 
-function AdminUser({ match }) {
+import { USER_QUERY } from '../graphql/queries.gql';
+import { User } from '/imports/common/Users/interfaces';
+function AdminUser() {
   const history = useHistory();
   const location = useLocation();
-  const { _id, tab = 'profile' } = useParams();
-  const { loading, data: { user } = {} } = useQuery(userQuery, {
+  const match = useRouteMatch();
+  const { _id, tab = 'profile' } = useParams<AdminUserParams>();
+  const { loading, data: { user } = {} } = useQuery<{ user: User }>(USER_QUERY, {
     fetchPolicy: 'no-cache',
     variables: {
       _id,
     },
   });
 
-  function handleTabClick(key) {
+  function handleTabClick(key: string) {
     const path = generatePath(match.path, { _id, tab: key });
     history.push(path);
   }
@@ -40,7 +45,7 @@ function AdminUser({ match }) {
     return <NotFound />;
   }
 
-  const { fullName, profile: { firstName, lastName } = {}, username = 'unknown' } = user;
+  const { fullName, /*profile: { firstName, lastName } = {},*/ username = 'unknown' } = user;
 
   console.log(location);
 
@@ -66,9 +71,5 @@ function AdminUser({ match }) {
     </StyledAdminUser>
   );
 }
-
-AdminUser.propTypes = {
-  match: PropTypes.object.isRequired,
-};
 
 export default AdminUser;

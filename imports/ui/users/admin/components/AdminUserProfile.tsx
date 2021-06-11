@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import i18n from 'meteor/universe:i18n';
 import { useMutation } from '@apollo/client';
 import Row from 'antd/lib/row';
@@ -12,42 +12,51 @@ import AutoForm from '/imports/ui/components/AutoForm';
 import AdminPasswordField from './AdminPasswordField';
 import CrossReferenceSelectField from '/imports/ui/components/CrossReferenceSelectField';
 import AdminUserProfileSchema from '/imports/common/Users/schemas/admin-profile';
+import { User, UserInput } from '/imports/common/Users/interfaces';
 
-import { user as userQuery, users as usersQuery } from '../../queries/Users.gql';
+import { USER_QUERY, USERS_QUERY } from '../../graphql/queries.gql';
 import {
-  updateUser as updateUserMutation,
-  removeUser as removeUserMutation,
-} from '../../mutations/Users.gql';
+  UPDATE_USER_MUTATION,
+  REMOVE_USER_MUTATION,
+} from '../../graphql/mutations.gql';
 
-function AdminUserProfile({ user }) {
-  const formRef = useRef();
 
-  const [updateUser] = useMutation(updateUserMutation, {
+interface AdminUserProfileProps {
+  user: User;
+};
+
+
+function AdminUserProfile({ user }: AdminUserProfileProps) {
+  const formRef = useRef<HTMLFormElement>();
+  const history = useHistory();
+
+  const [updateUser] = useMutation(UPDATE_USER_MUTATION, {
     onCompleted: () => {
       message.success(i18n.__('Users.admin_user_updated'));
     },
-    refetchQueries: [{ query: userQuery, variables: { _id: user._id } }],
+    refetchQueries: [{ query: USER_QUERY, variables: { _id: user._id } }],
   });
-  const [removeUser] = useMutation(removeUserMutation, {
+  const [removeUser] = useMutation(REMOVE_USER_MUTATION, {
     onCompleted: () => {
+      formRef?.current?.change('password', '')
       message.success(i18n.__('Users.admin_user_removed'));
       history.push('/admin/users');
     },
-    refetchQueries: [{ query: usersQuery }],
+    refetchQueries: [{ query: USERS_QUERY }],
   });
 
-  function handleSubmit(form) {
+  function handleSubmit(model: object) {
     const isPasswordUser = user && !user.oAuthProvider;
 
-    const cleanForm = AdminUserProfileSchema.clean(form);
+    const cleanForm = AdminUserProfileSchema.clean(model);
 
     const password = isPasswordUser ? cleanForm.password : null;
 
-    let cleanDoc;
+    let cleanDoc: UserInput;
 
     if (isPasswordUser) {
       cleanDoc = {
-        email: cleanForm.emailAddress,
+        emailAddress: cleanForm.emailAddress,
         password,
         profile: {
           firstName: cleanForm.firstName,
@@ -56,9 +65,7 @@ function AdminUserProfile({ user }) {
 
         roles: cleanForm.roles,
       };
-    }
-
-    if (!isPasswordUser) {
+    } else {
       cleanDoc = {
         roles: cleanForm.roles,
       };
@@ -68,7 +75,9 @@ function AdminUserProfile({ user }) {
       cleanDoc._id = user._id;
     }
 
-    updateUser({ variables: { user: cleanDoc } }, () => formRef.current.change('password', ''));
+    updateUser({ variables: { user: cleanDoc } });
+
+
   }
 
   function handleDeleteUser() {
@@ -83,17 +92,18 @@ function AdminUserProfile({ user }) {
 
   const model = user
     ? {
-        firstName: user.profile.firstName,
-        lastName: user.profile.lastName,
-        username: user.username,
-        emailAddress: user.emailAddress,
-        roles: user.roles,
-      }
+      firstName: user?.profile?.firstName,
+      lastName: user?.profile?.lastName,
+      username: user.username,
+      emailAddress: user.emailAddress,
+      roles: user.roles,
+    }
     : {};
 
   return (
     <div className="AdminUserProfile">
       <AutoForm
+        name="admin-user-profile"
         schema={AdminUserProfileSchema}
         model={model}
         onSubmit={handleSubmit}
@@ -105,10 +115,10 @@ function AdminUserProfile({ user }) {
               {user && user.profile && (
                 <Row gutter={25}>
                   <Col xs={12}>
-                    <TextField name="firstName" placeholder={i18n.__('Users.first_name')} />
+                    <TextField name="firstName" />
                   </Col>
                   <Col xs={12}>
-                    <TextField name="lastName" placeholder={i18n.__('Users.last_name')} />
+                    <TextField name="lastName" />
                   </Col>
                 </Row>
               )}
@@ -117,21 +127,20 @@ function AdminUserProfile({ user }) {
                   <Col xs={24}>
                     <TextField
                       name="emailAddress"
-                      disabled={user && user.oAuthProvider}
-                      placeholder={i18n.__('Users.email_address')}
+                      disabled={!!(user && user.oAuthProvider)}
                     />
                   </Col>
                 </Row>
               )}
               <Row>
                 <Col xs={24}>
-                  <TextField name="emailAddress" placeholder={i18n.__('Users.email_address')} />
+                  <TextField name="emailAddress" />
                 </Col>
               </Row>
               <Row>
                 <Col xs={24}>
                   <CrossReferenceSelectField
-                    transform={(value) => value}
+                    transform={(value: any) => value}
                     name="roles"
                     options={[
                       { label: 'User', value: 'user' },
@@ -144,7 +153,7 @@ function AdminUserProfile({ user }) {
               {user && !user.oAuthProvider && (
                 <Row>
                   <Col xs={24}>
-                    <AdminPasswordField name="password" placeholder={i18n.__('Users.password')} />
+                    <AdminPasswordField name="password" />
                   </Col>
                 </Row>
               )}
@@ -152,7 +161,7 @@ function AdminUserProfile({ user }) {
                 {i18n.__(user ? 'Users.save' : 'Users.create_user')}
               </Button>
               {user && (
-                <Button type="danger" className="pull-right" onClick={handleDeleteUser}>
+                <Button danger className="pull-right" onClick={handleDeleteUser}>
                   {i18n.__('Users.delete_user')}
                 </Button>
               )}
@@ -163,9 +172,5 @@ function AdminUserProfile({ user }) {
     </div>
   );
 }
-
-AdminUserProfile.propTypes = {
-  user: PropTypes.object.isRequired,
-};
 
 export default AdminUserProfile;

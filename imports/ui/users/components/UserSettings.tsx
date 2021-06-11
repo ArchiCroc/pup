@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { useMutation } from '@apollo/client';
 import { BoolField, SubmitField } from 'uniforms-antd';
@@ -7,9 +6,11 @@ import message from 'antd/lib/message';
 import AutoForm from '/imports/ui/components/AutoForm';
 import UserSettingsSchema from '/imports/common/Users/schemas/user-settings';
 import StyledUserSettings from './StyledUserSettings';
-import { user as userQuery } from '../queries/Users.gql';
+import { User, UserSettings } from '/imports/common/Users/interfaces';
 
-import { updateUserSettings as updateUserSettingsMutation } from '../mutations/Users.gql';
+import { USER_QUERY } from '../graphql/queries.gql';
+import { UPDATE_USER_SETTINGS_MUTATION } from '../graphql/mutations.gql';
+
 
 /* #### PLOP_IMPORTS_START #### */
 /* #### PLOP_IMPORTS_END #### */
@@ -18,19 +19,24 @@ function renderSubmitButton() {
   return <SubmitField value={i18n.__('Users.user_settings_submit')} />;
 }
 
-const UserSettings = ({ user }) => {
-  const [updateUserSettings] = useMutation(updateUserSettingsMutation, {
+interface UserSettingsProps {
+  isAdmin?: boolean;
+  user: User,
+};
+
+const UserSettings = ({ user, isAdmin = false }: UserSettingsProps) => {
+  const [updateUserSettings] = useMutation(UPDATE_USER_SETTINGS_MUTATION, {
     onCompleted: () => {
       message.success(i18n.__('Users.user_settings_save_success'));
     },
     onError: (error) => {
       message.error(error.message);
     },
-    refetchQueries: [{ query: userQuery, variables: { _id: user._id } }],
+    refetchQueries: [{ query: USER_QUERY, variables: { _id: user._id } }],
   });
 
-  function handleSubmit(doc) {
-    const cleanDoc = UserSettingsSchema.clean(doc);
+  function handleSubmit(doc: object) {
+    const cleanDoc: UserSettings = UserSettingsSchema.clean(doc);
     updateUserSettings({
       variables: {
         _id: user._id,
@@ -42,6 +48,7 @@ const UserSettings = ({ user }) => {
   return (
     <StyledUserSettings className="UserSettings">
       <AutoForm
+        name="user-settings"
         model={user.settings}
         schema={UserSettingsSchema}
         onSubmit={handleSubmit}
@@ -55,16 +62,6 @@ const UserSettings = ({ user }) => {
       </AutoForm>
     </StyledUserSettings>
   );
-};
-
-UserSettings.defaultProps = {
-  isAdmin: false,
-};
-
-UserSettings.propTypes = {
-  isAdmin: PropTypes.bool,
-  user: PropTypes.object.isRequired,
-  // updateUser: PropTypes.func,
 };
 
 export default UserSettings;

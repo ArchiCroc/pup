@@ -6,13 +6,13 @@ import { useMutation } from '@apollo/client';
 import message from 'antd/lib/message';
 import Alert from '/imports/ui/components/Alert';
 
-import { sendWelcomeEmail as sendWelcomeEmailMutation } from './mutations/Users.gql';
+import { SEND_WELCOME_EMAIL_MUTATION } from './graphql/mutations.gql';
 
 function VerifyEmailPage() {
   const history = useHistory();
-  const { token } = useParams();
-  const [error, setError] = useState(null);
-  const [sendWelcomeEmail] = useMutation(sendWelcomeEmailMutation);
+  const { token } = useParams<{ token: string }>();
+  const [error, setError] = useState<string | null>(null);
+  const [sendWelcomeEmail] = useMutation(SEND_WELCOME_EMAIL_MUTATION);
 
   useEffect(() => {
     Accounts.verifyEmail(token, (error2) => {

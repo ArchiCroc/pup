@@ -12,7 +12,8 @@ import AutoForm from '/imports/ui/components/AutoForm';
 import CrossReferenceSearchField from '/imports/ui/components/CrossReferenceSearchField';
 import ListInlineItemField from '/imports/ui/components/ListInlineItemField';
 import SelectField from '/imports/ui/components/SelectField';
-import { ErrorReport } from 'imports/common/ErrorReports/interfaces';
+import { ErrorReport } from '/imports/common/ErrorReports/interfaces';
+import { RoleSlug } from '/imports/common/Users/interfaces';
 
 /* #### PLOP_IMPORTS_START #### */
 /* #### PLOP_IMPORTS_END #### */
@@ -25,7 +26,8 @@ import ErrorReportSchema from '/imports/common/ErrorReports/schemas/error-report
 import StyledErrorReportEditor from './StyledErrorReportEditor';
 
 interface ErrorReportEditorProps {
-  doc: ErrorReport
+  doc?: ErrorReport
+  roles?: RoleSlug[]
 }
 
 function ErrorReportEditor({ doc }: ErrorReportEditorProps) {

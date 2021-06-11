@@ -17,7 +17,7 @@ import RecoverPasswordSchema from '/imports/common/Users/schemas/recover-passwor
 function RecoverPasswordPage() {
   const history = useHistory();
 
-  const handleSubmit = (form) => {
+  const handleSubmit = (form: object) => {
     const cleanForm = RecoverPasswordSchema.clean(form);
     const email = cleanForm.emailAddress;
 

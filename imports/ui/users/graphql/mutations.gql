@@ -1,0 +1,31 @@
+#import "./fragments.gql"
+
+mutation UPDATE_USER_MUTATION($user: UserInput) {
+  updateUser(user: $user) {
+    ...UserAttributes
+  }
+}
+
+mutation REMOVE_USER_MUTATION($_id: String) {
+  removeUser(_id: $_id) {
+    _id
+  }
+}
+
+mutation SEND_VERIFICATION_EMAIL_MUTATION {
+  sendVerificationEmail {
+    _id
+  }
+}
+
+mutation SEND_WELCOME_EMAIL_MUTATION {
+  sendWelcomeEmail {
+    _id
+  }
+}
+
+mutation UPDATE_USER_SETTINGS_MUTATION($_id: String, $settings: UserSettingsInput) {
+  updateUserSettings(_id: $_id, settings: $settings) {
+    ...UserAttributes
+  }
+}

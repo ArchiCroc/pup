@@ -1,8 +1,15 @@
 import React, { useMemo } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { gql, useQuery, QueryHookOptions } from '@apollo/client';
 
-function useQueryForFilters(props) {
-  const { query, labelKey, valueKey, edges } = props;
+interface useQueryForFiltersProps extends Omit<QueryHookOptions, "query"> {
+  query: string;
+  labelKey: string; 
+  valueKey: string; 
+  edges?: string;
+}
+
+function useQueryForFilters(props: useQueryForFiltersProps) {
+  const { query, labelKey, valueKey, edges, ...queryHookOptions } = props;
   const gqlQuery = useMemo(() => {
     return gql`
         query selectData($_ids: [ObjectID]) {
@@ -17,7 +24,7 @@ function useQueryForFilters(props) {
         }`;
   }, [query, labelKey, valueKey]);
 
-  const { loading, error, data } = useQuery(gqlQuery, props);
+  const { loading, error, data } = useQuery(gqlQuery, queryHookOptions);
   // eslint-disable-next-line
   const edgeData = data ? (edges ? data[query][edges] : data[query]) : [];
 

@@ -5,14 +5,32 @@ import { mergeTypeDefs, mergeResolvers } from '@graphql-tools/merge';
 import { ObjectID } from '/imports/api/libs/graphql/GraphQLObjectIdScalar';
 
 /* #### PLOP_IMPORTS_START #### */
+
+/* #### USER_ROLES_IMPORTS_START #### */
 import UsersRolesTypes from '/imports/api/Users/Roles/graphql/types.gql';
-import UsersTypes from '/imports/api/Users/graphql/types.gql';
-import CommentsTypes from '/imports/api/Comments/graphql/types.gql';
-import ErrorReportsTypes from '/imports/api/ErrorReports/graphql/types.gql';
 import UsersRolesResolvers from '/imports/api/Users/Roles/graphql/resolvers';
+/* #### USER_ROLES_IMPORTS_END #### */
+
+/* #### USERS_IMPORTS_START #### */
+import UsersTypes from '/imports/api/Users/graphql/types.gql';
 import UsersResolvers from '/imports/api/Users/graphql/resolvers';
+/* #### USERS_IMPORTS_END #### */
+
+/* #### OAUTH_IMPORTS_START #### */
+import OAuthTypes from '/imports/api/Users/OAuth/graphql/types.gql';
+import OAuthResolvers from '/imports/api/Users/OAuth/graphql/resolvers';
+/* #### OAUTH_IMPORTS_END #### */
+
+/* #### COMMENTS_IMPORTS_START #### */
+import CommentsTypes from '/imports/api/Comments/graphql/types.gql';
 import CommentsResolvers from '/imports/api/Comments/graphql/resolvers';
+/* #### COMMENTS_REPORTS_IMPORTS_END #### */
+
+/* #### ERROR_REPORTS_IMPORTS_START #### */
+import ErrorReportsTypes from '/imports/api/ErrorReports/graphql/types.gql';
 import ErrorReportsResolvers from '/imports/api/ErrorReports/graphql/resolvers';
+/* #### ERROR_REPORTS_IMPORTS_END #### */
+
 /* #### PLOP_IMPORTS_END #### */
 
 const commonTypes = gql`
@@ -46,6 +64,7 @@ const typeDefs = mergeTypeDefs([
   commonTypes,
   UsersRolesTypes,
   UsersTypes,
+  OAuthTypes,
   CommentsTypes,
   ErrorReportsTypes,
   /* #### PLOP_TYPES_END #### */
@@ -55,6 +74,7 @@ const resolvers = mergeResolvers([
   commonResolvers,
   UsersRolesResolvers,
   UsersResolvers,
+  OAuthResolvers,
   CommentsResolvers,
   ErrorReportsResolvers,
   /* #### PLOP_RESOLVERS_END #### */

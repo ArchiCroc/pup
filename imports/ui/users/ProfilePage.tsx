@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { generatePath } from 'react-router';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import base64ToBlob from 'b64-to-blob';
 import FileSaver from 'file-saver';
 import { Meteor } from 'meteor/meteor';
@@ -20,37 +19,39 @@ import AutoForm from '/imports/ui/components/AutoForm';
 import PageHeader from '/imports/ui/components/PageHeader';
 import AccountPageFooter from './components/AccountPageFooter';
 import UserSettings from './components/UserSettings';
-import { user as userQuery, exportUserData as exportUserDataQuery } from './queries/Users.gql';
+import { USER_QUERY, EXPORT_USER_DATA_QUERY } from './graphql/queries.gql';
 import {
-  updateUser as updateUserMutation,
-  removeUser as removeUserMutation,
-} from './mutations/Users.gql';
+  UPDATE_USER_MUTATION,
+  REMOVE_USER_MUTATION,
+} from './graphql/mutations.gql';
 import ProfileSchema from '/imports/common/Users/schemas/profile';
+import { User } from '/imports/common/Users/interfaces';
 import StyledProfilePage from './StyledProfilePage';
 
-function ProfilePage({ match }) {
+function ProfilePage() {
   const history = useHistory();
-  const { _id } = useParams();
+  const match = useRouteMatch();
+  const { _id, tab } = useParams<{ _id: string, tab: string }>();
 
   const client = useApolloClient();
 
-  const { loading, data: { user } = {} } = useQuery(userQuery, {
+  const { loading, data: { user } = {} } = useQuery(USER_QUERY, {
     fetchPolicy: 'no-cache',
     variables: {
       _id,
     },
   });
 
-  const [updateUser] = useMutation(updateUserMutation, {
+  const [updateUser] = useMutation(UPDATE_USER_MUTATION, {
     onCompleted: () => {
       message.success(i18n.__('Users.profile_save_success'));
     },
     onError: (error) => {
       message.error(error.message);
     },
-    refetchQueries: [{ query: userQuery, variables: { _id } }],
+    refetchQueries: [{ query: USER_QUERY, variables: { _id } }],
   });
-  const [removeUser] = useMutation(removeUserMutation, {
+  const [removeUser] = useMutation(REMOVE_USER_MUTATION, {
     onCompleted: () => {
       message.success(i18n.__('Users.user_delete_success'));
       history.push('/');
@@ -60,12 +61,16 @@ function ProfilePage({ match }) {
     },
   });
 
-  const getUserType = (u) => (u.oAuthProvider ? 'oauth' : 'password');
+  const getUserType = (u: User) => (u.oAuthProvider ? 'oauth' : 'password');
 
-  async function handleExportData(event) {
+  function handleExportData(event: MouseEvent) {
     event.preventDefault();
+    fetchExportData(); //strip the async off to make the event handler happy
+  }
+
+  async function fetchExportData() {
     const { data: result } = await client.query({
-      query: exportUserDataQuery,
+      query: EXPORT_USER_DATA_QUERY,
     });
 
     FileSaver.saveAs(base64ToBlob(result.exportUserData.zip), `${Meteor.userId()}.zip`);
@@ -89,8 +94,8 @@ function ProfilePage({ match }) {
     });
   }
 
-  function handleSubmit(form) {
-    const cleanForm = ProfileSchema.clean(form);
+  function handleSubmit(model: object) {
+    const cleanForm = ProfileSchema.clean(model);
     updateUser({
       variables: {
         user: {
@@ -115,12 +120,12 @@ function ProfilePage({ match }) {
     }
   }
 
-  function handleTabClick(key) {
+  function handleTabClick(key: string) {
     const path = generatePath(match.path, { _id, tab: key });
     history.push(path);
   }
 
-  const renderOAuthUser = (u) => (
+  const renderOAuthUser = (u: User) => (
     <div className="OAuthProfile">
       <div key={u.oAuthProvider} className={`LoggedInWith ${u.oAuthProvider}`}>
         <img src={`/${u.oAuthProvider}.svg`} alt={u.oAuthProvider} />
@@ -163,16 +168,16 @@ function ProfilePage({ match }) {
       <TextField name="emailAddress" />
       <TextField
         name="currentPassword"
-        // ref={(currentPassword) => {
-        //   this.currentPassword = currentPassword;
-        // }}
+      // ref={(currentPassword) => {
+      //   this.currentPassword = currentPassword;
+      // }}
       />
       <TextField
         name="newPassword"
-        // ref={(newPassword) => {
-        //   this.newPassword = newPassword;
-        // }}
-        extra={i18n.__('Users.password_help')}
+      // ref={(newPassword) => {
+      //   this.newPassword = newPassword;
+      // }}
+
       />
 
       <Button htmlType="submit" type="primary">
@@ -181,7 +186,7 @@ function ProfilePage({ match }) {
     </div>
   );
 
-  const renderProfileForm = (u) =>
+  const renderProfileForm = (u: User) =>
     u &&
     {
       password: renderPasswordUser,
@@ -191,10 +196,10 @@ function ProfilePage({ match }) {
   // convert graphql into flat data for form
   const model = user
     ? {
-        firstName: user.profile.firstName,
-        lastName: user.profile.lastName,
-        emailAddress: user.emailAddress,
-      }
+      firstName: user.profile.firstName,
+      lastName: user.profile.lastName,
+      emailAddress: user.emailAddress,
+    }
     : {};
 
   return user ? (
@@ -204,7 +209,7 @@ function ProfilePage({ match }) {
         // animation={false}
         // activeKey={activeTab}
         // onChange={setActiveTab}
-        activeKey={match.params.tab || 'profile'}
+        activeKey={tab || 'profile'}
         onTabClick={handleTabClick}
       >
         <Tabs.TabPane key="profile" tab={i18n.__('Users.profile')}>
@@ -219,14 +224,14 @@ function ProfilePage({ match }) {
 
           <AccountPageFooter>
             <p>
-              <Button type="link" className="btn-export" onClick={handleExportData}>
+              <Button type="link" className="btn-export" onClick={handleExportData as any}>
                 {i18n.__('Users.export_user_data_button')}
               </Button>
               {i18n.__('Users.export_user_data_help')}
             </p>
           </AccountPageFooter>
           <AccountPageFooter>
-            <Button type="danger" onClick={handleDeleteAccount}>
+            <Button danger onClick={handleDeleteAccount}>
               {i18n.__('Users.delete_my_account_button')}
             </Button>
           </AccountPageFooter>
@@ -240,9 +245,5 @@ function ProfilePage({ match }) {
     <div />
   );
 }
-
-ProfilePage.propTypes = {
-  match: PropTypes.object.isRequired,
-};
 
 export default ProfilePage;

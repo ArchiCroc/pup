@@ -11,6 +11,7 @@ import Loading from '/imports/ui/components/Loading';
 import PageBreadcrumbs, { Breadcrumb } from '/imports/ui/components/PageBreadcrumbs';
 import PageHeader from '/imports/ui/components/PageHeader';
 import ValueWrapper from '/imports/ui/components/ValueWrapper';
+import { RoleSlug } from '/imports/common/Users/interfaces';
 
 import EditErrorReportButton from './components/EditErrorReportButton';
 
@@ -18,8 +19,12 @@ import { errorReport as errorReportQuery } from './graphql/queries.gql';
 
 import StyledErrorReportsPage from './StyledErrorReportsPage';
 
-function ViewErrorReportPage({ roles }) {
-  const { _id } = useParams();
+interface ViewErrorReportPageProps {
+  roles: RoleSlug[];
+}
+
+function ViewErrorReportPage({ roles }: ViewErrorReportPageProps) {
+  const { _id } = useParams<{_id: string}>();
 
   const { loading, data: { errorReport } = {} } = useQuery(errorReportQuery, {
     variables: { _id },

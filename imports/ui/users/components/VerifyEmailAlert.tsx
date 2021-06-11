@@ -1,15 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Button from 'antd/lib/button';
 import { useMutation } from '@apollo/client';
 import message from 'antd/lib/message';
 import i18n from 'meteor/universe:i18n';
 import Alert from '/imports/ui/components/Alert';
-import { sendVerificationEmail as sendVerificationEmailMutation } from '../mutations/Users.gql';
+import { SEND_VERIFICATION_EMAIL_MUTATION } from '../graphql/mutations.gql';
 // import SyledVerifyEmail from './StyledVerifyEmail';
 
-const VerifyEmailAlert = ({ userId, emailVerified, emailAddress: email }) => {
-  const [sendVerificationEmail] = useMutation(sendVerificationEmailMutation);
+interface VerifyEmailAlertProps {
+  userId: string;
+  emailVerified: boolean;
+  emailAddress: string;
+};
+
+const VerifyEmailAlert = ({ userId, emailVerified, emailAddress: email }: VerifyEmailAlertProps) => {
+  const [sendVerificationEmail] = useMutation(SEND_VERIFICATION_EMAIL_MUTATION);
 
   function handleResendVerificationEmail() {
     sendVerificationEmail();
@@ -27,12 +32,6 @@ const VerifyEmailAlert = ({ userId, emailVerified, emailAddress: email }) => {
     );
   }
   return null;
-};
-
-VerifyEmailAlert.propTypes = {
-  userId: PropTypes.string.isRequired,
-  emailVerified: PropTypes.bool.isRequired,
-  emailAddress: PropTypes.string.isRequired,
 };
 
 export default VerifyEmailAlert;

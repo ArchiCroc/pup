@@ -27,11 +27,11 @@ const updateUserProfile = ({ _id, profile }) => {
   }
 };
 
-const updateUserEmail = ({ _id, email }) => {
+const updateUserEmail = ({ _id, emailAddress }) => {
   try {
     return Meteor.users.update(_id, {
       $set: {
-        'emails.0.address': email,
+        'emails.0.address': emailAddress,
       },
     });
   } catch (exception) {
@@ -84,7 +84,7 @@ const updateUser = (options) => {
 
     if (userToUpdate.password) updateUserPassword(userToUpdate);
     if (userToUpdate.roles && isAdmin(options.currentUser._id)) updateUserRoles(userToUpdate);
-    if (userToUpdate.email) updateUserEmail(userToUpdate);
+    if (userToUpdate.emailAddress) updateUserEmail(userToUpdate);
     if (userToUpdate.profile) updateUserProfile(userToUpdate);
     if (userToUpdate.settings) updateUserSettings(userToUpdate);
 

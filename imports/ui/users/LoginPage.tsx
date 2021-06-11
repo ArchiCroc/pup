@@ -9,6 +9,7 @@ import Divider from 'antd/lib/divider';
 import message from 'antd/lib/message';
 import { TextField /*, ErrorsField*/ } from 'uniforms-antd';
 import AutoForm from '/imports/ui/components/AutoForm';
+import { UserLogin } from '/imports/common/Users/interfaces';
 
 import OAuthLoginButtons from './components/OAuthLoginButtons';
 import AccountPageFooter from './components/AccountPageFooter';
@@ -17,8 +18,8 @@ import { StyledLoginPage, LoginPromo } from './StyledLoginPage';
 import LoginSchema from '/imports/common/Users/schemas/login';
 
 function LoginPage() {
-  function handleSubmit(form) {
-    const cleanForm = LoginSchema.clean(form);
+  function handleSubmit(model: object) {
+    const cleanForm: UserLogin = LoginSchema.clean(model);
 
     Meteor.loginWithPassword(cleanForm.emailAddress, cleanForm.password, (error) => {
       if (error) {

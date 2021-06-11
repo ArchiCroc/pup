@@ -1,13 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
 import OAuthLoginButton from './OAuthLoginButton';
-import oAuthServicesQuery from '../queries/OAuth.gql';
+import { OAUTH_SERVICES_QUERY } from '../graphql/queries.gql';
 import StyledOAuthLoginButtons from './StyledOAuthLoginButtons';
 import Loading from '/imports/ui/components/Loading';
 
-const OAuthLoginButtons = ({ services }) => {
-  const { loading, data: { oAuthServices } = {} } = useQuery(oAuthServicesQuery, {
+interface OAuthLoginButtonsProps {
+  services: string[];
+};
+
+const OAuthLoginButtons = ({ services }: OAuthLoginButtonsProps) => {
+  const { loading, data: { oAuthServices } = {} } = useQuery(OAUTH_SERVICES_QUERY, {
     variables: {
       services,
     },
@@ -18,9 +21,9 @@ const OAuthLoginButtons = ({ services }) => {
         <Loading />
       ) : (
         <>
-          {oAuthServices.length ? (
+          {oAuthServices?.length ? (
             <>
-              {oAuthServices.map((service) => (
+              {oAuthServices.map((service: string) => (
                 <OAuthLoginButton key={service} service={service} />
               ))}
             </>
@@ -31,10 +34,6 @@ const OAuthLoginButtons = ({ services }) => {
       )}
     </StyledOAuthLoginButtons>
   );
-};
-
-OAuthLoginButtons.propTypes = {
-  services: PropTypes.array.isRequired,
 };
 
 export default OAuthLoginButtons;

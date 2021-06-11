@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { useMutation } from '@apollo/client';
 import Button from 'antd/lib/button';
@@ -10,7 +9,12 @@ import { useHistory } from 'react-router-dom';
 import { errorReports as errorReportsQuery } from '../graphql/queries.gql';
 import { removeErrorReport as removeErrorReportMutation } from '../graphql/mutations.gql';
 
-function RemoveErrorReportButton({ _id, title, ...props }) {
+interface RemoveErrorReportButtonProps  {
+  _id: string,
+  title: string,
+};
+
+function RemoveErrorReportButton({ _id, title, ...props }: RemoveErrorReportButtonProps) {
   const history = useHistory();
 
   const [removeErrorReport] = useMutation(removeErrorReportMutation, {
@@ -39,15 +43,10 @@ function RemoveErrorReportButton({ _id, title, ...props }) {
   }
 
   return (
-    <Button key={_id} type="danger" onClick={showConfirmModal} {...props}>
+    <Button key={_id} danger onClick={showConfirmModal} {...props}>
       {i18n.__('ErrorReports.remove_error_report')}
     </Button>
   );
 }
-
-RemoveErrorReportButton.propTypes = {
-  _id: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-};
 
 export default RemoveErrorReportButton;

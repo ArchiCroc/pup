@@ -1,28 +1,47 @@
 export interface  UserSettingsGDPR {
-    canSendMarketingEmails: boolean
+    canSendMarketingEmails: boolean;
   }
   
   export interface  UserSettings {
-    gdpr: UserSettingsGDPR
+    gdpr: UserSettingsGDPR;
   }
   
-  export interface Profile {
-    firstName: String
-    lastName: String
+  export interface UserProfile {
+    firstName: String;
+    lastName: String;
   }
   
+  export type RoleSlug = string;
+
   export interface  User {
-    _id: string
-    profile: Profile
-    username: string
-    emailAddress: string
-    oAuthProvider: string
-    roles: string[]
-    settings: UserSettings 
-    fullName: string
+    _id: string;
+    profile?: UserProfile;
+    username?: string;
+    emailAddress?: string;
+    oAuthProvider?: string;
+    roles?: RoleSlug[]
+    settings?: UserSettings 
+    fullName?: string
+  }
+
+  export interface  UserInput {
+    _id?: string;
+    profile?: UserProfile;
+    username?: string;
+    password?: string;
+    emailAddress?: string;
+    oAuthProvider?: string;
+    roles?: RoleSlug[]
+    settings?: UserSettings 
   }
   
   export interface Users {
-    total: number
-    users: [User]
+    total: number;
+    users: User[];
   }
+
+  export interface UserLogin {
+    emailAddress: string;
+    password: string;
+  }
+  

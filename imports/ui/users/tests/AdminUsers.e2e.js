@@ -1,4 +1,4 @@
-import { adminRole, userRole, getPagePath } from '/tests/helpers/e2e';
+import { adminRole, userRole, getPagePath } from '../../../../tests/helpers/e2e';
 
 fixture`/admin/users`.page`http://localhost:3000/login`;
 

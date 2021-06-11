@@ -1,6 +1,6 @@
-#import "../fragments/Users.gql"
+#import "./fragments.gql"
 
-query users($page: Int, $pageSize: Int, $search: String, $sort: String, $order: String, $role: [String]) {
+query USERS_QUERY($page: Int, $pageSize: Int, $search: String, $sort: String, $order: String, $role: [String]) {
   users(page: $page, pageSize: $pageSize, search: $search, sort: $sort, order: $order, role: $role) {
     total
     users {
@@ -14,13 +14,13 @@ query users($page: Int, $pageSize: Int, $search: String, $sort: String, $order: 
   }
 }
 
-query user($_id: String) {
+query USER_QUERY($_id: String) {
   user(_id: $_id) {
     ...UserAttributes
   }
 }
 
-query userSettings {
+query USER_SETTINGS_QUERY {
   user {
     settings {
       gdpr {
@@ -34,8 +34,13 @@ query userSettings {
   }
 }
 
-query exportUserData {
+query EXPORT_USER_DATA_QUERY {
   exportUserData {
     zip
   }
 }
+
+query OAUTH_SERVICES_QUERY($services: [String]) {
+  oAuthServices(services: $services)
+}
+

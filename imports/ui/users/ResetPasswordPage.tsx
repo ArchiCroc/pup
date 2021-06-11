@@ -16,9 +16,9 @@ import ResetPasswordSchema from '/imports/common/Users/schemas/reset-password';
 
 function ResetPasswordPage() {
   const history = useHistory();
-  const { token } = useParams();
+  const { token } = useParams<{ token: string }>();
 
-  function handleSubmit(form) {
+  function handleSubmit(form: object) {
     const cleanForm = ResetPasswordSchema.clean(form);
 
     Accounts.resetPassword(token, cleanForm.newPassword, (error) => {

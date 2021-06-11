@@ -1,7 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import Button from 'antd/lib/button';
+import { InputProps } from 'antd/lib/input';
 // import Checkbox from 'antd/lib/checkbox';
 import Input from 'antd/lib/input';
 import RedoIcon from '@ant-design/icons/RedoOutlined';
@@ -10,8 +10,14 @@ import { connectField } from 'uniforms';
 import { wrapField } from 'uniforms-antd';
 
 // import Icon from '/imports/ui/components/Icon';
+interface AdminPasswordFieldProps extends Omit<InputProps, 'onChange'> {
+  // name: string;
+  onChange: (value: string) => void;
+  inputRef: React.Ref<any>;
 
-function AdminPasswordField(props) {
+};
+
+function AdminPasswordField(props: AdminPasswordFieldProps) {
   function generatePassword() {
     props.onChange(Random.hexString(20));
   }
@@ -25,7 +31,7 @@ function AdminPasswordField(props) {
   }
 
   return wrapField(
-    props,
+    props as any,
     <Input.Password
       //  type={this.state.showPassword ? 'text' : 'password'}
       // className={classnames(props.inputClassName, 'form-control', {
@@ -44,17 +50,4 @@ function AdminPasswordField(props) {
   );
 }
 
-AdminPasswordField.propTypes = {
-  id: PropTypes.string,
-  label: PropTypes.string,
-  name: PropTypes.string,
-  onChange: PropTypes.func,
-  value: PropTypes.string,
-};
-AdminPasswordField.defaultProps = {
-  label: '',
-  id: undefined,
-  value: '',
-};
-
-export default connectField(AdminPasswordField);
+export default connectField(AdminPasswordField as React.FC);

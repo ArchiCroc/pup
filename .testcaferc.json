@@ -1,5 +1,13 @@
 {
     "clientScripts": [
     { "module": "@testing-library/dom/dist/@testing-library/dom.umd.js" }
-  ]
+  ],
+  "compilerOptions": {
+    "typescript": {
+       "configPath": "./tsconfig.json",
+       "options": {
+        "baseUrl": ".",
+       }
+       }
+    }
 }

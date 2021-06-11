@@ -7,7 +7,11 @@ import AdminUsersTable from './components/AdminUsersTable';
 
 import StyledAdminUsers from './StyledAdminUsers';
 
-function AdminUsers({ roles, ...props }) {
+// interface AdminUsersProps {
+//   roles: UserRole[];
+// }
+
+function AdminUsers(props: object) {
   return (
     <StyledAdminUsers>
       <PageBreadcrumbs>
@@ -19,8 +23,5 @@ function AdminUsers({ roles, ...props }) {
   );
 }
 
-// AdminUsers.propTypes = {
-//   // prop: PropTypes.string.isRequired,
-// };
 
 export default AdminUsers;

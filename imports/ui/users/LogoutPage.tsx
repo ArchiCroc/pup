@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import i18n from 'meteor/universe:i18n';
 import FacebookIcon from '@ant-design/icons/FacebookOutlined';
@@ -7,7 +6,11 @@ import TwitterIcon from '@ant-design/icons/TwitterOutlined';
 
 import StyledLogoutPage from './StyledLogoutPage';
 
-function LogoutPage(props) {
+interface LogoutPageProps {
+  setAfterLoginPath: (path: string | null) => void,
+};
+
+function LogoutPage(props: LogoutPageProps) {
   useEffect(() => {
     Meteor.logout(() => props.setAfterLoginPath(null));
   });
@@ -43,9 +46,5 @@ function LogoutPage(props) {
     </StyledLogoutPage>
   );
 }
-
-LogoutPage.propTypes = {
-  setAfterLoginPath: PropTypes.func.isRequired,
-};
 
 export default LogoutPage;

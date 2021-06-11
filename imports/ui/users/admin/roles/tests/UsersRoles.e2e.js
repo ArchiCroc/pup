@@ -1,8 +1,14 @@
 import { getByTestId, getByText, queryByText } from '@testing-library/testcafe';
 import { Selector } from 'testcafe';
 import { ReactSelector } from 'testcafe-react-selectors';
-import { getMockItem } from '/imports/api/Users/Roles/fixtures';
-import { adminRole, anonymousRole, getPagePath, serverUrl, userRole } from '/tests/helpers/e2e';
+import { getMockItem } from '../../../../../api/Users/Roles/fixtures';
+import {
+  adminRole,
+  anonymousRole,
+  getPagePath,
+  serverUrl,
+  userRole,
+} from '../../../../../../tests/helpers/e2e';
 
 const mockNewUsersRole = getMockItem(1);
 const mockEditUsersRole = getMockItem(2);

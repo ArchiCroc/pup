@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import { useQuery /* , useMutation */ } from '@apollo/client';
 import Divider from 'antd/lib/divider';
@@ -11,13 +10,14 @@ import PageBreadcrumbs, { Breadcrumb } from '/imports/ui/components/PageBreadcru
 import PageHeader from '/imports/ui/components/PageHeader';
 import ErrorReportEditor from './components/ErrorReportEditor';
 import RemoveErrorReportButton from './components/RemoveErrorReportButton';
+import { RoleSlug } from '/imports/common/Users/interfaces';
 
 import { editErrorReport as editErrorReportQuery } from './graphql/queries.gql';
 
 import StyledErrorReportsPage from './StyledErrorReportsPage';
 
 interface EditErrorReportPageProps {
-  roles: string[]
+  roles: RoleSlug[]
 }
 
 function EditErrorReportPage({ roles }: EditErrorReportPageProps) {
@@ -57,9 +57,5 @@ function EditErrorReportPage({ roles }: EditErrorReportPageProps) {
     </StyledErrorReportsPage>
   );
 }
-
-EditErrorReportPage.propTypes = {
-  
-};
 
 export default EditErrorReportPage;

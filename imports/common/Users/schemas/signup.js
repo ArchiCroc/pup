@@ -45,6 +45,7 @@ const SignupSchema = new SimpleSchema({
     uniforms: {
       type: 'password',
       placeholder: () => i18n.__('Users.password'),
+      extra: () => i18n.__('Users.password_help'),
     },
   },
   /*  confirmation: {

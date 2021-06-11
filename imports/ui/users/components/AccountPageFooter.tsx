@@ -1,13 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import StyledAccountPageFooter from './StyledAccountPageFooter';
 
-const AccountPageFooter = ({ children }) => (
+interface AccountPageFooterProps {
+  children: React.ReactNode;
+}
+
+const AccountPageFooter = ({ children }: AccountPageFooterProps) => (
   <StyledAccountPageFooter>{children}</StyledAccountPageFooter>
 );
-
-AccountPageFooter.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 export default AccountPageFooter;

@@ -7,54 +7,74 @@ import i18n from 'meteor/universe:i18n';
 import { useQuery } from '@apollo/client';
 import isString from 'lodash/isString';
 import Table from 'antd/lib/table';
+import { ColumnsType, SortOrder } from 'antd/lib/table/interface';
 import useQueryStringObject from '/imports/ui/libs/hooks/useQueryStringObject';
 import SearchInput from '/imports/ui/components/SearchInput';
+import { User, RoleSlug } from '/imports/common/Users/interfaces';
 
-import { users as usersQuery } from '../../queries/Users.gql';
+import { USERS_QUERY } from '../../graphql/queries.gql';
 
 // import { StyledListGroup, StyledListGroupItem } from './StyledAdminUsersList';
 
 // @todo filter these
 // @ todo add status and account creation date
+interface AdminUsersTableQueryString {
+  page?: string | number;
+  pageSize?: string | number;
+  sort?: string;
+  order?: SortOrder;
+  search?: string;
+  roles?: string | string[];
+}
 
-function AdminUsersList({
+interface AdminUsersTableProps extends AdminUsersTableQueryString {
+  showNewErrorReportButton?: boolean;
+  queryKeyPrefix?: string;
+  showSearch?: boolean;
+  showSizeChanger?: boolean;
+}
+
+
+function AdminUsersTable({
   queryKeyPrefix,
-  showNewUserButton,
-  showSearch,
-  showSizeChanger,
+  showNewErrorReportButton = false,
+  showSearch = true,
+  showSizeChanger = true,
   ...props
-}) {
+}: AdminUsersTableProps) {
   const history = useHistory();
 
-  const [queryStringObject, setQueryStringObject] = useQueryStringObject(queryKeyPrefix);
-  const { order, page, pageSize, roles, search, sort } = { ...props, ...queryStringObject };
+  const [queryStringObject, setQueryStringObject] = useQueryStringObject<AdminUsersTableQueryString>(queryKeyPrefix);
+  const { roles, search, page = 1, pageSize = 10, sort = 'createdAt', order = 'descend' } = { ...props, ...queryStringObject };
 
-  const [currentPage, setCurrentPage] = useState(parseInt(page, 10));
-  const [currentPageSize, setCurrentPageSize] = useState(parseInt(pageSize, 10));
+  const [currentPage, setCurrentPage] = useState(isString(page) ? parseInt(page, 10) : page);
+  const [currentPageSize, setCurrentPageSize] = useState(isString(pageSize) ? parseInt(pageSize, 10) : pageSize);
   const [currentSort, setCurrentSort] = useState(sort);
-  const [currentOrder, setCurrentOrder] = useState(order);
+  const [currentOrder, setCurrentOrder] = useState<SortOrder>(order);
   const [currentSearch, setCurrentSearch] = useState(search);
   const [currentRoles, setCurrentRoles] = useState(roles && isString(roles) ? [roles] : roles);
 
   const paginationObject = {
     pageSize: currentPageSize,
-    //  onChange: this.onPageChange,
+    total: undefined,
+    current: currentPage,
+    // onChange: this.onPageChange,
   };
 
-  const columns = [
+  const columns: ColumnsType<User> = [
     {
       title: () => i18n.__('Users.name'),
       dataIndex: 'fullName',
       sorter: true,
       defaultSortOrder: 'ascend',
-      sortOrder: currentSort === 'fullName' && currentOrder,
+      sortOrder: currentSort === 'fullName' ? currentOrder : undefined,
     },
     {
       title: () => i18n.__('Users.email_address'),
       dataIndex: 'emailAddress',
       sorter: true,
       defaultSortOrder: 'ascend',
-      sortOrder: currentSort === 'emailAddress' && currentOrder,
+      sortOrder: currentSort === 'emailAddress' ? currentOrder : undefined,
     },
     {
       title: () => i18n.__('Users.role_plural'),
@@ -63,14 +83,14 @@ function AdminUsersList({
       // filters: Roles.getAllRoles().fetch(),
       filters: ['user', 'admin', 'api'].map((item) => ({ text: item, value: item })),
       sorter: true,
-      defaultSortOrder: 'roles',
-      sortOrder: currentSort === 'fullName' && currentOrder,
+      defaultSortOrder: 'ascend',
+      sortOrder: currentSort === 'fullName' ? currentOrder : undefined,
       // render: (item) => item && item.map((item2) => item2.name).join(', '),
       render: (item) => item && item.join(', '),
     },
   ];
 
-  const { loading, error, data: { users } = {} } = useQuery(usersQuery, {
+  const { loading, error, data: { users } = {} } = useQuery(USERS_QUERY, {
     fetchPolicy: 'no-cache',
     variables: {
       pageSize: paginationObject.pageSize,
@@ -88,23 +108,25 @@ function AdminUsersList({
     paginationObject.current = currentPage;
   }
 
-  function handleRowClick(row) {
+  function handleRowClick(row: User) {
     // console.log('handleRowClick', row);
     history.push(`${window.location.pathname}/${row._id}`);
   }
 
-  function handleSearch(value) {
+  function handleSearch(value: string) {
     setCurrentSearch(value);
     setQueryStringObject({
       search: value,
     });
   }
 
-  function handleTableChange(pagination, filters, sorter) {
+  function handleTableChange(pagination: any, filters: any, sorter: any) {
     // console.log(pagination, filters, sorter);
     const { roles: newRoles = null } = filters;
 
     const currentField = sorter.field ? sorter.field.split('.')[0] : 'name';
+
+    const $newOrder = sorter.order ? sorter.order : null;
 
     setCurrentPage(pagination.current);
     setCurrentPageSize(pagination.pageSize);
@@ -116,7 +138,7 @@ function AdminUsersList({
       page: pagination.current,
       pageSize: pagination.pageSize,
       sort: currentField,
-      order: sorter.order === false && null,
+      order: $newOrder,
       roles: newRoles,
     });
   }
@@ -151,30 +173,30 @@ function AdminUsersList({
   );
 }
 
-AdminUsersList.defaultProps = {
-  showNewUserButton: false,
-  queryKeyPrefix: undefined,
-  page: 1,
-  pageSize: 10,
-  sort: 'fullName',
-  order: 'ascend',
-  search: undefined,
-  showSearch: true,
-  showSizeChanger: true,
-  roles: undefined,
-};
+// AdminUsersTable.defaultProps = {
+//   showNewUserButton: false,
+//   queryKeyPrefix: undefined,
+//   page: 1,
+//   pageSize: 10,
+//   sort: 'fullName',
+//   order: 'ascend',
+//   search: undefined,
+//   showSearch: true,
+//   showSizeChanger: true,
+//   roles: undefined,
+// };
 
-AdminUsersList.propTypes = {
-  roles: PropTypes.array,
-  showNewUserButton: PropTypes.bool,
-  queryKeyPrefix: PropTypes.string,
-  page: PropTypes.number,
-  pageSize: PropTypes.number,
-  sort: PropTypes.string,
-  order: PropTypes.string,
-  search: PropTypes.string,
-  showSearch: PropTypes.bool,
-  showSizeChanger: PropTypes.bool,
-};
+// AdminUsersTable.propTypes = {
+//   roles: PropTypes.array,
+//   showNewUserButton: PropTypes.bool,
+//   queryKeyPrefix: PropTypes.string,
+//   page: PropTypes.number,
+//   pageSize: PropTypes.number,
+//   sort: PropTypes.string,
+//   order: PropTypes.string,
+//   search: PropTypes.string,
+//   showSearch: PropTypes.bool,
+//   showSizeChanger: PropTypes.bool,
+// };
 
-export default AdminUsersList;
+export default AdminUsersTable;

@@ -6,8 +6,8 @@ import modal from 'antd/lib/modal';
 // import Button from 'antd/lib/button';
 // import { compose, graphql } from 'react-apollo';
 import UserSettings from './UserSettings';
-import { userSettings as userSettingsQuery } from '../queries/Users.gql';
-import { updateUser as updateUserMutation } from '../mutations/Users.gql';
+import { USERS_SETTINGS_QUERY } from '../graphql/queries.gql';
+import { UPDATE_USER_MUTATION } from '../graphql/mutations.gql';
 import unfreezeApolloCacheValue from '/imports/ui/libs/unfreezeApolloCacheValue';
 // import Styles from './StyledGDPRConsentModal';
 

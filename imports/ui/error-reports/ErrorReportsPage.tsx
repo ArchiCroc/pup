@@ -4,10 +4,15 @@ import i18n from 'meteor/universe:i18n';
 import PageBreadcrumbs, { Breadcrumb } from '/imports/ui/components/PageBreadcrumbs';
 import PageHeader from '/imports/ui/components/PageHeader';
 import ErrorReportsTable from './components/ErrorReportsTable';
+import { RoleSlug } from '/imports/common/Users/interfaces';
 
 import StyledErrorReportsPage from './StyledErrorReportsPage';
 
-function ErrorReportsPage({ roles }) {
+interface ErrorReportsPageProps {
+  roles: RoleSlug[];
+};
+
+function ErrorReportsPage({ roles }: ErrorReportsPageProps) {
   return (
     <StyledErrorReportsPage>
       <PageBreadcrumbs>
@@ -18,9 +23,5 @@ function ErrorReportsPage({ roles }) {
     </StyledErrorReportsPage>
   );
 }
-
-ErrorReportsPage.propTypes = {
-  roles: PropTypes.array.isRequired,
-};
 
 export default ErrorReportsPage;

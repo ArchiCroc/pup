@@ -75,6 +75,7 @@ const ProfileSchema = new SimpleSchema({
     optional: true,
     uniforms: {
       type: 'password',
+      extra: () => i18n.__('Users.password_help'),
     },
     custom() {
       // console.log('new', this.field('currentPassword').value);

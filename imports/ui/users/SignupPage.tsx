@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-// import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import i18n from 'meteor/universe:i18n';
 import Row from 'antd/lib/row';
@@ -18,7 +17,7 @@ import SignupSchema from '/imports/common/Users/schemas/signup';
 function SignupPage() {
   const history = useHistory();
 
-  function handleSubmit(form) {
+  function handleSubmit(form: object) {
     const cleanForm = SignupSchema.clean(form);
 
     Accounts.createUser(
@@ -58,10 +57,7 @@ function SignupPage() {
               </Col>
             </Row>
             <TextField name="emailAddress" />
-            <TextField
-              name="password"
-              placeholder={i18n.__('Users.password')}
-              help={i18n.__('Users.password_help')}
+            <TextField name="password"
             />
 
             <Button htmlType="submit" type="primary" block>

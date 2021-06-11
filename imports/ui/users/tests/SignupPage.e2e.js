@@ -1,6 +1,6 @@
 import { Selector } from 'testcafe';
-import { anonymousRole, getPagePath, serverUrl } from '/tests/helpers/e2e';
-import { getMockItem } from '/imports/api/Users/fixtures';
+import { anonymousRole, getPagePath, serverUrl } from '../../../../tests/helpers/e2e';
+import { getMockItem } from '../../../api/Users/fixtures';
 
 fixture`Users/Signup`.page`${serverUrl}/`;
 
