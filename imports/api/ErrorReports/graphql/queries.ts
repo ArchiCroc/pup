@@ -1,9 +1,11 @@
 import isArray from 'lodash/isArray';
+import { ErrorReport, ErrorReportsParams, HasErrorReportId } from '/imports/common/ErrorReports/interfaces';
+import { ObjectID, Context, HasId } from '/imports/common/interfaces';
 import checkUserRole from '/imports/api/libs/checkUserRole';
 import ErrorReports from '../ErrorReports';
 
 export default {
-  errorReports: (parent, args, { user }) => {
+  errorReports: (parent: unknown, args: ErrorReportsParams, { user }: Context) => {
     if (!user || !user._id || !checkUserRole(user._id, ['admin'])) {
       throw new Error('Sorry, you must have permission to view Error Reports.');
     }
@@ -23,7 +25,7 @@ export default {
 
     const cleanPageSize = pageSize > 100 ? 100 : pageSize;
 
-    const options = _ids
+    const options: any = _ids
       ? {}
       : {
           limit: cleanPageSize,
@@ -34,7 +36,7 @@ export default {
     options.sort = {};
     options.sort[sort] = orderDirection;
 
-    const query = {};
+    const query: any = {};
 
     if (_ids) {
       query._id = { $in: _ids };
@@ -67,7 +69,7 @@ export default {
       errorReports: result.fetch(),
     };
   },
-  myErrorReports: (parent, args, { user }) => {
+  myErrorReports: (parent: unknown, args: ErrorReportsParams, { user }: Context) => {
     if (!user || !user._id || !checkUserRole(user._id, ['admin'])) {
       throw new Error('Sorry, you must have permission to view my Error Reports.');
     }
@@ -77,7 +79,7 @@ export default {
     /* #### PLOP_QUERY_VALIDATION_START #### */
     /* #### PLOP_QUERY_VALIDATION_END #### */
 
-    const query = { createdById: user._id };
+    const query: any = { createdById: user._id };
     const options = {};
 
     if (isArray(level) && level.length > 0) {
@@ -89,9 +91,9 @@ export default {
     /* #### PLOP_QUERY_PRE_FIND_START #### */
     /* #### PLOP_QUERY_PRE_FIND_END #### */
 
-    return ErrorReports.find(query).fetch(query, options);
+    return ErrorReports.find(query, options).fetch();
   },
-  errorReport: (parent, args, { user }) => {
+  errorReport: (parent: HasErrorReportId, args: HasId, { user }: Context) => {
     if (!user || !user._id || !checkUserRole(user._id, ['admin'])) {
       throw new Error('Sorry, you must have permission to view Error Report.');
     }
@@ -99,8 +101,8 @@ export default {
     /* #### PLOP_QUERY_VALIDATION_START #### */
     /* #### PLOP_QUERY_VALIDATION_END #### */
 
-    const query = {};
-    const options = {};
+    const query: any = {};
+    const options: any = {};
 
     /* #### PLOP_QUERY_PRE_FIND_START #### */
     /* #### PLOP_QUERY_PRE_FIND_END #### */

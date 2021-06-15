@@ -2,12 +2,12 @@
 
 import { Mongo } from 'meteor/mongo';
 
-export default (Collection, index, options) => {
+export default (Collection: any, index: any, options?: any) => {
   if (Collection && Collection instanceof Mongo.Collection) {
     Collection.rawCollection().createIndex(index, options);
   } else {
     console.warn(
-      '[/modules/server/createIndex.js] Must pass a MongoDB collection instance to define index on.',
+      '[/api/libs/utils/createIndex.js] Must pass a MongoDB collection instance to define index on.',
     );
   }
 };

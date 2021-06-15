@@ -18,7 +18,7 @@ const queryOrMutationLink = () =>
   // NOTE: createPersistedQueryLink ensures that queries are cached if they have not
   // changed (reducing unnecessary load on the client).
   new HttpLink({
-    uri: Meteor.settings.public.graphQL.httpUri,
+    uri: Meteor.settings.public.graphQL?.httpUri || Meteor.absoluteUrl('graphql'),
     credentials: 'same-origin',
   });
 

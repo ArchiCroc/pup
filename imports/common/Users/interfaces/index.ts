@@ -24,6 +24,18 @@ export interface  UserSettingsGDPR {
     fullName?: string
   }
 
+  export interface UserLookup {
+    __crossReference: string;
+    query?: string;
+    edges?: string;
+    labelKey: string;
+    valueKey:string;
+    idType?: string;
+    variables: any;
+    key: string;
+    label: string;
+  }
+
   export interface  UserInput {
     _id?: string;
     profile?: UserProfile;

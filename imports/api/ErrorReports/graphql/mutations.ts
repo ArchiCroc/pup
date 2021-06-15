@@ -1,3 +1,5 @@
+import { ErrorReport } from '/imports/common/ErrorReports/interfaces';
+import { ObjectID, Context } from '/imports/common/interfaces';
 import ErrorReports from '../ErrorReports';
 import ErrorReportSchema from '/imports/common/ErrorReports/schemas/error-report';
 // import sanitizeHtml from 'sanitize-html';
@@ -5,7 +7,7 @@ import checkUserRole from '/imports/api/libs/checkUserRole';
 import createMongoModifier from '/imports/api/libs/utils/createMongoModifier';
 
 export default {
-  saveErrorReport: (root, args, { user }) => {
+  saveErrorReport: (root: unknown, args: { errorReport: ErrorReport }, { user }: Context) => {
     if (!user || !user._id || !checkUserRole(user._id, ['admin'])) {
       throw new Error('Sorry, you must have permission to save a Error Report.');
     }
@@ -56,7 +58,7 @@ export default {
     const doc = ErrorReports.findOne(errorReportId);
     return doc;
   },
-  removeErrorReport: (root, args, { user }) => {
+  removeErrorReport: (root: unknown, args: { _id: ObjectID }, { user }: Context) => {
     if (!user || !user._id || !checkUserRole(user._id, ['admin'])) {
       throw new Error('Sorry, you must have permission to remove Error Report.');
     }

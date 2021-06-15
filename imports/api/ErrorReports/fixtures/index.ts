@@ -1,10 +1,11 @@
 import faker from 'faker';
+import { ErrorReportFixture } from '/imports/common/ErrorReports/interfaces';
 
-export function getInitialItems() {
+export function getInitialItems(): ErrorReportFixture[] {
   return [];
 }
 
-export function getMockItem(random, includeOptional = true) {
+export function getMockItem(random: number, includeOptional = true): ErrorReportFixture {
   random = random || Math.floor(Math.random() * 1000);
 
   faker.seed(random);
