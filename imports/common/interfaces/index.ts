@@ -1,5 +1,6 @@
 import { User } from '/imports/common/Users/interfaces';
 export interface ObjectID {
+  _str: string;
   toHexString(): string;
   equals(otherID: ObjectID): boolean;
 }

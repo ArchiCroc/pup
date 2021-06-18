@@ -1,19 +1,12 @@
-import {
-   BaseButtonProps as AntdBaseButtonProps,
+declare module 'antd/lib/button/button' {
+  import {
+    BaseButtonProps as AntdBaseButtonProps,
     // // ButtonType as AntdButtonType,
     // ButtonProps as AntdButtonProps,
     // AnchorButtonProps, 
     // NativeButtonProps
-} from 'antd/lib/button/button';
+  } from 'antd/lib/button/button';
 
-// import {
-//   // BaseButtonProps as AntdBaseButtonProps,
-//   // ButtonType as AntdButtonType,
-//   ModalFuncProps as AntdModalFuncProps
-// } from 'antd/lib/modal';
-
-
-declare module 'antd/lib/button/button' {
 
   // // export type ButtonType = AntdButtonType | "danger";
   // type ButtonTestProps = {

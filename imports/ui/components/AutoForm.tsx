@@ -3,7 +3,7 @@ import SimpleSchema from 'simpl-schema';
 import { AutoForm as UniformsAutoForm } from 'uniforms-antd';
 import { Bridge, AutoFormProps as UniformsAutoFormProps } from 'uniforms'
 import kebabCase from 'lodash/kebabCase';
-import SimpleSchema2Bridge from '/imports/ui/libs/uniforms-bridge-simple-schema-2/index';
+import SimpleSchema2Bridge from '/imports/common/libs/custom-uniforms-bridge-simple-schema-2';
 import prepareFormModel from '/imports/ui/libs/prepareFormModel';
 
 interface AutoFormProps<Model> extends Partial<Omit<UniformsAutoFormProps<Model>, 'schema'>> {
